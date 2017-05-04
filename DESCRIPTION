@@ -1,0 +1,19 @@
+Package: geozoning
+Title: a zoning method for spatial data
+Version: 1.0.0
+Authors@R: c(
+  person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut", "cre")),
+  person("Hazaël", "Jones", email = "hazael.jones@supagro.fr", role = c("aut")),
+  person("Patrice", "Loisel", email = "patrice.loisel@inra.fr", role = c("aut")))
+Description: What the package does (one paragraph). TODO
+Depends: R (>= 3.3.2)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: sp, gstat, RandomFields, maptools, rgeos, colorspace, xtable, deldir, mmand,
+  permute, plotrix, fields, optimx, rgdal, raster, ggplot2, profvis, graphics, stats, utils,
+  grDevices
+Suggests: rmarkdown,
+    knitr
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
