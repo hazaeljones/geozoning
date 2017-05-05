@@ -189,6 +189,7 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 #' @param K xxxx
 #' @param iC xxxx
 #' @param Ns xxxx
+#' @param map xxxx
 #' @param optiCrit xxxx
 #' @param valRef xxxx
 #' @param qProb xxxx

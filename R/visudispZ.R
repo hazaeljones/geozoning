@@ -84,6 +84,7 @@ return(K)
 #' @return a ?
 #' @importFrom grDevices colorRampPalette
 #' @importFrom graphics text
+#' @importFrom fields image.plot
 #'
 #' @export
 #'

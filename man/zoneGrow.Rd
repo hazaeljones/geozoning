@@ -16,6 +16,8 @@ zoneGrow(Z, K, iC, Ns, map, optiCrit, valRef, qProb, minSizeNG, distIsoZ, LEQ,
 
 \item{Ns}{xxxx}
 
+\item{map}{xxxx}
+
 \item{optiCrit}{xxxx}
 
 \item{valRef}{xxxx}
