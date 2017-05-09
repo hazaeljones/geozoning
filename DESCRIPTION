@@ -12,7 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: sp, gstat, RandomFields, maptools, rgeos, colorspace, xtable, deldir, mmand,
   permute, plotrix, fields, optimx, rgdal, raster, ggplot2, profvis, graphics, stats, utils,
-  grDevices
+  grDevices, methods
 Suggests: rmarkdown,
     knitr
 RoxygenNote: 6.0.1
