@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#######################################################################################################\n#' Title\n#'\n#' @param DataObj\n#' @param seed\n#' @param krig\n#' @param Vpsill\n#' @param Vrange\n#' @param Vnugget\n#' @param Vmean\n#' @param disp\n#' @param FULL\n#'\n#' @return a map\n#' @export\n#'\n#' @examples\n#' # not run\ngenMap=function(DataObj=NULL,seed=80,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)\n#######################################################################################################\n{\n  # wrapper for randKmap\n  # generate 2D map\n  # DataObj =NULL: simulated data with seed\n  # krig=1: kriging with vgm model\n  #      2: inverse distance kriging\n  # else DataObj= data frame with real data\n  # genMap returns :\n#          raw data in map$tabAlea, SpatialPointsDataFrame\n#           Voronoi polygon surfaces dans map$surfaceVoronoi\n#          kriged data in map$krigTabAlea, SpatialPointsDataFrame\n#          variogram in map$fitVarioAlea\n#           DataObj\nmap=randKmap(DataObj,seed=seed,Vpsill=Vpsill,Vrange=Vrange,Vnugget=Vnugget,Vmean=Vmean,krig=krig,disp=disp,FULL=FULL)\n# returns NULL if boundary pb\n#view raw data\nif(disp==2) plotMap(map)\nreturn(map)\n}\n",
+    "created" : 1493304627182.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1405385248",
+    "id" : "351C16A5",
+    "lastKnownWriteTime" : 1493304687,
+    "last_content_update" : 1493304687223,
+    "path" : "/mnt/0CC8269AC82681D6/all/programmation/geozoning/R/genMap.R",
+    "project_path" : "R/genMap.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

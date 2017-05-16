@@ -1,0 +1,17 @@
+{
+    "contents" : "###############################\n#' transform VGM model into model usable by RandomFields\n#'\n#' @param vgmodel à remplir\n#'\n#' @return anisotropy matrix\n#'\n#' @export\n#' @seealso http://www.techmat.vgtu.lt/~art/proc/file/BudrLi.pdf\n#' @importFrom RandomFields RMgauss RMspheric\n#'\n#' @examples\n#' # not run\ncalRMmodel=function(vgmodel)\n###############################\n{\n  matAniso=NULL\n  modelVar=NULL\n  #if anisotropic\n  if(vgmodel$anis1!=1)\n  {\n    #rotation\n    angle=(vgmodel$ang1)*pi/180\n    matR=matrix(c(cos(angle),sin(angle),-sin(angle),cos(angle)),ncol=2,nrow=2)\n    #transformation\n    amax=vgmodel$range\n    amin=vgmodel$anis1*amax\n    matT=matrix(c(1/amax,0,0,1/amin),2,2)\n    #on obtient la matrice d'anisotropie\n    matAniso=matT%*%matR\n  }\n  else\n  {\n    matAniso=matrix(c(1,0,0,1),ncol=2,nrow=2)\n  }\n\n  if(vgmodel$model==\"Gau\")\n  {\n    if(vgmodel$anis1!=1)\n\tmodelVar=RMgauss(var=vgmodel$psill,scale=vgmodel$range,Aniso=matAniso)\n    else\n\tmodelVar=RMgauss(var=vgmodel$psill,scale=vgmodel$range)\n  }\n  if(vgmodel$model==\"Sph\")\n  {\n    modelVar=RMspheric(var=vgmodel$psill,scale=vgmodel$range,Aniso=matAniso)\n\n  }\n  return(modelVar)\n\n}\n",
+    "created" : 1493389040073.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1144272111",
+    "id" : "E6996F7E",
+    "lastKnownWriteTime" : 1493793127,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/calRMmodel.R",
+    "project_path" : "R/calRMmodel.R",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

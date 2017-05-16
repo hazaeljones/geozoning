@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Package: geozoning\nTitle: a zoning method for spatial data\nVersion: 1.0.0\nAuthors@R: c(\n  person(\"Brigitte\", \"Charnomordic\", email = \"brigitte.charnomordic@inra.fr\", role = c(\"aut\", \"cre\")),\n  person(\"Hazaël\", \"Jones\", email = \"hazael.jones@supagro.fr\", role = c(\"aut\")),\n  person(\"Patrice\", \"Loisel\", email = \"patrice.loisel@inra.fr\", role = c(\"aut\")))\nDescription: What the package does (one paragraph). TODO\nDepends: R (>= 3.3.2)\nLicense: What license is it under?\nEncoding: UTF-8\nLazyData: true\nImports: sp, gstat,RandomFields, maptools, rgeos, colorspace, xtable, deldir, mmand,\n  permute, plotrix, fields, optimx, rgdal, raster, ggplot2, profvis\nSuggests: rmarkdown\nRoxygenNote: 6.0.1\n",
+    "created" : 1493299683577.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1927124384",
+    "id" : "AD5DC62F",
+    "lastKnownWriteTime" : 1493302572,
+    "last_content_update" : 1493302572766,
+    "path" : "/mnt/0CC8269AC82681D6/all/programmation/geozoning/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "dcf"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"zoning on simulated data\"\nauthor: \"B. Charnomordic\"\ndate: \"`r Sys.Date()`\"\noutput:\n  html_document:\n    toc: yes\nvignette: >\n  %\\VignetteIndexEntry{zoning on simulated data}\n  %\\VignetteEngine{knitr::rmarkdown}\n  %\\VignetteEncoding{UTF-8}\n---\n\n```{r,echo=TRUE,message=FALSE, warning=FALSE}\n  library(geozoning)\n```\n\nRAJOUTER DU TEXTE DESCRIPTIF\n\n# ceci est un titre\n## ceci est un sous-titre\n### etc...\n\nOn va utiliser les objets mapTest, resZTest et ZPSTest (les expliquer car j'ai pas trop compris...). On initialise la graine et le nombre de zones.\n\n```{r,echo=TRUE,message=FALSE, warning=FALSE}\n  #source(\"srcZ.R\") # \n  # result of call to saveZoningFromSimu(seed=20,qProb=0.4,disp=0)\n  # Z.Rdata\n  # read zone polygons k zones=k polygones\n  # read zoning Z, nb of zones NBZ, initial data and seed\n  seed<-20\n  NBZ<-6\n  Vang<-c(0)\n  Vanis<-c(1)\n```\n\n# generation de la carte\n```{r,echo=TRUE,message=FALSE, warning=FALSE}\n  Z=list()\n  Z$zonePolygone=ZPSTest\n  # kriged data\n  #map=genMap(DataObj,seed=seed,disp=0)\n  map=genMap(DataObj=NULL,seed=seed,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)\n  #plotMap(map) \n```\n  \n# remove zones with 0 or 1 pt\n```{r,echo=TRUE,message=FALSE, warning=FALSE}\n  # calNei removez zones with 0 or 1 pt\n    #resZ =calNei(Z$zonePolygone,map$krigData,map$krigSurfVoronoi,map$krigN)\n  #returns\n  #     resZ$zoneN: matrice carree de voisinages entre zones (booleenne)\n  #     resZ$zoneNModif: matrice carree de voisinages entre zones (booleenne)\n  #     avec FALSE sur la diagonale (zone n'est pas sa propre voisine)\n  #     resZ$listZonePoint : liste avec autant d'elements que de zones,\n  #     pour chaque zone, les numeros des points kriges qu'elle contient\n  #     resZ$meanTot : la moyenne de toutes les valeurs\n  #      resZ$meanZone : la moyenne des valeurs de chaque zone\n   #zonePolygone =resZ$zonePolygone\n  # calcul indicateurs de la partition representee par Z et par les points de map$tabAlea\n  # travaille sur les valeurs krigees\n  # attention les surfaces de Voronoi sont celles des valeurs krigees\n  # renvoie la matrice des distances dans resDistanceA$matDistanceCorr\n  # type distance=1\n   #resD=calDistance(typedist=1,map$krigData,resZ$listZonePoint,resZ$zoneN,map$krigSurfVoronoi,resZ$meanZone,pErr=pErr)\n  # calcul du critere - choix =4\n   #resCrit=calCrit(resD$matDistanceCorr,resZ$zoneNModif)\n   #print(paste(\"Crit=\",round(resCrit,3)))\n```\n\n# Session informations\n```{r session,echo=FALSE,message=FALSE, warning=FALSE}\n  sessionInfo()\n```\n",
+    "created" : 1494494555372.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2974651517",
+    "id" : "9E6EDAA0",
+    "lastKnownWriteTime" : 1493899258,
+    "last_content_update" : 1493899258,
+    "path" : "/mnt/0CC8269AC82681D6/all/programmation/geozoning/vignettes/crit1zoning.Rmd",
+    "project_path" : "vignettes/crit1zoning.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

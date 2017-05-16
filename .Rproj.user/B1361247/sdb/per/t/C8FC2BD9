@@ -1,0 +1,17 @@
+{
+    "contents" : "##########################\n#' plot a map\n#'\n#' @param map a map\n#'\n#' @return a plot\n#'\n#' @export\n#' @importFrom grDevices heat.colors\n#' @importFrom graphics contour image locator par plot points\n#'\n#' @examples\n#' # not run\n#'\nplotMap=function(map)\n##########################\n{\n  #view generated data\n  #persp(map$krigGrid)\n  oldpar=par(mfrow=c(2,2))\n  image(map$krigGrid,col=rev(heat.colors(20)))\n  #\n  contour(map$krigGrid)\n  #\n  contour(map$krigGrid)\n  a=data.frame(map$rawData)\n  a[,]=a[order(a[,\"z\"]),]\n  zfac=factor(a[,\"z\"])\n  coul=heat.colors(150+length(levels(zfac)))[length(levels(zfac)):1]#pour eviter le blanc\n  points(a, col = coul)\n  par(oldpar)\n}\n",
+    "created" : 1493388407250.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4190519106",
+    "id" : "C8FC2BD9",
+    "lastKnownWriteTime" : 1493793266,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/plotMap.R",
+    "project_path" : "R/plotMap.R",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

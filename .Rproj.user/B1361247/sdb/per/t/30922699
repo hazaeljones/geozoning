@@ -1,0 +1,17 @@
+{
+    "contents" : "#######################################################################################################\n#' wrapper for randKmap, generate 2D map\n#'\n#' @details wrapper for randKmap, generate 2D map\n#' @param DataObj =NULL: simulated data with seed or = a data frame with real data\n#' @param seed numeric,\n#' @param krig numeric, 1: kriging with vgm model, 2: inverse distance kriging\n#' @param Vpsill numeric,\n#' @param Vrange numeric,\n#' @param Vnugget numeric,\n#' @param Vmean numeric,\n#' @param disp numeric,\n#' @param FULL logical, if TRUE the returned list is complete\n#'\n#' @return a map in a list\n#' \\describe{\n#' \\item{tabAlea}{raw data, SpatialPointsDataFrame}\n#' \\item{surfaceVoronoi}{Voronoi polygon surfaces}\n#' \\item{krigTabAlea}{kriged data, SpatialPointsDataFrame}\n#' \\item{fitVarioAlea}{variogram}\n#' \\item{DataObj}{DataObj}\n#' }\n#'\n#' @export\n#'\n#' @examples\n#' # not run\ngenMap=function(DataObj=NULL,seed=80,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)\n#######################################################################################################\n{\n  map=randKmap(DataObj,seed=seed,Vpsill=Vpsill,Vrange=Vrange,Vnugget=Vnugget,Vmean=Vmean,krig=krig,disp=disp,FULL=FULL)\n  # returns NULL if boundary pb\n  #view raw data\n  if(disp==2) plotMap(map)\n\n  return(map)\n}\n",
+    "created" : 1493383216215.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2404762192",
+    "id" : "30922699",
+    "lastKnownWriteTime" : 1493384837,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/genMap.R",
+    "project_path" : "R/genMap.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

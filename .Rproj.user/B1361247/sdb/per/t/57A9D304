@@ -1,0 +1,17 @@
+{
+    "contents" : "#' une carte décrire\n#'\n#' A XXXXXX\n#' @format a list 9 SpatialPolygons\n\"mapTest\"\n\n#' une carte décrire\n#'\n#' A XXXXXX\n#' @format a list 6 SpatialPolygons\n\"ZPSTest\"\n\n#' une carte décrire\n#'\n#' A XXXXXX\n#' @format a list 11 SpatialPointsDataFrame\n\"resZTest\"\n\n#' une carte décrire\n#'\n#' A XXXXXX\n#' @format a data frame with 6415 rows and 3 variables:\n#' \\describe{\n#'   \\item{x}{x coordinate}\n#'   \\item{y}{y coordinate}\n#'   \\item{Yield}{numeric variable - phenotype}\n#' }\n\"yield\"\n\n#' une carte décrire\n#'\n#' A XXXXXX\n#' @format a SpatialPolygons object:\n\"shape1\"\n",
+    "created" : 1493900065030.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2743095234",
+    "id" : "57A9D304",
+    "lastKnownWriteTime" : 1493970346,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/data.R",
+    "project_path" : "R/data.R",
+    "properties" : {
+    },
+    "relative_order" : 16,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,17 @@
+{
+    "contents" : "###################################################################\n#' genMapRNoK\n#'\n#' @details description, a paragraph\n#' @param DataObj xxxx\n#' @param seed xxxx\n#' @param boundary xxxx\n#' @param disp xxxx\n#' @param krig xxxx\n#' @param FULL xxxx\n#'\n#' @return a ?\n#'\n#' @export\n#'\n#' @examples\n#' # not run\ngenMapRNoK=function(DataObj,seed,boundary,disp=0,krig=1,FULL=FALSE)\n####################################################################\n{\n  #wrapper for map generation with no kriging (data are already on a grid)\n  map=randKmapGrid(DataObj,seed=seed,krig=krig,disp=disp,FULL=FULL,boundary=boundary)\n  #view raw data\n  if(disp==2) plotMap(map)\n  return(map)\n}\n",
+    "created" : 1493995842323.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2988448916",
+    "id" : "5BB6E0C6",
+    "lastKnownWriteTime" : 1493996217,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/genMapRNoK.R",
+    "project_path" : "R/genMapRNoK.R",
+    "properties" : {
+    },
+    "relative_order" : 18,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

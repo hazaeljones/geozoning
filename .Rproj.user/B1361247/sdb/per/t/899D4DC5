@@ -1,0 +1,17 @@
+{
+    "contents" : "###########################################################################\n#' calIndice\n#'\n#' @details description, a paragraph\n#' @param tabAlea xxxx\n#' @param voisin xxxx\n#' @param zoneNmodif xxxx\n#' @param listZonePoint xxxx\n#' @param listSurf xxxx\n#' @param meanZone xxxx\n#' @param surfVoronoi xxxx\n#' @param matDistanceMoranB xxxx\n#'\n#' @return a ?\n#'\n#' @export\n#'\n#' @examples\n#' # not run\ncalIndice=function(tabAlea,voisin,zoneNmodif,listZonePoint,listSurf,meanZone,surfVoronoi,matDistanceMoranB)\n###########################################################################\n{\n  ### moran and  geary correlation indices ###\n\n  nbPoly=length(listZonePoint)\n  #indice de moran entre tous les points de toutes les zones voisines(version globale/locale)\n  indiceMoranB=calMoranBTot(zoneNmodif,matDistanceMoranB,listSurf)\n  vectMoranB=calMoranBLocal(zoneNmodif,matDistanceMoranB,listSurf)\n\n  #calcul des indices moran/geany entre les zones en ne prenant que leurs moyennes\n  #global/local\n  vectMoranInter=calMoranLoc(zoneNmodif,meanZone,mean(meanZone),listSurf)\n  vectGearyInter=calGearyLoc(zoneNmodif,meanZone,mean(meanZone),listSurf)\n  indiceMoranInter=calMoranGlo(zoneNmodif,meanZone,mean(meanZone),listSurf)\n  indiceGearyInter=calGearyGlo(zoneNmodif,meanZone,mean(meanZone),listSurf)\n\n  #calcul des indices moran/geany sur tous les points à l'intérieur d'une même zone\n  vectMoranIntra=list(NULL)\n  vectGearyIntra=list(NULL)\n  indiceMoranIntra=list(NULL)\n  indiceGearyIntra=list(NULL)\n  for (i in (1:nbPoly))\n  {\n    vectMoranIntra[[i]]=calMoranLoc(voisin[listZonePoint[[i]],listZonePoint[[i]]],data.frame(tabAlea[listZonePoint[[i]],])[,3],meanZone[i],surfVoronoi[listZonePoint[[i]]])\n    vectGearyIntra[[i]]=calGearyLoc(voisin[listZonePoint[[i]],listZonePoint[[i]]],data.frame(tabAlea[listZonePoint[[i]],])[,3],meanZone[i],surfVoronoi[listZonePoint[[i]]])\n    indiceMoranIntra[[i]]=calMoranGlo(voisin[listZonePoint[[i]],listZonePoint[[i]]],data.frame(tabAlea[listZonePoint[[i]],])[,3],meanZone[i],surfVoronoi[listZonePoint[[i]]])\n    indiceGearyIntra[[i]]=calGearyGlo(voisin[listZonePoint[[i]],listZonePoint[[i]]],data.frame(tabAlea[listZonePoint[[i]],])[,3],meanZone[i],surfVoronoi[listZonePoint[[i]]])\n  }\n  ############################################################\n  return(list(indiceMoranB=indiceMoranB,vectMoranB=vectMoranB,vectMoranInter=vectMoranInter,vectGearyInter=vectGearyInter,vectMoranIntra=vectMoranIntra,vectGearyIntra=vectGearyIntra,indiceMoranInter=indiceMoranInter,indiceGearyInter=indiceGearyInter,indiceMoranIntra=indiceMoranIntra,indiceGearyIntra=indiceGearyIntra))\n}\n",
+    "created" : 1493995379707.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "87554006",
+    "id" : "899D4DC5",
+    "lastKnownWriteTime" : 1493995873,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/calIndices.R",
+    "project_path" : "R/calIndices.R",
+    "properties" : {
+    },
+    "relative_order" : 17,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

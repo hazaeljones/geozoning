@@ -1,0 +1,17 @@
+{
+    "contents" : "#########################################################\n#' os\n#'\n#' @details description, a paragraph\n#' @param li xxxx\n#'\n#' @return a ?\n#' @importFrom stats na.omit var\n#' @importFrom utils object.size write.table\n#' @importFrom sp over\n#'\n#' @export\n#'\n#' @examples\n#' # not run\nos=function(li)\n#########################################################\n{\ns=0.0\nif(is.null(names(li))) names(li)=1:length(li)\nfor (n in names(li))\n{\no=object.size(li[n])\ns=s+o\nprint(paste(n,\":\",o))\n}\n\nreturn(s)\n}\n\n#########################################################\n#' evans\n#'\n#' @details description, a paragraph\n#' @param pts xxxx\n#' @param ply xxxx\n#'\n#' @return a ?\n#'\n#' @export\n#'\n#' @examples\n#' # not run\nevans <- function(pts,ply){\n  #########################################################\n  prid <- over(pts,ply)\n  ptid <- na.omit(prid)\n  pt.poly <- pts[as.numeric(as.character(row.names(ptid))),]\n  return(pt.poly)\n}\n\n#########################################################\n#' rowlings\n#'\n#' @details description, a paragraph\n#' @param pts xxxx\n#' @param ply xxxx\n#'\n#' @return a ?\n#' @importFrom methods as\n#'\n#' @export\n#'\n#' @examples\n#' # not run\nrowlings <- function(pts,ply){\n#########################################################\n  return(pts[!is.na(over(pts,as(ply,\"SpatialPolygons\"))),])\n}\n\n#########################################################\n#' rowlings2\n#'\n#' @details description, a paragraph\n#' @param pts xxxx\n#' @param ply xxxx\n#'\n#' @return a ?\n#'\n#' @export\n#'\n#' @examples\n#' # not run\nrowlings2 <- function(pts,ply){\n#########################################################\n  class(ply) <- \"SpatialPolygons\"\n  return(pts[!is.na(over(pts,ply)),])\n}\n\n#########################################################\n#' obrien\n#'\n#' @details description, a paragraph\n#' @param pts xxxx\n#' @param ply xxxx\n#'\n#' @return a ?\n#'\n#' @export\n#'\n#' @examples\n#' # not run\nobrien <- function(pts,ply){\n#########################################################\n  return(pts[apply(gIntersects(ply,pts,byid=TRUE),1,sum)==1,])\n}\n\n#########################################################\n#' obrien2\n#'\n#' @details description, a paragraph\n#' @param pts xxxx\n#' @param ply xxxx\n#'\n#' @return a ?\n#'\n#' @export\n#'\n#' @examples\n#' # not run\nobrien2 <- function(pts,ply){\n#########################################################\n  m=gIntersects(ply,pts,byid=TRUE)\n  npts=1:nrow(m)\n  return(npts[m])\n}\n",
+    "created" : 1494337864499.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "698028469",
+    "id" : "3F9E7EAB",
+    "lastKnownWriteTime" : 1494337915,
+    "path" : "~/Documents/Mes documents/Geozoning/geozoning/R/perf.R",
+    "project_path" : "R/perf.R",
+    "properties" : {
+    },
+    "relative_order" : 19,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
