@@ -1,0 +1,78 @@
+#------------------------------------------------------------------------------
+# Notes du 09/05/2017
+#-------------------------------------------------------------------------------
+* J'ai regroupé dans loopQ.R tous les fonctions loopQ1(), loopQ2, loopQ3, loopQ4 et loopQ5
+* idem dans studyCriteria toutes les fonctions suffixés de 1 à 5
+* la fonction funct1Zonage est appelé dans plusieurs programme mais je n'ai pas trouvé sa définition
+
+ Normalement, on ne met pas de génération de fichiers pdf dans les fonctions, on génère un plot, et après
+ l'utilisateur fera ce qu'il veut.
+
+* ceci devrait être changé dev.new() plutôt que x11...
+Found an obsolete/platform-specific call in the following functions:
+  ‘computeZoneExt’ ‘plotVario’ ‘plotZ’ ‘plotzf’ ‘saveZoningFromSimu’
+  ‘sortCrit’ ‘zoneFusion3’ ‘zoneFusion4’ ‘zoneGrow’
+Found the platform-specific device:
+  ‘x11’
+dev.new() is the preferred way to open a new device, in the unlikely
+event one is needed.
+
+* un caractère caché dans simuCond.R, je ne l'ai pas trouvé...
+Found the following file with non-ASCII characters:
+  simuCond.R
+Portable packages must use only ASCII characters in their R code,
+except perhaps in comments.
+Use \uxxxx escapes for other characters.
+
+* un appel faux dans studyCriteria.R
+studyCriteria3: possible error in selMaps(seed = vseed[k], thr = thr,
+  med = med, medM = medM, m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL):
+  argument inutilisé (medM = medM)
+
+#------------------------------------------------------------------------------
+# Notes du 05/05/2017
+#-------------------------------------------------------------------------------
+* Warning dans R d'un appel à une fonction C non présente dans les fichiers de brigitte:
+
+Foreign function call without 'PACKAGE' argument:
+  .C("calDistance", ...)
+See chapter ‘System and foreign language interfaces’ in the ‘Writing R
+Extensions’ manual.
+
+* une fonction à vérifier: zoneFusion3 appelle la fonction dispZ pas avec les bons arguments!! voir dans funcCleaning.R
+
+zoneFusion3: possible error in dispZ(map$step, map$krigGrid,
+  zonePolygone = Z, nbPoly = length(Z), bordure = map$bordure, nbLvl =
+  0): arguments inutilisés (nbPoly = length(Z), bordure = map$bordure)
+
+* des variables globales devraient être initialisées dans les fonctions qui les utilisent en paramètres:
+Line
+Vang
+Vanis
+boundary
+cost
+costL
+critere
+distIsoZ
+findN
+initialZoning
+lastPass
+listPolyExtract
+listeContour
+map
+minSize
+minSizeNG
+minSizeNg
+nz
+optiGrow
+pErr
+saveZK
+simplitol
+sortCrit
+tabAleaNa
+vL
+zf
+zk
+zoneModifnonIso
+
+* je ne sais pas de quel package provient la fonction mdist()... Il faudrait me l'indiquer pour que puisse faire le @importFrom adéquat!
