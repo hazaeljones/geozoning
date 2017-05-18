@@ -1050,7 +1050,8 @@ plotSp = function(sp,k=1,xlim,ylim)
 plotZ = function(Z,map=NULL,id=FALSE)
 ##################################################################
 {
-	x11()
+	# IS 16/05/2017: comments for x11 device
+  #x11()
 	if (!is.null(map))
    	   dispZ(map$step,matVal=map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	else

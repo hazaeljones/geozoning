@@ -103,6 +103,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #'
 #' @return a ?
 #' @importFrom grDevices contourLines
+#' @importFrom sp Line
 #'
 #' @export
 #'

@@ -18,6 +18,7 @@
 #' @param ONE xxxx
 #'
 #' @return a ?
+#' @importFrom rgeos gArea
 #'
 #' @export
 #'
@@ -107,7 +108,8 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	nzList=li
 
   if (SAVE)
-     return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList,zk=listOfZ,mdist=mdist,criterion=crit,cost=cost,costL=costL,nz=nz))
+     return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList,zk=listOfZ,
+                 mdist=mdist,criterion=crit,cost=cost,costL=costL,nz=nz))
   else
 	return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList))
 	return(resC)
@@ -133,18 +135,18 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
       curLen=length(listOfZ[[counter]])
       if (curLen==0)
         {
-	counter=counter-1
+	      counter=counter-1
       	curLen=length(listOfZ[[counter]])
 	}
       else
       {
-	#Add a stage
+	      #Add a stage
         listOfZ = append(listOfZ, list(list()))
       	crit=append(crit,list(list()))
-	cost=append(cost,list(list()))
-	costL=append(costL,list(list()))
-	nz=append(nz,list(list()))
-     	mdist=append(mdist,list(list()))
+	      cost=append(cost,list(list()))
+	      costL=append(costL,list(list()))
+	      nz=append(nz,list(list()))
+     	  mdist=append(mdist,list(list()))
       }
       # make a copy for each branch
 
@@ -184,16 +186,16 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
         }
         else
         {
-	# 2 possibilities : include in zpCopy1 or grow in zpCopy2
-	# 1=merge zone indZS and zone near by
-      	Ns = getNs(K,iC)
-	zpCopy1 = zoneFusion3(zpCopy1,K,iC,Ns,map,minSize,simplitol,disp)
+	       # 2 possibilities : include in zpCopy1 or grow in zpCopy2
+	       # 1=merge zone indZS and zone near by
+      	 Ns = getNs(K,iC)
+	       zpCopy1 = zoneFusion3(zpCopy1,K,iC,Ns,map,minSize,simplitol,disp)
          if(disp>0) print(paste(length(zpCopy1)," polygons after zone merging"))
          # 2 = grow zone indZS
 
-      	zpCopy2 = zoneGrow(zpCopy2,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
-        if (disp>0) print(paste(length(zpCopy2)," polygons after zone growing"))
-        ###############################################################################################
+      	 zpCopy2 = zoneGrow(zpCopy2,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+         if (disp>0) print(paste(length(zpCopy2)," polygons after zone growing"))
+         ###############################################################################################
         } # end else disparition
 
         #save infos for next iteration (counter+1)
@@ -203,15 +205,15 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	#only non NULL zonings are kept
 	if (length(Z[[iz]])>0)
 		{
-	   # update crit[[counter+1]], listOfZ, mdist
-		resD=saveZK(map,K,Z[[iz]],qProb,listOfZ, counter,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
-        	listOfZ=resD$listOfZ
-		mdist=resD$mdist
-		# save all criteria
-		crit=resD$crit
-		cost=resD$cost
-		costL=resD$costL
-		nz=resD$nz
+	    # update crit[[counter+1]], listOfZ, mdist
+		  resD=saveZK(map,K,Z[[iz]],qProb,listOfZ, counter,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
+      listOfZ=resD$listOfZ
+		  mdist=resD$mdist
+		  # save all criteria
+		  crit=resD$crit
+		  cost=resD$cost
+		  costL=resD$costL
+		  nz=resD$nz
 		}
 	}#end for iz
 
@@ -219,31 +221,28 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 
     }# end for indZs
 
-# one more pass so that all zones are bigger than minSize in last level
-# simply remove zones of last level zonings that are too small and recalculate criteria
-if (LASTPASS)
+  # one more pass so that all zones are bigger than minSize in last level
+  # simply remove zones of last level zonings that are too small and recalculate criteria
+  if (LASTPASS)
 	{
-	resPass=lastPass(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
-	listOfZ = resPass$listOfZ
-	crit = resPass$crit
-	cost = resPass$cost
-	costL = resPass$costL
-	nz = resPass$nz
-	mdist = resPass$mdist
+	  resPass=lastPass(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
+	  listOfZ = resPass$listOfZ
+	  crit = resPass$crit
+	  cost = resPass$cost
+	  costL = resPass$costL
+	  nz = resPass$nz
+	  mdist = resPass$mdist
 	}
 
-#  consider last step criteria
-#  sort criteria, assign zoning to global variables zf, zk, critere and critList (if SAVE=TRUE)
-#  and select the best one
-resC=sortCrit(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE)
-#
+  #  consider last step criteria
+  #  sort criteria, assign zoning to global variables zf, zk, critere and critList (if SAVE=TRUE)
+  #  and select the best one
+  resC=sortCrit(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE)
 
  if (ONE)
         return(resC$bestcrit) #return single result (for optimization functions)
  else
 	return(resC) #return full result
-
-
 }
 
 
