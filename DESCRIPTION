@@ -5,7 +5,7 @@ Authors@R: c(
   person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut", "cre")),
   person("Hazaël", "Jones", email = "hazael.jones@supagro.fr", role = c("aut")),
   person("Patrice", "Loisel", email = "patrice.loisel@inra.fr", role = c("aut")))
-Description: What the package does (one paragraph). TODO a zoning method for spatial data. 
+Description: What the package does (one paragraph). TODO a zoning method for spatial data. Phi version.
 Depends: R (>= 3.3.2)
 License: What license is it under?
 Encoding: UTF-8
