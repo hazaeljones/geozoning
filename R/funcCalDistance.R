@@ -57,9 +57,9 @@ calMatDistance=function(typedist=1,zoneN=NULL,listZonePoint=NULL,tabVal=NULL,sur
       for (i in 1:length(iN))
       {
         #on appelle la fonction de calcul de distances de zones 1 (sur valeurs krigées)
-	resDij=DIJ(xIN[i],yIN[i],sigmai2,meanZone,pErr)
+	      resDij=DIJ(xIN[i],yIN[i],sigmai2,meanZone,pErr)
         matDistance[xIN[i],yIN[i]]=matDistance[yIN[i],xIN[i]] = resDij$d
-	matDistanceCorr[xIN[i],yIN[i]]=matDistanceCorr[yIN[i],xIN[i]] = resDij$dCorr
+	      matDistanceCorr[xIN[i],yIN[i]]=matDistanceCorr[yIN[i],xIN[i]] = resDij$dCorr
       }
     }
      else print("errorr, typedist not implemented")
@@ -203,79 +203,81 @@ calculMatriceVario=function(distij,maxVario,fitVarioAlea)
 #####################################################################################################
 
 #####################################################################################################
+# IS 19/05/2017: comments on calDistZone2() calling a .C function!
 #####################################################################################################
-#fonction qui renvoie la valeur de la "distance" intrazone ou interzone(se calcule pareil),en multipliant par une fonction du variogramme
+#fonction qui renvoie la valeur de la "distance" intrazone ou interzone(se calcule pareil),en multipliant
+# par une fonction du variogramme
 #entree:indices des deux zones a mesurer(integer), liste des points appartennant a chaque zone(list(integer)),
 #       dataframe des valeurs et coordonnees de chaque point(data.frame),vecteur des surfaces de voronoi des points(numeric)
 #sortie:distance entre les deux zones(integer)
 #####################################################################################################
-#' calDistZone2
-#'
-#' @details description, a paragraph
-#' @param indice1 xxxx
-#' @param indice2 xxxx
-#' @param listZonePoint xxxx
-#' @param tabVal xxxx
-#' @param surfaceVoronoi xxxx
-#' @param fitVarioAlea xxxx
-#'
-#' @return a ?
-#' @importFrom sp coordinates
-#' @importMethodsFrom sp coordinates<-
-#'
-#' @export
-#'
-#' @examples
-#' # not run
-calDistZone2=function(indice1,indice2,listZonePoint,tabVal,surfaceVoronoi,fitVarioAlea)
-{
-
-  tabCoord= as.data.frame(coordinates(tabVal))
-  d=0
-  valeursZoneI=data.frame(tabVal[listZonePoint[[indice1]],])[,3]    #vecteur des valeurs d'altitude des points de la zone indice1
-  valeursZoneJ=data.frame(tabVal[listZonePoint[[indice2]],])[,3]		#vecteur des valeurs d'altitude des points de la zone indice2
-
-  polyZoneI=surfaceVoronoi[listZonePoint[[indice1]]]  	#vecteur des surfaces des points de la zone indice1
-  polyZoneJ=surfaceVoronoi[listZonePoint[[indice2]]]		#vecteur des surfaces des points de la zone indice2
-
-  taille1=length(valeursZoneI)
-  taille2=length(valeursZoneJ)
-
-  matValeursZoneI=matrix(rep(valeursZoneI,taille2),taille1,taille2)				#creation d'une matrice ayant sur chaque colone les valeurs des points de la zone i
-  matValeursZoneJ=t(matrix(rep(valeursZoneJ,taille1),taille2,taille1))    #creation d'une matrice ayant sur chaque ligne les valeurs des points de la zone j
-
-
-  #denom=0
-  maxVario=sum(fitVarioAlea[,2] )     #plateau du variogramme(asymptote)
-  matDist=matrix(0,taille1,taille2)
-
-  ##########################
-  # appel à une fonction C #
-  ##########################
-  vectDist=as.numeric(matDist)
-
-  resC<-.C("calDistance",as.double(tabCoord$x[listZonePoint[[indice1]]]),
-                        as.double(tabCoord$y[listZonePoint[[indice1]]]),
-                        as.double(tabCoord$x[listZonePoint[[indice2]]]),
-                        as.double(tabCoord$y[listZonePoint[[indice2]]]),
-                        as.double(vectDist),
-                        length(listZonePoint[[indice1]]),
-                        length(listZonePoint[[indice2]]))
-  vectDist<-resC[[5]]
-  matDist=matrix(vectDist,taille1,taille2)
-
-  #on génère un vecteur de longueur taille1*taille2 contenant les valeurs de variogramme pour toutes les paires
-  #de points des zones considérées,puis on transforme en matrice
-  matCoeffVario=matrix(calculMatriceVario(distij=as.vector(matDist),maxVario,fitVarioAlea),taille1,taille2)
-
-  #matrice contenant la multiplication des surfaces voronoi i par voronoi j à la position(i,j),par produit matriciel
-  matPolyZone=polyZoneI%*%t(polyZoneJ)
-
-  #==Somme sur i (Somme sur j (f(Xkrig i)-f(Xkrig j))*surface voronoi i j) / somme des multiplication des surfaces voronoi
-  d=sum(((matValeursZoneI-matValeursZoneJ)^2)*matPolyZone*matCoeffVario)/(sum(matPolyZone*matCoeffVario))
-
-  return(d)
-}
+# calDistZone2
+#
+# details description, a paragraph
+# param indice1 xxxx
+# param indice2 xxxx
+# param listZonePoint xxxx
+# param tabVal xxxx
+# param surfaceVoronoi xxxx
+# param fitVarioAlea xxxx
+#
+# return a ?
+# importFrom sp coordinates
+# importMethodsFrom sp coordinates
+#
+# export
+#
+# examples
+# # not run
+# calDistZone2=function(indice1,indice2,listZonePoint,tabVal,surfaceVoronoi,fitVarioAlea)
+# {
+#
+#   tabCoord= as.data.frame(coordinates(tabVal))
+#   d=0
+#   valeursZoneI=data.frame(tabVal[listZonePoint[[indice1]],])[,3]    #vecteur des valeurs d'altitude des points de la zone indice1
+#   valeursZoneJ=data.frame(tabVal[listZonePoint[[indice2]],])[,3]		#vecteur des valeurs d'altitude des points de la zone indice2
+#
+#   polyZoneI=surfaceVoronoi[listZonePoint[[indice1]]]  	#vecteur des surfaces des points de la zone indice1
+#   polyZoneJ=surfaceVoronoi[listZonePoint[[indice2]]]		#vecteur des surfaces des points de la zone indice2
+#
+#   taille1=length(valeursZoneI)
+#   taille2=length(valeursZoneJ)
+#
+#   matValeursZoneI=matrix(rep(valeursZoneI,taille2),taille1,taille2)				#creation d'une matrice ayant sur chaque colone les valeurs des points de la zone i
+#   matValeursZoneJ=t(matrix(rep(valeursZoneJ,taille1),taille2,taille1))    #creation d'une matrice ayant sur chaque ligne les valeurs des points de la zone j
+#
+#
+#   #denom=0
+#   maxVario=sum(fitVarioAlea[,2] )     #plateau du variogramme(asymptote)
+#   matDist=matrix(0,taille1,taille2)
+#
+#   ##########################
+#   # appel à une fonction C #
+#   ##########################
+#   vectDist=as.numeric(matDist)
+#
+#   resC<-.C("calDistance",as.double(tabCoord$x[listZonePoint[[indice1]]]),
+#                         as.double(tabCoord$y[listZonePoint[[indice1]]]),
+#                         as.double(tabCoord$x[listZonePoint[[indice2]]]),
+#                         as.double(tabCoord$y[listZonePoint[[indice2]]]),
+#                         as.double(vectDist),
+#                         length(listZonePoint[[indice1]]),
+#                         length(listZonePoint[[indice2]]))
+#   vectDist<-resC[[5]]
+#   matDist=matrix(vectDist,taille1,taille2)
+#
+#   #on génère un vecteur de longueur taille1*taille2 contenant les valeurs de variogramme pour toutes les paires
+#   #de points des zones considérées,puis on transforme en matrice
+#   matCoeffVario=matrix(calculMatriceVario(distij=as.vector(matDist),maxVario,fitVarioAlea),taille1,taille2)
+#
+#   #matrice contenant la multiplication des surfaces voronoi i par voronoi j à la position(i,j),par produit matriciel
+#   matPolyZone=polyZoneI%*%t(polyZoneJ)
+#
+#   #==Somme sur i (Somme sur j (f(Xkrig i)-f(Xkrig j))*surface voronoi i j) / somme des multiplication des surfaces voronoi
+#   d=sum(((matValeursZoneI-matValeursZoneJ)^2)*matPolyZone*matCoeffVario)/(sum(matPolyZone*matCoeffVario))
+#
+#   return(d)
+# }
 #####################################################################################################
 
 #####################################################################################################

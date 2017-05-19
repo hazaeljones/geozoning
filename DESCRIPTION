@@ -5,12 +5,12 @@ Authors@R: c(
   person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut", "cre")),
   person("Hazaël", "Jones", email = "hazael.jones@supagro.fr", role = c("aut")),
   person("Patrice", "Loisel", email = "patrice.loisel@inra.fr", role = c("aut")))
-Description: What the package does (one paragraph). TODO a zoning method for spatial data. 
+Description: What the package does (one paragraph). a zoning method for spatial data.
 Depends: R (>= 3.3.2)
-License: GPL-3
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: sp, gstat, RandomFields, maptools, colorspace, xtable, deldir, mmand,
+Imports: gstat, RandomFields, sp, maptools, colorspace, xtable, deldir, mmand,
   permute, plotrix, fields, optimx, rgdal, raster, ggplot2, profvis, graphics, stats, utils,
   grDevices, methods, rgeos
 Suggests: rmarkdown,

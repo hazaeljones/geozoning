@@ -12,7 +12,7 @@ getCoords(sp, k = 1)
 \item{k}{xxxxxx}
 }
 \value{
-coordinates
+some coordinates
 }
 \description{
 getCoords

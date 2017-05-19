@@ -2,7 +2,6 @@
   library(geozoning)
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
-  #source("srcZ.R") # 
   # result of call to saveZoningFromSimu(seed=20,qProb=0.4,disp=0)
   # Z.Rdata
   # read zone polygons k zones=k polygones
@@ -13,11 +12,10 @@
   Vanis<-c(1)
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
-  Z=list()
-  Z$zonePolygone=ZPSTest
-  # kriged data
-  #map=genMap(DataObj,seed=seed,disp=0)
-  map=genMap(DataObj=NULL,seed=seed,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)
+   Z=list()
+   Z$zonePolygone=ZPSTest
+   # kriged data
+   map=genMap(DataObj=NULL,seed=seed,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)
   #plotMap(map) 
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------

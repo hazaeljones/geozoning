@@ -4,7 +4,7 @@
 \alias{calcDCrit}
 \title{calcDCrit}
 \usage{
-calcDCrit(Z, map, optiCrit, simplitol)
+calcDCrit(Z, map, optiCrit, pErr = 0.9, simplitol = 0.001)
 }
 \arguments{
 \item{Z}{xxxx}
@@ -13,7 +13,9 @@ calcDCrit(Z, map, optiCrit, simplitol)
 
 \item{optiCrit}{xxxx}
 
-\item{simplitol}{xxxx}
+\item{pErr}{xxxx, default 0.9}
+
+\item{simplitol}{xxxx, default 0.001}
 }
 \value{
 a list

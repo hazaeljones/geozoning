@@ -4,10 +4,12 @@
 \alias{studyCriteria5}
 \title{studyCriteria5}
 \usage{
-studyCriteria5(map, m1, m2, m3, m4, m5, title = "")
+studyCriteria5(map, seed, m1, m2, m3, m4, m5, title = "")
 }
 \arguments{
 \item{map}{xxxx}
+
+\item{seed}{xxxx}
 
 \item{m1}{xxxx}
 

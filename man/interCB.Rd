@@ -4,7 +4,8 @@
 \alias{interCB}
 \title{interCB}
 \usage{
-interCB(contour1, step, bd = boundary, envel, disp = 0)
+interCB(contour1, step, bd = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
+  envel, disp = 0)
 }
 \arguments{
 \item{contour1}{xxxx}

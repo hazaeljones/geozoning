@@ -94,46 +94,45 @@ zoneFusion2 = function( zoneMain,zoneSuppr,simplitol)
 zoneFusion3=function(Z,K,iC,Ns,map,minSize,simplitol,disp=0)
 ######################################################################
 {
-#########################################
-#merge zone iC with neighbor in Ns
-#########################################
+  #########################################
+  #merge zone iC with neighbor in Ns
+  #########################################
 	#
-        listN =  grep( TRUE , Ns)
+  listN =  grep( TRUE , Ns)
 	indZV = findN(Z,K,listN,iC,minSize) # chercher le voisin (parmi tous) avec lequel fusionner
 
 	if (indZV == 0) return(NULL) # step de voisin avec lequel fusionner
 
-	 # on pourrait ecrire aussi :
-         # slot(slot(Z[[indZV]],"polygons")[[1]],"ID")
-#########################################
-	 if(disp>0) print(paste("merging zone",iC," with main zone",indZV))
-	 # attention, modif bch octobre 2016
-	 # cas ou on fusionne ZA avec ZB et ZB est inclus dans ZA
-	 # il faut alors echanger les ids, pour garder le label de ZB
-	 # (contour le plus exterieur)
-	 # keep outer polygon ID
+	  # on pourrait ecrire aussi :
+    # slot(slot(Z[[indZV]],"polygons")[[1]],"ID")
+    #########################################
+	  if(disp>0) print(paste("merging zone",iC," with main zone",indZV))
+	  # attention, modif bch octobre 2016
+	  # cas ou on fusionne ZA avec ZB et ZB est inclus dans ZA
+	  # il faut alors echanger les ids, pour garder le label de ZB
+	  # (contour le plus exterieur)
+	  # keep outer polygon ID
 	  IN=gContains(gEnvelope(Z[[iC]]),Z[[indZV]])
 	  if (IN)
 	     newId= Z[[iC]]@polygons[[1]]@ID
 	  else
 	     newId= Z[[indZV]]@polygons[[1]]@ID #
 	  #
-	 Z[[indZV]] = zoneFusion2(  Z[[indZV]], Z[[ iC ]],simplitol)
-          #Z[[indZV]]=gUnion(  Z[[indZV]], Z[[ iC ]] )
-          # reset polygon ID
-            Z[[indZV]]@polygons[[1]]@ID = newId
-          #remove zone that was merged
-            Z[[iC]]=NULL
-	 if (disp==2)
-	 {
-	 # plot (bch)
-      x11()
-	   #IS 04/05/2017! attention, ce ne sont pas les mêmes parametres que dans la definition de la fonction (ds visudispZ.R)
-      dispZ(map$step,map$krigGrid,zonePolygone=Z,nbPoly=length(Z),bordure=map$bordure,nbLvl=0)
-	 }
-
+	  Z[[indZV]] = zoneFusion2(  Z[[indZV]], Z[[ iC ]],simplitol)
+    #Z[[indZV]]=gUnion(  Z[[indZV]], Z[[ iC ]] )
+    # reset polygon ID
+    Z[[indZV]]@polygons[[1]]@ID = newId
+    #remove zone that was merged
+    Z[[iC]]=NULL
+	if (disp==2)
+	{
+	   # plot (bch)
+	   # IS 19/05/2017: add comment for x11
+	   #x11()
+	   #IS 19/05/2017: modify this call...
+     dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
+	}
   return(Z)
-
 }
 
 ######################################################################
@@ -161,24 +160,24 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 #########################################
 
 	 if(disp>0) print(paste("merging zone",iSmall," into main zone",Z[[iBig]]@polygons[[1]]@ID))
-	  newId= Z[[iBig]]@polygons[[1]]@ID # keep polygon ID
+	 newId= Z[[iBig]]@polygons[[1]]@ID # keep polygon ID
 	 Z[[iBig]] = zoneFusion2(  Z[[iBig]], Z[[ iSmall ]],simplitol)
-          # reset polygon ID
-            Z[[iBig]]@polygons[[1]]@ID = newId
-	    # hack to avoid self intersection pbs
-  	    Z[[iBig]] = gSimplify(Z[[iBig]],tol=simplitol)
+   # reset polygon ID
+   Z[[iBig]]@polygons[[1]]@ID = newId
+	 # hack to avoid self intersection pbs
+   Z[[iBig]] = gSimplify(Z[[iBig]],tol=simplitol)
 
-          #remove zone that was merged
-            Z[[iSmall]]=NULL
+   #remove zone that was merged
+   Z[[iSmall]]=NULL
 	 if (disp==1)
 	 {
-	 # plot resulting zoning
-         x11()
-         dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
+	    # plot resulting zoning
+	    # IS 19/05/2017: add comment for x11
+      #x11()
+      dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	 }
 
   return(Z)
-
 }
 
 ############################################################################
@@ -210,36 +209,35 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
 ############################################################################
 {
 	## On va lancer une procedure optimisation pour determiner la taille de lagrandissement
-         ## Si espace est suffisamment grand, alors on lagrandit, en choisisst la meilleure taille possible
-          ## parmi une courte liste (souci de vitesse execution).
-	  # modif bch juin 2016
-	  # if zone very small, skip (useless) growing step
-	  # param minSizeNG in initParam.R
-	   if(disp>0) print(paste("trying to grow zone",getZoneId(Z[[iC]])))
+  ## Si espace est suffisamment grand, alors on lagrandit, en choisisst la meilleure taille possible
+  ## parmi une courte liste (souci de vitesse execution).
+	# modif bch juin 2016
+	# if zone very small, skip (useless) growing step
+	# param minSizeNG in initParam.R
+	if(disp>0) print(paste("trying to grow zone",getZoneId(Z[[iC]])))
 
-            refSurf = gArea(Z[[iC]])
-	    if (refSurf < minSizeNG) return(NULL)
-	  #
-            resC = detZoneClose(iC,Z,K) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
-            ##############################################################
-            InterZoneSpace = resC$InterZoneSpace
-            zoneClose = resC$zoneClose
+  refSurf = gArea(Z[[iC]])
+	if (refSurf < minSizeNG) return(NULL)
 
-	    step=map$step
+  resC = detZoneClose(iC,Z,K) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
+  ##############################################################
+  InterZoneSpace = resC$InterZoneSpace
+  zoneClose = resC$zoneClose
+  step=map$step
 
-	    # on conserve le centroide de la petite zone
-             # utilise apres agrandissement pour verifier que c'est la meme zone
-	    ##########################################################
-                refPoint = gCentroid(Z[[iC]])
-            ##########################################################
-	    Zopti=NULL
-            if (InterZoneSpace)#isolated zone
-              {
-	      if (disp>0) print(paste("growing isolated zone: ",getZoneId(Z[[iC]])))
-    	    ##############################################################
-	    #fonction qui trouve le meilleur quantile pour agrandir la zone
-            ##############################################################
-                resZ = optiGrow(Z,K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+  # on conserve le centroide de la petite zone
+  # utilise apres agrandissement pour verifier que c'est la meme zone
+	##########################################################
+  refPoint = gCentroid(Z[[iC]])
+  ##########################################################
+	Zopti=NULL
+  if (InterZoneSpace)#isolated zone
+  {
+	  if (disp>0) print(paste("growing isolated zone: ",getZoneId(Z[[iC]])))
+    ##############################################################
+	  #fonction qui trouve le meilleur quantile pour agrandir la zone
+    ##############################################################
+    resZ = optiGrow(Z,K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
 		# renvoie NULL si voie sans issue
 		if (!is.null(resZ))
 		{
@@ -248,29 +246,28 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
 			# create comments for holes
 			Zopti = crComment(Zopti)
 		}
-	     ##############################################################
-              }
-            else #non isolated zone
-              {
-	      if (length(zoneClose)==0) return(NULL) # no close zone
-	      if (disp>0) print(paste("growing non isolated zone ",getZoneId(Z[[iC]]), "(close to zone",getZoneId(Z[[zoneClose[[1]]]]),")"))
-                # reuse zoneClose
-                Zopti = zoneModifnonIso(Z,K,qProb,map,zoneClose,iC,simplitol,disp)
-		# create comments for holes
-		Zopti = crComment(Zopti)
-		 }
-##########################################################
+	 ##############################################################
+  }
+  else #non isolated zone
+  {
+	   if (length(zoneClose)==0) return(NULL) # no close zone
+	   if (disp>0) print(paste("growing non isolated zone ",getZoneId(Z[[iC]]), "(close to zone",getZoneId(Z[[zoneClose[[1]]]]),")"))
+     # reuse zoneClose
+     Zopti = zoneModifnonIso(Z,K,qProb,map,zoneClose,iC,simplitol,disp)
+	 	 # create comments for holes
+		 Zopti = crComment(Zopti)
+	}
+  ##########################################################
 
-           if (disp==2 && !is.null(Zopti))
-	   {
-	   x11()
+  if (disp==2 && !is.null(Zopti))
+	{
+	   #x11()
 	   dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
-	   }
-
-
+	 }
 	return(Zopti)
-
 }
+
+
 ###################################################
 #' remove1FromZ
 #'
@@ -290,38 +287,39 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
 remove1FromZ = function(Z,iC,zoneN,simplitol,disp=0)
 ###################################################
 {
-# remove zone iC from zoning
-# first find neighbor zone for merging zone iC
-# then delete zone iC
-        diag(zoneN)=FALSE #exclude zone is its own neighbor
+  # remove zone iC from zoning
+  # first find neighbor zone for merging zone iC
+  # then delete zone iC
+  diag(zoneN)=FALSE #exclude zone is its own neighbor
 
-      	iNP=grep(TRUE,zoneN[iC,]) # may be empty if no pt
+  iNP=grep(TRUE,zoneN[iC,]) # may be empty if no pt
 	if (length(iNP)==0)
 	{
-	indN = (1:length(Z))[-iC] #exclude current zone
-	dN=rep(1,length(Z))
-	 for (k in indN)
-      	 {
-       	  iN = k
-	  gd=gDifference(Z[[iN]],Z[[iC]])
-	  dN[k] = gDistance(gd,Z[[iC]])
+	  indN = (1:length(Z))[-iC] #exclude current zone
+	  dN=rep(1,length(Z))
+	  for (k in indN)
+    {
+      iN = k
+	    gd=gDifference(Z[[iN]],Z[[iC]])
+	    dN[k] = gDistance(gd,Z[[iC]])
 	  }
 	  iN=which(dN==min(dN))
 	  iN=iN[1]
 	} # end no pt
 	else
-	 {
-         # if more than 1 neighbor, take the closest zone
-      	 d=sapply(Z,gDistance,Z[[iC]])
-         kk = which(d[iNP]==min(d[iNP]))
-	 iN = iNP[kk[1]]
-	 }
-        newId= Z[[iN]]@polygons[[1]]@ID
-        Z=zoneFusion4(Z,iC,iN,map,simplitol,disp)
+	{
+    # if more than 1 neighbor, take the closest zone
+    d=sapply(Z,gDistance,Z[[iC]])
+    kk = which(d[iNP]==min(d[iNP]))
+	  iN = iNP[kk[1]]
+	}
+  newId= Z[[iN]]@polygons[[1]]@ID
+  Z=zoneFusion4(Z,iC,iN,map,simplitol,disp)
 
 	return(Z)
-
 }
+
+
 ##########################################################################
 #' removeFromZ
 #'

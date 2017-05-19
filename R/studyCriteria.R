@@ -14,9 +14,9 @@
 studyCriteria=function(vseed=89)
 ###############################
 {
-if (is.null(vseed)) vseed=floor(runif(1,100,10000))
-for (seed in vseed)
-    {
+  if (is.null(vseed)) vseed=floor(runif(1,100,10000))
+  for (seed in vseed)
+  {
     print(paste("seed=",seed))
     # prepare simu
     map=genMap(DataObj=NULL,seed,disp=0)
@@ -41,8 +41,8 @@ for (seed in vseed)
     write.table(m5,paste("res-simuseed",seed,"-5q-pE",pErr,".csv",sep=""))
     pdf=paste("figCrit2-seed",seed,".pdf",sep="")
     figCritN(seed=seed,m1=m1,m2=m2,m3=m3,m4=m4,m5=m5,NEW=TRUE,ONE=TRUE,pdf=pdf)
-     }
-    return()
+  }
+  return()
 }
 
 ##############################
@@ -109,7 +109,9 @@ studyCriteria3=function(vseed=NULL,thr=0.75,med=NULL,medM=NULL)
 
   for (k in 1:length(vseed))
   {
-    res=selMaps(seed=vseed[k],thr=thr,med=med,medM=medM,m1=NULL,m2=NULL,m3=NULL,m4=NULL)
+    # IS 19/05/2017 medM doesn't exist in selMaps definition. Change by medC...
+    # note that studyCriteria3() not used...
+    res=selMaps(seed=vseed[k],thr=thr,med=med,medC=medM,m1=NULL,m2=NULL,m3=NULL,m4=NULL)
     keep[k]=res$keep
     cr[k]=res$cr
     mcrit[k,]=res$crit
@@ -151,15 +153,12 @@ studyCriteria3=function(vseed=NULL,thr=0.75,med=NULL,medM=NULL)
 studyCriteria4=function(vseed=NULL,thr=0.75,med=NULL,medC=NULL)
 #################################################################
 {
-
   if (is.null(vseed))
   {
     vseed=listSeeds()
   }
   keep=rep(FALSE,length(vseed))
   mcrit=matrix(0,nrow=length(vseed),ncol=5)
-
-
 
   for (k in 1:length(vseed))
   {
@@ -170,12 +169,9 @@ studyCriteria4=function(vseed=NULL,thr=0.75,med=NULL,medC=NULL)
 
   keeps=vseed[which(!keep)]
 
-
   # diff best-worst
   boxplot(mcrit,names=paste("nL=",2:6,sep=""))
   mcrit=cbind(vseed,mcrit)
-
-
 
   return(list(keeps=keeps,mcrit=mcrit,med=apply(mcrit[,2:5],2,median)))
 }
@@ -186,6 +182,7 @@ studyCriteria4=function(vseed=NULL,thr=0.75,med=NULL,medC=NULL)
 #'
 #' @details description, a paragraph
 #' @param map xxxx
+#' @param seed xxxx
 #' @param m1 xxxx
 #' @param m2 xxxx
 #' @param m3 xxxx
@@ -199,12 +196,12 @@ studyCriteria4=function(vseed=NULL,thr=0.75,med=NULL,medC=NULL)
 #'
 #' @examples
 #' # not run
-studyCriteria5=function(map,m1,m2,m3,m4,m5,title="")
+studyCriteria5=function(map,seed,m1,m2,m3,m4,m5,title="")
 ####################################################
 {
 
   pdf=paste("figCritZ-yield.pdf",sep="")
-  best=figCritN(seed,m1=m1,m2=m2,m3=m3,m4=m4,m5=m5,NEW=TRUE,ONE=FALSE,pdf=pdf,title=title)
+  best=figCritN(seed=seed,m1=m1,m2=m2,m3=m3,m4=m4,m5=m5,NEW=TRUE,ONE=FALSE,pdf=pdf,title=title)
   # best 1q 2q 3q 4q 5q
   visuZ(best[1],map,nq=1)
   visuZ(best[2:3],map,nq=2)

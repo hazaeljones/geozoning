@@ -103,7 +103,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #'
 #' @return a ?
 #' @importFrom grDevices contourLines
-#' @importFrom sp Line
+#' @importFrom sp Line coordinates
 #'
 #' @export
 #'
@@ -130,7 +130,7 @@ contourAuto=function(cL,step,matVal,vRef,boundary,GridData=FALSE)
   cL=c(cL,cLplus)
 
   boundary = data.frame(boundary)
-  coordinates(boundary)=~x+y
+  sp::coordinates(boundary)=~x+y
   bl=Line(coordinates(boundary))
   bSPL1=SpatialLines(list(Lines(list(bl),'1')))
 
@@ -158,6 +158,8 @@ contourAuto=function(cL,step,matVal,vRef,boundary,GridData=FALSE)
 #' @details description, a paragraph
 #' @param tab xxxx
 #' @param Z xxxx
+#'
+#' @importFrom sp coordinates
 #'
 #' @return a ?
 #'

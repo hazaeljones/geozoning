@@ -79,8 +79,10 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 
     #Generate z values according to (Gaussian) field
     #RMmodel starting from VGM model
-    modelVGM=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis)
-    modelVGM1=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis,nugget=Vnugget)
+    #modelVGM=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis)
+    #modelVGM1=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis,nugget=Vnugget)
+    modelVGM=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean)
+    modelVGM1=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,nugget=Vnugget)
     modelGen=calRMmodel(modelVGM)
     modelGen=modelGen+RMtrend(mean=Vmean)
     if(Vnugget>1e-3)
@@ -126,6 +128,8 @@ calStep=function(nPointsK)
 #' @param step numeric
 #' @param nKrigE numeric
 #'
+#' @importFrom sp coordinates
+#'
 #' @return a dataframe that contains kriged positions based on original ones
 #' @export
 #'
@@ -141,7 +145,7 @@ genEmptyGrid=function(step,nKrigE)
 
   #dataframe des positions et valeurs des points à kriger à partir des originaux
   tabEmpty=data.frame(x=xempty,y=yempty,z)
-  coordinates(tabEmpty)=~x+y
+  sp::coordinates(tabEmpty)=~x+y
   return(tabEmpty)
 }
 

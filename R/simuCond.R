@@ -16,6 +16,8 @@
 #' @param modelVar xxxx
 #' @param bordure xxxx
 #'
+#' @importFrom sp coordinates
+#'
 #' @return a ?
 #'
 #' @export

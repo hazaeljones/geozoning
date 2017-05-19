@@ -5,10 +5,9 @@
 \title{randKmapGrid}
 \usage{
 randKmapGrid(DataObj, seed = NULL, nPointsK = 200, nSimuCond = 0,
-  typeMod = "Gau", Vpsill = 5, Vrange = 0.2, Vmean = 8, Vang = 0,
-  Vanis = 1, alphavario = NULL, boundary = list(x = c(0, 0, 1, 1, 0), y =
-  c(0, 1, 1, 0, 0)), manualBoundary = FALSE, krig = 1, disp = 0,
-  FULL = FALSE)
+  typeMod = "Gau", Vpsill = 5, Vrange = 0.2, Vmean = 8,
+  boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
+  manualBoundary = FALSE, krig = 1, disp = 0, FULL = FALSE)
 }
 \arguments{
 \item{DataObj}{xxxx}
@@ -26,12 +25,6 @@ randKmapGrid(DataObj, seed = NULL, nPointsK = 200, nSimuCond = 0,
 \item{Vrange}{xxxx}
 
 \item{Vmean}{xxxx}
-
-\item{Vang}{xxxx}
-
-\item{Vanis}{xxxx}
-
-\item{alphavario}{xxxx}
 
 \item{boundary}{xxxx}
 

@@ -24,7 +24,6 @@ RAJOUTER DU TEXTE DESCRIPTIF
 On va utiliser les objets mapTest, resZTest et ZPSTest (les expliquer car j'ai pas trop compris...). On initialise la graine et le nombre de zones.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  #source("srcZ.R") # 
   # result of call to saveZoningFromSimu(seed=20,qProb=0.4,disp=0)
   # Z.Rdata
   # read zone polygons k zones=k polygones
@@ -37,11 +36,10 @@ On va utiliser les objets mapTest, resZTest et ZPSTest (les expliquer car j'ai p
 
 # generation de la carte
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  Z=list()
-  Z$zonePolygone=ZPSTest
-  # kriged data
-  #map=genMap(DataObj,seed=seed,disp=0)
-  map=genMap(DataObj=NULL,seed=seed,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)
+   Z=list()
+   Z$zonePolygone=ZPSTest
+   # kriged data
+   map=genMap(DataObj=NULL,seed=seed,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)
   #plotMap(map) 
 ```
   

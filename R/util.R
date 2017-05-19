@@ -40,6 +40,8 @@ getPtsZone=function(ptsp,zone)
 	ptsub=SpatialPointsDataFrame(coords=cbind(ptsx,ptsy),data=data.frame(z=ptsd))
 	return(list(pts=ptsub,mask=IN))
 }
+
+
 #####################################################################
 #' MeanVarWPts
 #'
@@ -138,7 +140,7 @@ modlm=function(ptsp,Z)
 #' @param sp xxxx
 #' @param k xxxxxx
 #'
-#' @return coordinates
+#' @return some coordinates
 #'
 #' @export
 #'
@@ -722,7 +724,8 @@ ZnormXY = function(Z,xmin,xmax,ymin,ymax)
 #' @param Z xxxx
 #' @param map xxxx
 #' @param optiCrit xxxx
-#' @param simplitol xxxx
+#' @param pErr xxxx, default 0.9
+#' @param simplitol xxxx, default 0.001
 #'
 #' @return a list
 #'
@@ -730,15 +733,15 @@ ZnormXY = function(Z,xmin,xmax,ymin,ymax)
 #'
 #' @examples
 #' # not run
-calcDCrit=function(Z,map,optiCrit,simplitol)
+calcDCrit=function(Z,map,optiCrit,pErr=0.9,simplitol=1e-3)
 ##################################################################
 {
-	resZ=calNei(Z,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
-  	le = length(resZ$zonePolygone)
+	resZ=calNei(Z,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol=simplitol)
+  le = length(resZ$zonePolygone)
 	if (le <2) return(list(resD=0,resCrit=0))
-	#
-     	resDist=calDistance(typedist=1,map$krigData,resZ$listZonePoint,resZ$zoneN,map$krigSurfVoronoi,resZ$meanZone,pErr)
-        resCrit=calCrit(resDist$matDistanceCorr,resZ$zoneNModif,optiCrit)
+
+  resDist=calDistance(typedist=1,map$krigData,resZ$listZonePoint,resZ$zoneN,map$krigSurfVoronoi,resZ$meanZone,pErr=pErr)
+  resCrit=calCrit(resDist$matDistanceCorr,resZ$zoneNModif,optiCrit)
 
 	return(list(resD=resDist,resCrit=resCrit))
 }
@@ -1055,10 +1058,9 @@ plotZ = function(Z,map=NULL,id=FALSE)
 	if (!is.null(map))
    	   dispZ(map$step,matVal=map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	else
-          {
+  {
 	  dispZ(map$step,matVal=NULL, nbLvl=0, zonePolygone=Z,id=id)
-	  }
-
+	}
 }
 
 ##################################################################
@@ -1084,53 +1086,53 @@ plotZ = function(Z,map=NULL,id=FALSE)
 plotzf = function(qProb,map,pdf1=NULL,FULL=F,i,vecj,data=NULL)
 ##################################################################
 {
-# following funcCritereCNO
-valRef=quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
-if (missing(i) & missing(vecj))
-{
-best=searchNODcrit(qProb,length(zk),zk,critere,cost,costL,nz) #global variables
-i=length(zf)
-lq=length(qProb)
-lev=paste("q",lq,sep="")
-vecj=best[["ind"]][[lev]]
-vecj=vecj[1]
-}
-
-if(!is.null(pdf1)) pdf("fig.pdf") else x11()
-
-for (j in vecj)
-{
-if(length(zf[[i]][[j]])>9) FULL=TRUE
-
- dispZ(map$step,map$krigGrid,zonePolygone=zf[[i]][[j]],K=zk[[i]][[j]],boundary=map$boundary,nbLvl=0,id=FALSE)
- title(paste(data, " valRef=[",toString(round(valRef,2)),"]   critere=",round(critere[[i]][[j]],2),sep=""))
+  # following funcCritereCNO
+  valRef=quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
+  if (missing(i) & missing(vecj))
+  {
+    best=searchNODcrit(qProb,length(zk),zk,critere,cost,costL,nz) #global variables
+    i=length(zf)
+    lq=length(qProb)
+    lev=paste("q",lq,sep="")
+    vecj=best[["ind"]][[lev]]
+    vecj=vecj[1]
   }
 
-if(!is.null(pdf1))
-{
-	dev.off() #close fig.pdf file
-	system("cp MOD.matDistance1.tex mdist.tex")
-	if(!FULL) write("\\begin{minipage}[l]{0.5\\linewidth}",file="mdist.tex",append=TRUE)
-  #insertion du graphique à partir d'un pdf,fin de la minipage
-  	     write(paste("\\includegraphics[width=\\linewidth]{","fig.pdf}",sep=""),file="mdist.tex",append=TRUE)
-	 if(!FULL)
+  if(!is.null(pdf1)) pdf("fig.pdf")
+  # IS 19/05/2017: add comment for x11
+  #else x11()
+
+  for (j in vecj)
+  {
+    if(length(zf[[i]][[j]])>9) FULL=TRUE
+    dispZ(map$step,map$krigGrid,zonePolygone=zf[[i]][[j]],K=zk[[i]][[j]],boundary=map$boundary,nbLvl=0,id=FALSE)
+    title(paste(data, " valRef=[",toString(round(valRef,2)),"]   critere=",round(critere[[i]][[j]],2),sep=""))
+  }
+
+  if(!is.null(pdf1))
+  {
+	  dev.off() #close fig.pdf file
+	  system("cp MOD.matDistance1.tex mdist.tex")
+	  if(!FULL) write("\\begin{minipage}[l]{0.5\\linewidth}",file="mdist.tex",append=TRUE)
+    #insertion du graphique à partir d'un pdf,fin de la minipage
+  	write(paste("\\includegraphics[width=\\linewidth]{","fig.pdf}",sep=""),file="mdist.tex",append=TRUE)
+	  if(!FULL)
 		{
-		write("\\end{minipage}\\hfill",file="mdist.tex",append=TRUE)
-  #nouvelle minipage avec la matrice des distances 1 à coté du graphique
-  	    	write("\\begin{minipage}[r]{0.5\\linewidth}",file="mdist.tex",append=TRUE)
-	        write("\\tiny",file="mdist.tex",append=TRUE)
+		  write("\\end{minipage}\\hfill",file="mdist.tex",append=TRUE)
+      #nouvelle minipage avec la matrice des distances 1 à coté du graphique
+  	  write("\\begin{minipage}[r]{0.5\\linewidth}",file="mdist.tex",append=TRUE)
+	    write("\\tiny",file="mdist.tex",append=TRUE)
 		}
-	    write(print(xtable(mdist[[i]][[j]]),table.placement=NULL,latex.environment="",floating.environment="center"),file="mdist.tex",append=TRUE)
+	  write(print(xtable(mdist[[i]][[j]]),table.placement=NULL,latex.environment="",floating.environment="center"),
+	        file="mdist.tex",append=TRUE)
 
-  	    if(!FULL) write("\\end{minipage}",file="mdist.tex",append=TRUE)
-  	    write("\\end{document}",file="mdist.tex",append=TRUE)
-	    #
-	    system("pdflatex mdist")
-	    system(paste("mv mdist.pdf",pdf1))
+  	if(!FULL) write("\\end{minipage}",file="mdist.tex",append=TRUE)
+  	write("\\end{document}",file="mdist.tex",append=TRUE)
+
+	  system("pdflatex mdist")
+	  system(paste("mv mdist.pdf",pdf1))
   }
-
-
- return(c(i,j))
+  return(c(i,j))
 }
 
 ##################################################################
@@ -1156,9 +1158,10 @@ if(!is.null(pdf1))
 calczf = function(qProb,map,optiCrit,minSize,minSizeNG,disp=0,pdf1=NULL,FULL=FALSE,data=NULL)
 ##################################################################
 {
-crit2=correctionTree(qProb,map,pErr=0.9,optiCrit=2,minSize=minSize,minSizeNG=minSizeNg,distIsoZ=distIsoZ,simplitol=simplitol,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE)
-ij=plotzf(qProb,map,pdf1=pdf1,FULL=FULL,data=data)
-return(list(crit=crit2,ij=ij))
+  crit2=correctionTree(qProb,map,pErr=0.9,optiCrit=2,minSize=minSize,minSizeNG=minSizeNg,distIsoZ=distIsoZ,
+                       simplitol=simplitol,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE)
+  ij=plotzf(qProb,map,pdf1=pdf1,FULL=FULL,data=data)
+  return(list(crit=crit2,ij=ij))
 }
 
 ##################################################################
@@ -1816,29 +1819,27 @@ return(imin)
 findCinZ = function(iC,Z,K,map,vRef,envel)
 ##################################################################
 {
-# find contour for a given vRef quantile value
-# contour contains Z[[ic]]
-# contour included in envel (spatial Polygon)
-#
-# init
+  # find contour for a given vRef quantile value
+  # contour contains Z[[ic]]
+  # contour included in envel (spatial Polygon)
+  # init
   area=0
-
-#
+  #
   listeContour=list()
-  listeContour = contourAuto(listeContour,map$step,map$krigGrid,vRef,boundary)
+  listeContour = contourAuto(listeContour,map$step,map$krigGrid,vRef,map$boundary)
 
-# intersect contour with boundary
-# and transform contours into sps
+  # intersect contour with boundary
+  # and transform contours into sps
   sp=list()
   k=0
   for (cont in listeContour)
-      {
-       k=k+1
-       ps = interCB(cont,map$step,envel=envel)
-       # returns NULL is contour is degenerate (single point)
-       if(!is.null(ps)) sp[[k]]=ps else k=k-1
-       }
-  #
+  {
+     k=k+1
+     ps = interCB(cont,map$step,envel=envel)
+     # returns NULL is contour is degenerate (single point)
+     if(!is.null(ps)) sp[[k]]=ps else k=k-1
+  }
+
   # check which one contains current zone
   spb = sapply(sp,gBuffer,width=1e-3)
   gc = sapply(spb,gContains,Z[[iC]])
@@ -1899,16 +1900,16 @@ return()
 #'
 #' @examples
 #' # not run
-interCB = function(contour1,step,bd=boundary,envel,disp=0)
+interCB = function(contour1,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 ##################################################################
 {
-#returns spatial polygon corresponding to intersection of contour with boundary
-#
+  #returns spatial polygon corresponding to intersection of contour with boundary
+  #
 	polygoneGlobal=SpatialPolygons(list(Polygons(list(Polygon(bd, hole = FALSE)), "1")))
 	contourL = ContourLines2SLDF(list(contour1))
 	polyBuff=gBuffer(contourL,width=0.0001*(1/step))
 	polyDiff=gDifference(polygoneGlobal,polyBuff)
-        recupPoly=separationPoly(polyDiff)
+  recupPoly=separationPoly(polyDiff)
 
 	ler=length(recupPoly)
 	if(ler<2) return(NULL) # intersection=cadre -> degenerate contour
@@ -1918,13 +1919,12 @@ interCB = function(contour1,step,bd=boundary,envel,disp=0)
 	# keep the smallest one that is within the envelope
 	sp=sp2
 	if (gContains(envel,sp1))
-		{
+	{
 		sp=sp1
 		if (gContains(envel,sp2) & (gArea(sp2)<gArea(sp1))) sp=sp2
-		}
+	}
 	if(disp) linesSp(sp)
 	return(sp)
-
 }
 
 ##################################################################
@@ -1970,23 +1970,23 @@ getNq=function(critList)
 addContour=function(map,val,col="blue",super=T)
 ##################################################################
 {
-
+# IS 19/05/2017 change boundary by map$boundary!
 for ( v in val)
-    {
+  {
     listeContour=list()
-    listeContour = contourAuto(listeContour,map$step,map$krigGrid,v,boundary)
+    listeContour = contourAuto(listeContour,map$step,map$krigGrid,v,map$boundary)
     lc = length(listeContour)
     # intersect contour with boundary
     # and transform contours into sps
     if (lc >0)
-       {
-	sp=list()
-	if (!super) plot(boundary,type="l") # new plot
+    {
+	    sp=list()
+	    if (!super) plot(map$boundary,type="l") # new plot
     	for (k in 1:lc)
-    	    lines(listeContour[[k]],col=col) # add contour to existing plot
-    	}
-     }
-return()
+    	   lines(listeContour[[k]],col=col) # add contour to existing plot
+  	}
+  }
+  return()
 }
 
 ##########################################################################
@@ -2038,22 +2038,21 @@ extractionPoly=function(polyTot)
 plotVario=function(map,ylim=NULL)
 ###################################
 {
-modelGen=map$modelGen
-data=map$rawData #raw data
-dataK=map$krigData #kriged data
-empvario=RFempiricalvariogram(data=data)
-empvarioK=RFempiricalvariogram(data=dataK)
+  modelGen=map$modelGen
+  data=map$rawData #raw data
+  dataK=map$krigData #kriged data
+  empvario=RFempiricalvariogram(data=data)
+  empvarioK=RFempiricalvariogram(data=dataK)
 
-if(!is.null(modelGen))
+  if(!is.null(modelGen))
 	{
-	plot(empvario,model=modelGen,ylim=ylim)
-	#kriged variogram
-	x11()
-	plot(empvarioK,model=modelGen,ylim=ylim,col="blue")
+	  plot(empvario,model=modelGen,ylim=ylim)
+	  #kriged variogram
+    # IS 19/05/2017: add comment for x11
+    #x11()
+	  plot(empvarioK,model=modelGen,ylim=ylim,col="blue")
 	}
-else
-	plot(empvario)
-
+  else	plot(empvario)
 }
 
 #########################
@@ -2523,6 +2522,9 @@ calRapPolygone=function(Surf,polyL)
 #' @details description, a paragraph
 #' @param polyL xxxx
 #'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
 #' @return a ?
 #'
 #' @export
@@ -2538,7 +2540,7 @@ transfoSpPoly=function(polyL)
 	for (i in 1:length(polyL))
 	{
 		polyLSp[[i]]=data.frame(x=polyL[[i]]$x,y=polyL[[i]]$y,col=0)
-		coordinates(polyLSp[[i]])=~x+y
+		sp::coordinates(polyLSp[[i]])=~x+y
 	}
 	return(polyLSp)
 }

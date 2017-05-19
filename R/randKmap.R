@@ -33,6 +33,8 @@
 #'
 #' @export
 #' @importFrom gstat krige
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
 #'
 #' @examples
 #' # not run
@@ -67,8 +69,8 @@ randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Ga
       #MatTest=rawData
       z=as.numeric(rawData[,3])
       #make spatial object
-      coordinates(rawDataNa)=~x+y
-      coordinates(rawData)=~x+y
+      sp::coordinates(rawDataNa)=~x+y
+      sp::coordinates(rawData)=~x+y
       ####define empty grid for kriging#####################
       # - compute step
       step=calStep(nPointsK)
@@ -92,7 +94,7 @@ randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Ga
       #transform into grid matrix
       vecTabAlea[maskIns]=as.numeric(krigTabAleaPart$var1.pred)
       krigData=data.frame(x=xempty,y=yempty,var1.pred=vecTabAlea)
-      coordinates(krigData)=~x+y
+      sp::coordinates(krigData)=~x+y
       #NAs outside boundary
       krigGrid=matrix(vecTabAlea,1*step -1,1*step -1)
       colnames(krigGrid)=round(seq(1/step,1-1/step,by=1/step),3)
@@ -100,7 +102,7 @@ randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Ga
 
       #avoid side effects by using krigDataNa
       krigDataNa=cbind(data.frame(krigData),ptsIns)
-      coordinates(krigDataNa)=~x+y
+      sp::coordinates(krigDataNa)=~x+y
 
       ##Voronoi on kriged pts
       #prepare matrix
