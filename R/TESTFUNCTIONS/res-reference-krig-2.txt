@@ -1,0 +1,49 @@
+rm(list=ls())
+source("srcZ.R")
+seed=80
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2) 
+meansdSimu(80,krig=2)
+#
+[1] "DataObj=NULL, generating DataObj-seed= 80"
+[inverse distance weighted interpolation]
+            m       km      sdd     sdkd
+[1,] 7.837916 7.839163 1.529733 1.036456
+
+# ref. test loops
+ro1=loopQ1(map,disp=0,step=0.2) # 1 quantile vector
+ro2=loopQ2(map,disp=0,step=0.2) # 2 quantile vector
+ro3=loopQ3(map,disp=0,step=0.2) # 3 quantile vector
+ro4=loopQ4(map,disp=0,step=0.2) # 4 quantile vector
+
+ro1
+   crit  cost costL nz   iq nq
+5 5.974 0.560 0.560  3 0.85  1
+1 4.400 0.969 0.969  2 0.05  1
+4 3.777 0.366 0.391  5 0.65  1
+3 3.575 0.409 0.426  5 0.45  1
+2 3.097 0.633 0.636  3 0.25  1
+
+ro2
+    crit  cost costL nz   iq    kq nq
+4  5.097 0.600 0.600  4 0.05 0.925  2
+3  4.527 0.323 0.338  8 0.05 0.725  2
+9  4.457 0.223 0.233  8 0.45 0.925  2
+10 4.354 0.265 0.284  7 0.65 0.925  2
+6  4.014 0.215 0.239  8 0.25 0.725  2
+1  3.994 0.470 0.507  5 0.05 0.325  2
+7  3.982 0.299 0.304  8 0.25 0.925  2
+8  3.766 0.211 0.231 10 0.45 0.725  2
+2  3.721 0.358 0.364  5 0.05 0.525  2
+5  3.277 0.307 0.323  7 0.25 0.525  2
+
+ro3
+   crit  cost costL nz   iq    jq  kq nq
+2 4.471 0.175 0.186  9 0.05 0.325 0.8  3
+3 3.891 0.192 0.196  8 0.05 0.525 0.8  3
+1 3.490 0.247 0.259  9 0.05 0.325 0.6  3
+4 3.280 0.145 0.149  9 0.25 0.525 0.8  3
+
+ro4
+   crit  cost costL nz   iq    jq  kq    pq nq
+1 3.477 0.113 0.115 11 0.05 0.325 0.6 0.875  4
+
