@@ -1,7 +1,8 @@
 ######################################################
 #' calCrit
 #'
-#' @details description, a paragraph
+#' @details wrapper function that redirects to the proper criterion calculation function
+#' according to optiCrit arg value
 #' @param matDistanceCorr xxxx
 #' @param zoneNModif xxxx
 #' @param optiCrit xxxx
