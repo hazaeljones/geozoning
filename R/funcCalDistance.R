@@ -1,21 +1,29 @@
-#' calMatDistance
+#' calDistance
 #'
-#' @details description, a paragraph
-#' @param typedist xxxx
-#' @param zoneN xxxx
-#' @param listZonePoint xxxx
-#' @param tabVal xxxx
-#' @param surfVoronoi xxxx
-#' @param meanZone xxxx
-#' @param pErr xxxx
+#' @details calculates matrix of heterogeneities between neighbour zones.
+#' @param typedist default value is 1, other values not implemented yet.
+#' @param zoneN zone neighborhood matrix (TRUE values on diagonal), result of call to \code{\link{calNei}}
+#' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
+#' @param tabVal SpatialPointsDataFrame, contains data points to be used for zoning (spatial coordinates plus attribute values)
+#' result of call to \code{\link{genMap}}
+#' @param surfVoronoi vector of Voronoi polygon surfaces corresponding to all data points,result of call to \code{\link{genMap}}
+#' @param meanZone vector of average attribute values for all zones
+#' @param pErr error percentage for correcting distances
+#' max(sigmai2[i],(fxmean*pErr/100)^2) + max(sigmai2[j],(fymean*pErr/100)^2) + (fxmean-fymean)^2
 #'
-#' @return a ?
+#' @return a matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.
 #'
 #' @export
 #'
 #' @examples
-#' # not run
-calMatDistance=function(typedist=1,zoneN=NULL,listZonePoint=NULL,tabVal=NULL,surfVoronoi=NULL,meanZone=NULL,pErr)
+#' # compute criterion on test zoning included in package
+#' # load test map with simulated data
+#' data(mapTest)
+#' # load zoning results from test file
+#' data(resZTest)
+#' K=resZTest
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+calDistance=function(typedist=1,zoneN=NULL,listZonePoint=NULL,tabVal=NULL,surfVoronoi=NULL,meanZone=NULL,pErr)
 {
   # bch
   # type distance=1
