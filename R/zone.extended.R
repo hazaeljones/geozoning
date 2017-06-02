@@ -1,32 +1,35 @@
 
 ##################################################################
-zone.extended = function (Z)
+zone.extended = function (z)
   ##################################################################
 # description : fonction that returns a zone with extended border if the border is in common with the map
 
 # input:
-# Z : zone to be extended si touch.border(Z) = TRUE
+# z : zone to be extended si touch.border(z) = TRUE
 
 # output:
-# Z.extended : new zone extended
+# z.extended : new zone extended
 
 {
-  Z.df = geom(Z)
-  epsilon = 0.001
-  for (i in 1:nrow(Z.df)){
-    if (Z.df[i,5]<=epsilon)
-      Z.df[i,5] = -0.2
-    if (Z.df[i,5]>=1-epsilon)
-      Z.df[i,5] = 1.2
-    if (Z.df[i,6]<= epsilon)
-      Z.df[i,6] = -0.2
-    if (Z.df[i,6]>=1-epsilon)
-      Z.df[i,6] = 1.2
+
+  z.df = geom(z)
+  level = z.df[,2]
+  level = levels(as.factor(level))
+
+
+  z.df = geom(z)
+  epsilon = 0.0001
+  for (i in 1:nrow(z.df)){
+    if (z.df[i,5]<=epsilon)
+      z.df[i,5] = -0.5
+    if (z.df[i,5]>=1-epsilon)
+      z.df[i,5] = 1.5
+    if (z.df[i,6]<= epsilon)
+      z.df[i,6] = -0.5
+    if (z.df[i,6]>=1-epsilon)
+      z.df[i,6] = 1.5
   }
 
-
-  level = Z.df[,2]
-  level = levels(as.factor(level))
 
 
   # transform data frame to Spatial polygon
@@ -34,11 +37,11 @@ zone.extended = function (Z)
   for (i in 1:length(level)){
     if (i==1){ # if i=1 then polygon1 contains all others polygons : hole = FALSE
       P = paste("polygon",i,sep = "")
-      assign(P, Polygon(Z.df[which(Z.df[,2]==i), 5:6],hole = FALSE))
+      assign(P, Polygon(z.df[which(z.df[,2]==i), 5:6],hole = FALSE))
     }
     else{ # if i!=1 then polygoni is contained in polygon1 : hole = TRUE
       P = paste("polygon",i,sep = "")
-      assign(P, Polygon(Z.df[which(Z.df[,2]==i), 5:6], hole = TRUE))
+      assign(P, Polygon(z.df[which(z.df[,2]==i), 5:6], hole = TRUE))
     }
   }
 
@@ -48,9 +51,9 @@ zone.extended = function (Z)
   }
 
   polygons = Polygons(listPolygons,ID = "p")
-  #comment(polygons) = createPolygonsComment(polygons)
+  comment(polygons) = createPolygonsComment(polygons)
 
-  Z.extended = SpatialPolygons(list(polygons))
+  z.extended = SpatialPolygons(list(polygons))
 
-  return(Z.extended)
+  return(z.extended)
 }

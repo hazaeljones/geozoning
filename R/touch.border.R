@@ -3,17 +3,18 @@ touch.border = function (Z)
 ##################################################################
 # description : test if the zone Z has a common border with the map
 
-# input: 
+# input:
 # Z : zone to be tested
 
-# output: 
+# output:
 # TRUE : if Z has a common border with the map
 # FALSE : otherwise
 
 {
   Z.df = geom(Z)
-  if (length(which(Z.df[,5]==0))!=0 & length(which(Z.df[,5]==1))!=0 &
-      length(which(Z.df[,6]==1))!=0 & length(which(Z.df[,6]==1))!=0) {
+  epsilon = 10^-4
+  if (length(which(Z.df[,5]<=epsilon))==0 & length(which(Z.df[,5]>=1-epsilon))==0 &
+      length(which(Z.df[,6]>=1-epsilon))==0 & length(which(Z.df[,6]<=epsilon))==0) {
     res = FALSE
   }
   else{

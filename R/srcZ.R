@@ -29,7 +29,7 @@ require("rgdal") # libgdal-dev pour debian
 library(raster)
 library(ggplot2)
 library(profvis)
-        
+
 #optional - call C function
 #dyn.load("./librairieC/distance/calDistance.so")
 
@@ -118,9 +118,9 @@ source("optRank.R")
 source("smoothingZone.R")
 source("touch.border.R")
 source("zone.extended.R")
-
-
-
-
+source("delete.tiny.zone.R")
+source("correctBoundary.R")
+source("correctBoundaryMap.R")
+source("smoothingMap.R")
 
 
