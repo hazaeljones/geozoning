@@ -11,7 +11,7 @@
 #' @param pErr error percentage for correcting distances
 #' max(sigmai2[i],(fxmean*pErr/100)^2) + max(sigmai2[j],(fymean*pErr/100)^2) + (fxmean-fymean)^2
 #'
-#' @return a matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.
+#' @return a list with a matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.
 #'
 #' @export
 #'
@@ -23,7 +23,7 @@
 #' data(resZTest)
 #' K=resZTest
 #' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-calDistance=function(typedist=1,zoneN=NULL,listZonePoint=NULL,tabVal=NULL,surfVoronoi=NULL,meanZone=NULL,pErr)
+calDistance=function(typedist=1,tabVal=NULL,listZonePoint=NULL,zoneN=NULL,surfVoronoi=NULL,meanZone=NULL,pErr)
 {
   # bch
   # type distance=1

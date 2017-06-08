@@ -85,7 +85,7 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 #'
 #' @examples
 #' # not run
-voronoiPolygons = function(spdata,neighBool,PTJUNCTION=FALSE,FULL=FALSE)
+voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,FULL=FALSE)
 ##########################################################
 {
 #source: http://www.carsonfarmer.com/2009/09/voronoi-polygons-with-r/
@@ -97,7 +97,7 @@ voronoiPolygons = function(spdata,neighBool,PTJUNCTION=FALSE,FULL=FALSE)
   #récupération des coordonnées
   coord = spdata@coords
   #triangulation de delaunay,dans le cadre défini par rw=c(xmin xmax ymin ymax)
-  z = deldir(coord[,1], coord[,2],rw=c(0,1,0,1))
+  z = deldir(coord[,1], coord[,2],rw=gridLim)#
   #plot(z)
 
   #polygones de voronoi

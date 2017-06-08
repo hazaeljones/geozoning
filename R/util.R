@@ -679,7 +679,35 @@ datanormXY = function(data)
 
   return(data)
 }
+##################################################################
+# normalize x coord and y coord with same ratio (for non square field)
+# x will be between 0 and 1 but not y
+datanormX = function(data,bd)
+##################################################################
+{
+  xmin=min(data$x)
+  xmax=max(data$x)
+  ymin=min(data$y)
+  ymax=max(data$y)
+  
+  if (abs(xmax-xmin) < 1e-6) return(NULL)
+  
+  x = data$x
+  y = data$y
+  ratio=xmax-xmin
+  x = (x-xmin)/ratio
+  y = (y-ymin)/ratio
+  data$x = x
+  data$y = y
+  #normalize boarder
+  bx=bd$x
+  by=bd$y
+  bx = (bx-xmin)/ratio
+  by = (by-ymin)/ratio
+  bdn = list(x=bx,y=by)
 
+  return(list(dataN=data, boundaryN=bdn,ratio=ratio,xmin=xmin,xmax=xmax,ymin=ymin,ymax=ymax))
+}
 ##################################################################
 #' normalize polygons in zoning
 #'
@@ -746,30 +774,7 @@ calcDCrit=function(Z,map,optiCrit,pErr=0.9,simplitol=1e-3)
 	return(list(resD=resDist,resCrit=resCrit))
 }
 
-# ##################################################################
-# ATTENTION, CETTE FONCTION EST EN DOUBLE!!! cf lignes 981
-# JE METS CELLE-CI EN COMMENTAIRES VU QUE DANS UN SOURCE C'4'EST LA 2e
-# FONCTION QUI EST STOCKEE...
-# #' linesSp
-# #'
-# #' @details description, a paragraph
-# #' @param contourSp xxxx
-# #' @param k xxxx
-# #'
-# #' @return a list
-# #'
-# #' @export
-# #'
-# #' @examples
-# #' # not run
-# linesSp=function(contourSp,k)
-# ##################################################################
-# {
-# 	co=contourSp[[k]]
-# 	lines(co@lines[[1]]@Lines[[1]]@coords,col="blue")
-# }
-
-##################################################################
+###############################################################
 #' plotCad
 #'
 #' @details description, a paragraph
@@ -1037,12 +1042,13 @@ plotSp = function(sp,k=1,xlim,ylim)
 }
 
 ##################################################################
-#' plotSp
+#' plotZ
 #'
 #' @details description, a paragraph
 #' @param Z xxxx
 #' @param map xxxx
 #' @param id xxxx
+#' @param noXY xxxx
 #'
 #' @return a plot
 #'
@@ -1050,19 +1056,18 @@ plotSp = function(sp,k=1,xlim,ylim)
 #'
 #' @examples
 #' # not run
-plotZ = function(Z,map=NULL,id=FALSE)
+plotZ = function(Z,map=NULL,id=FALSE,noXY=FALSE)
 ##################################################################
 {
-	# IS 16/05/2017: comments for x11 device
-  #x11()
+	x11()
 	if (!is.null(map))
-   	   dispZ(map$step,matVal=map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
+   	   dispZ(map$step,matVal=map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0,noXY=noXY)
 	else
-  {
+          {
 	  dispZ(map$step,matVal=NULL, nbLvl=0, zonePolygone=Z,id=id)
-	}
+	  }
+	 
 }
-
 ##################################################################
 #' plotzf
 #'
@@ -1619,6 +1624,90 @@ searchNODcrit=function(qProb,le,zk,critere,cost,costL,nz)
     }#end while
   return(list(ind=ind,critList=bestcrit,costList=bestcost,costLList=bestcostL,nzList=bestnz,nq=nq))
 }
+##################################################################
+searchNODcrit1=function(qProb,crit)
+#' searchNODcrit1
+#'
+#' @details description, a paragraph
+#' @param qProb xxxx
+#' @param crit xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+##################################################################
+{
+# zk: list of zonings
+# le: list index
+
+zk=crit$zk
+cr=crit$criterion
+cost=crit$cost
+costL=crit$costL
+nz=crit$nz
+le=length(zk)
+
+# crit: list of criteria
+   critf=unlist(cr[[le]])
+   costf=unlist(cost[[le]])
+   costfL=unlist(costL[[le]])
+   nzf=unlist(nz[[le]])
+#
+ # check for degenerated zonings
+  # number of zone labels < number of quantiles+1
+  # if labels start at 1
+    nq0=length(qProb)+1
+  # compute number of labs for each solution
+    nqf=c()
+    ind=list()
+    bestcrit=list()
+    bestcost=list()
+    bestcostL=list()
+    bestnz=list()
+    nq=list()
+
+    lk=length(zk[[le]])
+    kk=1:lk
+    
+    for (ilab in 1:lk)
+    {
+	u=unique(zk[[le]][[ilab]]$lab)
+	lu=length(u)
+	nqf=c(nqf,lu)
+    }
+  
+    while (nq0>1)
+    {
+    maskNOD=(nqf==nq0)
+    critq=critf[maskNOD]
+    
+    if(!is.na(critq) && (length(critq)>0))
+	{
+	ii=which(critq == max(critq)) #search from the best non degenerated ones
+	critmax=critq[ii]
+	# find original index in critf vector
+	k0=kk[maskNOD]
+	jj=k0[ii]
+	labq=paste("q",nq0-1,sep="")
+    	ind[[labq]]=jj
+	bestcrit[[labq]]=critf[jj]
+	bestcost[[labq]]=costf[jj]
+	bestcostL[[labq]]=costfL[jj]
+	bestnz[[labq]]=nzf[jj]
+	nq[[labq]]=nq0-1
+    
+ 	}
+     nq0=nq0-1
+    	
+    }#end while
+ 
+  
+    
+    return(list(ind=ind,critList=bestcrit,costList=bestcost,costLList=bestcostL,nzList=bestnz,nq=nq))
+}
 
 ##################################################################
 #' printLabZ
@@ -1826,7 +1915,7 @@ findCinZ = function(iC,Z,K,map,vRef,envel)
   area=0
   #
   listeContour=list()
-  listeContour = contourAuto(listeContour,map$step,map$krigGrid,vRef,map$boundary)
+  listeContour = contourAuto(listeContour,map$step,map$xsize,map$ysize,map$krigGrid,vRef,map$boundary)
 
   # intersect contour with boundary
   # and transform contours into sps
@@ -1907,7 +1996,7 @@ interCB = function(contour1,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,di
   #
 	polygoneGlobal=SpatialPolygons(list(Polygons(list(Polygon(bd, hole = FALSE)), "1")))
 	contourL = ContourLines2SLDF(list(contour1))
-	polyBuff=gBuffer(contourL,width=0.0001*(1/step))
+	polyBuff=gBuffer(contourL,width=0.0001*step)
 	polyDiff=gDifference(polygoneGlobal,polyBuff)
   recupPoly=separationPoly(polyDiff)
 
@@ -1974,7 +2063,7 @@ addContour=function(map,val,col="blue",super=T)
 for ( v in val)
   {
     listeContour=list()
-    listeContour = contourAuto(listeContour,map$step,map$krigGrid,v,map$boundary)
+    listeContour = contourAuto(listeContour,map$step,map$xsize,map$ysize,map$krigGrid,v,map$boundary)
     lc = length(listeContour)
     # intersect contour with boundary
     # and transform contours into sps
@@ -2543,4 +2632,61 @@ transfoSpPoly=function(polyL)
 		sp::coordinates(polyLSp[[i]])=~x+y
 	}
 	return(polyLSp)
+}
+
+###################
+valZ=function(map,K)
+#' valZ
+#'
+#' @details description, a paragraph
+#' @param map xxxx
+#' @param K xxxx
+#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+###################
+{
+tab=map$krigData
+pt=K$listZonePoint
+mu=K$meanZone
+ord=order(mu)
+val=list()
+k=0
+    for(ii in ord)
+    {
+      k=k+1
+      val[[k]]=tab[[1]][pt[[ii]]]
+    
+  }
+    
+  return(list(val=val,ord=ord))
+}
+########################
+getZsize=function(Z)
+#' getZsize
+#'
+#' @details description, a paragraph
+#' @param Z xxxx
+#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+########################
+{
+ms=sapply(Z,function(x)return(x@bbox[,"max"]))
+vs=apply(ms,1,max)
+return(vs)
 }

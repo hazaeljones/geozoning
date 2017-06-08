@@ -15,7 +15,7 @@
 zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #################################################################################renvoie une liste de polygones,détection grace aux isocontours et quantiles
 
-#entrée:1/step = intervalle de repartition des points(numeric),
+#entrée:step = intervalle de repartition des points(numeric),
 #       taille en x et y de la map(numeric),vecteur des valeurs des points(numeric),
 #       dataframe des coord.et valeurs des points initiaux(data.frame),matrice des valeurs des pts (krigés par exemple)(matrix),
 #       boundary de la parcelle, quantiles
@@ -26,7 +26,10 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
   matVal=map$krigGrid
   boundary=map$boundary
   step=map$step
-  # On définit le contour de la parcelle
+   xsize=map$xsize
+  ysize=map$ysize
+  
+  # Define field boundaries
   if(!is.null(boundary))
   {
     frame=boundary
@@ -44,7 +47,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 
   for(i in (1:length(valQuant)))
   {
-     cL=contourAuto(cL,step,matVal,vRef=valQuant[i],frame,GridData)
+     cL=contourAuto(cL,step,xsize,ysize,matVal,vRef=valQuant[i],frame,GridData)
   }
 
   # For each isocontour
@@ -59,7 +62,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
       listPolyTmp=list()
 
       # define buffer: contour and another line around contour
-      polyBuff=gBuffer(cLSp[[jContour]],width=0.0001*(1/step))
+      polyBuff=gBuffer(cLSp[[jContour]],width=0.0001*step)
       # Loop on already defined zone
       for (j in (1:length(Z)))
       {
@@ -109,20 +112,20 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #'
 #' @examples
 #' # not run
-contourAuto=function(cL,step,matVal,vRef,boundary,GridData=FALSE)
+contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 ##############################################################################
 {
  #---------------------------------------------------------------------------------------------------------------------------------#
 #fonction qui construit un contour de zones à partir de la liste des isocontours
 # donnees dans matVal
 #entrée:numéro du contour pour ce polygone(numeric),dataframe des positions des points et de leurs valeurs(spDataFrame)
-#   1/step=ecart entre deux points sur la grille (numeric),taille du frame en x et y(numeric),matrice des valeurs des points krigés(matrix)
+#   step=ecart entre deux points sur la grille (numeric),taille du frame en x et y(numeric),matrice des valeurs des points krigés(matrix)
 #   liste des contours deja definis pour ce polygone(list(list(numeric))),liste des polygones deja définis(list(list(numeric)))
 #sortie:contour (list(numeric))/à vérifier
 
   # find isocontours (level attribute)
   if(!GridData)
-	cLplus=contourLines(seq(1/step, 1 - 1/step, by=1/step),seq(1/step, 1 - 1/step, by=1/step),matVal, levels = vRef)
+	cLplus=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),matVal, levels = vRef)
  else
 
 	cLplus=contourLines(z=matVal, levels = vRef)
@@ -291,7 +294,7 @@ separationPoly=function(polyTot)
 extensionLine=function(contour=NULL,step=NULL,boundary,bspl)
 ################################################################################
 ################################################################################
-#fonction qui complète les lignes définies sur un frame ou x et y appartiennent à l'intervalle [1/step, 1-1/step]:rajoute un point correspondant à la projection
+#fonction qui complète les lignes définies sur un frame ou x et y appartiennent à l'intervalle [step, 1-step]:rajoute un point correspondant à la projection
 #de leur extrémités sur le frame (0,0) (0,1) (1,1) (0,1)
 
 #entrée:liste contenant x et y (list(numeric)),step=ecart entre les points sur la  grille(numeric),taille du frame en x et y(numeric)
