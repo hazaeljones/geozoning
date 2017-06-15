@@ -16,6 +16,7 @@
 #' @param disp xxxx
 #' @param SAVE xxxx
 #' @param ONE xxxx
+#' @param ALL xxxx
 #'
 #' @return a ?
 #' @importFrom rgeos gArea
@@ -25,7 +26,7 @@
 #' @examples
 #' # not run
 correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,
-                        simplitol=1e-3,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE)
+                        simplitol=1e-3,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE,ALL=FALSE)
 ####################################################################################
 {
     # arguments
@@ -124,36 +125,35 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
   #pas important si les zones sont independantes.
 
   #etage arbre où lon se situe, cad quelle zone problematique on traite
-  counter = 0
-
+  indCur=1
+  
     #pour chaque zone a supprimer
     for (indZS in listeZS)
     {
       #Passage au prochain iter
-      counter=counter +1
       # Cas de disparition complete
-      curLen=length(listOfZ[[counter]])
+      curLen=length(listOfZ[[indCur]])
       if (curLen==0)
         {
-	      counter=counter-1
-      	curLen=length(listOfZ[[counter]])
+	indCur=indCur-1
+      	curLen=length(listOfZ[[indCur]])
 	}
       else
       {
-	      #Add a stage
+	#Add a stage
         listOfZ = append(listOfZ, list(list()))
       	crit=append(crit,list(list()))
-	      cost=append(cost,list(list()))
-	      costL=append(costL,list(list()))
-	      nz=append(nz,list(list()))
-     	  mdist=append(mdist,list(list()))
+	cost=append(cost,list(list()))
+	costL=append(costL,list(list()))
+	nz=append(nz,list(list()))
+     	mdist=append(mdist,list(list()))
       }
       # make a copy for each branch
 
        if(disp>0)
 	{
 		cat("\n")
-		print(paste("in loop level=",counter+1,",zone to handle initial number= ",resini$resZ$zonePolygone[[indZS]]@polygons[[1]]@ID,",",curLen, "branch(es) to examine "))
+		print(paste("in loop level=",indCur+1,",zone to handle initial number= ",resini$resZ$zonePolygone[[indZS]]@polygons[[1]]@ID,",",curLen, "branch(es) to examine "))
 	}
 
       for (iter in (1:curLen))
@@ -162,7 +162,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
         checkSize=TRUE
         disparition = FALSE
         ##On doit faire 2 copies du zonage, une pour la suppression, lautre pour lagrandissement
-	K=listOfZ[[counter]][[iter]]
+	K=listOfZ[[indCur]][[iter]]
         zpCopy1 = K$zonePolygone
         zpCopy2 = zpCopy1
 	#
@@ -198,25 +198,42 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
          ###############################################################################################
         } # end else disparition
 
-        #save infos for next iteration (counter+1)
+        #save infos for next iteration (indCur+1)
 	Z=list(zpCopy1,zpCopy2)
+	izk=0
 	for (iz in 1:2)
 	{
+	izk=izk+1
 	#only non NULL zonings are kept
 	if (length(Z[[iz]])>0)
-		{
-	    # update crit[[counter+1]], listOfZ, mdist
-		  resD=saveZK(map,K,Z[[iz]],qProb,listOfZ, counter,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
-      listOfZ=resD$listOfZ
-		  mdist=resD$mdist
-		  # save all criteria
-		  crit=resD$crit
-		  cost=resD$cost
-		  costL=resD$costL
-		  nz=resD$nz
-		}
+	   {
+	# update crit[[indCur+1]], listOfZ, mdist
+	   # keep only initial and current stages
+       	   # except if ALL=TRUE, keep all stages
+  	   if (izk ==1)
+	      {
+	      if((indCur==1)| ALL) indCur=indCur+1
+	      }
+	   resD=saveZK(map,K,Z[[iz]],qProb,listOfZ, indCur,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
+      	   listOfZ=resD$listOfZ
+	   mdist=resD$mdist
+	   # save all criteria
+	   crit=resD$crit
+	   cost=resD$cost
+	   costL=resD$costL
+	   nz=resD$nz
+	   }
 	}#end for iz
-
+	# reuse allocated space
+  	if((indCur>1)& !ALL)
+	   {
+	   listOfZ[indCur+1]=NULL
+	   mdist[indCur+1]=NULL
+	   crit[indCur+1]=NULL
+	   cost[indCur+1]=NULL
+	   costL[indCur+1]=NULL
+	   nz[indCur+1]=NULL
+	   }
      } # end for iter
 
     }# end for indZs
@@ -238,7 +255,9 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
   #  sort criteria, assign zoning to global variables zf, zk, critere and critList (if SAVE=TRUE)
   #  and select the best one
   resC=sortCrit(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE)
-
+  #
+  #garbage collection
+  #gc()
  if (ONE)
         return(resC$bestcrit) #return single result (for optimization functions)
  else

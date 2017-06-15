@@ -55,7 +55,7 @@ calNei=function(Z,data,surfVoronoi,ptN,simplitol,remove=TRUE,correct=FALSE)
   #zone mean values (each pt ponderated by its Voronoi surface)
   meanZone=wMean(2,listZonePoint,surfVoronoi,data)
 
-  return(list(data=data,zoneN=zoneN,zoneNModif=zoneNModif,listZonePoint=listZonePoint,meanTot=meanTot,
+  return(list(zoneN=zoneN,zoneNModif=zoneNModif,listZonePoint=listZonePoint,meanTot=meanTot,
               critSurf=critSurf,meanZone=meanZone,listSurf=listSurf,zonePolygone=Z))
  }
 
