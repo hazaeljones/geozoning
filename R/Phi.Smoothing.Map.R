@@ -524,22 +524,27 @@ Z = correctBoundaryMap(Z,zN)
 ################################################################################################
 ## CORRECTION DE LA CARTE ######################################################################
 ################################################################################################
-# seed = 14 intéressant
+seed = 14
 
-seed = 15
 map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
-width = 0.01
+width = 0.02
 
 ZK=initialZoning(qProb=c(0.4,0.7),map,pErr,simplitol,optiCrit,disp=0) # names(Z)  "resCrit"  "resDist" "resZ"
 Z=ZK$resZ$zonePolygone # zone
 zN = ZK$resZ$zoneN # matrice des voisins
 
 Z = correctBoundaryMap(Z,zN)
+z = Z[[1]]
+for ( i in 2:nbZ){
+  z = gUnion(z,Z[[i]])
+}
+plot(z)
 
 nbZ = length(Z)
 for (i in 1:(nbZ-1)){
   for (j in (i+1):nbZ){
     if (zN[i,j]==TRUE){
+      print(c(i,j))
       print(gIntersection(Z[[i]],Z[[j]]))
     }
   }
@@ -785,7 +790,8 @@ plotZ(Z)
 
 
 ###### TEST FUCNTION smoothingMap.R ########################################################################################################
-seed = 15
+seed = 5
+
 map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
 
 ZK=initialZoning(qProb=c(0.4,0.7),map,pErr,simplitol,optiCrit,disp=0) # names(Z)  "resCrit"  "resDist" "resZ"
@@ -796,9 +802,560 @@ Z = correctBoundaryMap(Z,zN)
 
 plotZ(Z)
 
-width = 0.01
+width = 0.019
 
 Z = smoothingMap(Z,width = width)
 
 plotZ(Z)
+
+# OKKKKKKKKKKKKKK
+
+
+############################################################################################################################################
+################# LISSAGE SUR UNE ZONE CORRIGÉE #############################################################################
+############################################################################################################################################
+
+
+
+qProb=c(0.1,0.2)
+criti=correctionTree(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,simplitol=1e-3,
+                     LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE)
+
+ZK=criti$zk
+Z=ZK[[1]][[1]]$zonePolygone # zone
+
+zN = matrix(rep(0,length(Z)^2),ncol = length(Z))
+for (i in 1:length(Z)){
+  for (j in 1:length(Z)){
+    if (gDistance(Z[[i]],Z[[j]])<10^-3){
+      zN[i,j] = TRUE
+    }else{
+      zN[i,j]=FALSE
+    }
+  }
+}
+
+Z = correctBoundaryMap(Z,zN)
+
+plotZ(Z)
+
+width = 0.04
+
+Z = smoothingMap(Z,width = width)
+
+plotZ(Z)
+
+
+
+
+############################################################################################################################################
+################# Test TRY CATCH ###########################################################################################################
+############################################################################################################################################
+
+readUrl <- function(x) {
+  out <- tryCatch(
+    {
+      # Just to highlight: if you want to use more than one
+      # R expression in the "try" part then you'll have to
+      # use curly brackets.
+      # 'tryCatch()' will return the last evaluated expression
+      # in case the "try" part was completed successfully
+
+      message("This is the 'try' part")
+
+      readLines(con=url, warn=FALSE)
+      # The return value of `readLines()` is the actual value
+      # that will be returned in case there is no condition
+      # (e.g. warning or error).
+      # You don't need to state the return value via `return()` as code
+      # in the "try" part is not wrapped insided a function (unlike that
+      # for the condition handlers for warnings and error below)
+    },
+    error=function(cond) {
+      message(paste("URL does not seem to exist:", url))
+      message("Here's the original error message:")
+      message(cond)
+      # Choose a return value in case of error
+      return(NA)
+    },
+    warning=function(cond) {
+      message(paste("URL caused a warning:", url))
+      message("Here's the original warning message:")
+      message(cond)
+      # Choose a return value in case of warning
+      return(NULL)
+    },
+    finally={
+      # NOTE:
+      # Here goes everything that should be executed at the end,
+      # regardless of success or error.
+      # If you want more than one expression to be executed, then you
+      # need to wrap them in curly brackets ({...}); otherwise you could
+      # just have written 'finally=<expression>'
+      message(paste("Processed URL:", url))
+      message("Some other message at the end")
+    }
+  )
+  return(out)
+}
+
+
+### Données réelles ###############################################################################################
+donnees = load("yieldMap+Z.Rdata")
+plotMap(map = map)
+
+plotZ(Z1)
+
+plotZ(Z4)
+
+Z = smoothingMap(Z5,width = 0.01)
+
+cal.max.width.Map(Z5,errMax = 0.001)
+
+
+
+
+### Corriger la fonction zone extended and correctBoundary ########################################################
+border2 =readWKT("POLYGON((-1 -1,2 -1, 2 2, -1 2,-1 -1))")
+border =readWKT("POLYGON((0 0,1 0,1 1,0 1,0 0))")
+p = readWKT("POLYGON((0.5 0,1 0,1 1,0.5 1,0.5 0))")
+p1 = gBuffer(p,width = 0.1)
+plot(border2)
+plot(border,add=TRUE)
+plot(p,add=TRUE)
+plot(p1,add=TRUE)
+
+x = gIntersection(p1,border)
+x = gDifference(x,p)
+p = gDifference(p1,x)
+plot(p,add=TRUE,col = "yellow")
+
+
+p = gBuffer(p,width = 0.05)
+p = gBuffer(p,width = -0.05)
+p = gBuffer(p,width = -0.05)
+p = gBuffer(p,width = 0.05)
+
+
+Z = gUnion(gUnion(Z1[[1]],Z1[[2]]),Z1[[3]])
+
+
+# Corriger correctBondaryMap
+
+nbZ = length(Z1)
+
+# matrice de zones voisines
+zN = matrix(rep(0,n*n),ncol=n)
+
+for(i in 1:nbZ){
+  for(j in 1:nbZ){
+    if (gDistance(Z1[[i]],Z1[[j]])<10^-3){
+      zN[i,j] = TRUE
+    }else{
+      zN[i,j] = FALSE
+    }
+  }
+}
+
+
+
+
+
+
+################## Adapter correctBoundary() aux cartes réelles ########################################################
+x = map$boundary$x
+y = map$boundary$y
+z = cbind(x,y)
+
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+plot(gDifference(boundary,Z2[[2]]),col="yellow")
+
+
+plotZ(Z2)
+
+z = Z2[[2]]
+z.df = geom(z)
+boundaryLine = gBoundary(boundary)
+
+
+for (i in 1:nrow(z.df)){
+  pz = readWKT(paste("POINT(",z.df[i,5],z.df[i,6],")"))
+  dMin = gDistance(pz,boundaryLine)
+  pointProjection = gNearestPoints(pz,boundaryLine)
+  if (dMin<10^-3){
+    z.df[indMin,5] = pointProjection@coords[2,1]
+    z.df[indMin,6] = pointProjection@coords[2,2]
+  }
+}
+
+newz = geomToPoly(z.df)
+
+newZ.df = geom(gDifference(boundary,z))
+
+
+
+
+
+
+
+
+################## Changer Boundary de la carte ########################################################################
+
+# méthode utilisé les points proches de la bordure pour définir un nouvelle frontière##################################
+load("yieldMap+Z.Rdata")
+
+x = round(map$boundary$x, digit = 6)
+y = round(map$boundary$y,digit = 6)
+z = cbind(x,y)
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+Z = Z5
+
+
+
+result = correctBoundaryMap(Z,boundary)
+
+
+Z = result[[1]]
+boundary = result[[2]]
+
+plotZ(Z)
+plot(gDifference(boundary,Z[[2]]))
+
+carte = Z[[1]]
+for (i in 2:length(Z)){
+  carte = gUnion(carte,Z[[i]])
+}
+plot(carte)
+carte = gBuffer(carte,width = 0.001)
+carte = gBuffer(carte,width = -0.002)
+plot(carte)
+
+
+newBoundary = carte
+
+# méthode utilisé la projection ###############################"
+for (i in nrow(z)){
+  point = readWKT(paste("POINT(",z[i,1],z[i,2],")"))
+  pointProjection = gNearestPoints(point, carte)
+  z[i,1] = pointProjection@coords[2,1]
+  z[i,2] = pointProjection@coords[2,2]
+
+}
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+
+
+
+
+
+
+
+
+
+# Méthode utilisé les buffers extérieurs #####################################################################
+
+load("yieldMap+Z.Rdata")
+x = map$boundary$x
+y = map$boundary$y
+z = cbind(x,y)
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+
+
+Zc = Z5
+Z = Zc
+
+# tree of relation
+nbZ = length(Z)
+for (i in 1:nbZ){
+  nei = c()
+  for (j in 1:nbZ){
+    if(j!=i){
+      if(gDistance(Z[[i]],Z[[j]]) < 0.001){ # si la distance entre 2 zones est très petite, elles sont voisinnes
+        nei = c(nei, j)
+      }
+    }
+  }
+  neigh = paste("zone",i,sep="")
+  assign(neigh,nei)
+}
+# arbre contain lists of neighbours for each zone
+arbre = list(mget(paste("zone",1:nbZ,sep="")))
+
+# matrix of neighbourhood
+nbZ = length(Z)
+zN = matrix(rep(0,nbZ*nbZ),ncol=nbZ)
+for(i in 1:nbZ){
+  for(j in 1:nbZ){
+    if (gDistance(Z[[i]],Z[[j]])<10^-3){
+      zN[i,j] = TRUE
+      if(i<j)
+        print(c(i,j))
+    }else{
+      zN[i,j] = FALSE
+    }
+  }
+}
+
+## c'est parti correction boundary ##############################
+width = 0.0001
+res = FALSE
+
+while (res == FALSE){
+  Z = Zc
+  for (i in 1:length(Z)){
+    Z[[i]] = gBuffer(Z[[i]],width = width)
+    Z[[i]] = gIntersection(Z[[i]],boundary)
+    for (j in arbre[[1]][[i]]){
+      Z[[i]] = tryCatch(
+        gDifference(Z[[i]],Z[[j]]),
+        error = function(e){
+          return(Z[[i]])
+        }
+      )
+    }
+  }
+
+  if(length(Z)!= nbZ){
+    res = FALSE
+  }
+  if(length(Z)== nbZ){
+    isValid  = rep(0,nbZ)
+    for (i in 1:nbZ){
+      isValid[i] = gIsValid(Z[[i]])
+    }
+    if(length(which(isValid==FALSE))>0){
+      res = FALSE
+    }else{
+      ClassIntersection = c()
+      for(i in 1:(nbZ-1)){
+        for(j in (i+1):nbZ){
+          if(zN[i,j]==TRUE){
+            c = class(gIntersection(Z[[i]],Z[[j]]))[[1]]
+            ClassIntersection = c(ClassIntersection, c)
+          }
+        }
+      }
+      if(length(which(ClassIntersection !="SpatialLines"))==0 ){
+        res = TRUE
+      }
+    }
+    #print(res)
+    print(width)
+  }
+  width = width+0.0001
+}
+
+# test validité 1
+carte = Z[[1]]
+for (i in 2:length(Z)){
+  carte = gUnion(carte,Z[[i]])
+}
+plot(carte)
+
+# test validité 2
+for(i in 1:(nbZ-1)){
+  for(j in (i+1):nbZ){
+    if(zN[i,j]==TRUE){
+      print(paste(i,j))
+      print(class(gIntersection(Z[[i]],Z[[j]]))[[1]])
+    }
+  }
+}
+
+# test validité 3
+for (i in 1:length(Z)){
+  print(paste("zone",i,":", gIsValid(Z[[i]])))
+}
+
+plotZ(Z)
+plotZ(Zc)
+
+############### TEST correctBoundaryMap.R ####################################################################
+
+# données simulées ###########################################################################################
+seed = 14
+
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+
+ZK=initialZoning(qProb=c(0.4,0.7),map,pErr,simplitol,optiCrit,disp=0) # names(Z)  "resCrit"  "resDist" "resZ"
+Z=ZK$resZ$zonePolygone # zone
+x = map$boundary$x
+y = map$boundary$y
+z = cbind(x,y)
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+X = correctBoundaryMap(Z,boundary)
+Z = X[[1]]
+plotZ(Z)
+
+boundary = Z[[1]]
+for (i in 2:length(Z)){
+  boundary = gUnion(boundary,Z[[i]])
+}
+
+Z = smoothingMap(Z,width = 0.05, boundary = boundary)
+plotZ(Z)
+
+
+# test validité 1
+carte = Z[[1]]
+for (i in 2:length(Z)){
+  carte = gUnion(carte,Z[[i]])
+}
+plot(carte)
+
+# test validité 2
+nbZ = length(Z)
+zN = matrix(rep(0,nbZ*nbZ),ncol=nbZ)
+for(i in 1:nbZ){
+  for(j in 1:nbZ){
+    if (gDistance(Z[[i]],Z[[j]])<10^-3){
+      zN[i,j] = TRUE
+      if(i<j)
+        print(c(i,j))
+    }else{
+      zN[i,j] = FALSE
+    }
+  }
+}
+for(i in 1:(nbZ-1)){
+  for(j in (i+1):nbZ){
+    if(zN[i,j]==TRUE){
+      print(paste(i,j))
+      print(class(gIntersection(Z[[i]],Z[[j]]))[[1]])
+    }
+  }
+}
+
+
+# test validité 3
+for (i in 1:length(Z)){
+  print(paste("zone",i,":", gIsValid(Z[[i]])))
+}
+
+
+# données réelles ##################################################################################""
+
+load("yieldMap+Z.Rdata")
+x = map$boundary$x
+y = map$boundary$y
+z = cbind(x,y)
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+X = correctBoundaryMap(Z1,boundary)
+Z = X[[1]]
+#plotZ(Z)
+
+boundary = Z[[1]]
+for (i in 2:length(Z)){
+  boundary = gUnion(boundary,Z[[i]])
+}
+
+# test touch.border.R  et  zone.extended.R  
+touch.border(Z[[2]],boundary)
+z2.extended = zone.extended(Z[[2]],boundary)
+
+
+# test smoothingZone.R
+z1 = Z[[1]]
+z1.smoothed = smoothingZone(z1,width = 0.01,boundary = boundary)
+
+z5 = Z[[5]]
+z5.smoothed = smoothingZone(z5,width = 0.02,boundary = boundary)
+plot(z5.smoothed)
+plot(zone.extended(z5,boundary),add=TRUE)
+
+
+# test smoothingMap.R
+
+width = 0.05
+
+load("yieldMap+Z.Rdata")
+x = map$boundary$x
+y = map$boundary$y
+z = cbind(x,y)
+p = Polygon(z)
+ps = Polygons(list(p),ID = "p")
+boundary = SpatialPolygons(list(ps))
+
+X = correctBoundaryMap(Z4,boundary)
+
+Z = X[[1]]
+plotZ(Z)
+boundary = Z[[1]]
+for (i in 2:length(Z)){
+  boundary = gUnion(boundary,Z[[i]])
+}
+
+Z = smoothingMap(Z,width = width,boundary = boundary)
+plotZ(Z) 
+
+
+boundary = Z[[1]]
+for (i in 2:length(Z)){
+  boundary = gUnion(boundary,Z[[i]])
+}
+plot(boundary)
+X = correctBoundaryMap(Z,boundary)
+
+
+
+# test validité 1
+carte = Z[[1]]
+for (i in 2:length(Z)){
+  carte = gUnion(carte,Z[[i]])
+}
+plot(carte)
+
+# test validité 2
+nbZ = length(Z)
+zN = matrix(rep(0,nbZ*nbZ),ncol=nbZ)
+for(i in 1:nbZ){
+  for(j in 1:nbZ){
+    if (gDistance(Z[[i]],Z[[j]])<10^-3){
+      zN[i,j] = TRUE
+      if(i<j)
+        print(c(i,j))
+    }else{
+      zN[i,j] = FALSE
+    }
+  }
+}
+for(i in 1:(nbZ-1)){
+  for(j in (i+1):nbZ){
+    if(zN[i,j]==TRUE){
+      print(paste(i,j))
+      print(class(gIntersection(Z[[i]],Z[[j]]))[[1]])
+    }
+  }
+}
+
+
+# test validité 3
+for (i in 1:length(Z)){
+  print(paste("zone",i,":", gIsValid(Z[[i]])))
+}
+
+
+
+
+
+
+
+
 

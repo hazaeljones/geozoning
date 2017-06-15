@@ -1,20 +1,20 @@
 ##################################################################
-touch.border = function (Z)
-##################################################################
+touch.border = function (Z, boundary)
+  ##################################################################
 # description : test if the zone Z has a common border with the map
 
-# input:
+# input: 
 # Z : zone to be tested
+# boundary : a polygon which represent the map 
 
-# output:
+# output: 
 # TRUE : if Z has a common border with the map
 # FALSE : otherwise
 
 {
-  Z.df = geom(Z)
-  epsilon = 10^-4
-  if (length(which(Z.df[,5]<=epsilon))==0 & length(which(Z.df[,5]>=1-epsilon))==0 &
-      length(which(Z.df[,6]>=1-epsilon))==0 & length(which(Z.df[,6]<=epsilon))==0) {
+  lineBoundary = gBoundary(boundary) # transform the polygon to a line
+  
+  if (gDistance(Z,lineBoundary) > 10^-3) {
     res = FALSE
   }
   else{

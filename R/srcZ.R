@@ -118,9 +118,7 @@ source("optRank.R")
 source("smoothingZone.R")
 source("touch.border.R")
 source("zone.extended.R")
-source("delete.tiny.zone.R")
-source("correctBoundary.R")
 source("correctBoundaryMap.R")
 source("smoothingMap.R")
-
+source("cal.max.width.R")
 

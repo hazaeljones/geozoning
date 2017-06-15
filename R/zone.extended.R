@@ -1,59 +1,44 @@
 
 ##################################################################
-zone.extended = function (z)
+zone.extended = function (z ,boundary)
   ##################################################################
 # description : fonction that returns a zone with extended border if the border is in common with the map
 
-# input:
-# z : zone to be extended si touch.border(z) = TRUE
+# input: 
+# z : zone to be extended si touch.border(Z) = TRUE
 
-# output:
-# z.extended : new zone extended
+# output: 
+# z : new zone extended
 
 {
-
-  z.df = geom(z)
-  level = z.df[,2]
-  level = levels(as.factor(level))
-
-
-  z.df = geom(z)
-  epsilon = 0.0001
-  for (i in 1:nrow(z.df)){
-    if (z.df[i,5]<=epsilon)
-      z.df[i,5] = -0.5
-    if (z.df[i,5]>=1-epsilon)
-      z.df[i,5] = 1.5
-    if (z.df[i,6]<= epsilon)
-      z.df[i,6] = -0.5
-    if (z.df[i,6]>=1-epsilon)
-      z.df[i,6] = 1.5
-  }
-
-
-
-  # transform data frame to Spatial polygon
-
-  for (i in 1:length(level)){
-    if (i==1){ # if i=1 then polygon1 contains all others polygons : hole = FALSE
-      P = paste("polygon",i,sep = "")
-      assign(P, Polygon(z.df[which(z.df[,2]==i), 5:6],hole = FALSE))
-    }
-    else{ # if i!=1 then polygoni is contained in polygon1 : hole = TRUE
-      P = paste("polygon",i,sep = "")
-      assign(P, Polygon(z.df[which(z.df[,2]==i), 5:6], hole = TRUE))
+  
+  boundaryLineExtend = gBoundary(gConvexHull(gBuffer(boundary,width = 0.2)))
+  
+  if(touch.border(z, boundary)){
+    lineInter = gIntersection(gBoundary(boundary),z) # intersection of zone and the boundary of the map
+    li = geom(lineInter) # transform lineInter into a dataframe
+    level = length(levels(as.factor(li[,2]))) # compute the number of pieces of lines in the spatial line
+    for(i in 1:level){ 
+      numPoint = which(li[,2]==i) # index of the point that belongs to the piece of the line i
+      text = "POLYGON(("
+      for (j in numPoint){
+        text = paste(text,li[j,4],li[j,5],",")
+        point = readWKT(paste("POINT(",li[j,4],li[j,5],")"))
+        ptProject = gNearestPoints(point,boundaryLineExtend)@coords[2,]
+        text = paste(text,ptProject[1],ptProject[2],",")
+      }
+      text = paste(text,li[numPoint[1],4],li[numPoint[1],5],"))")
+      smallZ.extend = gConvexHull(readWKT(text))
+      z = gUnion(z,smallZ.extend)
+      z = gBuffer(z,width = 0)
     }
   }
-
-  listPolygons = list()
-  for (i in 1:length(level)){
-    listPolygons = c(listPolygons, get(paste("polygon",i,sep = "")))
-  }
-
-  polygons = Polygons(listPolygons,ID = "p")
-  comment(polygons) = createPolygonsComment(polygons)
-
-  z.extended = SpatialPolygons(list(polygons))
-
-  return(z.extended)
+  
+  return(z)
 }
+
+
+
+
+
+

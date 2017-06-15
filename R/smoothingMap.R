@@ -1,17 +1,18 @@
-smoothingMap = function(Z, width = 0.01)
+smoothingMap = function(Z, width = 0.01, boundary)
 # function that smooth a map
 
 # INPUT :
-    # Z : zone corrected by function correctBoundaryMap
+    # Z : map corrected by function correctBoundaryMap
     # width : smoothing parameter
 
 # OUTPUT :
-    # Z : zone modified
+    # Z : map modified; if width > widthMax , then Z won't be modified and a message will be returned
 {
+
   Z2 = Z # clone of Z (Z2 will contain smoothed united zones)
   Z3 = Z # clone of Z (Z3 will contain unsmoothed united zones)
   nbZ = length(Z)
-
+  
   # tree of relation
   for (i in 1:nbZ){
     nei = c()
@@ -27,13 +28,13 @@ smoothingMap = function(Z, width = 0.01)
   }
   # arbre contain lists of neighbours for each zone
   arbre = list(mget(paste("zone",1:nbZ,sep="")))
-
+  
   # tabNei = Number of Neighbours (== 0 means zone is smoothed, ==-1 means zone is smoothed and united with a neighbour of next level)
   tabNei = rep(0,nbZ)
   for (i in 1:nbZ){
     tabNei[i] = length(arbre[[1]][[i]])
   }
-
+  
   # nb of zones which have at least 2 unsmoothed neighbours
   nbZ.special = 0
   for (i in which(tabNei>=2)){
@@ -47,28 +48,28 @@ smoothingMap = function(Z, width = 0.01)
       nbZ.special = nbZ.special + 1
     }
   }
-
+  
   iter = 0
-  border = readWKT("POLYGON((0 0,1 0,1 1,0 1,0 0))")
-
+  
   if(nbZ.special<=2){
-
+    
     if (nbZ.special == 1){
       for (i in which(tabNei==1)){
-        Z[[i]] = smoothingZone(Z[[i]],width= width)
+        Z[[i]] = smoothingZone(Z[[i]],width= width,boundary = boundary)
         tabNei[i] = 0
       }
       # for the last zone : one need to remove, from the map, the neighbour zones which have been smoothed
       index = which(tabNei > 1)
-      Z[[index]] = border
+      Z[[index]] = boundary
       for (j in arbre[[1]][[index]]){
         Z[[index]] = gDifference(Z[[index]],Z[[j]])
+        Z[[index]] = gBuffer(Z[[index]],width = 0)
       }
     }
-
+    
     if (nbZ.special == 2){
       for (i in which(tabNei==1)){
-        Z[[i]] = smoothingZone(Z[[i]],width= width)
+        Z[[i]] = smoothingZone(Z[[i]],width= width,boundary = boundary)
         Z2[[i]] = Z[[i]]
         tabNei[i] = 0
       }
@@ -76,13 +77,14 @@ smoothingMap = function(Z, width = 0.01)
         for (j in arbre[[1]][[i]]){
           if (tabNei[j]==0){
             Z3[[i]] = gUnion(Z3[[i]],Z3[[j]])
+            Z3[[i]] = gBuffer(Z3[[i]],width = 0)
             tabNei[i] = tabNei[i]-1
           }
         }
       }
       # for the 2 last zones : one need to smooth 1 zone, then remove from the map all neighbours of the other zone
       i = which(tabNei == 1)[1]
-      Z[[i]] = smoothingZone(Z3[[i]],width= width)
+      Z[[i]] = smoothingZone(Z3[[i]],width= width,boundary = boundary)
       Z2[[i]] = Z[[i]]
       # one need to remove the neighbour zones which have been smoothed
       neighbourSmoothed = c()
@@ -93,30 +95,32 @@ smoothingMap = function(Z, width = 0.01)
       }
       for (j in neighbourSmoothed){
         Z[[i]] = gDifference(Z[[i]],Z2[[j]])
+        Z[[i]] = gBuffer(Z[[i]],width = 0)
         tabNei[i] = 0
       }
       # last zone
       index = which(tabNei == 1)
-      Z[[index]] = border
+      Z[[index]] = boundary
       for (j in arbre[[1]][[index]]){
         Z[[index]] = gDifference(Z[[index]],Z2[[j]])
+        Z[[index]] = gBuffer(Z[[index]],width = 0)
       }
     }
-
+    
   }else{
-
+    
     while(nbZ.special > 2){
-
+      
       # SMOOTHING - DIFFERENCE
       if (iter == 0){
         for (i in which(tabNei==1)){ #  smooth zones which have 1 neighbour
-          Z[[i]] = smoothingZone(Z[[i]],width = width)
+          Z[[i]] = smoothingZone(Z[[i]],width = width,boundary = boundary)
           Z2[[i]] = Z[[i]]
           tabNei[i] = 0
         }
       }else{
         for (i in which(tabNei==1)){ #  smooth zones which have 1 neighbour
-          Z[[i]] = smoothingZone(Z3[[i]],width = width)
+          Z[[i]] = smoothingZone(Z3[[i]],width = width,boundary = boundary)
           Z2[[i]] = Z[[i]]
           # one need to remove the neighbour zones which have been smoothed
           neighbourSmoothed = c()
@@ -127,22 +131,24 @@ smoothingMap = function(Z, width = 0.01)
           }
           for (j in neighbourSmoothed){
             Z[[i]] = gDifference(Z[[i]],Z2[[j]])
+            Z[[i]] = gBuffer(Z[[i]],width = 0)
           }
           tabNei[i] = 0
         }
       }
-
+      
       # UNION
       for (i in which(tabNei>1)){
         for (j in arbre[[1]][[i]]){
           if (tabNei[j]==0){
             Z3[[i]] = gUnion(Z3[[i]],Z3[[j]])
+            Z3[[i]] = gBuffer(Z3[[i]],width = 0)
             tabNei[i] = tabNei[i]-1
             tabNei[j] = -1
           }
         }
       }
-
+      
       # UPDATE PARAM OF LOOP
       nbZ.special = 0 # nb of zones which have at least 2 neighbours unsmoothed
       for (i in which(tabNei>=2)){
@@ -158,12 +164,12 @@ smoothingMap = function(Z, width = 0.01)
       }
       nbZ.special
       iter = iter + 1
-
+      
     }
-
+    
     if (nbZ.special == 1){
       for (i in which(tabNei==1)){
-        Z[[i]] = smoothingZone(Z3[[i]],width= width)
+        Z[[i]] = smoothingZone(Z3[[i]],width= width,boundary = boundary)
         Z2[[i]] = Z[[i]]
         # one need to remove the neighbour zones which have been smoothed
         neighbourSmoothed = c()
@@ -174,20 +180,22 @@ smoothingMap = function(Z, width = 0.01)
         }
         for (j in neighbourSmoothed){
           Z[[i]] = gDifference(Z[[i]],Z2[[j]])
+          Z[[i]] = gBuffer(Z[[i]],width = 0)
         }
         tabNei[i] = 0
       }
       # for the last zone : one need to remove, from the map, the neighbour zones which have been smoothed
       index = which(tabNei > 1)
-      Z[[index]] = border
+      Z[[index]] = boundary
       for (j in arbre[[1]][[index]]){
         Z[[index]] = gDifference(Z[[index]],Z2[[j]])
+        Z[[index]] = gBuffer(Z[[index]],width = 0)
       }
     }
-
+    
     if (nbZ.special == 2){
       for (i in which(tabNei==1)){
-        Z[[i]] = smoothingZone(Z3[[i]],width= width)
+        Z[[i]] = smoothingZone(Z3[[i]],width= width,boundary = boundary)
         Z2[[i]] = Z[[i]]
         # one need to remove the neighbour zones which have been smoothed
         neighbourSmoothed = c()
@@ -198,6 +206,7 @@ smoothingMap = function(Z, width = 0.01)
         }
         for (j in neighbourSmoothed){
           Z[[i]] = gDifference(Z[[i]],Z2[[j]])
+          Z[[i]] = gBuffer(Z[[i]],width = 0)
           tabNei[i] = 0
         }
       }
@@ -206,15 +215,16 @@ smoothingMap = function(Z, width = 0.01)
         for (j in arbre[[1]][[i]]){
           if (tabNei[j]==0){
             Z3[[i]] = gUnion(Z3[[i]],Z3[[j]])
+            Z3[[i]] = gBuffer(Z3[[i]],width = 0)
             tabNei[i] = tabNei[i]-1
             tabNei[j] = -1
           }
         }
       }
-
+      
       # for the 2 last zones : one need to smooth 1 zone, then remove from the map all neighbours of the other zone
       i = which(tabNei == 1)[1]
-      Z[[i]] = smoothingZone(Z3[[i]],width= width)
+      Z[[i]] = smoothingZone(Z3[[i]],width= width,boundary = boundary)
       Z2[[i]] = Z[[i]]
       # one need to remove the neighbour zones which have been smoothed
       neighbourSmoothed = c()
@@ -225,13 +235,15 @@ smoothingMap = function(Z, width = 0.01)
       }
       for (j in neighbourSmoothed){
         Z[[i]] = gDifference(Z[[i]],Z2[[j]])
+        Z[[i]] = gBuffer(Z[[i]],width = 0)
         tabNei[i] = 0
       }
       # last zone
       index = which(tabNei == 1)
-      Z[[index]] = border
+      Z[[index]] = boundary
       for (j in arbre[[1]][[index]]){
         Z[[index]] = gDifference(Z[[index]],Z2[[j]])
+        Z[[index]] = gBuffer(Z[[index]],width = 0)
       }
     }
   }
@@ -239,3 +251,7 @@ smoothingMap = function(Z, width = 0.01)
   return(Z)
 
 }
+
+
+
+
