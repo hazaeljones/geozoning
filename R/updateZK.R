@@ -32,13 +32,13 @@ updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z1,Z2,pEr
 
 # clean current zoning Z2
 # yields Z2 - 0 pt or 1 pt zones may disappear
-        K2=calNei(Z2,map$krigTabAlea,map$krigSurfVoronoi,map$krigN,simplitol)
+        K2=calNei(Z2,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
   	Z2=K2$zonePolygone
 # transfer zone labels in K2$lab from K1$lab
 # use zone id correspondence between Z1 and Z2
 # do not reassign labels
- 	K2=trLabZone(K1,K2,Z1,Z2,map,lvlQuant,disp=0)
-	K2$lvlQuant=lvlQuant
+ 	K2=trLabZone(K1,K2,Z1,Z2,map,qProb,disp=0)
+	K2$qProb=qProb
 # compute overall cost per label
 	cL=costLab(K2,map)
 #
@@ -52,7 +52,7 @@ updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z1,Z2,pEr
 #
         if (length(Z2)>1) # at least 2 zones in Z2
         {
-            resDist1=calDistance(typedist=1,K2$tabAlea,K2$listZonePoint,K2$zoneN,map$krigSurfVoronoi,K2$meanZone,pErr)
+            resDist1=calDistance(typedist=1,map$krigData,K2$listZonePoint,K2$zoneN,map$krigSurfVoronoi,K2$meanZone,pErr)
             resCrit1 = calCrit(resDist1$matDistanceCorr,K2$zoneNModif,optiCrit)
             if (resCrit1 == Inf) resCrit1 = 0
             crit[[le]][[kk]] = resCrit1
@@ -63,5 +63,5 @@ updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z1,Z2,pEr
 	    mdist[[le]][[kk]] = normMat
        	}
 
-	return(list(K=listOfZ,crit=crit,cost=cost,costL=costL,nz=nz,mdist=mdist,nz=nz))
+	return(list(listOfZ=listOfZ,crit=crit,cost=cost,costL=costL,nz=nz,mdist=mdist,nz=nz))
 }

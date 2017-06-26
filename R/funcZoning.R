@@ -48,6 +48,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
   for(i in (1:length(valQuant)))
   {
      cL=contourAuto(cL,step,xsize,ysize,matVal,vRef=valQuant[i],frame,GridData)
+     if(is.null(cL)) return(NULL)
   }
 
   # For each isocontour
@@ -131,7 +132,8 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 	cLplus=contourLines(z=matVal, levels = vRef)
   # merge with previous isocontours (other level)
   cL=c(cL,cLplus)
-
+  if(length(cL)==0) return(NULL) # no contour
+  
   boundary = data.frame(boundary)
   sp::coordinates(boundary)=~x+y
   bl=Line(coordinates(boundary))

@@ -108,12 +108,11 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	li[name]=nz0
 	nzList=li
 
-  if (SAVE)
-     return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList,zk=listOfZ,
+  	if (SAVE)
+     	   return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList,zk=listOfZ,
                  mdist=mdist,criterion=crit,cost=cost,costL=costL,nz=nz))
-  else
-	return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList))
-	return(resC)
+  	else
+		 return(list(bestcrit=round(crit0,3),critList=critList,costList=costList,costLList=costLList,nzList=nzList))
   }
   } # END NO CORRECTION CASE
   ###############################################################################################################
@@ -130,9 +129,11 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
     #pour chaque zone a supprimer
     for (indZS in listeZS)
     {
+     
       #Passage au prochain iter
       # Cas de disparition complete
       curLen=length(listOfZ[[indCur]])
+      
       if (curLen==0)
         {
 	indCur=indCur-1
@@ -147,6 +148,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	costL=append(costL,list(list()))
 	nz=append(nz,list(list()))
      	mdist=append(mdist,list(list()))
+	
       }
       # make a copy for each branch
 
@@ -165,6 +167,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	K=listOfZ[[indCur]][[iter]]
         zpCopy1 = K$zonePolygone
         zpCopy2 = zpCopy1
+	
 	#
         # iC=zone ne satisfaisant pas les contraintes
         iC = Identify(indZS,zpCopy1) # identique pour zpCopy2
@@ -210,11 +213,9 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	# update crit[[indCur+1]], listOfZ, mdist
 	   # keep only initial and current stages
        	   # except if ALL=TRUE, keep all stages
-  	   if (izk ==1)
-	      {
-	      if((indCur==1)| ALL) indCur=indCur+1
-	      }
-	   resD=saveZK(map,K,Z[[iz]],qProb,listOfZ, indCur,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
+  	   
+	   # saveZK appends a sublevel to listofZ[[indCur+1]]
+	   resD=saveZK(map,K,Z[[iz]],qProb,listOfZ, indCur+1,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
       	   listOfZ=resD$listOfZ
 	   mdist=resD$mdist
 	   # save all criteria
@@ -224,25 +225,27 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	   nz=resD$nz
 	   }
 	}#end for iz
-	# reuse allocated space
-  	if((indCur>1)& !ALL)
-	   {
-	   listOfZ[indCur+1]=NULL
-	   mdist[indCur+1]=NULL
-	   crit[indCur+1]=NULL
-	   cost[indCur+1]=NULL
-	   costL[indCur+1]=NULL
-	   nz[indCur+1]=NULL
-	   }
+	
      } # end for iter
-
+     indCur=indCur+1
+ # reuse allocated space for next level
+  	   if((indCur>2)& !ALL)
+	   {
+	   listOfZ[indCur-1]=NULL
+	   mdist[indCur-1]=NULL
+	   crit[indCur-1]=NULL
+	   cost[indCur-1]=NULL
+	   costL[indCur-1]=NULL
+	   nz[indCur-1]=NULL
+	   indCur=indCur-1
+	   }
     }# end for indZs
 
   # one more pass so that all zones are bigger than minSize in last level
   # simply remove zones of last level zonings that are too small and recalculate criteria
   if (LASTPASS)
 	{
-	  resPass=lastPass(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,simplitol)
+	  resPass=lastPass(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,minSize,simplitol)
 	  listOfZ = resPass$listOfZ
 	  crit = resPass$crit
 	  cost = resPass$cost

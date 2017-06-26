@@ -18,14 +18,14 @@
 #'
 #' @examples
 #' # not run
-selMaps=function(seed=89,thr=0.5,med=NULL,medC=NULL,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL)
+selMaps=function(seed=89,thr=0.5,med=NULL,medC=NULL,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,pErr=0.9)
 #########################################################
 {
-if(is.null(m1)) m1=read.table(paste("res-simuseed",seed,"-1q-pE0.3.csv",sep=""))
-if(is.null(m2)) m2=read.table(paste("res-simuseed",seed,"-2q-pE0.3.csv",sep=""))
-if(is.null(m3)) m3=read.table(paste("res-simuseed",seed,"-3q-pE0.3.csv",sep=""))
-if(is.null(m4)) m4=read.table(paste("res-simuseed",seed,"-4q-pE0.3.csv",sep=""))
-if(is.null(m5)) m5=read.table(paste("res-simuseed",seed,"-5q-pE0.3.csv",sep=""))
+if(is.null(m1)) m1=read.table(paste("res-simuseed",seed,"-1q-pE",pErr,".csv",sep=""))
+if(is.null(m2)) m2=read.table(paste("res-simuseed",seed,"-2q-pE",pErr,".csv",sep=""))
+if(is.null(m3)) m3=read.table(paste("res-simuseed",seed,"-3q-pE",pErr,".csv",sep=""))
+if(is.null(m4)) m4=read.table(paste("res-simuseed",seed,"-4q-pE",pErr,".csv",sep=""))
+if(is.null(m5)) m5=read.table(paste("res-simuseed",seed,"-5q-pE",pErr,".csv",sep=""))
 # remove degenerate quantiles
 mask2=m2[,"nq"]==2
 mb2=m2[mask2,]

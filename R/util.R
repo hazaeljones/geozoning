@@ -2690,3 +2690,71 @@ ms=sapply(Z,function(x)return(x@bbox[,"max"]))
 vs=apply(ms,1,max)
 return(vs)
 }
+########################
+findZCenterpt=function(data,K,num=NULL)
+#' findZCenter
+#'
+#' @details description, a paragraph
+#' @param data xxxx
+#' @param K xxxx
+#' @param num xxxx
+#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+########################
+{
+Z=K$zonePolygone
+if(is.null(num)) num=1:length(Z)
+ptz=NULL
+for (jj in num)
+{
+ipt=K$listZonePoint[[jj]] # indices of within zone pts
+ptc=data[ipt,]
+gd=rep(NA,length(ptc))
+for (k in 1:length(ptc)) {gd[k]=gDistance(ptc[k,],gBoundary(Z[[jj]]))} #smallest distance from each point to zone boundary
+ind=which(gd==max(gd)) # maximum distance to zone boundary
+ind=ind[1] # if ties
+ptz=rbind(ptz,coordinates(ptc[ind,]))
+}
+return(ptz)
+}
+########################
+findZCenter=function(Z,num=NULL)
+#' findZCenter
+#'
+#' @details description, a paragraph
+#' @param data xxxx
+#' @param num xxxx
+#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+########################
+{
+if(is.null(num)) num=1:length(Z)
+ptz=NULL
+for (jj in num)
+{
+	erosion = Z[[jj]]
+    	width = 0
+    	while(gArea(erosion)>10^-3){
+      	width = width + 0.001
+      	erosion = gBuffer(Z[[jj]],width =-width)
+	}
+ptz=rbind(ptz,coordinates(erosion))
+}
+return(ptz)
+}
