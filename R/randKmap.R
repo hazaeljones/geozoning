@@ -27,7 +27,7 @@
 #' \item{krigN}{krigN}
 #' \item{krigSurfVoronoi}{krigSurfVoronoi}
 #' \item{modelGen}{modelGen}
-#' \item{modelVGM}{modelVGM}
+#' \item{VGMmodel}{VGMmodel}
 #' \item{boundary}{boundary}
 #' }
 #'
@@ -94,7 +94,7 @@ randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Ga
       if (krig == 2) #  inverse distance
       	 krigZ=krige(z~1,rawData,newdata=tabK[maskIns,])
       else if (krig == 1) # vgm model	 	 
-      	 krigZ=krige(z~1,rawData,newdata=tabK[maskIns,],model=resGene$modelVGM)
+      	 krigZ=krige(z~1,rawData,newdata=tabK[maskIns,],model=resGene$VGMmodel)
       else return(NULL)
       #transform into grid matrix
       vecZ[maskIns]=as.numeric(krigZ$var1.pred)
@@ -144,8 +144,8 @@ randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Ga
 
       # reduced object size except if FULL argument was given
       if(FULL)
-        return(list(rawData=rawData,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,modelVGM=resGene$modelVGM,boundary=boundary,krigVoronoi=krigVoronoi,matMeanCond=matMeanCond,boundary=boundary,meanCondTab=meanCondTab,meanCondTabNa=meanCondTabNa,surfVoronoiB=surfVoronoiB,voronoiB=voronoiB,ptNB=ptNB))
+        return(list(rawData=rawData,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,boundary=boundary,krigVoronoi=krigVoronoi,matMeanCond=matMeanCond,boundary=boundary,meanCondTab=meanCondTab,meanCondTabNa=meanCondTabNa,surfVoronoiB=surfVoronoiB,voronoiB=voronoiB,ptNB=ptNB))
         else
-	return(list(rawData=rawData,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,modelVGM=resGene$modelVGM,boundary=boundary))
+	return(list(rawData=rawData,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,boundary=boundary))
 
 }

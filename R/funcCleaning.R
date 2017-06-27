@@ -219,7 +219,7 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
   refSurf = gArea(Z[[iC]])
 	if (refSurf < minSizeNG) return(NULL)
 
-  resC = detZoneClose(iC,Z,K) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
+  resC = detZoneClose(iC,Z,K$zoneNModif) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
   ##############################################################
   InterZoneSpace = resC$InterZoneSpace
   zoneClose = resC$zoneClose

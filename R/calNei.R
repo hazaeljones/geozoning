@@ -2,28 +2,49 @@
 #' calNei
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param data xxxx
-#' @param surfVoronoi xxxx
-#' @param ptN xxxx
-#' @param simplitol xxxx
-#' @param remove xxxx
-#' @param correct xxxx
-#'
-#' @return a ?
+#' @param Z zoning
+#' @param spdata  SpatialPointsDataFrame containing the data pts and values
+#' @param surfVoronoi Surfaces of the Voronoi polygons corresponding to data pts
+#' @param ptN indices of data pts neighbours
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param remove if TRUE remove zones with less than nmin data points
+#' @param correct if TRUE correct zone neighborhood
+#' @param nmin number of points below wich a zone is removed from the zoning
+#' @return a list with components
+#' \describe{
+#' \item{zoneN}{matrix of zone neigbors}
+#' \item{zoneNModif}{ modified matrix with FALSE on the diagonal}
+#' \item{listZonePoint}{ indices of pts within each zone}
+#' \item{meanTot}{zoning mean data value}
+#' \item{meanZone}{vector of zone data mean values}
+#' \item{listSurf}{vector of zone areas}
+#' \item{critSurf}{vector of filiform zone characteristics}
+#' \item{zonePolygone}{list of zones, each zone is a SpatialPolygons}
+#' }
 #'
 #' @export
 #' @importFrom sp point.in.polygon
 #'
 #' @examples
-#' # not run
-calNei=function(Z,data,surfVoronoi,ptN,simplitol,remove=TRUE,correct=FALSE)
-######################################################################
+#' data(mapTest)
+#' ptN=mapTest$krigN
+#' spdata=mapTest$krigData
+#' surfVoronoi=mapTest$surfVoronoi
+#' data(resZTest)
+#' Z=resZTest
+#' K=calNei(Z,spdata,surfVoronoi,ptN)
+#' names(K)
+#' plotZ(K$zonePolygone)
+#' K=calNei(Z,spdata,surfVoronoi,ptN,nmin=20) #keep only zones with a minimum of 20 data points
+#' plotZ(K$zonePolygone)
+
+calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALSE,nmin=1)
+#################################################################################
 {
   nbZ=length(Z)
 
   #list of pts in zones
-  listZonePoint=zoneAssign(data,Z)
+  listZonePoint=zoneAssign(spdata,Z)
 
   #determine zone neighbors
   zoneN=matrix(logical(nbZ^2),nbZ,nbZ)
@@ -33,7 +54,7 @@ calNei=function(Z,data,surfVoronoi,ptN,simplitol,remove=TRUE,correct=FALSE)
   # remove zones with #pts <= n  from zoning Z or surf<minSizeNG
   if(remove)
 	{
-	res=removeFromZ(Z,zoneN,ptN,listZonePoint,data,simplitol,n=1)
+	res=removeFromZ(Z,zoneN,ptN,listZonePoint,spdata,simplitol,n=max(0,nmin))
 	Z=res$Z
 	zoneN=res$zoneN
 	listZonePoint=res$listZonePoint
@@ -41,19 +62,19 @@ calNei=function(Z,data,surfVoronoi,ptN,simplitol,remove=TRUE,correct=FALSE)
 
   # correct zone neighbors
   # confusion when voronoi are close - so check again zone distance
-  if(correct) voisinZone = correctN(Z,zoneN)
+  if(correct) zoneN = correctN(Z,zoneN)
   #
   zoneNModif = zoneN
   diag(zoneNModif) = FALSE
   #
-  meanTot=sum(data[[1]]*surfVoronoi)/sum(surfVoronoi)
+  meanTot=sum(spdata[[1]]*surfVoronoi)/sum(surfVoronoi)
   listSurf=sapply(Z,gArea)
   # compute (surface/perim^2)
   listPerim=sapply(Z,gLength)
   critSurf=listSurf/(listPerim^2)
 
   #zone mean values (each pt ponderated by its Voronoi surface)
-  meanZone=wMean(2,listZonePoint,surfVoronoi,data)
+  meanZone=wMean(2,listZonePoint,surfVoronoi,spdata)
 
   return(list(zoneN=zoneN,zoneNModif=zoneNModif,listZonePoint=listZonePoint,meanTot=meanTot,
               critSurf=critSurf,meanZone=meanZone,listSurf=listSurf,zonePolygone=Z))

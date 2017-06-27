@@ -162,7 +162,8 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,coulBreaks=0,texMain
       lines(Z[[j]]@polygons[[1]]@Polygons[[1]]@coords,type='l')
      
       if(is.null(ptz))
-	pointLabel=Z[[j]]@polygons[[1]]@Polygons[[1]]@labpt
+	#pointLabel=Z[[j]]@polygons[[1]]@Polygons[[1]]@labpt
+	pointLabel=findZCenter(Z,j)
 	else
 	pointLabel=ptz[j,]
       # utiliser id Zone au lieu de num Zone

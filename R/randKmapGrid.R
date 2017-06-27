@@ -119,11 +119,11 @@ randKmapGrid=function(DataObj,seed=NULL,nPointsK=200,nSimuCond=0,typeMod="Gau",V
     # reduced object size except if FULL argument was given
     if(FULL)
       return(list(rawData=rawData,step=step,krigData=krigData[ptsIns==1,],krigGrid=krigGrid,
-                  krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,modelVGM=resGene$modelVGM,
+                  krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,
                   boundary=boundary,krigVoronoi=krigVoronoi,matMeanCond=matMeanCond,boundary=boundary,
                   meanCondTab=meanCondTab,meanCondTabNa=meanCondTabNa,surfVoronoiB=surfVoronoiB,voronoiB=voronoiB,ptNB=ptNB))
     else
 	    return(list(rawData=rawData,step=step,krigData=krigData[ptsIns==1,],krigGrid=krigGrid,krigN=krigN,
-	                krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,modelVGM=resGene$modelVGM,
+	                krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,
 	                boundary=boundary))
 }

@@ -3,12 +3,14 @@
 # computeZoneExt
 #
 # @details description, a paragraph
-# @param qi xxxx
-# @param Z0 xxxx
-# @param i0 xxxx
-# @param map xxxx
+# performs a new zoning on map with quantile probability qi
+# and returns the smallest zone from this new zoning that includes zone #i0 from initial zoning
+# @param qi probability
+# @param Z0 zoning
+# @param i0 zone number in zoning Z0
+# @param map map on which perform zoning
 #
-# @return a plot
+# @return a zone (SpatialPolygons object)
 #
 # @export
 #
@@ -17,9 +19,7 @@
 # computeZoneExt = function(qi,Z0,i0,map)
 # #########################################
 # {
-#   # IS 19/05/2017: add comment for x11
-# 	#x11()
-# 	res=func1Zonage(qi, map,display=TRUE)
+# 	res=initialZoning(qi, map)
 # 	Z=res$zonePolygone
 #
 # 	NZ=length(Z)
@@ -38,7 +38,10 @@
 # 	#take the smallest one
 # 	area=sapply(zn,gArea)
 # 	ind=order(area)
+#	if(length(zn)>0)
+#	{
 # 	Z[[i0]]=zn[[ind[1]]]
-#
 # 	return(Z[[i0]])
+#	}
+#	else return(NULL)
 # }

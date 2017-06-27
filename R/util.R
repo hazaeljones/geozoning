@@ -1835,8 +1835,8 @@ return(K2)
 #' getClosestZone
 #'
 #' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
+#' @param iZ xxxx
+#' @param zoneNModif xxxx
 #' @param K xxxx
 #'
 #' @return a ?
@@ -1845,21 +1845,21 @@ return(K2)
 #'
 #' @examples
 #' # not run
-getClosestZone=function(iC,Z,K)
+getClosestZone=function(iZ,Z,zoneNModif)
 ##################################################################
 {
 	imin=0
 	ni=1:length(Z)
 	# exclude current zone
-	ni=ni[ni != iC]
+	ni=ni[ni != iZ]
 
 	# exclude neighbor zones
-	Ns=getNs(K,iC)
+	Ns=getNs(zoneNModif,iZ)
   	listeV=grep(TRUE, Ns)
 	for (i in listeV) ni=ni[ni != i]
 
 	# exclude englobing zone
-	iE = detZoneEng(iC,Z,K)
+	iE = detZoneEng(iZ,Z,zoneNModif)
 	#
 	if(iE != 0) ni = ni[ni !=iE]
 
@@ -1867,7 +1867,7 @@ getClosestZone=function(iC,Z,K)
 	ir=NULL
 	for (i in ni)
           {
-	  gb = gBuffer(gConvexHull(Z[[iC]]),byid=TRUE,width=1e-3)
+	  gb = gBuffer(gConvexHull(Z[[iZ]]),byid=TRUE,width=1e-3)
 	  if(gContains(gb,Z[[i]])) ir=c(ir,i)
 	  }
 	for (i in ir) ni =ni[ni != i]
@@ -1876,7 +1876,7 @@ getClosestZone=function(iC,Z,K)
 	d0 = 1
 	for (i in ni)
           {
-		d=gDistance(Z[[iC]],Z[[i]])
+		d=gDistance(Z[[iZ]],Z[[i]])
 		if (d<=d0)
 		   {
 		   imin=i

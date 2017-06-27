@@ -32,7 +32,7 @@ optiGrow = function(Z,K,iC,qProb,refPoint,map,optiCrit,minSize=0.012,minSizeNG=1
    boundary=map$boundary
    res = NULL
    area = NULL
-   iE=detZoneEng(iC,Z,K)
+   iE=detZoneEng(iC,Z,K$zoneNModif)
 
    if (iE == 0)
    {
@@ -40,7 +40,7 @@ optiGrow = function(Z,K,iC,qProb,refPoint,map,optiCrit,minSize=0.012,minSizeNG=1
    return(NULL)
    }
   # compute biggest envelope (to keep closest zone at dist >distIso)
-  envel=calFrame(iC,Z,K,distIsoZ)
+  envel=calFrame(iC,Z,K$zoneNModif,distIsoZ)
   if(is.null(envel)) return(NULL)
   #
   # generate quantile values

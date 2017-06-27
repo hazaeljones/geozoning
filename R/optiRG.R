@@ -30,7 +30,7 @@ optiRG = function(Z,K,map,iC, iZC,simplitol,disp=0)
 		       }
 
  # zone englobing current zone
-  iZE = detZoneEng(iC,Z,K)
+  iZE = detZoneEng(iC,Z,K$zoneNModif)
   if (iZE == 0) return(NULL)
 #
 # pt in close zone near current zone
@@ -97,7 +97,7 @@ optiRG = function(Z,K,map,iC, iZC,simplitol,disp=0)
 	if (disp >0) print("pb in optiRG")
 	Zoptipb <<-Zopti
 	Zpb <<- Z
-	Kpb <<- K
+	zoneNModifpb<<-zoneNModif
 	indpbZE <<- iZE
 	indpbC <<- iC
 	indpbP <<- iZC

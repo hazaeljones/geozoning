@@ -18,7 +18,7 @@
 #' \item{tabData}{tabData}
 #' \item{boundary}{boundary}
 #' \item{modelGen}{modelGen}
-#' \item{modelVGM}{modelVGM}
+#' \item{VGMmodel}{VGM model}
 #' }
 #'
 #' @export
@@ -35,7 +35,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 ##############################################################################
 {
   modelGen=NULL #variogram model
-  modelVGM1=NULL
+  VGMmodel1=NULL
 
   # real or simulated data
   if(!is.null(DataObj))
@@ -84,7 +84,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
   tabDataSp=tabData
   coordinates(tabDataSp)=~x+y
   expVario=variogram(z~1,data=tabDataSp)
-  modelVGM1=fit.variogram(expVario,vgm(c("Exp","Sph","Gau"))) # find best model to be fitted
+  VGMmodel1=fit.variogram(expVario,vgm(c("Exp","Sph","Gau"))) # find best model to be fitted
 
   }
   # simulated data
@@ -96,10 +96,10 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 
     #Generate z values according to (Gaussian) field
     #RMmodel starting from VGM model
-    modelVGM=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis)
-    modelVGM1=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis,nugget=Vnugget)
+    VGMmodel=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis)
+    VGMmodel1=vgm(model=typeMod,range=Vrange,psill=Vpsill,mean=Vmean,ang1=Vang,anis1=Vanis,nugget=Vnugget)
 
-  modelGen=calRMmodel(modelVGM)
+  modelGen=calRMmodel(VGMmodel)
     modelGen=modelGen+RMtrend(mean=Vmean)
     if(Vnugget>1e-3)
 	    modelGen=modelGen+RMnugget(var=Vnugget)
@@ -114,7 +114,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     colnames(xyminmaxI)=c("min","max")
   }
 
-  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,modelGen=modelGen,modelVGM=modelVGM1))
+  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,modelGen=modelGen,VGMmodel=VGMmodel1))
 }
 
 

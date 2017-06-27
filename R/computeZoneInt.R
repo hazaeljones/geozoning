@@ -3,12 +3,14 @@
 # computeZoneInt
 #
 # @details description, a paragraph
-# @param qi xxxx
-# @param Z0 xxxx
-# @param i0 xxxx
-# @param map xxxx
+# performs a new zoning on map with quantile probability qi
+# and returns the biggest zone from this new zoning that is included in zone #i0 from initial zoning
+# @param qi probability
+# @param Z0 zoning
+# @param i0 zone number in zoning Z0
+# @param map map on which perform zoning
 #
-# @return a plot
+# @return a zone (SpatialPolygons object)
 #
 # @export
 #
@@ -18,8 +20,7 @@
 # #########################################
 # {
 #
-# 	#x11()
-# 	res=func1Zonage(qi, map,display=F)
+# 	res=initialZoning(qi, map)
 # 	Z=res$zonePolygone
 #
 # 	NZ=length(Z)
@@ -35,10 +36,13 @@
 # 		}
 # 	}
 # 	print(n)
-# 	# prendre la plus grande
+# 	# keep the biggest zone within
 # 	area=sapply(zn,gArea)
 # 	ind=rev(order(area))
-# 	Z[[i0]]=zn[[ind[1]]]
-#
+# 	if (length(zn)>0)
+#	{
+#	Z[[i0]]=zn[[ind[1]]]
 # 	return(Z[[i0]])
+#	}
+#	else return(NULL)
 # }

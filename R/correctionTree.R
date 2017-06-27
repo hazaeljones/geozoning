@@ -191,7 +191,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
         {
 	       # 2 possibilities : include in zpCopy1 or grow in zpCopy2
 	       # 1=merge zone indZS and zone near by
-      	 Ns = getNs(K,iC)
+      	 Ns = getNs(K$zoneNModif,iC)
 	       zpCopy1 = zoneFusion3(zpCopy1,K,iC,Ns,map,minSize,simplitol,disp)
          if(disp>0) print(paste(length(zpCopy1)," polygons after zone merging"))
          # 2 = grow zone indZS

@@ -2,8 +2,8 @@
 #' getNs
 #'
 #' @details description, a paragraph
-#' @param resZ xxxx
-#' @param iC xxxx
+#' @param zoneNModif xxxx
+#' @param iZ xxxx
 #'
 #' @return a ?
 #'
@@ -12,8 +12,8 @@
 #' @examples
 #' # not run
 ##################################################################
-getNs=function(resZ,iC)
+getNs=function(zoneNModif,iZ)
 {
-  Ns=resZ$zoneNModif[iC,]
+  Ns=zoneNModif[iZ,]
   return(Ns)
 }
