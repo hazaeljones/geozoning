@@ -90,7 +90,7 @@ sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE=FALSE)
       bestZ=bestK$zonePolygone
       bestmdist=mdist[[le]][[ind]]
       #
-      if(SAVE) bestZ<<-bestZ
+      #if(SAVE) bestZ<<-bestZ
     }
   } #end while
   # plot best corrected zoning

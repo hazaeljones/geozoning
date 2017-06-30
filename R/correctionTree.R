@@ -2,29 +2,44 @@
 #' correctionTree
 #'
 #' @details description, a paragraph
-#' @param qProb xxxx
-#' @param map xxxx
-#' @param pErr xxxx
-#' @param optiCrit xxxx
-#' @param minSize xxxx
-#' @param minSizeNG xxxx
-#' @param distIsoZ xxxx
-#' @param simplitol xxxx
-#' @param LEQ xxxx
-#' @param MAXP xxxx
-#' @param LASTPASS xxxx
-#' @param disp xxxx
-#' @param SAVE xxxx
-#' @param ONE xxxx
-#' @param ALL xxxx
+#' @param qProb probability vector used to generate quantile values
+#' @param map object returned by function genMap or genMapR
+#' @param pErr equality tolerance for distance calculations
+#' @param optiCrit criterion choice
+#' @param minSize zone area threshold under which a zone is too small to be manageable
+#' @param minSizeNG zone area threshold under which a zone will be removed
+#' @param distIsoZ threshold distance to next zone, above which a zone is considered to be isolated
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param LEQ length of quantile sequence used to grow isolated zone
+#' @param MAXP quantile sequence maximum shift
+#' @param LASTPASS if TRUE, remove zones that are still too small at the last level of the correction tree
+#' @param disp 0: no info, 1: some info, 2: detailed info
+#' @param SAVE logical value, if TRUE function returns last level zonings
+#' @param ONE logical value, if TRUE function returns only criterion value
+#' @param ALL logical value, if TRUE function returns zonings at all levels
 #'
-#' @return a ?
+#' @return a list with components
+#'\describe{
+#' \item{bestcrit}{best criterion value at last level}
+#' \item{critList}{criterion values at last level}
+#' \item{costList}{cost values at last level}
+#' \item{costLList}{cost per label  values at last level}
+#' \item{nzList}{vector of number of zones at last level}
+#' \item{qProb}{vector of probabilities values used for quantiles}
+#' \item{zk}{list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects}
+#' \item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
+#' \item{crit}{list of initial criterion and all (last if ALL=FALSE) level criteria }
+#' \item{cost}{list of initial cost and all (last if ALL=FALSE) level costs }
+#' \item{costL}{list of initial cost per label and all (last if ALL=FALSE) level vcosts per label}
+#' }
 #' @importFrom rgeos gArea
 #'
 #' @export
 #'
 #' @examples
-#' # not run
+#' data(mapTest)
+#' criti=correctionTree(c(0.4,0.7),mapTest) # run zoning with 2 quantiles corresponding to probability values 0.4 an 0.7
+#'
 correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,
                         simplitol=1e-3,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE,ALL=FALSE)
 ####################################################################################
@@ -35,10 +50,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
     # choice of criterion = optiCrit
     # small zones handled by increasing size order
     # simplitol = tolerance for zone growing, polygone simplification
-    # disp =0 : no info
-    # disp =1 : print info
-    # disp =2 : detailed info
-    # ONE=TRUE: returns only criterion value
+    # disp =
 
     # precaution !
   qProb=sort(unique(qProb))
@@ -255,7 +267,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 	}
 
   #  consider last step criteria
-  #  sort criteria, assign zoning to global variables zf, zk, critere and critList (if SAVE=TRUE)
+  #  sort last level criteria, return criteria and listOfZ if SAVE=TRUE, otherwise only return last level criteria
   #  and select the best one
   resC=sortCrit(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE)
   #
