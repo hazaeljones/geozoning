@@ -11,7 +11,11 @@
 #' @param pErr error percentage for correcting distances
 #' max(sigmai2[i],(fxmean*pErr/100)^2) + max(sigmai2[j],(fymean*pErr/100)^2) + (fxmean-fymean)^2
 #'
-#' @return a list with a matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.
+#' @return a list with components
+#'\describe{
+#' \item{matDistance}{matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.}
+#' \item{matDistanceCorr}{corrected distance matrix using pErr}
+#' \item{cost}{sum or erros obtained by replacing all data values within a zone by the zone mean value}
 #'
 #' @export
 #'

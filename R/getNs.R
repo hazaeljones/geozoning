@@ -2,15 +2,17 @@
 #' getNs
 #'
 #' @details description, a paragraph
-#' @param zoneNModif xxxx
-#' @param iZ xxxx
+#' @param zoneNModif zone neighborhood Logical matrix  
+#' @param iZ index of current zone in zoning
 #'
-#' @return a ?
+#' @return a Logical vector of current zone neighbors
 #'
 #' @export
 #'
 #' @examples
-#' # not run
+#' data(mapTest)
+#' K=resZTest
+#' Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
 ##################################################################
 getNs=function(zoneNModif,iZ)
 {

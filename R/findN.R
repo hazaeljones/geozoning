@@ -2,26 +2,24 @@
 #' findN
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param K xxxx
-#' @param listN xxxx
-#' @param iC xxxx
-#' @param minSize xxxx
+#' @param K zoning object, as returned by the calNei function
+#' @param listN list of neighbor zones
+#' @param iC index of current zone in zoning
+#' @param minSize minimum admissible zone size
 #'
-#' @return a ?
+#' @return the index of the zone with which to merge the current zone
 #'
 #' @export
 #'
 #' @examples
+
 #' # not run
-findN=function(Z,K,listN,iC,minSize=0.012)
+findN=function(K,listN,iC,minSize=0.012)
 ###############################################
   {
-       #On détermine la zone qui va absorber notre petite zone
-       #elles doivent se toucher (voisines par Voronoi)
-       # si plusieurs choix, fusionner avec la plus petite si sa surface < surface minimum
-       # sinon fusionner avec la zone qui a la moyenne la plus proche
-
+       #Find the neighbor zone with which to merge the current zone
+       #It must be a neighbor in the sense of Voronoi polygons
+       
           if (length(listN) == 0) return(0)
 
           if (length(listN) == 1)
@@ -30,9 +28,9 @@ findN=function(Z,K,listN,iC,minSize=0.012)
           }
           else
           {
+	    Z=K$zonePolygone
 	    indZV=0
-            #On parcourt tous les voisins de notre zone
-	    # modif bch october 2016
+            #Check all neighbor zones
 	    potN = numeric()
             for (i in listN)
             {
@@ -41,7 +39,7 @@ findN=function(Z,K,listN,iC,minSize=0.012)
 
 	      # modif bch october 2016
               #potN = numeric()
-              #potN est utile lorsque notre petite zone est entre 2 zones
+              #potN useful when current zone is between 2 zones
               if (tempo < 0.001)
               {
                 potN = append(potN,i)

@@ -75,42 +75,44 @@ zoneFusion2 = function( zoneMain,zoneSuppr,simplitol)
 ######################################################################
 #' zoneFusion3
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param K xxxx
-#' @param iC xxxx
-#' @param Ns xxxx
-#' @param map xxxx
-#' @param minSize xxxx
-#' @param simplitol xxxx
-#' @param disp xxxx
+#' @details merge current zone #iC with neighbor zone in zoning. If there are several neighbor zones, the selected one is the zone whose area is greater than the admissible size threshold that has the closest average value to the current one. 
+#' @param K zoning object, as returned by the calNei function
+#' @param iC index of current zone in zoning
+#' @param Ns zone neighborhood Boolean matrix  
+#' @param map object returned by function genMap or genMapR
+#' @param minSize  minimum admissible zone size
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param disp information level (0-no info, 1-print info, 2-plot)
 #'
-#' @return a ?
+#' @return a zone obtained by merging current zone with neighbor zone
 #'
 #' @export
 #'
 #' @examples
-#' # not run
-zoneFusion3=function(Z,K,iC,Ns,map,minSize,simplitol,disp=0)
+#' data(mapTest)
+#' data(resZTest)
+#' K=resZTest
+#' Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
+#' zoneFusion3(K,5,Ns,mapTest,disp=2) # merge and plot result of merging
+zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 ######################################################################
 {
   #########################################
   #merge zone iC with neighbor in Ns
   #########################################
 	#
-  listN =  grep( TRUE , Ns)
-	indZV = findN(Z,K,listN,iC,minSize) # chercher le voisin (parmi tous) avec lequel fusionner
+	Z=K$zonePolygone
+  	listN =  grep( TRUE , Ns)
+	indZV = findN(K,listN,iC,minSize) # find the neighbor zone with which to merge the current zone
 
-	if (indZV == 0) return(NULL) # step de voisin avec lequel fusionner
+	if (indZV == 0) return(NULL) # no neighbour found for merging
 
-	  # on pourrait ecrire aussi :
+	  # could also be written as
     # slot(slot(Z[[indZV]],"polygons")[[1]],"ID")
     #########################################
 	  if(disp>0) print(paste("merging zone",iC," with main zone",indZV))
-	  # attention, modif bch octobre 2016
-	  # cas ou on fusionne ZA avec ZB et ZB est inclus dans ZA
-	  # il faut alors echanger les ids, pour garder le label de ZB
-	  # (contour le plus exterieur)
+	  # case when merging  ZA with ZB and ZB is within ZA
+	  # ids must be swapped 
 	  # keep outer polygon ID
 	  IN=gContains(gEnvelope(Z[[iC]]),Z[[indZV]])
 	  if (IN)
@@ -119,11 +121,10 @@ zoneFusion3=function(Z,K,iC,Ns,map,minSize,simplitol,disp=0)
 	     newId= Z[[indZV]]@polygons[[1]]@ID #
 	  #
 	  Z[[indZV]] = zoneFusion2(  Z[[indZV]], Z[[ iC ]],simplitol)
-    #Z[[indZV]]=gUnion(  Z[[indZV]], Z[[ iC ]] )
-    # reset polygon ID
-    Z[[indZV]]@polygons[[1]]@ID = newId
-    #remove zone that was merged
-    Z[[iC]]=NULL
+ 	  # reset polygon ID
+    	  Z[[indZV]]@polygons[[1]]@ID = newId
+    	  #remove zone that was merged
+    	  Z[[iC]]=NULL
 	if (disp==2)
 	{
 	   # plot (bch)
