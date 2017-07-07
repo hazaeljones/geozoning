@@ -224,7 +224,27 @@ zoneAssign=function(tab,Z)
 	listZpt[[k]]=ind[zone==k]
       }
 
-
+#check that all pts belong to a zone
+v=1:nrow(pts)
+us=unlist(listZpt)
+noZ=v[!(v %in% us)]
+# correct by using distances
+for (ind in noZ)
+    {
+    kk=1
+    gdref=Inf
+    iZ=0
+    for(ii in 1:nbZ)
+    	  {
+	  gd=gDistance(tab[ind,],Z[[ii]])
+	  if (gd<gdref)
+	     {
+	     gdref=gd
+	     iZ=ii
+	     }
+	  }
+     if(iZ!=0) listZpt[[iZ]]=append(ind,listZpt[[iZ]])
+    }
   return(listZpt)
 }
 
@@ -351,3 +371,34 @@ extensionLine=function(contour=NULL,step=NULL,boundary,bspl)
 
   return(contour)
 }
+
+#PHi's function
+zoneAssign2=function(tab,Z)
+{
+  #nb zones
+  nbZ=length(Z)
+  point_Zone = c()
+  #n data points
+  n=nrow(tab)
+
+  for(i in 1:n){
+    x = tab@coords[i,1]
+    y = tab@coords[i,2]
+    point = readWKT(paste("POINT(",x,y,")"))
+    dist = c()
+    for(j in 1:nbZ){
+      d = gDistance(point,Z[[j]])
+      dist = c(dist, d)
+    }
+    point_Zone = c(point_Zone, which.min(dist))
+  }
+
+  listZpt= list()
+  for (i in 1:nbZ)
+  {
+      listZpt[[i]] = which(point_Zone ==i )
+  }
+  return(listZpt)
+}
+
+

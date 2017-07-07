@@ -13,7 +13,7 @@
 #' @return a list with components
 #' \describe{
 #' \item{zoneN}{matrix of zone neigbors}
-#' \item{zoneNModif}{ modified matrix with FALSE on the diagonal}
+#' \item{zoneNModif}{modified matrix with FALSE on the diagonal}
 #' \item{listZonePoint}{ indices of pts within each zone}
 #' \item{meanTot}{zoning mean data value}
 #' \item{meanZone}{vector of zone data mean values}
@@ -31,7 +31,7 @@
 #' spdata=mapTest$krigData
 #' surfVoronoi=mapTest$surfVoronoi
 #' data(resZTest)
-#' Z=resZTest
+#' Z=resZTest$zonePolygone
 #' K=calNei(Z,spdata,surfVoronoi,ptN)
 #' names(K)
 #' plotZ(K$zonePolygone)

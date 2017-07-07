@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' 
 #' # not run
 detZoneClose=function(iZ,Z,zoneNModif)
 ##################################################################

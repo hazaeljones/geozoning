@@ -1,14 +1,16 @@
 ####################################################################
 #' detection of narrow zones (ratio area/perimeter^2)
 #'
-#' @details description, a paragraph
-#' @param zonePolygone xxxx
+#' @details computes for each zone of a zoning the ratio area/squared perimeter
+#' @param zonePolygone zoning
 #'
-#' @return a ?
+#' @return a numerical value
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' calcCritNarrow(resZTest$zonePolygone)
 #' # not run
 calcCritNarrow=function(zonePolygone)
 ####################################################################
