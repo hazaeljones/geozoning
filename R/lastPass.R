@@ -53,7 +53,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,minSi
 	    	{
 	  	iC = Identify(zid,Z1) # get current zone number
 		if(disp) print(paste("in lastPass zid=",zid,"iC=",iC))
-	    	Z2 = zoneFusion3(Z1,K1,iC, getNs(K1$zoneNModif,iC) ,map,minSize,simplitol)
+	    	Z2 = zoneFusion3(K1,iC, getNs(K1$zoneNModif,iC) ,map,minSize,simplitol)
 		K2=calNei(Z2,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
   		Z2=K2$zonePolygone
 		K3=trLabZone(K1,K2,Z1,Z2,map,qProb,disp=0)
