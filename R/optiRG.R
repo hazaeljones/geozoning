@@ -97,7 +97,6 @@ optiRG = function(Z,K,map,iC, iZC,simplitol,disp=0)
 	if (disp >0) print("pb in optiRG")
 	Zoptipb <<-Zopti
 	Zpb <<- Z
-	zoneNModifpb<<-zoneNModif
 	indpbZE <<- iZE
 	indpbC <<- iC
 	indpbP <<- iZC

@@ -2,19 +2,27 @@
 #' initialZoning
 #'
 #' @details description, a paragraph
-#' @param qProb xxxx
-#' @param map xxxx
-#' @param pErr xxxx
-#' @param simplitol xxxx
-#' @param optiCrit xxxx
-#' @param disp xxxx
-#' @param GridData xxxx
+#' @param qProb probability vector used to generate quantile values
+#' @param map object returned by function genMap or genMapR
+#' @param pErr equality tolerance for distance calculations
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param optiCrit criterion choice
+#' @param disp 0: no info, 1: some info, 2: detailed info
+#' @param GridData logical value indicating if data are already on a regular grid (no kriging in that case)
 #'
-#' @return a ?
+#' @return a list with components
+#'\describe{
+#' \item{resCrit}{criterion value}
+#' \item{resDist}{list with components matDistance, matDistanceCorr and cost, such as returned by a call to calDistance}
+#' \item{resZ}{list with components zoneN, zoneNModif, listZonePoint, meanTot, meanZone,listSurf, critSurf, zonePolygone, such as the object retruned by calNei
+#' }
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+#' plotZ(ZK$resZ$zonePolygone)
 #' # not run
 initialZoning=function(qProb, map, pErr=0.9,simplitol=1e-3,optiCrit=2,disp=0,GridData=F)
 ##################################################################

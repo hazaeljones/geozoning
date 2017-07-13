@@ -2,23 +2,23 @@
 #' generate data
 #'
 #' @details description, a paragraph
-#' @param DataObj =NULL: simulated data with seed or = a data frame with real data
-#' @param seed numeric,
-#' @param nPoints numeric,
-#' @param typeMod character
-#' @param Vpsill numeric,
-#' @param Vrange numeric,
-#' @param Vmean numeric,
-#' @param Vnugget numeric,
-#' @param boundary list, contains x and y
-#' @param manualBoundary logical,
+#' @param DataObj =NULL: simulated data with given seed or a data frame with real data
+#' @param seed numeric value used to generate simulated data
+#' @param nPoints number of generated raw data points 
+#' @param typeMod type of variogram model (see vgm)
+#' @param Vpsill partial sill in variogram 
+#' @param Vrange variogram range
+#' @param Vmean average data value,
+#' @param Vnugget nugget in variogram,
+#' @param boundary list, contains x and y boundaries
+#' @param manualBoundary logical, if TRUE a manual boundary is drawn.
 #'
 #' @return a list
 #' \describe{
-#' \item{tabData}{tabData}
-#' \item{boundary}{boundary}
-#' \item{modelGen}{modelGen}
-#' \item{VGMmodel}{VGM model}
+#' \item{tabData}{data frame of generated or real data with x,y,z values. x is standardized between 0 and 1, y is standardized with the same ratio used for x }
+#' \item{boundary}{standardized boundary}
+#' \item{VGMmodel}{VGM variogram model}
+#' \item{modelGen}{RM transformed variogram model}
 #' }
 #'
 #' @export
@@ -29,7 +29,7 @@
 #'
 #' @examples
 #' # not run
-#' # resGene=genData(DataObj,0,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE)
+#' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) # simulated data with Gaussian model
 genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,
                  boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
 ##############################################################################
@@ -114,20 +114,22 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     colnames(xyminmaxI)=c("min","max")
   }
 
-  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,modelGen=modelGen,VGMmodel=VGMmodel1))
+  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,VGMmodel=VGMmodel1,modelGen=modelGen)
 }
 
 
 
 #####################################################
-#' compute step for square grid
+#' compute step for non square grid
 #'
-#' @param nPointsK numeric
-#'
-#' @return a numeric
+#' @param nPointsK numeric value giving the number of points after kriging
+#' @param xsize numeric value giving the data range on the x axis
+#' @param ysize numeric value giving the data range on the y axis
+#' @return a numeric step value
 #' @export
 #'
 #' @examples
+#' calStep(1000,1,1)
 #' # not run
 calStep=function(nPointsK,xsize,ysize)
 #####################################################
@@ -144,15 +146,17 @@ calStep=function(nPointsK,xsize,ysize)
 ################################################################
 #' generate grid from raw data
 #'
-#' @param step numeric
-#' @param nKrigE numeric
-#'
+#' @param step numeric step for grid
+#' @param nKrigE numeric value giving the number of points after kriging
+#' @param xsize numeric value giving the data range on the x axis
+#' @param ysize numeric value giving the data range on the y axis
 #' @importFrom sp coordinates
 #'
-#' @return a dataframe that contains kriged positions based on original ones
+#' @return a list that contains x and y kriged positions based on original ones,#' plus nx and ny (number of x and y positions).
 #' @export
 #'
 #' @examples
+#' genEmptyGrid(calStep(1000,1,1),1,1)
 #' # not run
 genEmptyGrid=function(step,xsize,ysize)
 ################################################################
@@ -183,6 +187,9 @@ genEmptyGrid=function(step,xsize,ysize)
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' nB=mapTest$krigN
+#' ptNei(nB)
 #' # not run
 ptNei=function(neighBool)
 ###################################################################

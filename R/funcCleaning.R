@@ -2,15 +2,19 @@
 #' detectSmallZones
 #'
 #' @details description, a paragraph
-#' @param zonePolygone xxxx
-#' @param minSize xxxx
+#' @param zonePolygone list of zones, each zone is a SpatialPolygons
+#' @param minSize zone area threshold under which a zone is too small to be manageable
 #'
-#' @return a ?
+#' @return a vector pf small zones indices
 #' @importFrom rgeos gArea
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' iSmall=detectSmallZones(Z,minSize) # 2 small zones 
 #' # not run
 detectSmallZones=function(zonePolygone,minSize)
 ##############################################
