@@ -1,25 +1,19 @@
 ###############################################################################
 #' zoneGeneration
 #'
-#' @details description, a paragraph
-#' @param map xxxx
-#' @param qProb xxxx
-#' @param GridData xxxx
+#' @details Generates zones from map data using quantile values associated to given probabilities
+#' @param map object returned by function genMap or genMapR
+#' @param qProb probability vector used to generate quantile values
+#' @param GridData logical value indicating if data are already on a regular grid (no kriging in that case)
 #'
-#' @return a ?
+#' @return a list of zones, each zone is a SpatialPolygons
 #'
 #' @export
 #'
 #' @examples
 #' # not run
 zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
-#################################################################################renvoie une liste de polygones,détection grace aux isocontours et quantiles
-
-#entrée:step = intervalle de repartition des points(numeric),
-#       taille en x et y de la map(numeric),vecteur des valeurs des points(numeric),
-#       dataframe des coord.et valeurs des points initiaux(data.frame),matrice des valeurs des pts (krigés par exemple)(matrix),
-#       boundary de la parcelle, quantiles
-#sortie:liste des coordonnées des polygones(list(list(numeric)))
+################################################################################
 # data in matVal argument
 
 {

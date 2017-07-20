@@ -1,5 +1,5 @@
 ###########################################################################
-#' randKmap : todo title of the function in one line
+#' randKmap:  Generate data for zoning or prepare real data
 #'
 #' @details description, a paragraph
 #' @param DataObj =NULL: simulated data with seed or = a data frame with real data

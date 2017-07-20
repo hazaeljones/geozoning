@@ -30,8 +30,9 @@
 #' @examples
 #' # not run
 #' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) # simulated data with Gaussian model
-genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,
-                 boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
+#'
+genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
+#'
 ##############################################################################
 {
   modelGen=NULL #variogram model
@@ -114,7 +115,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     colnames(xyminmaxI)=c("min","max")
   }
 
-  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,VGMmodel=VGMmodel1,modelGen=modelGen)
+  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,VGMmodel=VGMmodel1,modelGen=modelGen))
 }
 
 
@@ -188,8 +189,11 @@ genEmptyGrid=function(step,xsize,ysize)
 #'
 #' @examples
 #' data(mapTest)
-#' nB=mapTest$krigN
-#' ptNei(nB)
+#' grid=genEmptyGrid(calStep(2000,1,1),1,1)
+#' nbP= grid$nx*grid$ny
+#' neighBool=matrix(logical(nbP^2),nbP,nbP)
+#' resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
+#'
 #' # not run
 ptNei=function(neighBool)
 ###################################################################
