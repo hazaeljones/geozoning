@@ -30,6 +30,7 @@
 #' @examples
 #' # not run
 #' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) # simulated data with Gaussian model
+#' plot(resGene$tabData)
 #'
 genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
 #'
@@ -126,7 +127,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 #' @param nPointsK numeric value giving the number of points after kriging
 #' @param xsize numeric value giving the data range on the x axis
 #' @param ysize numeric value giving the data range on the y axis
-#' @return a numeric step value
+#' @return a numerical step value
 #' @export
 #'
 #' @examples
@@ -180,7 +181,7 @@ genEmptyGrid=function(step,xsize,ysize)
 
 
 ####################################################################
-#' returns list of pt neigbors for each pt
+#' returns list of point neigbors for each point
 #'
 #' @param neighBool numeric, boolean neighborhood matrix for pts
 #'
@@ -188,12 +189,13 @@ genEmptyGrid=function(step,xsize,ysize)
 #' @export
 #'
 #' @examples
-#' data(mapTest)
+#' data(mapTest) # simulated data
 #' grid=genEmptyGrid(calStep(2000,1,1),1,1)
 #' nbP= grid$nx*grid$ny
 #' neighBool=matrix(logical(nbP^2),nbP,nbP)
 #' resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
-#'
+#' neighBool=resVoronoi$neighBool
+#' listeNpt=ptNei(neighBool)
 #' # not run
 ptNei=function(neighBool)
 ###################################################################

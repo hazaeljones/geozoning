@@ -11,10 +11,12 @@
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' Z=zoneGeneration(map)
 #' # not run
 zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 ################################################################################
-# data in matVal argument
+# data in map argument
 
 {
   matVal=map$krigGrid
@@ -50,9 +52,9 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
     {
       # On le passe en structure spatiale (2eme structure de données, Objet Spatial)
       cLSp[[jContour]] <- ContourLines2SLDF(list(cL[[jContour]]))
-      # attribut level conserve
-      # tableau temporaire qui remplacera le tableau original
-      # une fois toutes les operations effectuees pour cet isocontour = intersection des polygones existants avec isocontour
+      #  level attribute conserved
+      # starting from frame, intersect with each isocontour
+      # and iterate
 
       listPolyTmp=list()
 
@@ -91,33 +93,30 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 ##############################################################################
 #' contourAuto
 #'
-#' @details description, a paragraph
-#' @param cL xxxx
-#' @param step xxxx
-#' @param matVal xxxx
-#' @param vRef xxxx
-#' @param boundary xxxx
-#' @param GridData xxxx
+#' @details builds contout Lines qith the quantile vector given in argument and closes them with the map border
+#' @param cL empty or existing list of contour lines
+#' @param step grid step as returned by calStep
+#' @param matVal dataframe with data values organized into a grid
+#' @param vRef quantile vector 
+#' @param boundary list, contains x and y boundaries
+#' @param GridData logical value indicating if data are already on a regular grid
 #'
-#' @return a ?
+#' @return a list of contour lines
 #' @importFrom grDevices contourLines
 #' @importFrom sp Line coordinates
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' plot(mapTest$boundary,type="l",col="red")
+#' linesC(cL)
 #' # not run
 contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 ##############################################################################
 {
- #---------------------------------------------------------------------------------------------------------------------------------#
-#fonction qui construit un contour de zones à partir de la liste des isocontours
-# donnees dans matVal
-#entrée:numéro du contour pour ce polygone(numeric),dataframe des positions des points et de leurs valeurs(spDataFrame)
-#   step=ecart entre deux points sur la grille (numeric),taille du frame en x et y(numeric),matrice des valeurs des points krigés(matrix)
-#   liste des contours deja definis pour ce polygone(list(list(numeric))),liste des polygones deja définis(list(list(numeric)))
-#sortie:contour (list(numeric))/à vérifier
-
   # find isocontours (level attribute)
   if(!GridData)
 	cLplus=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),matVal, levels = vRef)
@@ -154,17 +153,25 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 #########################################################################
 #' zoneAssign
 #'
-#' @details description, a paragraph
-#' @param tab xxxx
-#' @param Z xxxx
+#' @details assigns points to zones
+#' @param tab data frame with data values
+#' @param Z zoning object
 #'
 #' @importFrom sp coordinates
 #'
-#' @return a ?
+#' @return a list of points within each zone
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' listZpts=zoneAssign(mapTest$krigData,Z)
+#' #identical to ZK$resZ$listZonePoint
+#' listZptsRaw=zoneAssign(mapTest$rawData,Z)
+#' plotZ(Z)
+#' points(mapTest$rawData[listZptsRaw[[1]],],col="blue") # add raw data for zone 1
 #' # not run
 zoneAssign=function(tab,Z)
 #########################################################################
@@ -222,7 +229,7 @@ zoneAssign=function(tab,Z)
 v=1:nrow(pts)
 us=unlist(listZpt)
 noZ=v[!(v %in% us)]
-# correct by using distances
+# correct by using distances to zones
 for (ind in noZ)
     {
     kk=1
@@ -247,21 +254,29 @@ for (ind in noZ)
 ################################################################################
 #' separationPoly
 #'
-#' @details description, a paragraph
-#' @param polyTot xxxx
+#' @details separates holes and non holes
+#' @param polyTot a SpatialPolygons object
 #'
-#' @return a ?
+#' @return a SpatialPolygons with holes in separate polygons
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' plot(mapTest$boundary,type="l",col="red")
+#' lines(cL[[8]])
+#' pG=polyToSp2(Polygon(mapTest$boundary)) # transform boundary into SpatialPolygons objects
+#' cLSp=ContourLines2SLDF(list(cL[[8]])) # transform contour line into SpatialLines objects
+#' polyBuff=gBuffer(cLSp,width=0.00001) # extend geometry
+#' polyDiff=gDifference(pG,polyBuff)
+#' recupPoly=separationPoly(polyDiff)
+#' Z1=list(recupPoly[[1]],recupPoly[[2]])
+#' plotZ(Z1)
 #' # not run
 separationPoly=function(polyTot)
 ################################################################################
-#fonction qui retourne les différents sous-éléments d'un Spatial Polygons( qui  ne sont pas des trous) normalement 2 au plus,
-#en associant à chacun les bon trous
-#entrée:spatialPolygon
-#sortie: liste de spatialPolygons
 
 {
   # indFull indicates if Polygon has no hole (TRUE) or has holes (FALSE)
@@ -279,7 +294,7 @@ separationPoly=function(polyTot)
   listeCom<-as.numeric(unlist(strsplit(polyCom, " ")))
   indFull=grep(TRUE,listeCom==0)
 
-  # For each polygon wich has no hole, associate holes
+  # For each polygon which has no hole, associate holes
   for(k in (1:length(indFull)))
   {
     i=indFull[k]

@@ -1953,22 +1953,27 @@ findCinZ = function(iC,Z,K,map,vRef,envel)
 ##################################################################
 #' linesC
 #'
-#' @details description, a paragraph
-#' @param listeContour xxxx
-#' @param col xxxx
+#' @details add contour Lines to plot
+#' @param list of contour lines
+#' @param col line color
 #'
-#' @return a ?
+#' @return an empty value
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' plot(mapTest$boundary)
+#' linesC(cL,col="black")
 #' # not run
-linesC = function(listeContour,col="blue")
+linesC = function(listContour,col="blue")
 ##################################################################
 {
-for (i in 1:length(listeContour))
+for (i in 1:length(listContour))
 {
-	lines(listeContour[[i]],col=col)
+	lines(listContour[[i]],col=col)
 	}
 return()
 }
