@@ -2763,3 +2763,37 @@ ptz=rbind(ptz,coordinates(erosion))
 }
 return(ptz)
 }
+#############################
+#' superLines
+#'
+#' @details converts boundary (list of x and y pts) into Spatial Lines
+#' @param boundary list, contains x and y coordinates of map boundaries
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a SpatialLines object
+#'
+#' @export
+#'
+#' @examples
+#' data(mapTest)
+#' superL=superLines(mapTest$boundary)
+#' plot(superL)
+#' # not run
+superLines=function(boundary)
+#############################
+{
+  #transform boundary into SpatialLines
+  boundary = data.frame(boundary)
+  sp::coordinates(boundary)=~x+y
+  bl=Line(coordinates(boundary))
+  bSPL1=SpatialLines(list(Lines(list(bl),'1')))
+  bdLines = bspl@lines[[1]]@Lines[[1]]
+  listBdLines=list(Lines(list(Line(bdLines@coords[1:2,])),'1'))
+  for (i in 2:(length(bdLines@coords)/2-1))
+  {
+    listBdLines[[i]] = Lines(list(Line(bdLines@coords[i:(i+1),])),paste(i))
+  }
+  SuperLines = SpatialLines(listBdLines)
+  return(SuperLines)
+}

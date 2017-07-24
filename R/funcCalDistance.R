@@ -15,7 +15,8 @@
 #'\describe{
 #' \item{matDistance}{matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.}
 #' \item{matDistanceCorr}{corrected distance matrix using pErr}
-#' \item{cost}{sum or erros obtained by replacing all data values within a zone by the zone mean value}
+#' \item{cost}{sum or errors obtained by replacing all data values within a zone by the zone mean value}
+#'}
 #'
 #' @export
 #'

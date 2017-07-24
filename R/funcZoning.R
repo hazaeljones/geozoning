@@ -98,8 +98,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #' @param step grid step as returned by calStep
 #' @param matVal dataframe with data values organized into a grid
 #' @param vRef quantile vector 
-#' @param boundary list, contains x and y boundaries
-#' @param GridData logical value indicating if data are already on a regular grid
+#' @param boundary list, contains x and y dy on a regular grid
 #'
 #' @return a list of contour lines
 #' @importFrom grDevices contourLines
@@ -127,11 +126,9 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
   cL=c(cL,cLplus)
   if(length(cL)==0) return(NULL) # no contour
   
-  boundary = data.frame(boundary)
-  sp::coordinates(boundary)=~x+y
-  bl=Line(coordinates(boundary))
-  bSPL1=SpatialLines(list(Lines(list(bl),'1')))
-
+  # transform boundary into spatial object
+  bdSP =SpatialPoints(boundary)
+  superL=superLines(boundary)
   #for each isocontour, extend it to frame
   for(jContour in (1:length(cL)))
   	{
@@ -142,7 +139,7 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
     	  {
 	  # if contour is not closed, add projection on frame
      	  ######################################################
-	  cL[[jContour]]=extensionLine(iso,step,boundary,bSPL1)
+	  cL[[jContour]]=extensionLine(iso,step,bdSP,superL)
 	  ######################################################
     	  }
  	 }
@@ -306,58 +303,47 @@ separationPoly=function(polyTot)
   return(listePoly)
 }
 
-
 ################################################################################
 #' extensionLine
 #'
-#' @details description, a paragraph
-#' @param contour xxxx
-#' @param step xxxx
-#' @param boundary xxxx
+#' @details closes contour lines by extending them to their interesection with the map border
+#' @param contour contour line
+#' @param step grid step as returned by calStep
+#' @param boundary list, contains x and y coordinates of map boundaries
 #' @param bspl xxxx
 #'
-#' @return a ?
+#' @return a list
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' step=mapTest$step
+#' xsize=mapTest$xsize
+#' ysize=mapTest$ysize
+#' cL=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),mapTest$krigGrid, levels = c(5,7))
+#' plot(mapTest$boundary,type="l",col="red")
+#' lines(cL[[1]])#contour line is not closed
+#' lines(extensionLine(cL[[1]],step,bdSP,superL),col="red") #contour line is closed
 #' # not run
-extensionLine=function(contour=NULL,step=NULL,boundary,bspl)
+extensionLine=function(contourL=NULL,step=NULL,bdSP,superLines)
 ################################################################################
-################################################################################
-#fonction qui complète les lignes définies sur un frame ou x et y appartiennent à l'intervalle [step, 1-step]:rajoute un point correspondant à la projection
-#de leur extrémités sur le frame (0,0) (0,1) (1,1) (0,1)
-
-#entrée:liste contenant x et y (list(numeric)),step=ecart entre les points sur la  grille(numeric),taille du frame en x et y(numeric)
-#sortie:liste de coordonnées de points représentant un contour (list(numeric))
 
 {
-  #gets end pts of contour line
+  #gets end pts of contourL line
+  contourL2=  cbind(contourL$x,contourL$y)
+  colnames(contourL2)=c("x","y")
+  contourL2 = SpatialPoints(contourL2)
 
-  boundary =SpatialPoints(boundary)
-  contour2=  cbind(contour$x,contour$y)
-  colnames(contour2)=c("x","y")
-  contour2 = SpatialPoints(contour2)
-
-  lignes = bspl@lines[[1]]@Lines[[1]]
-
-  listLignes=list(Lines(list(Line(lignes@coords[1:2,])),'1'))
-
-  for (i in 2:(length(lignes@coords)/2-1))
-  {
-    listLignes[[i]] = Lines(list(Line(lignes@coords[i:(i+1),])),paste(i))
-  }
-
-  p3 = contour2[1]
- # p4 = tail(contour2,1)#correction bch septembre 2015
-  p4=contour2[length(contour2)]
-  SuperLines = SpatialLines(listLignes)
+  # extend contour line
+  p3 = contourL2[1]
+  p4=contourL2[length(contourL2)]
   gDist1= gDistance(p3,SuperLines,byid=TRUE)
   gDist2= gDistance(p4,SuperLines, byid=TRUE)
   indMin1 = which.min(gDist1)
   indMin2 = which.min(gDist2)
 
-  right1 = boundary[indMin1:(indMin1+1)]
+  right1 = bdSP[indMin1:(indMin1+1)]
 
   p1 = right1[1,]
   p2 = right1[2,]
@@ -365,49 +351,19 @@ extensionLine=function(contour=NULL,step=NULL,boundary,bspl)
   x3 = p1$x + u*(p2$x-p1$x)
   y3 = p1$y + u*(p2$y-p1$y)
 
-  right2 = boundary[indMin2:(indMin2+1)]
+  right2 = bdSP[indMin2:(indMin2+1)]
   p1 = right2[1,]
   p2 = right2[2,]
   u = ((p4$x - p1$x)*(p2$x - p1$x)+ (p4$y - p1$y)*(p2$y - p1$y)) / ((p2$x-p1$x)^2+(p2$y-p1$y)^2)
   x4 = p1$x + u*(p2$x-p1$x)
   y4 = p1$y + u*(p2$y-p1$y)
 
-  contour$x = c(x3,contour$x,x4)
-  contour$y = c(y3,contour$y,y4)
+  contourL$x = c(x3,contourL$x,x4)
+  contourL$y = c(y3,contourL$y,y4)
   #necessary to avoid duplicate rownames
-  names(contour$x)=NULL
-  names(contour$y)=NULL
+  names(contourL$x)=NULL
+  names(contourL$y)=NULL
 
-  return(contour)
+  return(contourL)
 }
-
-#PHi's function
-zoneAssign2=function(tab,Z)
-{
-  #nb zones
-  nbZ=length(Z)
-  point_Zone = c()
-  #n data points
-  n=nrow(tab)
-
-  for(i in 1:n){
-    x = tab@coords[i,1]
-    y = tab@coords[i,2]
-    point = readWKT(paste("POINT(",x,y,")"))
-    dist = c()
-    for(j in 1:nbZ){
-      d = gDistance(point,Z[[j]])
-      dist = c(dist, d)
-    }
-    point_Zone = c(point_Zone, which.min(dist))
-  }
-
-  listZpt= list()
-  for (i in 1:nbZ)
-  {
-      listZpt[[i]] = which(point_Zone ==i )
-  }
-  return(listZpt)
-}
-
 
