@@ -280,15 +280,16 @@ getSurf=function(Z,iZ)
 ##################################################################
 #' printZsurf
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param minSize xxxx
+#' @details print zone surfaces
+#' @param Z list of SpatialPloygons
+#' @param minSize alarm size threshold
 #'
-#' @return a ?
+#' @return a vector of small zone indices
 #'
 #' @export
 #'
 #' @examples
+
 #' # not run
 printZsurf=function(Z,minSize=0.012)
 ##################################################################
@@ -307,7 +308,10 @@ printZsurf=function(Z,minSize=0.012)
 		gas=c(gas,ga)
 		}
 	}
-return(smallZ[order(gas)])
+if (!is.null(gas))
+   return(smallZ[order(gas)])
+   else
+   return(NULL)
 }
 
 ############################
@@ -503,4 +507,25 @@ if(length(n2)>0) mat=rbind(mat,c(ptnum,n2))
 }
 colnames(mat)=c("ptZ1","ptNZ2")
 return(mat)
+}
+##################################################################
+#' getNs
+#'
+#' @details get zone numbers of neighbors of a given zone
+#' @param zoneNModif zone neighborhood Logical matrix  
+#' @param iZ index of current zone in zoning
+#'
+#' @return a Logical vector of current zone neighbors
+#'
+#' @export
+#'
+#' @examples
+#' data(mapTest)
+#' K=resZTest
+#' Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
+##################################################################
+getNs=function(zoneNModif,iZ)
+{
+  Ns=zoneNModif[iZ,]
+  return(Ns)
 }

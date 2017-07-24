@@ -1,28 +1,37 @@
 ###########################################################
 #' optiRG
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param K xxxx
-#' @param map xxxx
-#' @param iC xxxx
-#' @param iZC xxxx
-#' @param simplitol xxxx
-#' @param disp xxxx
+#' @details join two zones close to each other
+#' @param K zoning object (such as returned by calNei function)
+#' @param map object returned by function genMap or genMapR
+#' @param iC first zone
+#' @param iZC second zone
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param disp 0: no info, 1: detailed info
 #'
-#' @return a ?
+#' @return a zoning object
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' qProb=c(0.2,0.5)
+#' ZK = initialZoning(qProb, mapTest)
+#' K=ZK$resZ
+#' Z=K$zonePolygone
+#' plotZ(K$zonePolygone) # zone
+#' kmi=optiRG(K,mapTest,6,8,disp=1)
+#' #zones 6 and 8 are joined into new zone 7
+#' plot(kmi$zonePolygone[[7]],col="red",add=T)
 #' # not run
-optiRG = function(Z,K,map,iC, iZC,simplitol,disp=0)
+optiRG = function(K,map,iC, iZC,simplitol=1e-3,disp=0)
 ###########################################################
 {
 #regroup (aggregate) 2 close zones iC and iZC
-# swap zones -> petite en premier
+# swap zones -> smaller one first
 #
- if (gArea(Z[[iZC]])<=gArea(Z[[iC]]))#zone proche plus petite - on echange les 2 pour le regroupement
+ Z=K$zonePolygone
+ if (gArea(Z[[iZC]])<=gArea(Z[[iC]]))
                        {
 		       tmp=iC
 		       iC = iZC
@@ -49,13 +58,6 @@ optiRG = function(Z,K,map,iC, iZC,simplitol,disp=0)
   polyUni =gUnion(Zopti[[iC]],spi)
   #add pts of close zone that lie between intersection pts
   polyUni@pointobj@coords = rbind(polyUni@pointobj@coords,Zopti[[iZC]]@polygons[[1]]@Polygons[[1]]@coords[ord,])
-
-
-  #Attention il peut y avoir un bug à cause de ça. En effet lenveloppe convexe peut empieter sur une zone incluse dans la zone
-  #dindice courant. Il peut en résulter un changement daffectation de point qui fait que la zone incluse na plus de points.
-  #cette zone se retrouve donc eliminée par la fonction calNei au prochain appel. --> erreur
-  #solution : il faut modifier foncRegroup pour faire en sorte que si on se trouve dans un tel cas de figure, on fasse quelque chose de
-  #different.
 
   polyUni=gConvexHull(polyUni)
 
@@ -128,14 +130,16 @@ optiRG = function(Z,K,map,iC, iZC,simplitol,disp=0)
 # create comments for holes
   Zopti=crComment(Zopti)
   Kopti = calNei(Zopti,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
+  Kopti=trLabZone(K,Kopti,Z,Zopti,map,qProb,disp=0)
+  Kopti$qProb=K$qProb
   Zopti = Kopti$zonePolygone
 # find merged zone number in new zoning
   index=findNumZ(Zopti,idZC)
 # must not intersect with other zones except itself and included zones
   inter=testInterSpeZ1(Zopti,index)
 #
-  if(inter) Zopti=NULL
+  if(inter) Kopti=NULL
 
-  return(Zopti)
+  return(Kopti)
 }
 

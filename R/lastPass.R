@@ -2,27 +2,41 @@
 #' lastPass
 #'
 #' @details description, a paragraph
-#' @param carte xxxx
-#' @param qProb xxxx
-#' @param listOfZ xxxx
-#' @param crit xxxx
-#' @param cost xxxx
-#' @param costL xxxx
-#' @param nz xxxx
-#' @param mdist xxxx
-#' @param pErr xxxx
-#' @param optiCrit xxxx
-#' @param minSize xxxx
-#' @param simplitol xxxx
-#' @param disp xxxx
+#' @param map object returned by function genMap or genMapR
+#' @param qProb probability vector used to generate quantile values
+#' @param listOfZ list of zoning objects (such as returned by calNei function)
+#' @param crit criterion value list
+#' @param cost cost value list
+#' @param costL cost per lable value list
+#' @param nz number of zones list
+#' @param mdist distance matrix list
+#' @param pErr equality tolerance for distance calculations
+#' @param optiCrit criterion choice
+#' @param minSize zone area threshold under which a zone is too small to be manageable
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param disp 0: no info, 1: detailed info
 #'
-#' @return a ?
+#' @return a list with components
+#'\describe{
+#' \item{listZ}{list of zoning objects (such as returned by calNei function)
+#' \item{crit}{criterion value list}
+#' \item{cost}{cost value list}
+#' \item{costL}{cost per label value list}
+#' \item{nz}{number of zones list}
+#' \item{mdist{distance matrix list}
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' criti=correctionTree(c(0.4,0.7),mapTest,LASTPASS=FALSE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+#' Z=criti$zk[[1]][[1]]$zonePolygone #initial zoning
+#' printZsurf(Z) # 8 zones with 2 small zones (7 and 8)
+#' newRes=lastPass(mapTest,c(0.4,0.7),criti$zk[1],criti$criterion[1],criti$cost[1],criti$costL[1],criti$nz[1],criti$mdist[1])
+#' newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
+#' printZsurf(newZ) # 6 zones
 #' # not run
-lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,minSize,simplitol,disp=F)
+lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2,minSize=0.012,simplitol=1e-3,disp=F)
 ###########################################################################
 # simply remove zones of last level zonings that are too small and recalculate criteria
 #

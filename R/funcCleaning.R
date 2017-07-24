@@ -210,7 +210,7 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 #'
 #' @examples
 #' # not run
-zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp=0)
+zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp=0)
 ############################################################################
 {
 	## On va lancer une procedure optimisation pour determiner la taille de lagrandissement
@@ -220,7 +220,8 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
 	# if zone very small, skip (useless) growing step
 	# param minSizeNG in initParam.R
 	if(disp>0) print(paste("trying to grow zone",getZoneId(Z[[iC]])))
-
+#
+  Z=K$zonePolygone
   refSurf = gArea(Z[[iC]])
 	if (refSurf < minSizeNG) return(NULL)
 
@@ -242,7 +243,7 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
     ##############################################################
 	  #fonction qui trouve le meilleur quantile pour agrandir la zone
     ##############################################################
-    resZ = optiGrow(Z,K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+    resZ = optiGrow(K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
 		# renvoie NULL si voie sans issue
 		if (!is.null(resZ))
 		{
@@ -258,9 +259,10 @@ zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAX
 	   if (length(zoneClose)==0) return(NULL) # no close zone
 	   if (disp>0) print(paste("growing non isolated zone ",getZoneId(Z[[iC]]), "(close to zone",getZoneId(Z[[zoneClose[[1]]]]),")"))
      # reuse zoneClose
-     Zopti = zoneModifnonIso(Z,K,qProb,map,zoneClose,iC,simplitol,disp)
-	 	 # create comments for holes
-		 Zopti = crComment(Zopti)
+     Kopti = zoneModifnonIso(K,qProb,map,zoneClose,iC,simplitol,disp)
+     # create comments for holes
+     if (!is.null(Kopti$zonePolygone)) Zopti = crComment(Kopti$zonePolygone)
+     Kopti$zonePolygone=Zopti
 	}
   ##########################################################
 

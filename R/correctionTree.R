@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest) # run zoning with 2 quantiles corresponding to probability values 0.4 an 0.7
+#' criti=correctionTree(c(0.4,0.7),mapTest) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
 #'
 correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,
                         simplitol=1e-3,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE,ALL=FALSE)
@@ -175,7 +175,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
 
         checkSize=TRUE
         disparition = FALSE
-        ##On doit faire 2 copies du zonage, une pour la suppression, lautre pour lagrandissement
+        ##2 copies of current zoning, first for removal, 2nd for growing
 	K=listOfZ[[indCur]][[iter]]
         zpCopy1 = K$zonePolygone
         zpCopy2 = zpCopy1
@@ -208,7 +208,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
          if(disp>0) print(paste(length(zpCopy1)," polygons after zone merging"))
          # 2 = grow zone indZS
 
-      	 zpCopy2 = zoneGrow(zpCopy2,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+      	 zpCopy2 = zoneGrow(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
          if (disp>0) print(paste(length(zpCopy2)," polygons after zone growing"))
          ###############################################################################################
         } # end else disparition

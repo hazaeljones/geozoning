@@ -338,8 +338,8 @@ extensionLine=function(contourL=NULL,step=NULL,bdSP,superLines)
   # extend contour line
   p3 = contourL2[1]
   p4=contourL2[length(contourL2)]
-  gDist1= gDistance(p3,SuperLines,byid=TRUE)
-  gDist2= gDistance(p4,SuperLines, byid=TRUE)
+  gDist1= gDistance(p3,superLines,byid=TRUE)
+  gDist2= gDistance(p4,superLines, byid=TRUE)
   indMin1 = which.min(gDist1)
   indMin2 = which.min(gDist2)
 

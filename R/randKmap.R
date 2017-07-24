@@ -2,22 +2,7 @@
 #' randKmap:  Generate data for zoning or prepare real data
 #'
 #' @details description, a paragraph
-#' @param DataObj =NULL: simulated data with seed or = a data frame with real data
-#' @param seed numeric, seed
-#' @param nPoints numeric, number of points, default 450
-#' @param nPointsK numeric, default 2000
-#' @param nSimuCond numeric
-#' @param typeMod character, model type
-#' @param Vpsill numeric, default 5
-#' @param Vrange numeric, default 0.2
-#' @param Vmean numeric, default 8
-#' @param Vnugget numeric, default 0
-#' @param boundary list contains x and y
-#' @param manualBoundary logical, default FALSE
-#' @param krig numeric
-#' @param disp numeric
-#' @param FULL logical, if TRUE the returned list is complete
-#'
+
 #' @return a list
 #' \describe{
 #' \item{rawData}{rawData}
@@ -38,10 +23,12 @@
 #'
 #' @examples
 #' # not run
-#' # map<-randKmap(DataObj,seed=seed,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,krig=1,disp=0,FULL=FALSE)
+#' map = randKmap(DataObj,seed=5,Vpsill=8,Vrange=0.2,Vnugget=0.5,Vmean=5,krig=2)
 #'
-randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,
-                  boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE,krig=1,disp=0,FULL=FALSE)
+randKmap=function(DataObj,seed=NULL,nPointsK=200,nSimuCond=0,typeMod="Gau",
+		      Vpsill=5,Vrange=0.2,
+                      Vmean=8,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),
+                      manualBoundary=FALSE,krig=1,disp=0,FULL=FALSE)
 ###########################################################################
 {
 
@@ -134,7 +121,7 @@ randKmap=function(DataObj,seed,nPoints=450,nPointsK=2000,nSimuCond=0,typeMod="Ga
       	surfVoronoiB=surfVoronoiNaB[rawDataNa$ptsIns!=0]
       	neighNaB=resVoronoiB$neighBool     
       	neighB=neighNaB[rawDataNa!=0,rawDataNa!=0]
-      	ptNB = vL(neighB)
+      	ptNB = ptNei(neighB)
        }
 
       # conditional simulation - to be added

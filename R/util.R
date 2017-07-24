@@ -2787,7 +2787,7 @@ superLines=function(boundary)
   boundary = data.frame(boundary)
   sp::coordinates(boundary)=~x+y
   bl=Line(coordinates(boundary))
-  bSPL1=SpatialLines(list(Lines(list(bl),'1')))
+  bspl=SpatialLines(list(Lines(list(bl),'1')))
   bdLines = bspl@lines[[1]]@Lines[[1]]
   listBdLines=list(Lines(list(Line(bdLines@coords[1:2,])),'1'))
   for (i in 2:(length(bdLines@coords)/2-1))
