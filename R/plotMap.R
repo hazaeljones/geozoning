@@ -1,7 +1,8 @@
 ##########################
 #' plot a map
 #'
-#' @param map a map
+#' @details plot 3 different graphics of a map object
+#' @param map a map object, such as returned by genMap
 #'
 #' @return a plot
 #'
@@ -10,6 +11,8 @@
 #' @importFrom graphics contour image locator par plot points
 #'
 #' @examples
+#' m=genMap(seed=1,krig=2,disp=0)
+#' plotMap(m)
 #' # not run
 #'
 plotMap=function(map)

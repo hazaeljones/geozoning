@@ -25,9 +25,11 @@
 #' # not run
 #' map = randKmap(DataObj,seed=5,Vpsill=8,Vrange=0.2,Vnugget=0.5,Vmean=5,krig=2)
 #'
-randKmap=function(DataObj,seed=NULL,nPointsK=200,nSimuCond=0,typeMod="Gau",
+randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000,
+		      nSimuCond=0,typeMod="Gau",
 		      Vpsill=5,Vrange=0.2,
-                      Vmean=8,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),
+                      Vmean=8,Vnugget=0,
+		      boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),
                       manualBoundary=FALSE,krig=1,disp=0,FULL=FALSE)
 ###########################################################################
 {

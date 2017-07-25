@@ -1,18 +1,19 @@
 ##################################################################
 #' saveZoningFromSimu
 #'
-#' @details description, a paragraph
-#' @param seed xxxx
-#' @param qProb xxxx
-#' @param disp xxxx
+#' @details computes initial zoning obtained from simulation and saves it with map data in R object
+#' @param seed simulation seed
+#' @param qProb vector of probabilities values used for quantiles
+#' @param disp 0: no info, 1: plot zoning
+#' @param file: filename for saved R object
 #'
-#' @return a ?
+#' @return an empty value
 #'
 #' @export
 #'
 #' @examples
 #' # not run
-saveZoningFromSimu=function(seed=80,qProb=0.4,disp=disp)
+saveZoningFromSimu=function(seed=80,qProb=0.4,disp=disp,file="Z.Rdata")
 ##################################################################
 {
 
@@ -22,12 +23,6 @@ saveZoningFromSimu=function(seed=80,qProb=0.4,disp=disp)
   # sinon DataObj=data frame des donnees x y z
   # si spatial data point, le transformer en data frame avant l'appel
   map=genMap(DataObj=NULL,seed=seed,disp=disp)
-  # genMap returns:
-  #           les donnees brutes dans map$tabAlea, qui est un SpatialPointsDataFrame
-  #           les surfaces des polyg. de Voronoi dans map$surfaceVoronoi
-  #           les donnees krigees dans map$krigTabAlea, qui est un SpatialPointsDataFrame
-  #           le variogramme dans map$fitVarioAlea
-  #           le dataset cree ou lu dans DataObj
   if(disp) plotMap(map) # affiche les donnees brutes de la map qui doit etre zonee
   # IS 19/05/2017: add comment for x11
   #if(disp) x11()
@@ -39,7 +34,7 @@ saveZoningFromSimu=function(seed=80,qProb=0.4,disp=disp)
   ZPS=resZ$zonePolygone
   NBZ=length(ZPS)
 
-  save(ZPS,NBZ, seed,map,resZ,file="Z.Rdata")
+  save(ZPS,NBZ, seed,map,resZ,file=file)
   print("results saved in Z.Rdata")
   print(paste("Crit=",round(ZK$resCrit,3)))#valeur du critere
 

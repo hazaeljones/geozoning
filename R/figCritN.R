@@ -1,33 +1,34 @@
 #########################################################
 #' figCritN
 #'
-#' @details description, a paragraph
-#' @param seed xxxx
-#' @param m1 xxxx
-#' @param m2 xxxx
-#' @param m3 xxxx
-#' @param m4 xxxx
-#' @param m5 xxxx
-#' @param NEW xxxx
-#' @param ONE xxxx
-#' @param title xxxx
-#' @param pdf xxxx
+#' @details  reads loopQ1-5 results, filters results by keeping th best criteria ) and plots them together with corresponding costs.
+#' @param seed 
+#' @param m1 dataset with loopQ1 results
+#' @param m2 dataset with loopQ2 results
+#' @param m3 dataset with loopQ3 results
+#' @param m4 dataset with loopQ4 results
+#' @param m5 dataset with loopQ5 results
+#' @param NEW new plot
+#' @param ONE single plot
+#' @param title plot title
+#' @param pdf pdf file name
 #'
-#' @return a plot
+#' @return a vector of probabilities corresponding to best results
 #'
 #' @export
 #'
 #' @examples
+#' assuming that loopQ results for seed 33 were saved in RESD directory
+#' figCritN(seed=33,basefile="RESD/res-simuseed")
 #' # not run
-figCritN=function(seed=89,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL)
+figCritN=function(seed=89,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL,basefile="res-simuseed")
 #########################################################
 {
- if(is.null(m1)) m1=read.table(paste("res-simuseed",seed,"-1q-pE",pourcErr,".csv",sep=""))
-if(is.null(m2)) m2=read.table(paste("res-simuseed",seed,"-2q-pE",pourcErr,".csv",sep=""))
-if(is.null(m3)) m3=read.table(paste("res-simuseed",seed,"-3q-pE",pourcErr,".csv",sep=""))
-if(is.null(m4)) m4=read.table(paste("res-simuseed",seed,"-4q-pE",pourcErr,".csv",sep=""))
-if(is.null(m5)) m5=read.table(paste("res-simuseed",seed,"-5q-pE",pourcErr,".csv",sep=""))
-# simus- recup matrices 1q 2q 3q 4q - plot avec
+ if(is.null(m1)) m1=read.table(paste(basefile,seed,"-1q-pE",pErr,".csv",sep=""))
+if(is.null(m2)) m2=read.table(paste(basefile,seed,"-2q-pE",pErr,".csv",sep=""))
+if(is.null(m3)) m3=read.table(paste(basefile,seed,"-3q-pE",pErr,".csv",sep=""))
+if(is.null(m4)) m4=read.table(paste(basefile,seed,"-4q-pE",pErr,".csv",sep=""))
+if(is.null(m5)) m5=read.table(paste(basefile,seed,"-5q-pE",pErr,".csv",sep=""))
 # en x nq
 # en y pour chaque q, crit (noir) et cost(rouge)
 # tels que (max(crit)-crit) <=maxd

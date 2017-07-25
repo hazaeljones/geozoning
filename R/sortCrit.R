@@ -1,25 +1,43 @@
 ###############################################################################
-#' sortCrit
+#' sortCrit called by correctionTree
 #'
-#' @details description, a paragraph
-#' @param qProb xxxx
-#' @param crit xxxx
-#' @param cost xxxx
-#' @param costL xxxx
-#' @param nz xxxx
-#' @param mdist xxxx
-#' @param listOfZ xxxx
-#' @param map xxxx
-#' @param disp xxxx
-#' @param SAVE xxxx
+#' @details sort last level criteria from list of zonings, return criteria and list of zonings if SAVE=TRUE, otherwise only return last level criteria
+#' @param qProb probability vector used to generate quantile values
+#' @param crit list of criteria
+#' @param cost  list of costs
+#' @param costL list of per label costs 
+#' @param nz list of number of zones 
+#' @param mdist list of distance matrices
+#' @param listOfZ list of zoning objects
+#' @param map object returned by function genMap or genMapR
+#' @param disp 0: no info, 1: plot best corrected zoning
+#' @param SAVE logical value, if TRUE function returns more elements
 #'
-#' @return a ?
+#' @return a list with components
+#'\describe{
+#' \item{bestcrit}{best criterion value at last level}
+#' \item{critList}{criterion values at last level}
+#' \item{costList}{cost values at last level}
+#' \item{costLList}{cost per label  values at last level}
+#' \item{nzList}{vector of number of zones at last level}
+#' \item{qProb}{vector of probabilities values used for quantiles}
+#' \item{zk}{(SAVE=TRUE) list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects}
+#' \item{mdist}{(SAVE=TRUE) list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
+#' \item{crit}{(SAVE=TRUE) list of initial criterion and all (last if ALL=FALSE) level criteria }
+#' \item{cost}{(SAVE=TRUE) list of initial cost and all (last if ALL=FALSE) level costs  }
+#' \item{costL}{(SAVE=TRUE) list of initial cost per label and all (last if ALL=FALSE) level costs per label}
+#' \item{nz}{(SAVE=TRUE) list of initial number of zones and all (last if ALL=FALSE) level number of zones}
+#' }
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' qProb=c(0.4,0.7)
+#' criti=correctionTree(qProb,mapTest)
+#' sortCrit(qProb,criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist,criti$zk,mapTest) # displays best criterion, corresponding costs and number of zones
 #' # not run
-sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE=FALSE)
+sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp=0,SAVE=FALSE)
 ###############################################################################
 {
   # for optim, single result required (crit)
@@ -59,11 +77,6 @@ sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE=FALSE)
       costList=best$costList
       costLList=best$costLList
       nzList=best$nzList
-      #save all criterion results for final level
-      #critList<<-critList
-      #costList <<- costList
-      #costLList <<- costLList
-      #nzList <<- nzList
 
       # best crit for non degenerated qs
       # if there is none, then best of best for all qs
@@ -90,7 +103,6 @@ sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp,SAVE=FALSE)
       bestZ=bestK$zonePolygone
       bestmdist=mdist[[le]][[ind]]
       #
-      #if(SAVE) bestZ<<-bestZ
     }
   } #end while
   # plot best corrected zoning

@@ -1,11 +1,11 @@
 ###############################################################
 #' readS returns coords, ranges for x and y of a shapefile
 #'
-#' @details description, a paragraph
+#' @details reads a polygon shp file in a directory and extracts coordinates and x and y ranges.
 #' @param file file name
-#' @param rep directory
+#' @param dir directory
 #'
-#' @return a ?
+#' @return a list with coords, ranges for x and y
 #' @importFrom raster shapefile
 #'
 #' @export
@@ -13,18 +13,18 @@
 #' @examples
 #' # not run
 ###############################################################
-readS = function(file, rep)
+readS = function(file, dir)
 {
   #read shp file
-  nom = paste(rep,file, sep = "")
+  name = paste(dir,file, sep = "")
 
-  if(file.exists(nom))
+  if(file.exists(name))
   {
-    #shape1 <- readOGR(dsn = rep, layer = file)
-    #shape1 <-readOGR(dsn=path.expand(nom), layer=file)
+    #shape1 <- readOGR(dsn = dir, layer = file)
+    #shape1 <-readOGR(dsn=path.expand(name), layer=file)
 
     # to avoid bugs with readOGR...
-    shape1 <- shapefile(nom)
+    shape1 <- shapefile(name)
 
     #obtention of coords
     p = shape1@polygons[[1]]
@@ -33,7 +33,7 @@ readS = function(file, rep)
 
     xlim=range(p2[,1])
     ylim=range(p2[,2])
-    # return list with coord, ranges for x and y
+    # return list with coords, ranges for x and y
     return(list(p=p2, xlim = xlim, ylim = ylim,sp=shape1))
   }
   else

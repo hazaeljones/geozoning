@@ -30,7 +30,8 @@
 #' \item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
 #' \item{crit}{list of initial criterion and all (last if ALL=FALSE) level criteria }
 #' \item{cost}{list of initial cost and all (last if ALL=FALSE) level costs }
-#' \item{costL}{list of initial cost per label and all (last if ALL=FALSE) level vcosts per label}
+#' \item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label}
+#' \item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones}
 #' }
 #' @importFrom rgeos gArea
 #'
