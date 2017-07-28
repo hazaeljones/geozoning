@@ -1,6 +1,7 @@
 #' calDistance
 #'
 #' @details calculates matrix of heterogeneities between neighbour zones.
+#' max(sigmai2[i],(fxmean*pErr/100)^2) + max(sigmai2[j],(fymean*pErr/100)^2) + (fxmean-fymean)^2
 #' @param typedist default value is 1, other values not implemented yet.
 #' @param zoneN zone neighborhood matrix (TRUE values on diagonal), result of call to \code{\link{calNei}}
 #' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
@@ -9,7 +10,6 @@
 #' @param surfVoronoi vector of Voronoi polygon surfaces corresponding to all data points,result of call to \code{\link{genMap}}
 #' @param meanZone vector of average attribute values for all zones
 #' @param pErr error percentage for correcting distances
-#' max(sigmai2[i],(fxmean*pErr/100)^2) + max(sigmai2[j],(fymean*pErr/100)^2) + (fxmean-fymean)^2
 #'
 #' @return a list with components
 #'\describe{
