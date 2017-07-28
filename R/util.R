@@ -1184,7 +1184,7 @@ calczf = function(qProb,map,optiCrit,minSize,minSizeNG,disp=0,pdf1=NULL,FULL=FAL
 #'
 #' @examples
 #' # not run
-checkContour = function(contourSp,step,refPoint,minSizeNG)
+checkContour = function(contourSp,step,refPoint,minSizeNG=1e-3)
 ##################################################################
 {
 	#  contourSp  spatial object
@@ -1914,21 +1914,22 @@ findCinZ = function(iC,Z,K,map,vRef,envel)
   # init
   area=0
   #
-  listeContour=list()
-  listeContour = contourAuto(listeContour,map$step,map$xsize,map$ysize,map$krigGrid,vRef,map$boundary)
+  listContour=list()
+  listContour = contourAuto(listContour,map$step,map$xsize,map$ysize,map$krigGrid,vRef,map$boundary)
 
   # intersect contour with boundary
   # and transform contours into sps
   sp=list()
   k=0
-  for (cont in listeContour)
+  for (cont in listContour)
   {
      k=k+1
      ps = interCB(cont,map$step,envel=envel)
      # returns NULL is contour is degenerate (single point)
      if(!is.null(ps)) sp[[k]]=ps else k=k-1
   }
-
+  if (length(sp)==0) return(NULL)
+  
   # check which one contains current zone
   spb = sapply(sp,gBuffer,width=1e-3)
   gc = sapply(spb,gContains,Z[[iC]])

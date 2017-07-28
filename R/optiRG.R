@@ -24,13 +24,14 @@
 #' #zones 6 and 8 are joined into new zone 7
 #' plot(kmi$zonePolygone[[7]],col="red",add=T)
 #' # not run
-optiRG = function(K,map,iC, iZC,simplitol=1e-3,disp=0)
+optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
 ###########################################################
 {
 #regroup (aggregate) 2 close zones iC and iZC
 # swap zones -> smaller one first
 #
  Z=K$zonePolygone
+ qProb=K$qProb
  if (gArea(Z[[iZC]])<=gArea(Z[[iC]]))
                        {
 		       tmp=iC
@@ -96,7 +97,7 @@ optiRG = function(K,map,iC, iZC,simplitol=1e-3,disp=0)
   if (le >2) # msg from separationPoly, save elements to test and exit
   # if more than one (non hole) polygon there is an intersection pb
   {
-	if (disp >0) print("pb in optiRG")
+	if (disp >0) print("pb in optiRG - no junction")
 	Zoptipb <<-Zopti
 	Zpb <<- Z
 	indpbZE <<- iZE
@@ -130,9 +131,9 @@ optiRG = function(K,map,iC, iZC,simplitol=1e-3,disp=0)
 # create comments for holes
   Zopti=crComment(Zopti)
   Kopti = calNei(Zopti,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
+  Zopti = Kopti$zonePolygone
   Kopti=trLabZone(K,Kopti,Z,Zopti,map,qProb,disp=0)
   Kopti$qProb=K$qProb
-  Zopti = Kopti$zonePolygone
 # find merged zone number in new zoning
   index=findNumZ(Zopti,idZC)
 # must not intersect with other zones except itself and included zones

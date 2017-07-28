@@ -1,23 +1,34 @@
-##################################################################
+#############################################################################
 #' zoneQ
 #'
-#' @details description, a paragraph
-#' @param contourSp xxxx
-#' @param iC xxxx
-#' @param iE xxxx
-#' @param Z xxxx
-#' @param K xxxx
-#' @param map xxxx
-#' @param simplitol xxxx
-#'
-#' @return a ?
-#' @importFrom rgeos createSPComment
-#'
+#' @details called by optiGrow,replaces the current zone by a bigger one
+#' @param contourSp contour line transformed into SpatialPolygons 
+#' @param iC zone to grow
+#' @param iE englobing zone
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param K zoning object (such as returned by calNei function)
+#' @param map object returned by function genMap or genMapR
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @return a zoning geometry updated with the grown zone(list of SpatialPolygons)
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' qProb=c(0.3,0.5)
+#' criti = correctionTree(qProb,mapTest)
+#' K = criti$zk[[2]][[8]]
+#' Z=K$zonePolygone
+#' plotZ(Z)
+#' iC=4
+#' iE=detZoneEng(iC,Z,K$zoneNModif)
+#' envel=calFrame(iC,Z,K$zoneNModif,distIsoZ)
+#' plot(envel,add=TRUE,col="blue"
+#' Qseq = genQseq(qProb,K,mapTest,iC,iE)
+#' resi = findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
+#' Zopti=zoneQ(resi$contourSp,iC,iE,Z,K,mapTest)
+#' plotZ(Zopti)
 #' # not run
-zoneQ = function (contourSp,iC,iE,Z,K,map,simplitol)
+zoneQ = function (contourSp,iC,iE,Z,K,map,simplitol=1e-3)
 ##################################################################
 {
 	# add one contour to replace zone in existing zoning

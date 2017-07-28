@@ -22,16 +22,17 @@
 #'
 #' @return a list
 #' \describe{
-#' \item{rawData}{rawData}
-#' \item{step}{step}
-#' \item{krigData}{krigData}
-#' \item{krigGrid}{krigGrid}
-#' \item{krigN}{krigN}
-#' \item{krigSurfVoronoi}{krigSurfVoronoi}
-#' \item{modelGen}{modelGen}
-#' \item{VGMmodel}{VGMmodel}
-#' \item{boundary}{boundary}
+#' \item{rawData}{simulated or real raw data within the boundary}
+#' \item{step}{grid step}
+#' \item{krigData}{kriged data}
+#' \item{krigGrid}{kriged data in form of grid}
+#' \item{krigN}{kriged neighbours of each data point}
+#' \item{krigSurfVoronoi}{areas of Voronoi polygons in the tesselation of kriged data}
+#' \item{modelGen}{random fields model}
+#' \item{VGMmodel}{vgm model}
+#' \item{boundary}{(x,y) list of boundary points}
 #' }
+#'
 #' @export
 #'
 #' @examples

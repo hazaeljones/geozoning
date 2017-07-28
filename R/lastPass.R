@@ -79,7 +79,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2
 		# keep the final result
 	     if(length(vNum)>0) # then update zoning kk
 	        {
-		ZK = updateZK(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K0,Z0,Z3,pErr,optiCrit,simplitol) # updates listOfZ, crit,mdist
+		ZK = updateZK(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K0,Z3,pErr,optiCrit,simplitol) # updates listOfZ, crit,mdist
 		
 		listOfZ= ZK$listOfZ
 		mdist= ZK$mdist

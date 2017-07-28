@@ -1,21 +1,20 @@
 ####################################################################################################
-#' updateZK
+#' updateZK called by lastPass
 #'
-#' @details description, a paragraph
-#' @param map xxxx
-#' @param qProb xxxx
-#' @param le xxxx
-#' @param kk xxxx
-#' @param listOfZ xxxx
-#' @param crit xxxx
-#' @param cost xxxx
-#' @param costL xxxx
-#' @param nz xxxx
-#' @param mdist xxxx
-#' @param K1 xxxx
-#' @param Z1 xxxx
+#' @details Given a map object, a list of zonings, a current and a previous zoning, replaces a zoning in the list of zonings
+#' @param map object returned by function genMap or genMapR
+#' @param qProb probability vector used to generate quantile values
+#' @param le index of current level in list
+#' @param kk index of current zoning in level list
+#' @param listOfZ list of zoning objects
+#' @param crit list of criteria
+#' @param cost list of costs
+#' @param costL list of per label costs
+#' @param nz list of number of zones 
+#' @param mdist list of distance matrices
+#' @param K1 zoning to be replaced
 #' @param Z2 xxxx
-#' @param pErr xxxx
+#' @param pErr equality tolerance for distance calculations
 #' @param optiCrit xxxx
 #' @param simplitol xxxx
 #'
@@ -25,11 +24,11 @@
 #'
 #' @examples
 #' # not run
-updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z1,Z2,pErr,optiCrit,simplitol)
+updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z2,pErr,optiCrit,simplitol)
 ####################################################################################################
 {
 # replace zoning Z1,K1 with Z2
-
+Z1=K1$zonePolygone
 # clean current zoning Z2
 # yields Z2 - 0 pt or 1 pt zones may disappear
         K2=calNei(Z2,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)

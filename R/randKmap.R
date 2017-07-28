@@ -1,36 +1,45 @@
 ###########################################################################
 #' randKmap:  Generate data for zoning or prepare real data
 #'
-#' @details description, a paragraph
-
+#' @details generates a map object from simulated data or real data
+#' @param DataObj =NULL: simulated data with seed or = a data frame with real data
+#' @param seed numeric, seed
+#' @param nPoints numeric, number of points, default 450
+#' @param nPointsK numeric, default 2000
+#' @param nSimuCond numeric
+#' @param typeMod character, model type
+#' @param Vpsill numeric, default 5
+#' @param Vrange numeric, default 0.2
+#' @param Vmean numeric, default 8
+#' @param Vnugget numeric, default 0
+#' @param boundary list contains x and y
+#' @param manualBoundary logical, default FALSE
+#' @param krig numeric
+#' @param disp numeric
+#' @param FULL logical, if TRUE the returned list is complete
 #' @return a list
 #' \describe{
-#' \item{rawData}{rawData}
-#' \item{step}{step}
-#' \item{krigData}{krigData}
-#' \item{krigGrid}{krigGrid}
-#' \item{krigN}{krigN}
-#' \item{krigSurfVoronoi}{krigSurfVoronoi}
-#' \item{modelGen}{modelGen}
-#' \item{VGMmodel}{VGMmodel}
-#' \item{boundary}{boundary}
+#' \item{rawData}{simulated or real raw data within the boundary}
+#' \item{step}{grid step}
+#' \item{krigData}{kriged data}
+#' \item{krigGrid}{kriged data in form of grid}
+#' \item{krigN}{kriged neighbours of each data point}
+#' \item{krigSurfVoronoi}{areas of Voronoi polygons in the tesselation of kriged data}
+#' \item{modelGen}{random fields model}
+#' \item{VGMmodel}{vgm model}
+#' \item{boundary}{(x,y) list of boundary points}
 #' }
-#'
 #' @export
 #' @importFrom gstat krige
 #' @importFrom sp coordinates
 #' @importMethodsFrom sp coordinates
-#'
 #' @examples
 #' # not run
-#' map = randKmap(DataObj,seed=5,Vpsill=8,Vrange=0.2,Vnugget=0.5,Vmean=5,krig=2)
+#' map = randKmap(NULL,nPointsK=500,Vmean=15,krig=2)
+#' mean(map$krigGrid) # mean of generated kriged data
+#' plotMap(map)
 #'
-randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000,
-		      nSimuCond=0,typeMod="Gau",
-		      Vpsill=5,Vrange=0.2,
-                      Vmean=8,Vnugget=0,
-		      boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),
-                      manualBoundary=FALSE,krig=1,disp=0,FULL=FALSE)
+randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000, nSimuCond=0,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0, boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE,krig=2,disp=0,FULL=FALSE)
 ###########################################################################
 {
 
@@ -54,6 +63,11 @@ randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000,
       #keep only pts within the boundary
       ptsInsRaw=point.in.polygon(x,y,boundary$x,boundary$y)#returns 0 if not within, 1 if strictly inside, 2 is inside an edge, 3 if vertex
       #
+      if(sum(ptsInsRaw!=0)==0)
+      {
+      print("no data points within boundary-please check boundary argument")
+      return(NULL)
+      }
       rawDataNa=cbind(rawDataRaw,ptsIns=ptsInsRaw) #all pts with index column
       rawDataNa$z[ptsInsRaw==0]=NA # replace pts outside boundary with NA
       rawData=rawDataNa[ptsInsRaw!=0,1:3] #exclude pts outside boundary
