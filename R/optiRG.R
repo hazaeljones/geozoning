@@ -19,7 +19,7 @@
 #' ZK = initialZoning(qProb, mapTest)
 #' K=ZK$resZ
 #' Z=K$zonePolygone
-#' plotZ(K$zonePolygone) # zone
+#' plotZ(K$zonePolygone) # zoning
 #' kmi=optiRG(K,mapTest,6,8,disp=1)
 #' #zones 6 and 8 are joined into new zone 7
 #' plot(kmi$zonePolygone[[7]],col="red",add=T)
@@ -62,8 +62,16 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
 
   polyUni=gConvexHull(polyUni)
 
-
-
+  # polyUni MUST NOT INTERSECT WITH OTHER ZONES EXCEPT THE 2 ZONES TO JOIN
+  # PLUS THE ENGLOBING ONE
+  nother=1:length(Z)
+  nother=nother[-match(iC,nother)]
+  nother=nother[-match(iZC,nother)]
+  nother=nother[-match(iZE,nother)]
+  for (kk in nother)
+  {
+  if(gIntersects(polyUni,Z[[kk]])) return(NULL)
+  }
   #fusion + removal + ID management
   # assign current zone id to new merged zone
   # to avoid handling new merged zone again in small zone loop

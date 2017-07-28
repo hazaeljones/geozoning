@@ -36,7 +36,7 @@
 #' newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
 #' printZsurf(newZ) # 6 zones
 #' # not run
-lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2,minSize=0.012,simplitol=1e-3,disp=F)
+lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2,minSize=0.012,simplitol=1e-3,disp=0)
 ###########################################################################
 # simply remove zones of last level zonings that are too small and recalculate criteria
 #
@@ -52,9 +52,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2
 	    K1 = listOfZ[[le]][[kk]]
 	    Z1 = K1$zonePolygone
 	    ZIF = detectSmallZones(Z1,minSize) #returns small zone numbers
-	    if(disp) print(paste("lef=",lef,"kk=",kk))
-	    if(disp) print(ZIF,collapse="")
-	   
+	    	   
 	    vNum = ZIF$vectIndex
 
 	    # get small zone ids
@@ -67,7 +65,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2
 	    	{
 	  	iC = Identify(zid,Z1) # get current zone number
 		if(iC==0) next
-		if(disp) print(paste("in lastPass zid=",zid,"iC=",iC))
+		if(disp) print(paste("in lastPass removal of small zone id=",zid,"iC=",iC))
 	    	Z2 = zoneFusion3(K1,iC, getNs(K1$zoneNModif,iC) ,map,minSize,simplitol)
 		K2=calNei(Z2,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
   		Z2=K2$zonePolygone

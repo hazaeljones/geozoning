@@ -29,7 +29,7 @@
 #' \item{zk}{list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects}
 #' \item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
 #' \item{crit}{list of initial criterion and all (last if ALL=FALSE) level criteria }
-#' \item{cost}{list of initial cost and all (last if ALL=FALSE) level costs }
+#' \item{cost}{list of initial cost and all (last if ALL=FALSE) level costs  }
 #' \item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label}
 #' \item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones}
 #' }
@@ -51,7 +51,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
     # choice of criterion = optiCrit
     # small zones handled by increasing size order
     # simplitol = tolerance for zone growing, polygone simplification
-    # disp =
+  
 
     # precaution !
   qProb=sort(unique(qProb))
@@ -144,7 +144,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
     {
      
       #Passage au prochain iter
-      # Cas de disparition complete
+      # Case of complete disparition
       curLen=length(listOfZ[[indCur]])
       
       if (curLen==0)
@@ -258,7 +258,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
   # simply remove zones of last level zonings that are too small and recalculate criteria
   if (LASTPASS)
 	{
-	  resPass=lastPass(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,minSize,simplitol)
+	  resPass=lastPass(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr,optiCrit,minSize,simplitol,disp)
 	  listOfZ = resPass$listOfZ
 	  crit = resPass$crit
 	  cost = resPass$cost

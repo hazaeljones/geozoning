@@ -28,7 +28,7 @@
 #' data(resZTest)
 #' K=resZTest
 #' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-calDistance=function(typedist=1,tabVal=NULL,listZonePoint=NULL,zoneN=NULL,surfVoronoi=NULL,meanZone=NULL,pErr)
+calDistance=function(typedist=1,tabVal=NULL,listZonePoint=NULL,zoneN=NULL,surfVoronoi=NULL,meanZone=NULL,pErr=0.9)
 {
   # bch
   # type distance=1

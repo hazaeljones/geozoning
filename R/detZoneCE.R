@@ -16,7 +16,7 @@
 #' @examples
 #' 
 #' # not run
-detZoneClose=function(iZ,Z,zoneNModif)
+detZoneClose=function(iZ,Z,zoneNModif,distIsoZ=0.075)
 ##################################################################
   {
     # iZ=current zone

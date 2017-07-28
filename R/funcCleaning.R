@@ -133,7 +133,7 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 	{
 	   # plot (bch)
 	   # IS 19/05/2017: add comment for x11
-	   #x11()
+	   x11()
 	   #IS 19/05/2017: modify this call...
      dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	}
@@ -225,7 +225,7 @@ zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,
   refSurf = gArea(Z[[iC]])
 	if (refSurf < minSizeNG) return(NULL)
 
-  resC = detZoneClose(iC,Z,K$zoneNModif) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
+  resC = detZoneClose(iC,Z,K$zoneNModif,distIsoZ) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
   ##############################################################
   InterZoneSpace = resC$InterZoneSpace
   zoneClose = resC$zoneClose
@@ -268,7 +268,7 @@ zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,
 
   if (disp==2 && !is.null(Zopti))
 	{
-	   #x11()
+	   x11()
 	   dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	 }
 	return(Zopti)
