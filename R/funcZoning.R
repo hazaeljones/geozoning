@@ -156,7 +156,7 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 #'
 #' @importFrom sp coordinates
 #'
-#' @return a list of points within each zone
+#' @return a list of data points within each zone
 #'
 #' @export
 #'

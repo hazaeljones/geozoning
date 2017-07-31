@@ -337,7 +337,7 @@ getNumZone=function(ptsp,Z)
 numzone=rep(0,length(ptsp$x))
 for (k in 1:length(Z))
     {
-	res=getPtsZone(ptsp,Z[[k]])
+	res=getZonePts(ptsp,Z[[k]])
 	mask=res$mask
 	numzone[mask]=k
     }

@@ -23,8 +23,18 @@
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' criti=correctionTree(c(0.4,0.7),mapTest,LASTPASS=FALSE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+#' K1=criti$zk[[1]][[1]]#initial zoning
+#' Z1=K1$zonePolygone 
+#' printZsurf(Z1) # 8 zones with 2 small zones (7 and 8)
+#' Z2 = remove1FromZ(Z,7,K1$zoneN)
+#' printZsurf(Z2) #7 zones
+#' newRes=updateZK(mapTest,c(0.4,0.7),1,1,criti$zk[1],criti$criterion[1],criti$cost[1],criti$costL[1],criti$nz[1],criti$mdist[1],K1,Z2)
+#' newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
+#' printZsurf(newZ) #7 zones
 #' # not run
-updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z2,pErr,optiCrit,simplitol)
+updateZK=function(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K1,Z2,pErr=0.9,optiCrit=2,simplitol=1e-3)
 ####################################################################################################
 {
 # replace zoning Z1,K1 with Z2

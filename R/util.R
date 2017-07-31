@@ -1,21 +1,29 @@
 ###################################################################
-#' getPtsZone
+#' getZonePts
 #'
-#' @details description, a paragraph
-#' @param ptsp xxxx
-#' @param zone xxxx,
+#' @details 
+#' @param ptsp SpatialPointsDataFrame with data values
+#' @param zone SpatialPolygons defining a zone
 #'
-#' @return a map in a list
+#' @return a list with components
 #' \describe{
-#' \item{pts}{ptsub}
-#' \item{mask}{mask}
+#' \item{pts}{SpatialPointsDataFrame with the data points within the zone}
+#' \item{mask}{Logical vector of the within zone data points indices}
 #' }
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' data(mapTest)
+#' ptsp=mapTest$krigData
+#' res=getZonePts(ptsp,Z[[5]])
+#' plotZ(Z)
+#' points(res$pts,col="blue",pch=20)
 #' # not run
-getPtsZone=function(ptsp,zone)
+getZonePts=function(ptsp,zone)
 ##################################################################
 {
 # ptsp=map$krigData
@@ -46,19 +54,26 @@ getPtsZone=function(ptsp,zone)
 #' MeanVarWPts
 #'
 #' @details description, a paragraph
-#' @param map xxxx
-#' @param zone xxxx,
-#' @param w default NULL
+#' @param map object returned by function genMap
+#' @param zone SpatialPolygons defining a zone
+#' @param w weighting vector (default NULL)
 #'
-#' @return a in a list
+#' @return a list with components
 #' \describe{
-#' \item{mean}{mean}
-#' \item{var}{var}
+#' \item{mean}{(weighted) mean of the within zone attribute value}
+#' \item{var}{(weighted) variance of the within zone attribute value}
 #' }
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' data(mapTest)
+#' MeanVarWPts(mapTest,Z[[1]])
+#' Weights are areas of the Voronoi polygons corresponding to data points
+#' MeanVarWPts(mapTest,Z[[1]],mapTest$krigSurfVoronoi) #slightly different result
 #' # not run
 MeanVarWPts=function(map,zone,w=NULL)
 #####################################################################
@@ -67,7 +82,7 @@ MeanVarWPts=function(map,zone,w=NULL)
 
   m=numeric()
   v=numeric()
-  res=getPtsZone(ptsp,zone)
+  res=getZonePts(ptsp,zone)
   mask=res$mask
 
   if (is.null(w))
@@ -87,9 +102,9 @@ MeanVarWPts=function(map,zone,w=NULL)
 #' r2
 #'
 #' @details adjusted R2
-#' @param reslm an lm object
+#' @param reslm result of a call to lm 
 #'
-#' @return a numeric
+#' @return the adjusted r-square of the lm model
 #'
 #' @export
 #' @importFrom stats anova dist lm quantile sd
@@ -109,14 +124,20 @@ r2=function(reslm)
 #' modlm
 #'
 #' @details description, a paragraph
-#' @param ptsp xxxx
-#' @param Z a zone?
+#' @param ptsp SpatialPointsDataFrame with data values
+#' @param Z zoning (list of SpatialPolygons)
 #'
-#' @return a lm object
+#' @return the result of a call to lm (anova model with zone number as factor)
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' data(mapTest)
+#' ptsp=mapTest$krigData
+#' modlm(ptsp,Z)
 #' # not run
 modlm=function(ptsp,Z)
 ######################
@@ -137,14 +158,18 @@ modlm=function(ptsp,Z)
 #' getCoords
 #'
 #' @details description, a paragraph
-#' @param sp xxxx
-#' @param k xxxxxx
+#' @param sp SpatialPolygons
+#' @param k polygon number
 #'
 #' @return some coordinates
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' getCoords(Z[[1]])
 #' # not run
 getCoords=function(sp,k=1)
 ##################################################################
@@ -156,15 +181,19 @@ getCoords=function(sp,k=1)
 ##################################################################
 #' spToSL
 #'
-#' @details description, a paragraph
-#' @param sp xxxx
+#' @details tranform SpatialPolygons into SpatialLines
+#' @param sp SpatialPolygons
 #'
-#' @return a list
+#' @return a SpatialLines
 #'
 #' @export
 #' @importFrom sp SpatialLines Lines
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' spToSL(Z[[5]])
 #' # not run
 spToSL=function(sp)
 ##################################################################
@@ -179,87 +208,73 @@ spToSL=function(sp)
 #' getClosePt
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param indiceCourant xxxx
-#' @param indiceZP xxxx
-#' @param disp xxxx
+#' @param Z zoning (list of SpatialPolygons)
+#' @param iC current zone indes
+#' @param iZC close zone index
+#' @param disp information level (FALSE-no info)
 #'
-#' @return a numeric?
+#' @return a SpatialPoints of length 1
 #'
 #' @export
 #' @importFrom sp SpatialPoints SpatialPointsDataFrame
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' getClosePt(Z,1,3)
+#' plotZ(Z)
+#' points( getClosePt(Z,1,3),col="blue",pch=20)
 #' # not run
-getClosePt=function(Z,indiceCourant,indiceZP,disp=FALSE)
+getClosePt=function(Z,iC,iZC,disp=FALSE)
 ##################################################################
 {
-#coordonnées des points de la petite zone et la  zoneProche
+#pt coordinates
 
-  a=SpatialPoints(Z[[indiceCourant]]@polygons[[1]]@Polygons[[1]]@coords)
-  b=SpatialPoints(Z[[indiceZP]]@polygons[[1]]@Polygons[[1]]@coords)
+  a=SpatialPoints(Z[[iC]]@polygons[[1]]@Polygons[[1]]@coords)
+  b=SpatialPoints(Z[[iZC]]@polygons[[1]]@Polygons[[1]]@coords)
 
-  #on recupere les distances entre chaque paire de points
-  #on pourra peut etre utiliser un gSimplify si cela prend trop de temps
+  #all distances between pairs of points - lengthy
   Fdist= list()
   for (i in 1:length(a))
   {
     Fdist[[i]]<-gDistance(a[i,],b,byid=TRUE)
   }
 
-  #on recupere le point de la zoneProche le plus proche de la petite zone
+  #get the point in zone iZC which is the closest to zone iC
   min.dist <- unlist(lapply(Fdist, FUN=function(x) which(x == min(x))[1]))
   PolyDist <- unlist(lapply(Fdist, FUN=function(x) min(x)[1]))
 
-  pProche = min.dist[which.min(PolyDist)]
+  pZC = min.dist[which.min(PolyDist)]
   if (disp)
   {
-  print(b[pProche])
+  print(b[pZC])
   }
-  return (b[pProche])
+  return (b[pZC])
 }
-
-##################################################################
-#' cadArea
-#'
-#' @details description, a paragraph
-#' @param cad xxxx
-#'
-#' @return a numeric?
-#'
-#' @export
-#'
-#' @examples
-#' # not run
-cadArea = function(cad)
-##################################################################
-  {
-	rn=as.numeric(rownames(cad))
-	cn=as.numeric(colnames(cad))
-	xrn=range(rn)
-	yrn=range(cn)
-	cadSurf=(max(xrn)-min(xrn))*(max(yrn)-min(yrn))
-	return(cadSurf)
-  }
 
 ##################################################################
 #' contourArea
 #'
-#' @details description, a paragraph
-#' @param contour1 xxxx
+#' @details area corresponding to closed contour line
+#' @param co contour line
 #'
-#' @return a numeric?
+#' @return the area within the contour line
 #'
 #' @export
 #' @importFrom sp SpatialPolygons SpatialPointsDataFrame Polygons Polygon
 #' @importFrom maptools ContourLines2SLDF
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' contourArea(cL[[8]])
 #' # not run
-contourArea=function(contour1)
+contourArea=function(co)
 ##################################################################
 {
-	contour = ContourLines2SLDF(list(contour1))
+	contour = ContourLines2SLDF(list(co))
       	coords = contour@lines[[1]]@Lines[[1]]@coords
       	poly=Polygon(coords)
 	polys=Polygons(list(poly),"id")
@@ -272,46 +287,53 @@ contourArea=function(contour1)
 ##################################################################
 #' listContourArea
 #'
-#' @details description, a paragraph
-#' @param listContour xxxx
+#' @details area of all contour lines in list
+#' @param cL list of contour lines
 #'
-#' @return a numeric?
+#' @return a list of areas
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' listContourArea(cL)
 #' # not run
-listContourArea=function(listContour)
+listContourArea=function(cL)
 ##################################################################
 {
-	le=length(listeContour)
-	if (le ==0) return(NA)
-	surface=list()
-	for (k in 1:length(listeContour))
-	{
-		surface[[k]] = contourArea(listeContour[[k]])
-	}
-	return(surface)
+	return(sapply(cL,contourArea))
 }
 
 ##################################################################
 #' contourToSpp
 #'
-#' @details description, a paragraph
-#' @param contour1 xxxx
-#' @param step xxxx
+#' @details transform contour line into SpatialPolygons
+#' @param co contour line (list with contour level and x,y coordinates
+#' @param step grid resolution
 #'
-#' @return a numeric?
+#' @return a list with components
+#'\describe{
+#'\item{sp}{SpatialPolygons corresponding to contour line}
+#'\item{contour}{SpatialLines corresponding to contour line}
+#'\item{polyBuff}{SpatialPolygons corresponding to buffer around contour line}
+#'\item{surface}{SpatialPolygons area}
+#'}
 #'
 #' @export
 #' @importFrom rgeos gBuffer gArea gCentroid gContains gConvexHull gDifference gDistance gIntersects gWithin
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' contourToSpp(cL[[8]],0.1)
 #' # not run
-contourToSpp=function(contour1,step)
+contourToSpp=function(co,step)
 ##################################################################
 {
-	contour = ContourLines2SLDF(list(contour1))
+	contour = ContourLines2SLDF(list(co))
       	coords = contour@lines[[1]]@Lines[[1]]@coords
 	# attention gBuffer renvoie 2 polygones
       	polyBuff = gBuffer(contour,width=0.0001*(1/step))
@@ -325,33 +347,39 @@ contourToSpp=function(contour1,step)
 ##################################################################
 #' nPolyZone
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param ind xxxx
+#' @details number of polygons in current zone
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iC current zone number within Z
 #'
-#' @return a numeric?
+#' @return the number of polygons within the current zone
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' iC=1;print(paste(nPolyZone(Z,iC),"polygons in zone",iC))
 #' # not run
-nPolyZone=function(Z,ind)
+nPolyZone=function(Z,iC)
 ##################################################################
 {
-	return(length(Z[[ind]]@polygons[[1]]@Polygons))
+	return(length(Z[[iC]]@polygons[[1]]@Polygons))
 }
 
 ##################################################################
 #' nPolySp
-#'
-#' @details description, a paragraph
-#' @param sp xxxx
-#'
-#' @return a numeric?
+#' @details number of polygons in SpatialPolygons
+#' @param sp SpatialPolygons
+#' @return the number of polygons within the current zone
 #'
 #' @export
 #'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' print(paste(nPolySp(Z[[2]]),"polygons"))
+#' @details 
 #' # not run
 nPolySp =function(sp)
 ##################################################################
@@ -362,14 +390,17 @@ nPolySp =function(sp)
 ##################################################################
 #' holeSp
 #'
-#' @details description, a paragraph
-#' @param sp xxxx
+#' @details number of holes in SpatialPolygons
+#' @param sp SpatialPolygons
 #'
-#' @return a numeric?
+#' @return the number of holes within sp
 #'
 #' @export
 #'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' holeSp(Z[[5]]) #zone 5 has 1 hole
 #' # not run
 holeSp = function(sp)
 ##################################################################
@@ -390,35 +421,37 @@ holeSp = function(sp)
 ##################################################################
 #' maxDistZone
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param iZ xxxx
-#' @param k xxxx
+#' @details maximum distance within kth polygon of current zone 
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iZ current zone index
+#' @param k polygon number within current zone
 #'
-#' @return a numeric?
+#' @return the maximum distance within kth polygon of the current zone
 #'
 #' @export
-#'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' maxDistZone(Z,5,1)
 #' # not run
 maxDistZone=function(Z,iZ,k)
 ##################################################################
 {
 	return(max(dist(Z[[iZ]]@polygons[[1]]@Polygons[[k]]@coords)))
-	#return(gArea(Z[[iZ]]))
 }
 
 ##################################################################
 #' maxDistSP
 #'
-#' @details description, a paragraph
-#' @param sp xxxx
-#'
-#' @return a numeric?
+#' @details maximum distance within kth polygon of current zone 
+#' @param sp SpatialPolygons
+#' @return the maximum distance within sp
 #'
 #' @export
-#'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' maxDistSp(Z[[5]])
 #' # not run
 maxDistSP=function(sp)
 ##################################################################
@@ -429,16 +462,22 @@ maxDistSP=function(sp)
 ##################################################################
 #' getPoly
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param iZ xxxx
-#' @param k xxxx
+#' @details get the kth polygon of the current zone in zoning Z
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iZ current zone index
+#' @param k polygon number within current zone
 #'
-#' @return a numeric?
+#' @return a polygon (object of class Polygon)
 #'
 #' @export
 #'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' P1=getPoly(Z,5,1)
+#' P2=getPoly(Z,5,2) # second polygon is a hole
+#' plot(P1@coords,type="l")
+#' lines(P2@coords,type="l",col="blue")
 #' # not run
 getPoly = function(Z,iZ,k)
 ##################################################################
@@ -452,15 +491,23 @@ getPoly = function(Z,iZ,k)
 ##################################################################
 #' getPolySp
 #'
-#' @details description, a paragraph
-#' @param sp xxxx
-#' @param k xxxx
+#' @details get the kth polygon of the current zone in zoning Z
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iZ current zone index
+#' @param k polygon number within current zone
 #'
-#' @return a numeric?
+#' @return a polygon (object of class Polygon)
 #'
 #' @export
 #'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' sp=Z[[5]]
+#' P1=getPolySp(sp,1)
+#' P2=getPolySp(sp,2) # second polygon is a hole
+#' plot(P1@coords,type="l")
+#' lines(P2@coords,type="l",col="blue")
 #' # not run
 getPolySp = function(sp,k=1)
 ##################################################################
@@ -473,16 +520,21 @@ getPolySp = function(sp,k=1)
 ##################################################################
 #' polyToSp
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param iZ xxxx
-#' @param k xxxx
+#' @details transforms kth polygon of zone into SpatialPolygons
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iZ zone number
+#' @param k polygon number
 #'
-#' @return a numeric?
+#' @return a SpatialPolygons
 #'
 #' @export
 #'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' sph=polyToSp(Z,5,2)
+#' plotZ(Z)
+#' lines(sph,type="l",col="blue")
 #' # not run
 polyToSp=function(Z,iZ,k)
 ##################################################################
@@ -496,16 +548,23 @@ polyToSp=function(Z,iZ,k)
 }
 
 ##################################################################
-#' polyToSp
+#' polyToSp2
 #'
-#' @details description, a paragraph
-#' @param p xxxx
+#' @details transforms polygon into SpatialPolygons
+#' @param p polygon 
 #'
-#' @return a numeric?
+#' @return a SpatialPolygons
 #'
 #' @export
 #'
 #' @examples
+#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' Z=ZK$resZ$zonePolygone
+#' sp=Z[[5]]
+#' P1=getPolySp(sp,1)
+#' sph=polyToSp2(P1)
+#' plotZ(Z)
+#' lines(sph,col="blue",lwd=2)
 #' # not run
 polyToSp2=function(p)
 ##################################################################
@@ -525,6 +584,11 @@ polyToSp2=function(p)
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' cL=list()
+#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#  lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
+#' sp=lineToSp(lin)
 #' # not run
 lineToSp=function(lin)
 ##################################################################
@@ -611,11 +675,20 @@ spnorm = function(p, boundary)
 ##################################################################
 #' normalize data coords and border
 #'
-#' @details description, a paragraph
-#' @param data xxxx
-#' @param bd xxxx
+#' @details normalize boundary between 0 and 1 and data coordinates accordingly
+#' @param data data frame with x and y components
+#' @param bd boundary (list with x and y components)
 #'
-#' @return a list
+#' @return a list with components
+#'\describe{
+#' \item{dataN}{normalized data}
+#' \item{boundaryN}{normalized boundary}
+#' \item{xmin}{minimum vaue of x within boundary}
+#' \item{xmax}{maximum vaue of x within boundary}
+#' \item{ymin}{minimum vaue of y within boundary}
+#' \item{ymax}{maximum vaue of y within boundary}
+#' }
+#'
 #'
 #' @export
 #'
@@ -650,10 +723,10 @@ datanorm = function(data, bd)
 ##################################################################
 #' normalize data coords
 #'
-#' @details description, a paragraph
-#' @param data xxxx
+#' @details normalize data coordinates between 0 and 1
+#' @param data frame with x and y components
 #'
-#' @return a list
+#' @return a normalized data frame
 #'
 #' @export
 #'
@@ -679,9 +752,29 @@ datanormXY = function(data)
 
   return(data)
 }
+
 ##################################################################
-# normalize x coord and y coord with same ratio (for non square field)
-# x will be between 0 and 1 but not y
+#' normalize data coords with same ratio (for non square field)
+#'
+#' @details normalize x between 0 and 1, y and boundary with same ratio
+#' @param data frame with x and y components
+#' @param bd list with x and y components
+#'
+#' @return a list with components
+#'\describe{
+#' \item{dataN}{normalized data}
+#' \item{boundaryN}{normalized boundary}
+#' \item{ratio}{normalizing ratio}
+#' \item{xmin}{minimum value of x within boundary}
+#' \item{xmax}{maximum value of x within boundary}
+#' \item{ymin}{minimum value of y within boundary}
+#' \item{ymax}{maximum value of y within boundary}
+#' }
+#'
+#' @export
+#'
+#' @examples
+#' # not run
 datanormX = function(data,bd)
 ##################################################################
 {
@@ -1983,7 +2076,7 @@ return()
 #' interCB
 #'
 #' @details description, a paragraph
-#' @param contour1 xxxx
+#' @param co xxxx
 #' @param step xxxx
 #' @param bd xxxx
 #' @param envel xxxx
@@ -1995,13 +2088,13 @@ return()
 #'
 #' @examples
 #' # not run
-interCB = function(contour1,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
+interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 ##################################################################
 {
   #returns spatial polygon corresponding to intersection of contour with boundary
   #
 	polygoneGlobal=SpatialPolygons(list(Polygons(list(Polygon(bd, hole = FALSE)), "1")))
-	contourL = ContourLines2SLDF(list(contour1))
+	contourL = ContourLines2SLDF(list(co))
 	polyBuff=gBuffer(contourL,width=0.0001*step)
 	polyDiff=gDifference(polygoneGlobal,polyBuff)
   recupPoly=separationPoly(polyDiff)

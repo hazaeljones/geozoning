@@ -47,21 +47,25 @@ detectSmallZones=function(zonePolygone,minSize)
 
 
 ##################################################################
-#' zoneFusion2
+#' zoneFusion2 basic function for merging 2 zones
 #'
-#' @details description, a paragraph
-#' @param zoneMain xxxx
-#' @param zoneSuppr xxxx
-#' @param simplitol xxxx
+#' @details merge 2 zones, called by zoneFusion3 and zoneFusion4
+#' @param zoneMain zone to merge into
+#' @param zoneSuppr zone to remove by merging it into main zone
+#' @param simplitol tolerance for spatial polygons geometry simplification
 #'
-#' @return a ?
+#' @return a zone
 #' @importFrom rgeos createPolygonsComment gSimplify gUnion
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' Z=resZTest$zonePolygone
+#' plotZ(Z)
+#' plot(zoneFusion2(Z[[6]],Z[[2]]),add=T,col="blue")
 #' # not run
-zoneFusion2 = function( zoneMain,zoneSuppr,simplitol)
+zoneFusion2 = function(zoneMain,zoneSuppr,simplitol)
 ##################################################################
 {
   comment(zoneMain@polygons[[1]])=createPolygonsComment(zoneMain@polygons[[1]])
@@ -143,19 +147,24 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 ######################################################################
 #' zoneFusion4
 #'
-#' @details description, a paragraph
-#' @param Z xxxx
-#' @param iSmall xxxx
-#' @param iBig xxxx
-#' @param map xxxx
-#' @param simplitol xxxx
-#' @param disp xxxx
+#' @details merge 2 zones from given zoning
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iSmall index of zone to remove by merging it into other zone
+#' @param iBig index of zone to merge into
+#' @param map map object returned by function genMap
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param disp 0: no info, 1: some info
 #'
-#' @return a ?
+#' @return a new zoning geometry
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' zoneFusion4(Z,5,4,mapTest,disp=2)
 #' # not run
 zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 ######################################################################
@@ -189,22 +198,22 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 #' zoneGrow
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param K xxxx
-#' @param iC xxxx
-#' @param Ns xxxx
-#' @param map xxxx
-#' @param optiCrit xxxx
+#' @details description, a paragraph
+#' @param K zoning object, such as returned by the calNei function
+#' @param iC index of zone to grow
+#' @param Ns zone neighborhood Boolean matrix 
+#' @param map object returned by function genMap
+#' @param optiCrit 
 #' @param valRef xxxx
 #' @param qProb xxxx
 #' @param minSizeNG xxxx
 #' @param distIsoZ xxxx
 #' @param LEQ xxxx
 #' @param MAXP xxxx
-#' @param simplitol xxxx
-#' @param disp xxxx
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param disp information level (0-no info, 1-print info, 2-plot)
 #'
-#' @return a ?
+#' @return a zone obtained by growing current zone
 #'
 #' @export
 #'
@@ -279,20 +288,24 @@ zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,
 #' remove1FromZ
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param iC xxxx
-#' @param zoneN xxxx
-#' @param simplitol xxxx
-#' @param disp xxxx
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param iC current zone index
+#' @param zoneN zone neighborhood Logical matrix
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param disp 0: no info, 1: some info
 #'
-#' @return a ?
+#' @return a new zoning where current zone has been removed
 #'
 #' @export
-#'
 #' @examples
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' plotZ(Z)
+#' plotZ(remove1FromZ(Z,2,K$zoneN))
 #' # not run
-remove1FromZ = function(Z,iC,zoneN,simplitol,disp=0)
-###################################################
+remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
+########################################################
 {
   # remove zone iC from zoning
   # first find neighbor zone for merging zone iC
@@ -331,21 +344,33 @@ remove1FromZ = function(Z,iC,zoneN,simplitol,disp=0)
 #' removeFromZ
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param zoneN xxxx
-#' @param ptN xxxx
-#' @param listZonePoint xxxx
-#' @param data xxxx
-#' @param simplitol xxxx
-#' @param n xxxx
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param zoneN zone neighborhood Logical matrix
+#' @param ptN indices of data pts neighbours
+#' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
+#' @param data SpatialPointsDataFrame with data values
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param n minimal number of points below which a zone is removed from zoning
 #'
-#' @return a ?
-#'
+#' @return a list with components
+#'\describe{
+#' \item{Z}{new zoning geometry (list of SpatialPolygons)} where zones with less than n points were removed
+#' \item{zoneN}{new zone neighborhood Logical matrix}
+#' \item{listZonePoint}{new list of indices of data points within zones}
+#' }
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' plotZ(Z)
+#' remove from Z all zones with less than 10 data points
+#' Z2=removeFromZ(Z,K$zoneN,K$krigN,K$listZonePoint,mapTest$krigData,n=10)
+#' printZid(Z2$Z)
 #' # not run
-removeFromZ = function(Z,zoneN,ptN,listZonePoint,data,simplitol,n=1)
+removeFromZ = function(Z,zoneN,ptN,listZonePoint,data,simplitol=1e-3,n=1)
 ##########################################################################
 {
 # remove from Z all zones with npts<=n or area<minSizeNG
