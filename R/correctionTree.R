@@ -11,7 +11,7 @@
 #' @param distIsoZ threshold distance to next zone, above which a zone is considered to be isolated
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @param LEQ length of quantile sequence used to grow isolated zone
-#' @param MAXP quantile sequence maximum shift
+#' @param MAXP quantile sequence maximum shift quantile sequence maximum shift
 #' @param LASTPASS if TRUE, remove zones that are still too small at the last level of the correction tree
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param SAVE logical value, if TRUE function returns last level zonings
@@ -209,7 +209,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
          if(disp>0) print(paste(length(zpCopy1)," polygons after zone merging"))
          # 2 = grow zone indZS
 
-      	 zpCopy2 = zoneGrow(K,iC,Ns,map,optiCrit,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+      	 zpCopy2 = zoneGrow(K,map,iC,optiCrit,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
          if (disp>0) print(paste(length(zpCopy2)," polygons after zone growing"))
          ###############################################################################################
         } # end else disparition

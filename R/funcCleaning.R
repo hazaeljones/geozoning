@@ -65,7 +65,7 @@ detectSmallZones=function(zonePolygone,minSize)
 #' plotZ(Z)
 #' plot(zoneFusion2(Z[[6]],Z[[2]]),add=T,col="blue")
 #' # not run
-zoneFusion2 = function(zoneMain,zoneSuppr,simplitol)
+zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 ##################################################################
 {
   comment(zoneMain@polygons[[1]])=createPolygonsComment(zoneMain@polygons[[1]])
@@ -166,7 +166,7 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 #' Z=K$zonePolygone
 #' zoneFusion4(Z,5,4,mapTest,disp=2)
 #' # not run
-zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
+zoneFusion4=function(Z,iSmall,iBig,map,simplitol=1e-3,disp=0)
 ######################################################################
 {
 #########################################
@@ -197,42 +197,57 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 ############################################################################
 #' zoneGrow
 #'
-#' @details description, a paragraph
-#' @details description, a paragraph
+#' @details either grow isolated zone or group 2 zones together
+#' if isolated zone, run optimization procedure to find the new quantile
+#' if zone very small (area < minSizeNG) do not grow it
 #' @param K zoning object, such as returned by the calNei function
-#' @param iC index of zone to grow
-#' @param Ns zone neighborhood Boolean matrix 
 #' @param map object returned by function genMap
-#' @param optiCrit 
-#' @param valRef xxxx
-#' @param qProb xxxx
-#' @param minSizeNG xxxx
-#' @param distIsoZ xxxx
-#' @param LEQ xxxx
-#' @param MAXP xxxx
+#' @param iC index of current zone
+#' @param optiCrit criterion choice
+#' @param minSizeNG zone area threshold under which a zone will be removed
+#' @param distIsoZ threshold distance to next zone, above which a zone is considered to be isolated
+#' @param LEQ length of quantile sequence used to grow isolated zone
+#' @param MAXP quantile sequence maximum shift from center
 #' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param disp information level (0-no info, 1-print info, 2-plot)
+#' @param disp information level (0-no info, 1-print info)
 #'
 #' @return a zone obtained by growing current zone
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' qProb=c(0.2,0.5)
+#' ZK = initialZoning(qProb, mapTest)
+#' K=ZK$resZ
+#' Z=K$zonePolygone
+#' plotZ(K$zonePolygone) # plot zoning
+#' kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
+#' linesSp(kmi[[7]])
+#' qProb=c(0.3,0.5)
+#' criti = correctionTree(qProb,mapTest)
+#' best = criti$zk[[2]][[8]]
+#' Z=best$zonePolygone
+#' plotZ(Z)
+#' refPoint = gCentroid(Z[[4]])
+#' plot(refPoint,add=T,col="blue",pch=21)
+#' zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
+#' plotZ(zg)
 #' # not run
-zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp=0)
+zoneGrow=function(K,map,iC,optiCrit=2,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0.1,simplitol=1e-3,disp=0)
 ############################################################################
 {
-	## On va lancer une procedure optimisation pour determiner la taille de lagrandissement
-  ## Si espace est suffisamment grand, alors on lagrandit, en choisisst la meilleure taille possible
-  ## parmi une courte liste (souci de vitesse execution).
-	# modif bch juin 2016
+	# either grow isolated zone or group 2 zones together
+	# if isolated zone, optim procedure to find the new quantile
 	# if zone very small, skip (useless) growing step
-	# param minSizeNG in initParam.R
 	if(disp>0) print(paste("trying to grow zone",getZoneId(Z[[iC]])))
 #
   Z=K$zonePolygone
+  Ns = getNs(K$zoneNModif,iC)
+  qProb=K$qProb
+  if(is.null(qProb)) return(NULL)
   refSurf = gArea(Z[[iC]])
-	if (refSurf < minSizeNG) return(NULL)
+  if (refSurf < minSizeNG) return(NULL)
 
   resC = detZoneClose(iC,Z,K$zoneNModif,distIsoZ) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
   ##############################################################
@@ -240,9 +255,10 @@ zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,
   zoneClose = resC$zoneClose
   step=map$step
 
-  # on conserve le centroide de la petite zone
-  # utilise apres agrandissement pour verifier que c'est la meme zone
-	##########################################################
+  # keep centroid of small zone
+  # used to check that it is the same zone that has grown
+  # contours can be anywhere on the plot
+  ##########################################################
   refPoint = gCentroid(Z[[iC]])
   ##########################################################
 	Zopti=NULL
@@ -277,7 +293,6 @@ zoneGrow=function(K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,
 
   if (disp==2 && !is.null(Zopti))
 	{
-	   x11()
 	   dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	 }
 	return(Zopti)

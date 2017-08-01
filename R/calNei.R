@@ -1,8 +1,8 @@
 ######################################################################
 #' calNei
 #'
-#' @details description, a paragraph
-#' @param Z zoning
+#' @details calculates neighborhood for zoning geometry Z (list of SpatialPolygons)
+#' @param Z zoning geometry (list pf SpatialPolygons)
 #' @param spdata  SpatialPointsDataFrame containing the data pts and values
 #' @param surfVoronoi Surfaces of the Voronoi polygons corresponding to data pts
 #' @param ptN indices of data pts neighbours
