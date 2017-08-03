@@ -84,41 +84,49 @@ calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALS
 #########################################
 #' labZone
 #'
-#' @details description, a paragraph
-#' @param listK xxxx
-#' @param qProb xxxx
-#' @param matVal xxxx
+#' @details assigns a class label (integer) to a zone depending on the zone mean value
+#' @param K zoning object, as returned by the calNei function
+#' @param qProb probability vector used to generate quantile values for Z
+#' @param data data used to generate labels and zoning 
 #'
-#' @return a ?
+#' @return a zoning object with labelled zones in lab component
 #'
 #' @export
 #' @importFrom sp point.in.polygon
 #'
 #' @examples
+#' data(mapTest)
+#' dataF=mapTest$krigGrid
+#' data(resZTest)
+#' K=resZTest
+#' p = K$qProb
+#' labZone(K,p,dataF)
 #' # not run
-labZone=function(listK,qProb,matVal)
+labZone=function(K,qProb,dataF)
 #########################################
   {
-#create labels
+    #create labels
     # input is zoning from calNei, quantile vector and data values
     # output has lab
-  lab = rep(1,length(listK$zonePolygone))
-  q1= quantile(matVal,na.rm=TRUE,prob=qProb)
+  lab = rep(1,length(K$zonePolygone))
+  # consider range of data values
+  rate= max(dataF)-min(dataF)
+  q1= quantile(dataF,na.rm=TRUE,prob=qProb)
 
-  for (i in 1:length(listK$zonePolygone))
+  for (i in 1:length(K$zonePolygone))
   {
     for (j in 1:length(q1))
     {
-      if (listK$meanZone[i]>(q1[j]+0.1))
+      if (K$meanZone[i]>(q1[j]+1/rate))
       {
         lab[i]=j+1
       }
 
     }
   }
-listK$lab=lab
-listK$qProb=qProb
-return(listK)
+K$lab=lab
+K$qProb=qProb
+return(K)
 }
 
 ######################################
