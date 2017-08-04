@@ -9,8 +9,8 @@
 #' @importFrom RandomFields RMgauss RMspheric
 #'
 #' @examples
-#' data(mapTest)
-#' RMmodel=calRMmodel(mapTest$VGMmodel)
+#' modv=vgm(model="Gau",range=100,psill=10,mean=7)
+#' RMmodel=calRMmodel(modv)
 
 calRMmodel=function(vgmodel)
 ###############################

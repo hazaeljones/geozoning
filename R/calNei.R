@@ -133,17 +133,21 @@ return(K)
 #' correctN
 #'
 #' @details description, a paragraph
-#' @param Z xxxx
-#' @param zoneN xxxx
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param zoneN zone neighborhood Logical matrix
+#' @param dN maximum distance beyond which 2 zones cannot be considered as neighbors
 #'
-#' @return a ?
+#' @return a new zone neighborhood Logical matrix
 #'
 #' @export
 #' @importFrom sp point.in.polygon
 #'
 #' @examples
+#' data(resZTest)
+#' Z=resZTest$zonePolygone
+#' H=correctN(Z,resZTest$zoneN,1e-8)
 #' # not run
-correctN = function(Z,zoneN)
+correctN = function(Z,zoneN,dN=1e-3)
 ######################################
 {
 # confusion when voronoi are close -> false neighborhood
@@ -158,7 +162,7 @@ if (length(Z)>=2)
       for (k in (j+1):length(Z))
       {
       	a=gDistance(Z[[j]],Z[[k]])
-  	if(a >0.001)
+  	if(a >dN)
       	 zoneN[j,k]=zoneN[k,j]=FALSE
   	 } #end k loop
       }#end j loop

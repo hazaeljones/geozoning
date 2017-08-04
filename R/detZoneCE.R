@@ -1,22 +1,28 @@
 #################################################################
 #' detZoneClose
 #'
-#' @details description, a paragraph
+#' @details determines zones that are close to current zone, but not neighbors (common border). Therefore embedded or englobing zones are excluded. 
 #' @param iZ zone number
-#' @param Z zoning
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param zoneN modified zone neighborhood Logical matrix (FALSE values on diagonal)
 #'
 #' @return a list with components
 #' \describe{
 #' \item{InterZoneSpace}{TRUE if zone is isolated, FALSE otherwise}
-#' \item{zoneClose}{numbers of zones close to zone iZ, empty if zone is isolated}
+#' \item{zoneClose}indices of zones close to zone iZ, empty if zone is isolated}
 #' }
 #'
 #' @export
 #'
 #' @examples
-#' 
+#' data(resZTest)
+#' Z=resZTest$zonePolygone
+#' zoneN=resZTest$zoneNModif
+#' plotZ(Z)
+#' detZoneClose(4,Z,zoneN) # zone 4 is close to zone 3
+#' detZoneClose(6,Z,zoneN) # zone 6 is isolated (no zone at a distance smaller than 0.075).
 #' # not run
-detZoneClose=function(iZ,Z,zoneNModif,distIsoZ=0.075)
+detZoneClose=function(iZ,Z,zoneN,distIsoZ=0.075)
 ##################################################################
   {
     # iZ=current zone
@@ -26,7 +32,7 @@ detZoneClose=function(iZ,Z,zoneNModif,distIsoZ=0.075)
     # distIsoZ = maximum distance for isolated zone (has no close zones)
     # december 2016
 
-    Ns=getNs(zoneNModif,iZ)
+    Ns=getNs(zoneN,iZ)
     notN = grep( FALSE, Ns) # list of non neighbor zones
     notN = notN[notN != iZ] # remove current zone from that list
 
@@ -49,14 +55,14 @@ detZoneClose=function(iZ,Z,zoneNModif,distIsoZ=0.075)
   if (! InterZoneSpace) zoneClose=zoneClose[order(D)]
 # check  englobing zone is the same (no crossing)
   le = length(zoneClose)
-  indE=detZoneEng(iZ,Z,zoneNModif)
+  indE=detZoneEng(iZ,Z,zoneN)
 
  	if (le>0)
 	{
 		for (ip in le:1)
  		{
 		zip=zoneClose[[ip]]
-		indEP=detZoneEng(zip,Z,zoneNModif)
+		indEP=detZoneEng(zip,Z,zoneN)
 		mask = (indE == 0 ) | (indEP != indE) | (indEP == 0)
 		if ( mask) zoneClose[[ip]]=NULL
 
@@ -74,7 +80,7 @@ detZoneClose=function(iZ,Z,zoneNModif,distIsoZ=0.075)
 #' @details description, a paragraph
 #' @param iZ index of zone for which englobing zone is searched
 #' @param Z zoning
-#' @param zoneNModif modified zone neighborhood matrix (FALSE values on diagonal)
+#' @param zoneN modified zone neighborhood matrix (FALSE values on diagonal)
 #'
 #' @return an integer value (0 if no englobing zone was found, englobing zone index otherwise)
 #'
@@ -84,17 +90,17 @@ detZoneClose=function(iZ,Z,zoneNModif,distIsoZ=0.075)
 #' # load zoning results from test file
 #' data(resZTest)
 #' Z=resZTest$zonePolygone
-#' zoneNModif=resZTest$zoneNModif
-#' detZoneEng(3,Z,K$zoneNModif) # zone 2 englobes zone 3
-#' detZoneEng(2,Z,K$zoneNModif) # no englobing zone for zone 2 
-detZoneEng=function(iZ,Z,zoneNModif)
+#' zoneN=resZTest$zoneNModif
+#' detZoneEng(3,Z,zoneN) # zone 2 englobes zone 3
+#' detZoneEng(2,Z,zoneN) # no englobing zone for zone 2 
+detZoneEng=function(iZ,Z,zoneN)
 ##################################################################
 {
     # iZ=index of zone for which englobing zone is searched
     # Z=zoning 
     # result = closest englobing zone
 
-  listN = grep( TRUE ,zoneNModif[iZ,] )
+  listN = grep( TRUE ,zoneN[iZ,] )
   indZe=NULL
   ar=NULL
   for (iN in listN)

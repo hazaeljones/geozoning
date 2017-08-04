@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' data(mapTest)
-#' Z=zoneGeneration(map)
+#' Z=zoneGeneration(mapTest)
 #' # not run
 zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 ################################################################################

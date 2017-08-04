@@ -53,7 +53,7 @@ getZonePts=function(ptsp,zone)
 #####################################################################
 #' MeanVarWPts
 #'
-#' @details description, a paragraph
+#' @details computes (weighted) mean and variance of zone data
 #' @param map object returned by function genMap
 #' @param zone SpatialPolygons defining a zone
 #' @param w weighting vector (default NULL)

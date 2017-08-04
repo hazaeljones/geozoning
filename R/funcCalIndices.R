@@ -1,52 +1,49 @@
 ####################################################################
-#' vecteur d'indices de Geary locaux
+#' local Geary criteria
 #'
-#' @details description, a paragraph
-#' @param matVoisin xxxx
-#' @param vectMoy xxxx
-#' @param moyTot xxxx
-#' @param vectSurface xxxx
+#' @details computes local Geary indices
+#' @param matN neighborhood (zone or point) matrix
+#' @param vectMean vector of mean zone values
+#' @param meanTot global mean
+#' @param vectSurface vector of zone areas
 #'
-#' @return a ?
+#' @return a vector of local Geary criteria
 #'
 #' @export
-#'
 #' @examples
+#' K=resZTest
+#' zoneA=sapply(K$zonePolygone,gArea)
+#' calGearyLoc(K$zoneNModif,K$meanZone,K$meanTot,zoneA)
 #' # not run
-calGearyLoc=function(matVoisin,vectMoy,moyTot,vectSurface)
+calGearyLoc=function(matN,vectMean,meanTot,vectSurface)
 {
-#---------------------------------------------------------------------------------------------------------------------------------#
-#################################################################################################################################
-#---------------------------------------------------------------------------------------------------------------------------------#
-#entrée:matrice de voisinages(zones ou points),vecteur des moyennes par zone, moyenne totale
-#sortie:vecteur d'indices de Geary locaux
-#---------------------------------------------------------------------------------------------------------------------------------#
-  #nombre de zones ou de points
-  nbZones=length(vectMoy)
-  #transformation de matrice de voisinage booleéns->entiers
-  matNum=matrix(as.numeric(matVoisin),nbZones,nbZones)
+#--------------------------------------------------------------------------------
+  # number of zones or points
+  nbZones=length(vectMean)
+  #transform logical neighborhood into integer
+  matNum=matrix(as.numeric(matN),nbZones,nbZones)
 
-  #matrice ou chaque colone est vectMoy
-  matMoy=vectMoy%*%t(rep(1,nbZones))
+  #matrix with vectMean columns
+  matMean=vectMean%*%t(rep(1,nbZones))
 
-  #on compute la matrice,matWZ[i,j]=wij*(zi-zj)^2*Sj
-  #                                 wij=1 si i et j sont voisins,0 sinon
-  #                                 zi=moyenneI
+  # compute matWZ[i,j]=wij*(zi-zj)^2*Sj
+  #                                 wij=1 si i et j sont Ns,0 sinon
+  #                                 zi=meanI
   #                                 Sj=surfaceJ
-  matWZ=matNum*((matMoy-t(matMoy))^2)*vectSurface
+  matWZ=matNum*((matMean-t(matMean))^2)*vectSurface
 
-  #on compute le vecteur indiceMoranLoc[i]=nbzones*zi*SUM(wij zj)/SUM(wij)*SUM(zi-z)^2
-  indiceGearyLoc=(apply(FUN=sum,matWZ,MARGIN=1))/(((vectMoy-moyTot)^2)*apply(FUN=sum,MARGIN=1,matNum*t(vectSurface%*%t(1:nbZones)) ))
+  #compute indiceMoranLoc[i]=nbzones*zi*SUM(wij zj)/SUM(wij)*SUM(zi-z)^2
+  indiceGearyLoc=(apply(FUN=sum,matWZ,MARGIN=1))/(((vectMean-meanTot)^2)*apply(FUN=sum,MARGIN=1,matNum*t(vectSurface%*%t(1:nbZones)) ))
 
   return(indiceGearyLoc)
 }
 
 
 ####################################################################
-#' fonction qui compute un critère de moran sur toute la carte
+#' computes Moran criterion on whole zoning
 #'
-#' @details description, a paragraph
-#' @param voisinZone xxxx
+#' @details computes Moran criterion on zoning
+#' @param NZone xxxx
 #' @param matDistanceMoranB xxxx
 #' @param vectSurface xxxx
 #'
@@ -56,38 +53,34 @@ calGearyLoc=function(matVoisin,vectMoy,moyTot,vectSurface)
 #'
 #' @examples
 #' # not run
-calMoranBTot=function(voisinZone,matDistanceMoranB,vectSurface)
+calMoranBTot=function(NZone,matDistanceMoranB,vectSurface)
 {
-#################################################################################################################################
-#---------------------------------------------------------------------------------------------------------------------------------#
+#################################################################################
+#-------------------------------------------------------------------------------
 
-#fonction qui compute un critère de moran sur toute la carte
-#entrée:matrice des voisinages sans la diagonale(matrix),matrice des distance entre zones(matrix) ( de Moran)
-#sortie:indice de Moran sur le découpage(numeric)
-#---------------------------------------------------------------------------------------------------------------------------------#
   #nombre de zones
   n=length(diag(matDistanceMoranB))
   #nombre de coefficients non nuls sur l'extradiagonale(=somme des wij)
-  m=length(grep(TRUE,voisinZone))
+  m=length(grep(TRUE,NZone))
   #on applique à la matrice des distances un masque pour enlever les termes diagonaux
-  matDistanceModif=matDistanceMoranB*voisinZone
-  #cal du numérateur: si pour i et j voisins
+  matDistanceModif=matDistanceMoranB*NZone
+  # numerator: si pour i et j Ns
   #                      Mij=distance(ij)*surfacei*surfacej
   #                      numMoran=somme(Mij)
   numMoran=sum(matDistanceModif * (vectSurface%*%t(vectSurface)))
 
-  #cal du denominateur:Mi=distance(ii)*surface(i)*somme(surfaces des voisins de i)
+  # denominator:Mi=distance(ii)*surface(i)*somme(surfaces des Ns de i)
   #                       denomMoran=somme(Mi)
-  denomMoran=sum( diag(matDistanceMoranB) * vectSurface * apply(FUN=sum,MARGIN=1,voisinZone*t(vectSurface%*%t(1:n))) )
+  denomMoran=sum( diag(matDistanceMoranB) * vectSurface * apply(FUN=sum,MARGIN=1,NZone*t(vectSurface%*%t(1:n))) )
   iMoran=(n/m)*numMoran/denomMoran
   return(iMoran)
 }
 
 ####################################################################
-#' fonction calant un vecteur d'indices de moran locaux(= par zone)
+#' compute local Moran indices (per zone)
 #'
 #' @details description, a paragraph
-#' @param voisinZone xxxx
+#' @param NZone xxxx
 #' @param matDistanceMoranB xxxx
 #' @param vectSurface xxxx
 #'
@@ -97,35 +90,27 @@ calMoranBTot=function(voisinZone,matDistanceMoranB,vectSurface)
 #'
 #' @examples
 #' # not run
-calMoranBLocal=function(voisinZone,matDistanceMoranB,vectSurface)
+calMoranBLocal=function(NZone,matDistanceMoranB,vectSurface)
 {
-
-  #---------------------------------------------------------------------------------------------------------------------------------#
-#################################################################################################################################
-#---------------------------------------------------------------------------------------------------------------------------------#
-
-#fonction calant un vecteur d'indices de moran locaux(= par zone)
-#entrée:matrice des voisinages,matrice des distance de Moran entre zones (matrix)
-#sortie:vecteur des indices de Moran locaux sur le découpage(numeric)
-#---------------------------------------------------------------------------------------------------------------------------------#
+#################################################################################
   nbZones=length(vectSurface)
-  # numérateur: si pour i et j voisins
+  # numérateur: si pour i et j Ns
   #             Mij=dij*surface zone i* surface zone j,
   #             numérateur=somme(Mij) sur les lignes
-  #dénominateur:si Mi=dii*somme(surfaces des voisins de i)
+  #dénominateur:si Mi=dii*somme(surfaces des Ns de i)
   #             denominateur=somme (Mi)
-  vectMoran=((apply( FUN=sum,MARGIN=1 , matDistanceMoranB * voisinZone * t(vectSurface%*%t(1:nbZones) )))
-             /(diag(matDistanceMoranB) * apply( FUN=sum,MARGIN=1 , voisinZone * t(vectSurface%*%t(1:nbZones)) )))
+  vectMoran=((apply( FUN=sum,MARGIN=1 , matDistanceMoranB * NZone * t(vectSurface%*%t(1:nbZones) )))
+             /(diag(matDistanceMoranB) * apply( FUN=sum,MARGIN=1 , NZone * t(vectSurface%*%t(1:nbZones)) )))
   return(vectMoran)
 }
 
 ####################################################################
-#' fonction calant un indice de Moran(adapté) entre les différentes zone,ou les différents points
+#' computes specific Moran criterion
 #'
 #' @details description, a paragraph
-#' @param matVoisinZone xxxx
-#' @param vectMoy xxxx
-#' @param moyTot xxxx
+#' @param matNZone xxxx
+#' @param vectMean xxxx
+#' @param meanTot xxxx
 #' @param vectSurface xxxx
 #'
 #' @return a ?
@@ -134,32 +119,26 @@ calMoranBLocal=function(voisinZone,matDistanceMoranB,vectSurface)
 #'
 #' @examples
 #' # not run
-calMoranGlo=function(matVoisinZone,vectMoy,moyTot,vectSurface)
+calMoranGlo=function(matNZone,vectMean,meanTot,vectSurface)
 {
-#---------------------------------------------------------------------------------------------------------------------------------#
-#################################################################################################################################
-#---------------------------------------------------------------------------------------------------------------------------------#
-#fonction calant un indice de Moran(adapté) entre les différentes zone,ou les différents points
-#entrée:matrice des voisinages de zones OU POINTS (bien qu'il soit précisé matVoisin"Zone") (diagonale=False),
-#vecteur des moyennes des zones ou des valeurs des points, moyenne totale,
-#sortie:indice associé à un découpage spécifique de la carte
-#---------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------
+################################################################################
 #nombre de zones ou de points
-  nbZones=length(vectMoy)
+  nbZones=length(vectMean)
 
   #transformation de matrice de booleéns en entiers
-  matNum=matrix(as.numeric(matVoisinZone),nbZones,nbZones)
-  #somme de la matrice des voisinages
-  sommeVoisinage=sum(matNum)
+  matNum=matrix(as.numeric(matNZone),nbZones,nbZones)
+  #somme de la matrice des Nages
+  sommeNage=sum(matNum)
 
-  #numérateur:si pour i et j voisins
-  #             Mij=(moyenneI-moyenneTotale)*(moyenneJ-moyenneTotale)*surfaceI*surfaceJ
+  #numérateur:si pour i et j Ns
+  #             Mij=(mI-mGlob)*(mJ-mGlob)*surfaceI*surfaceJ
   #             numerateur=somme(Mij)
-  #denominateur:si Mi=(moyenneI-moyenneTotale)^2 * surfaceI*somme(surfaces des voisins de I)
+  #denominateur:si Mi=(mI-mGlob)^2 * surfaceI*somme(surfaces des Ns de I)
   #             denominateur=somme(Mi)
 
-  indiceMoranGlo=(sum( ((vectMoy-moyTot)%*%t(vectMoy-moyTot)) * matNum * (vectSurface%*%t(vectSurface)) )
-                  /sum(((vectMoy-moyTot)^2)*vectSurface*apply(t(vectSurface%*%t(1:nbZones)*matNum),FUN=sum,MARGIN=1)) )
+  indiceMoranGlo=(sum( ((vectMean-meanTot)%*%t(vectMean-meanTot)) * matNum * (vectSurface%*%t(vectSurface)) )
+                  /sum(((vectMean-meanTot)^2)*vectSurface*apply(t(vectSurface%*%t(1:nbZones)*matNum),FUN=sum,MARGIN=1)) )
   return(indiceMoranGlo)
 }
 
@@ -167,9 +146,9 @@ calMoranGlo=function(matVoisinZone,vectMoy,moyTot,vectSurface)
 #' calMoranLoc
 #'
 #' @details description, a paragraph
-#' @param matVoisin xxxx
-#' @param vectMoy xxxx
-#' @param moyTot xxxx
+#' @param matN xxxx
+#' @param vectMean xxxx
+#' @param meanTot xxxx
 #' @param vectSurface xxxx
 #'
 #' @return a ?
@@ -178,27 +157,22 @@ calMoranGlo=function(matVoisinZone,vectMoy,moyTot,vectSurface)
 #'
 #' @examples
 #' # not run
-calMoranLoc=function(matVoisin,vectMoy,moyTot,vectSurface)
+calMoranLoc=function(matN,vectMean,meanTot,vectSurface)
 {
-#---------------------------------------------------------------------------------------------------------------------------------#
-#################################################################################################################################
-#---------------------------------------------------------------------------------------------------------------------------------#
-#entrée:matrice de voisinages(zones ou points),vecteur des moyennes par zone, moyenne totale
-#sortie:vecteur d'indices de Moran locaux
-#---------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------#################################################################################
   #nombre de zones ou de points
-  nbZones=length(vectMoy)
-  #transformation de matrice de voisinage booleéns->entiers
-  matNum=matrix(as.numeric(matVoisin),nbZones,nbZones)
+  nbZones=length(vectMean)
+  #transform logical meighborhood into integer
+  matNum=matrix(as.numeric(matN),nbZones,nbZones)
 
   #on compute la matrice,matWZ[i,j]=wij*zj*Sj
-  #                                 wij=1 si i et j sont voisins,0 sinon
-  #                                 zj=moyenneJ-moyenneTotale
+  #                                 wij=1 si i et j sont Ns,0 sinon
+  #                                 zj=mJ-mGlob
   #                                 Sj=surfaceJ
-  matWZ=t(t(matNum)*((vectMoy-moyTot)*vectSurface))
+  matWZ=t(t(matNum)*((vectMean-meanTot)*vectSurface))
 
   #on compute le vecteur indiceMoranLoc[i]=nbzones*zi*SUM(wij zj)/SUM(wij)*SUM(zi-z)^2
-  indiceMoranLoc=((vectMoy-moyTot)*apply(FUN=sum,matWZ,MARGIN=1))/(((vectMoy-moyTot)^2)*apply(FUN=sum,MARGIN=1,matNum*t(vectSurface%*%t(1:nbZones)) ))
+  indiceMoranLoc=((vectMean-meanTot)*apply(FUN=sum,matWZ,MARGIN=1))/(((vectMean-meanTot)^2)*apply(FUN=sum,MARGIN=1,matNum*t(vectSurface%*%t(1:nbZones)) ))
 
   return(indiceMoranLoc)
 }
@@ -207,10 +181,10 @@ calMoranLoc=function(matVoisin,vectMoy,moyTot,vectSurface)
 ####################################################################
 #' calGearyGlo
 #'
-#' @details description, a paragraph
-#' @param matVoisin xxxx
-#' @param vectMoy xxxx
-#' @param moyTot xxxx
+#' @details computes global Geary criterion
+#' @param matN xxxx
+#' @param vectMean xxxx
+#' @param meanTot xxxx
 #' @param vectSurface xxxx
 #'
 #' @return a ?
@@ -219,33 +193,28 @@ calMoranLoc=function(matVoisin,vectMoy,moyTot,vectSurface)
 #'
 #' @examples
 #' # not run
-calGearyGlo=function(matVoisin,vectMoy,moyTot,vectSurface)
+calGearyGlo=function(matN,vectMean,meanTot,vectSurface)
 {
-#---------------------------------------------------------------------------------------------------------------------------------#
-#################################################################################################################################
-#---------------------------------------------------------------------------------------------------------------------------------#
-#entrée:matrice de vosinages de zones ou de points,vecteur des moyennes par zone(ou valeurs par points ), moyenne totale ou moyenne de la zone
-#sortie:indice de geary
-#---------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------#################################################################################
   #nombre de zones ou de points
-  nbZones=length(vectMoy)
+  nbZones=length(vectMean)
 
-  #transformation de booleéns en entiers
-  matNum=matrix(as.numeric(matVoisin),nbZones,nbZones)
-  sommeVoisinage=sum(matNum)
+  #transform logical meighborhood into integer
+  matNum=matrix(as.numeric(matN),nbZones,nbZones)
+  sommeNage=sum(matNum)
 
-  #matrice ou chaque colone est vectMoy
-  matMoy=vectMoy%*%t(rep(1,nbZones))
+  #matrice ou chaque colone est vectMean
+  matMean=vectMean%*%t(rep(1,nbZones))
 
-  #numerateur:si pour i et j voisins
-  #           Mij=(moyenneI-moyenneJ)^2 * surfaceI*surfaceJ
-  #           numerateur=somme(Mij)*(nombre de zones -1)
-  #denominateur:si pour i et j voisins
-  #           Mi=(moyenneI-moyenneTotale)*somme(surface des voisins  de I)
-  #           denominateur=somme(Mi)*(2*nombre de voisinages)
+  #numerator:
+  #           Mij=(mI-mJ)^2 * surfaceI*surfaceJ
+  #           numerator=sum(Mij)*(number of zones -1)
+  #denominator:
+  #           Mi=(mI-mGlob)*somme(surface of Ns  of I)
+  #           denominatorr=sum(Mi)*(2*number of neighborhoods)
 
-  indiceGeary=(((nbZones-1)/2*sommeVoisinage)*sum(matNum * ((matMoy-t(matMoy))^2)*(vectSurface%*%t(vectSurface)) )
-               /sum( ((vectMoy-moyTot)^2) * apply(FUN=sum,MARGIN=1 , matNum * t(vectSurface%*%t(1:nbZones))) ))
+  indiceGeary=(((nbZones-1)/2*sommeNage)*sum(matNum * ((matMean-t(matMean))^2)*(vectSurface%*%t(vectSurface)) )
+               /sum( ((vectMean-meanTot)^2) * apply(FUN=sum,MARGIN=1 , matNum * t(vectSurface%*%t(1:nbZones))) ))
 
   return(indiceGeary)
 }

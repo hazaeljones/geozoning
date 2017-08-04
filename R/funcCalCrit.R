@@ -101,7 +101,7 @@ calCrit2=function(matDistance,zoneNModif)
     {
       if(zoneNModif[i,j])
       {
-        #conpute dij/(dii+djj)
+        #compute dij/(dii+djj)
         tmpj=(2*matDistance[i,j]/(matDistance[j,j]+matDistance[i,i]))
 
         #if current value smaller than previous one, store it
