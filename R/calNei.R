@@ -82,9 +82,58 @@ calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALS
 
 
 #########################################
+#' labZone0
+#'
+#' @details assigns a class label (integer) to a zone depending on the zone mean value
+#' and on the quantile values. Default label is 1, corresponding to mean value samller #' or equal to first quantile. For k ordered quantile values, if mean value is greater #' than quantile k plus 10% of the data range, zone label is k. 
+#' @param K zoning object, as returned by the calNei function
+#' @param qProb probability vector used to generate quantile values for Z
+#' @param data data used to generate labels and zoning 
+#'
+#' @return a zoning object with labelled zones in lab component
+#'
+#' @export
+#' @importFrom sp point.in.polygon
+#'
+#' @examples
+#' data(mapTest)
+#' dataF=mapTest$krigGrid
+#' data(resZTest)
+#' K=resZTest
+#' p = K$qProb
+#' labZone(K,p,dataF)
+#' # not run
+labZone0=function(K,qProb,dataF)
+#########################################
+  {
+    #create labels
+    # input is zoning from calNei, quantile vector and data values
+    # output has lab
+  lab = rep(1,length(K$zonePolygone))
+  # consider range of data values
+  rate= max(dataF)-min(dataF)
+  q1= quantile(dataF,na.rm=TRUE,prob=qProb)
+
+  for (i in 1:length(K$zonePolygone))
+  {
+    for (j in 1:length(q1))
+    {
+      if (K$meanZone[i]>(q1[j]+0.01*rate))
+      {
+        lab[i]=j+1
+      }
+
+    }
+  }
+K$lab=lab
+K$qProb=qProb
+return(K)
+}
+#########################################
 #' labZone
 #'
 #' @details assigns a class label (integer) to a zone depending on the zone mean value
+#' and on the quantile values (as in PA paper). Default label is 1, corresponding to me#' an value smaller or equal to first quantile. For p ordered quantile values, if mean #' value is greater than quantile k and smaller or equal to quantile k+1, zone label is#' k+1. if mean value is greater than quantile p, zone lable is p+1.
 #' @param K zoning object, as returned by the calNei function
 #' @param qProb probability vector used to generate quantile values for Z
 #' @param data data used to generate labels and zoning 
@@ -106,29 +155,19 @@ labZone=function(K,qProb,dataF)
 #########################################
   {
     #create labels
-    # input is zoning from calNei, quantile vector and data values
-    # output has lab
-  lab = rep(1,length(K$zonePolygone))
+    #correct assignment according to PA paper, NEW VERSION OF labZone
+    #input is zoning from calNei, quantile vector and data values
+    #output has lab
   # consider range of data values
-  rate= max(dataF)-min(dataF)
-  q1= quantile(dataF,na.rm=TRUE,prob=qProb)
-
-  for (i in 1:length(K$zonePolygone))
-  {
-    for (j in 1:length(q1))
-    {
-      if (K$meanZone[i]>(q1[j]+1/rate))
-      {
-        lab[i]=j+1
-      }
-
-    }
-  }
-K$lab=lab
-K$qProb=qProb
-return(K)
+  qvec= quantile(dataF,na.rm=TRUE,prob=qProb)
+  nL=length(qvec)+1
+  dmin=min(dataF)
+  dmax=max(dataF)
+  lab=as.numeric(cut(K$meanZone,c(dmin,qvec,dmax),1:nL))
+  K$lab=lab
+  K$qProb=qProb
+  return(K)
 }
-
 ######################################
 #' correctN
 #'

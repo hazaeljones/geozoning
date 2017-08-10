@@ -27,7 +27,7 @@
 #' m=genMap(seed=1,krig=2,disp=1) #generates a map and plots data
 #' mean(m$krigGrid) # mean of generated kriged data
 #' # not run
-genMap=function(DataObj=NULL,seed=80,krig=2,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,
+genMap=function(DataObj=NULL,seed=80,krig=2,Vpsill=5,Vrange=0.2,Vnugget=0.2,Vmean=8,
        nPointsK=1000,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),disp=0,FULL=FALSE)
 #######################################################################################################
 {

@@ -50,7 +50,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
   # For each isocontour
   for (jContour in (1:length(cL)))
     {
-      # On le passe en structure spatiale (2eme structure de données, Objet Spatial)
+      # convert to spatial lines
       cLSp[[jContour]] <- ContourLines2SLDF(list(cL[[jContour]]))
       #  level attribute conserved
       # starting from frame, intersect with each isocontour

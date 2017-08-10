@@ -43,7 +43,7 @@ zoneQ = function (contourSp,iC,iE,Z,K,map,simplitol=1e-3)
 
 	if (is.null(Zopti)) return(NULL)
 	# englobing zone number may have changed-find it using zone id
-	iBig=findNumZ(Zopti,idE)
+	iBig=Identify(idE,Zopti)
 	# then intersect new contour with englobing zone
 	polyDiff=gDifference(Zopti[[iBig]],contourSp)
 	if(is.null(polyDiff)) return(NULL)

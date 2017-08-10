@@ -28,10 +28,10 @@
 #' @importFrom RandomFields RMtrend RMnugget RFsimulate
 #'
 #' @examples
-#' # not run
 #' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) # simulated data with Gaussian model
 #' plot(resGene$tabData)
 #'
+#' # not run
 genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
 #'
 ##############################################################################

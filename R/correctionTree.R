@@ -14,24 +14,24 @@
 #' @param MAXP quantile sequence maximum shift quantile sequence maximum shift
 #' @param LASTPASS if TRUE, remove zones that are still too small at the last level of the correction tree
 #' @param disp 0: no info, 1: some info, 2: detailed info
-#' @param SAVE logical value, if TRUE function returns last level zonings
+#' @param SAVE logical value, if TRUE function returns last level zonings, if FALSE function only returns best last level results
 #' @param ONE logical value, if TRUE function returns only criterion value
 #' @param ALL logical value, if TRUE function returns zonings at all levels
 #'
 #' @return a list with components
 #'\describe{
-#' \item{bestcrit}{best criterion value at last level}
-#' \item{critList}{criterion values at last level}
-#' \item{costList}{cost values at last level}
-#' \item{costLList}{cost per label  values at last level}
-#' \item{nzList}{vector of number of zones at last level}
-#' \item{qProb}{vector of probabilities values used for quantiles}
-#' \item{zk}{list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects}
-#' \item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
-#' \item{crit}{list of initial criterion and all (last if ALL=FALSE) level criteria }
-#' \item{cost}{list of initial cost and all (last if ALL=FALSE) level costs  }
-#' \item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label}
-#' \item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones}
+#' \item{bestcrit}{best criterion value at last level (in all cases)}
+#' \item{critList}{criterion values at last level (in all cases if ONE=FALSE)}
+#' \item{costList}{cost values at last level (in all cases if ONE=FALSE)}
+#' \item{costLList}{cost per label  values at last level (in all cases if ONE=FALSE)}
+#' \item{nzList}{vector of number of zones at last level (in all cases if ONE=FALSE)}
+#' \item{qProb}{vector of probabilities values used for quantiles (in all cases if ONE=FALSE)}
+#' \item{zk}{list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects (only if SAVE=TRUE)}
+#' \item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices (only if SAVE=TRUE)}
+#' \item{criterion}{list of initial criterion and all (last if ALL=FALSE) level criteria (only if SAVE=TRUE)}
+#' \item{cost}{list of initial cost and all (last if ALL=FALSE) level costs   (only if SAVE=TRUE)}
+#' \item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label (only if SAVE=TRUE)}
+#' \item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones (only if SAVE=TRUE)}
 #' }
 #' @importFrom rgeos gArea
 #'

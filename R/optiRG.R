@@ -140,10 +140,10 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
   Zopti=crComment(Zopti)
   Kopti = calNei(Zopti,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
   Zopti = Kopti$zonePolygone
-  Kopti=trLabZone(K,Kopti,Z,Zopti,map,qProb,disp=0)
+  Kopti=trLabZone(K,Kopti,map,qProb,disp=0)
   Kopti$qProb=K$qProb
 # find merged zone number in new zoning
-  index=findNumZ(Zopti,idZC)
+  index=Identify(idZC,Zopti)
 # must not intersect with other zones except itself and included zones
   inter=testInterSpeZ1(Zopti,index)
 #

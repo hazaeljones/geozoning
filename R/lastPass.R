@@ -68,8 +68,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2
 		if(disp) print(paste("in lastPass removal of small zone id=",zid,"iC=",iC))
 	    	Z2 = zoneFusion3(K1,iC, getNs(K1$zoneNModif,iC) ,map,minSize,simplitol)
 		K2=calNei(Z2,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol)
-  		Z2=K2$zonePolygone
-		K3=trLabZone(K1,K2,Z1,Z2,map,qProb,disp=0)
+  		K3=trLabZone(K1,K2,map,qProb,disp=0)
 		Z3=K3$zonePolygone
 		K1=K3
 		Z1=Z3

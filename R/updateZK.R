@@ -28,7 +28,7 @@
 #' K1=criti$zk[[1]][[1]]#initial zoning
 #' Z1=K1$zonePolygone 
 #' printZsurf(Z1) # 8 zones with 2 small zones (7 and 8)
-#' Z2 = remove1FromZ(Z,7,K1$zoneN)
+#' Z2 = remove1FromZ(Z1,7,K1$zoneN)
 #' printZsurf(Z2) #7 zones
 #' newRes=updateZK(mapTest,c(0.4,0.7),1,1,criti$zk[1],criti$criterion[1],criti$cost[1],criti$costL[1],criti$nz[1],criti$mdist[1],K1,Z2)
 #' newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
@@ -46,7 +46,7 @@ Z1=K1$zonePolygone
 # transfer zone labels in K2$lab from K1$lab
 # use zone id correspondence between Z1 and Z2
 # do not reassign labels
- 	K2=trLabZone(K1,K2,Z1,Z2,map,qProb,disp=0)
+ 	K2=trLabZone(K1,K2,map,qProb,disp=0)
 	K2$qProb=qProb
 # compute overall cost per label
 	cL=costLab(K2,map)

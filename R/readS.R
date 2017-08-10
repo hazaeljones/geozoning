@@ -9,8 +9,9 @@
 #' @importFrom raster shapefile
 #'
 #' @export
-#'
 #' @examples
+#' z=readS("Field_8_zones.shp",dir="../data/")
+#' plot(z$sp)
 #' # not run
 ###############################################################
 readS = function(file, dir)
@@ -27,14 +28,10 @@ readS = function(file, dir)
     shape1 <- shapefile(name)
 
     #obtention of coords
-    p = shape1@polygons[[1]]
-    p1 = p@Polygons[[1]]
-    p2 = p1@coords
-
-    xlim=range(p2[,1])
-    ylim=range(p2[,2])
+    xlim=shap1@bbox[1,]
+    ylim=shap1@bbox[2,]
     # return list with coords, ranges for x and y
-    return(list(p=p2, xlim = xlim, ylim = ylim,sp=shape1))
+    return(list(sp=shape1,xlim = xlim, ylim = ylim))
   }
   else
   {

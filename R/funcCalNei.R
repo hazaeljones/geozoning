@@ -103,6 +103,7 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 #' ny=ncol(mapTest$krigGrid)
 #' nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
 #' vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
+#' length(vP$surfVoronoi) #as many as kriged data points
 #' # not run
 voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,FULL=FALSE)
 ##########################################################

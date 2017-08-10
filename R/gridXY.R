@@ -9,6 +9,8 @@
 #' @export
 #'
 #' @examples
+#' data(dataReg)
+#' gridXY(dataReg)
 #' # not run
 #################################################################################
 # generate empty grid
@@ -25,10 +27,10 @@ gridXY=function(mat)
       for (ii in 1:length(xempty))
       {
 	      maskx=(mat[,1]==xempty[ii])
-      	mati=mat[maskx,]
-      	# complete mati to have a measure for each y value
-      	masky=pmatch(mati[,2],yempty)
-      	tempty[ii,masky]=mati[,3]
+      	      mati=mat[maskx,]
+      	      # complete mati to have a measure for each y value
+      	      masky=pmatch(mati[,2],yempty)
+      	      tempty[ii,masky]=mati[,3]
       }
   return(tempty)
 }

@@ -3,10 +3,10 @@
 #'
 #' @details grow an isolated zone by finding a bigger contour line
 #' @param K zoning object (such as returned by calNei function)
-#' @param iC zone to grow
+#' @param iC index of zone to grow
 #' @param qProb probability vector used to generate quantile values
 #' @param refPoint xxxx
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by genMap function
 #' @param optiCrit criterion choice
 #' @param minSize zone area threshold under which a zone is too small to be manageable
 #' @param minSizeNG zone area threshold under which a zone will be removed
@@ -14,13 +14,14 @@
 #' @param LEQ length of quantile sequence used to grow zone
 #' @param MAXP quantile sequence maximum shift
 #' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param disp no info, 1: detailed info
+#' @param disp 0: no info, 1: detailed info
 #'
 #' @return a list with components
 #'\describe{
 #' \item{crit}{criterion value of the new zoning}
 #' \item{area}{area of the grown zone}
 #' \item{Zopti}{new zoning geometry (list of SpatialPolygons)}
+#' \item{qM}{quantile corresponding to new zone}
 #' }
 #' @export
 #'
@@ -49,7 +50,7 @@ optiGrow = function(K,iC,qProb,refPoint,map,optiCrit=2,minSize=0.012,minSizeNG=1
    res = NULL
    area = NULL
    iE=detZoneEng(iC,Z,K$zoneNModif)
-
+ 
    if (iE == 0)
    {
    if(disp) print("no englobing zone")
@@ -103,12 +104,15 @@ optiGrow = function(K,iC,qProb,refPoint,map,optiCrit=2,minSize=0.012,minSizeNG=1
      }
   else # at least one zoning found
      {
-      n = rev(order(critG)) # order by criterion value
+       n = rev(order(critG)) # order by criterion value
        mask = area[n]>minSize
        if (any(mask)) # if zone big enough
        {
        nm = n[mask]
-       nm = nm[rev(order(area[nm]))] # sort by area
+       qqm=Qseq[mask]
+       mask2=rev(order(area[nm]))
+       qqm=qqm[mask2]
+       nm = nm[mask2] # sort by area
        iM = nm[1]
        } else # area condition not satisfied - take biggest area even if criterion is not the best one
 	{
@@ -117,6 +121,6 @@ optiGrow = function(K,iC,qProb,refPoint,map,optiCrit=2,minSize=0.012,minSizeNG=1
 	}
 
      # have to decide compromise between area and criterion value
-     return(list(crit=critG,area=area,Zopti=Zopt[[iM]]))
+     return(list(crit=critG,area=area,Zopti=Zopt[[iM]],qM=Qseq[iM]))
      }
 }
