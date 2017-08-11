@@ -5,7 +5,8 @@
 #' @param file file name
 #' @param dir directory
 #'
-#' @return a list with coords, ranges for x and y
+#' @return a list with components
+#' SpatialPolygonsDataFrame, ranges for x and y
 #' @importFrom raster shapefile
 #'
 #' @export

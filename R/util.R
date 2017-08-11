@@ -527,7 +527,7 @@ return(list(minSize=minSize,minSizeNG=minSizeNG))
 #' @details description, a paragraph
 #' @param qProb probability vector used to generate quantile values
 #' @param K zoning object, as returned by the calNei function
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param i1 current zone index
 #' @param i2 englobing zone index
 #' @param LEQ length of quantile sequence 
