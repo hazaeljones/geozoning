@@ -20,46 +20,47 @@ vignette: >
 ## 
 ### etc...
 
-A map object is simulated with a Gaussian field. 450 points are randomly allocated on a square field of size 1.Then points are kriged using inverse distance weighted interpolation.
+A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point nieghborhood in the sense of Voronoi.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
   ################################################################
   # step 1 - generate 2D map from simulation - default = 450 pts
   ################################################################
-  # kriging default 2000 pt 
   seed=80
   map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
-
-  # display 2D map
+  
+  # display 2D map with three different views: first one=kriged data, second one=contour lines, third one=raw data.
   plotMap(map)
-
+  # The map object contains all components required for zoning generation, evaluation and visualization. The data-related components include the kriged data, grid resolution, size in each dimension and map boundary. Kriged data are available as a SpatialPointsDataFrame object, as well as a matrix object directly usable by image functions. rawData are stored as well in the map object, for traceability purposes. The neighborhood-related components include the list of neighbor point indices for each kriged data point, as well as the areas of Voronoi polygons associated to all points. Finally the variogram-related components include the VGM model used to simulate the field, as well as the equivalent RandomFields model.
+  # Check the mean and standard deviation of generated data.
+  meanvarSimu(map)
 ```
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  # Trouver ce paramètre pour l'initialiser dans la fonction directement!!!
-  minSizeNG=1e-3
    ################################################################
-   # step 2 - generates zoning Z from map, quantile vector (0.4 here)-no display
+   # step 2 - generate zoning Z from map, quantile vector 
    ################################################################
-   ZK=initialZoning(qProb=c(0.4,0.7),map,pErr=0.9,simplitol=1e-3,optiCrit=2,disp=0) # names(Z)  "resCrit"  "resDist" "resZ"
+   # Given a probability vector, the corresponding quantile vector is obtained using the quantile function.
+   qq=quantile(map$krigGrid,na.rm=TRUE,prob=c(0.4,0.7))
+   # A zoning is done on the kriged data, by computing the contour lines corresponding to the probability vector, trimming them to the map boundary and defining zones corresponding to the closed contour lines.
+   # A zoning is a list of SpatialPolygons objects. It does not contain data, only polygon geometry.
+   ZK=initialZoning(c(0.5,0.7),map) # names(ZK)  "resCrit"  "resDist" "resZ" "cL" "qProb"
    # initialZoning calls zoneGeneration, calNei, calDistance, calCrit
    # zoneGeneration calls contourAuto
    # contourAuto calls contourLines and extensionLine
  
-   # plot zoning (7 zones in this case)
+   # plot zoning (11 zones in this case)
    Z=ZK$resZ$zonePolygone
-   K=ZK$resZ
-   DC0=ZK$resD$matDistanceCorr
-   DC0N=normDistMat(DC0,2)
- 
-   plotZ(Z) #only zones
-   
+   plotZ(Z) 
+   # let us outline zone 3
+   linesSp(Z[[3]],col="blue")
+   # A zone can have one or several holes, and each hole is an independent zone.zone 3 has 3 holes (zones 9, 10, 11). Zone 12 is not a hole in zone 3.
+   holeSp(Z[[3]])
 ```
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  # more detailed plot
-  valRef=quantile(map$krigGrid,na.rm=TRUE,prob=c(0.4,0.7))
-   
+  # a more detailed plot
+  
   # graph
   dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE,mu=2)
   title(paste(" q=[",toString(round(valRef,2)),"]   crit=",round(ZK$resCrit,2),sep=""))
