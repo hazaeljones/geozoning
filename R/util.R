@@ -1362,7 +1362,7 @@ meanvarSimu=function(map)
 valZ=function(map,K)
 #' valZ
 #'
-#' @details description, a paragraph
+#' @details sorts zones according to attribute mean value
 #' @param map map object returned by genMap function
 #' @param K zoning object (such as returned by calNei function)
 #'
@@ -1400,6 +1400,47 @@ k=0
     
   return(list(val=val,ord=ord))
 }
+
+###################
+orderZ=function(Z,ord)
+#' orderZ
+#'
+#' @details sorts zones according to attribute mean value
+#' @param map map object returned by genMap function
+#' @param K zoning object (such as returned by calNei function)
+#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a zoning geometry (list of SpatialPolygons)
+#'
+#' @export
+#'
+#' @examples
+#' map=genMap(DataObj=NULL,seed=40,disp=FALSE,krig=1,Vnugget=1.2)
+#' qProb=c(0.275,0.8)
+#' criti=correctionTree(qProb,map,LASTPASS=FALSE)
+#' res=searchNODcrit1(qProb,criti)
+#' b=res$ind[[1]][1]
+#' K=criti$zk[[2]][[b]]
+#' Z=K$zonePolygone
+#' plotZ(Z)
+#' ord=valZ(map,K)$ord
+#' Z=orderZ(Z,ord)
+#' plotZ(Z)
+#' # not run
+###################
+{
+k=0
+for (iZ in ord)
+{
+k=k+1
+Z=setId(Z,iZ,k)
+}
+return(Z)
+}
+
+
 #############################
 #' superLines
 #'

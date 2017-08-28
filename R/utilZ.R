@@ -621,7 +621,7 @@ testInterSpeZ1=function(Z,iZ)
 ##################################################################
 #' testInterSpeZ
 #'
-#' @details checks, within a zoning, if any zone intersects with any other zone  not within it
+#' @details checks, within a zoning, if any zone intersects with any other zone  not within it and not englobing it
 #' @param Z zoning geometry (list of SpatialPolygons)
 #'
 #' @return a Logical value, TRUE if there is any intersection, FALSE if not

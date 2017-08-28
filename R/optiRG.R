@@ -61,8 +61,10 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
   polyUni@pointobj@coords = rbind(polyUni@pointobj@coords,Zopti[[iZC]]@polygons[[1]]@Polygons[[1]]@coords[ord,])
 
   polyUni=gConvexHull(polyUni)
-
-  # polyUni MUST NOT INTERSECT WITH OTHER ZONES EXCEPT THE 2 ZONES TO JOIN
+  #merge zone iZC with polyUni-keep only envelope
+  tmpZ = gUnion(polyUni,Zopti[[iZC]])
+  tmpZ = gBuffer(tmpZ,byid=TRUE,width=0)
+  # tmpZ MUST NOT INTERSECT WITH OTHER ZONES EXCEPT THE 2 ZONES TO JOIN
   # PLUS THE ENGLOBING ONE
   nother=1:length(Z)
   nother=nother[-match(iC,nother)]
@@ -70,7 +72,7 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
   nother=nother[-match(iZE,nother)]
   for (kk in nother)
   {
-  if(gIntersects(polyUni,Z[[kk]])) return(NULL)
+  if(gIntersects(tmpZ,Z[[kk]])) return(NULL)
   }
   #fusion + removal + ID management
   # assign current zone id to new merged zone
@@ -78,10 +80,8 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
   idZC= getId(Zopti,iZC)
   ie0 = getId(Zopti,iZE)
 
-  #merge zone iZC with polyUni-keep only envelope
-  Zopti[[iZC]]= gUnion(polyUni,Zopti[[iZC]])
-  Zopti[[iZC]] = gBuffer(Zopti[[iZC]],byid=TRUE,width=0)
-
+  # replace close zone with new one including the 2 joined zones
+  Zopti[[iZC]] = tmpZ
   # reassign id to merged zone
   Zopti=setId(Zopti,iZC,idZC)
 
@@ -145,9 +145,10 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
 # find merged zone number in new zoning
   index=Identify(idZC,Zopti)
 # must not intersect with other zones except itself and included zones
-  inter=testInterSpeZ1(Zopti,index)
+# already done with tmpZ
+#  inter=testInterSpeZ1(Zopti,index)
 #
-  if(inter) Kopti=NULL
+#  if(inter) Kopti=NULL
 
   return(Kopti)
 }

@@ -40,8 +40,7 @@ On va utiliser les objets mapTest, resZTest et ZPSTest (les expliquer car j'ai p
    Z$zonePolygone=ZPSTest
    # kriged data
    map=genMap(DataObj=NULL,seed=seed,krig=1,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,disp=0,FULL=FALSE)
-  #plotMap(map) 
-```
+  #plotMap(map) ```
   
 # remove zones with 0 or 1 pt
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}

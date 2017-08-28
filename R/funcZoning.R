@@ -135,7 +135,21 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
   	#test if contour is closed or not - if not, close it
 	iso=cL[[jContour]]
     	np=length(iso$x) #number of pts in contour line
-     	if(iso$x[1]!= iso$x[np] || iso$y[1] != iso$y[np])
+     	#if(iso$x[1]!= iso$x[np] || iso$y[1] != iso$y[np])#not exact sometimes
+	# correct small discrepancies
+	dx=abs(iso$x[1]-iso$x[np])
+	if(dx<=1e-3)
+		{
+		iso$x[np]=iso$x[1]
+		dx=0.0
+		}
+	dy=abs(iso$y[1]-iso$y[np])
+	if(dy<=1e-3)
+		{
+		iso$y[np]=iso$y[1]
+		dy=0.0
+		}
+	if (dx >1e-3 || dy >1e-3)
     	  {
 	  # if contour is not closed, add projection on frame
      	  ######################################################

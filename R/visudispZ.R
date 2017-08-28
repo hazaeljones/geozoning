@@ -1,21 +1,21 @@
 ###############################################################################
 #' dispZ
 #'
-#' @details plots a color representation of values and zones
+#' @details plots a color image representation of values and zones
 #' @param step grid resolution
 #' @param matVal data frame of values
-#' @param nbLvl number of levels used for color rendering
-#' @param K 
-#' @param coulBreaks xxxx
-#' @param texMain xxxx
-#' @param boundary xxxx
-#' @param id xxxx
-#' @param valeurQuant xxxx
-#' @param palCol xxxx
-#' @param indiceArg xxxx
-#' @param mu xxxx
+#' @param nbLvl number of contour lines to generate
+#' @param K zoning object, as returned by the calNei function
+#' @param colBreaks if vector of length 1 number of color breaks, or else color breaks themselves
+#' @param texMain main title
+#' @param boundary map boundary (list with x and y values)
+#' @param id logical value (if TRUE display zone ids on plot)
+#' @param valQ quantile values to use for contour lines 
+#' @param palCol color palette
+#' @param iZ index of zone to outline in red
+#' @param mu mu=1-only display zone number or id, mu=2-also display mean zone value
 #'
-#' @return a ?
+#' @return an empty value
 #' @importFrom grDevices colorRampPalette
 #' @importFrom graphics text
 #' @importFrom fields image.plot
@@ -23,8 +23,13 @@
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' data(resZTest)
+#' K=resZTest
+#' Z=K$zonePolygone
+#' dispZ(mapTest$step,mapTest$krigGrid)
 #' # not run
-dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,coulBreaks=0,texMain="",boundary=NULL,id=FALSE,valQ=NULL,palCol=colorRampPalette(c("brown","yellow")),noXY=FALSE,indiceArg=0,mu=1,cex=1,ptz=NULL)
+dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain="",boundary=NULL,id=FALSE,valQ=NULL,palCol=colorRampPalette(c("brown","yellow")),noXY=FALSE,iZ=0,mu=1,cex=1,ptz=NULL)
 ###############################################################################
 {
 # for PA figures palCol=colorRampPalette(c("brown","yellow"))
@@ -39,46 +44,45 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,coulBreaks=0,texMain
 	xsize=vs["x"]
   	ysize=vs["y"]
 	}
-	
-  #génération des nbLvls isocontours dans un vecteur
-  #soit les valeurs précises des iso sont données
+  else
+  {
+	cn=as.numeric(rownames(matVal))
+	xsize=max(cn)+step
+	rn=as.numeric(rownames(matVal))
+	ysize=max(rn)+step
+  }
+ 
+  #generate isocontours with given valQ 
   if(!is.null(valQ))
   {
     levelsList=valQ     
    
-  }  else if(nbLvl!=0) #soit on a précisé combien on en voulait (par défaut 20),
+  }  else if(nbLvl!=0) #else generate  nbLvls regularly spaced isocontours (if valQ not given)
   {
     levelsList=seq(min(matVal,na.rm=TRUE),max(matVal,na.rm=TRUE),length=nbLvl)
   }
 
-  #si le nombre de paliers pour l'affichage est donné en entrée et valide
-  if(length(coulBreaks)!=1){
+  #if color breaks are given in colBreaks vector
+  if(length(colBreaks)!=1){
     
-    image.plot(main=texMain,seq(step,xsize,by=step), seq(step,ysize,by=step),matVal,
-          breaks=coulBreaks,col=palCol(length(coulBreaks)-1),legend.shrink=0.4,legend.width=0.6)   
+    image.plot(main=texMain,seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal,
+          breaks=colBreaks,col=palCol(length(colBreaks)-1),legend.shrink=0.4,legend.width=0.6)   
   }
   else{
-    #sinon on prend arbitrairement 20 couleurs de paliers uniformément entre la plus petite et la plus grande valeur des données en entrée
-    #affichage de la carte des valeurs en entrée(nécessite une grille régulière...)
+    #if not, take regularly spaced colors
     if (!is.null(matVal))
        image.plot(seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal,col=palCol(20),legend.shrink=0.4,legend.width=0.6,xlab="X",ylab="Y",cex.axis=1.5,cex.lab=1.5)
     else
 	plot(0,0,xlim=c(0,xsize),ylim=c(0,ysize),type="n") #no data, only set axes
   }
     
-    #affichage des contours si on en a généré
+    #plus contours if any
   if(!is.null(levelsList))
   {
        if (!is.null(matVal))
        	  {
-		listLines=contourLines(seq(step,xsize,by=step), seq(step,ysize,by=step),
-                matVal, levels = levelsList)
-                for(i in (1:length(listLines)))
-      		      {
-        	      #affichage des isocontours par dessus la carte affichée
-        	      lines(listLines[[i]])
-		      }
-   
+		contour(seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal, levels = levelsList,add=TRUE)
+    
            }
   }
   
@@ -86,24 +90,22 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,coulBreaks=0,texMain
   {
     lines(boundary)
   }
- 
- 
- 
-  
+   
   if(nbPoly!=0)
   {    
     
     for (j in (1:nbPoly))
     {
-      #affichage des éventuels polygones de zones déja définis
+      #display zones
       lines(Z[[j]]@polygons[[1]]@Polygons[[1]]@coords,type='l')
      
       if(is.null(ptz))
 	#pointLabel=Z[[j]]@polygons[[1]]@Polygons[[1]]@labpt
+	# find good location to display (zone centroid may not be right)
 	pointLabel=findZCenter(Z,j)
 	else
 	pointLabel=ptz[j,]
-      # utiliser id Zone au lieu de num Zone
+      # use zone id instead of zone number
       if(id)
 	jid = getZoneId(Z[[j]])
       else
@@ -117,9 +119,9 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,coulBreaks=0,texMain
 	 text(pointLabel[1],pointLabel[2],jid,cex=cex)
     }
     
-    if (indiceArg !=0)
+    if (iZ !=0)
     {
-      lines(Z[[indiceArg]]@polygons[[1]]@Polygons[[1]]@coords,type='l',col='red')  
+      lines(Z[[iZ]]@polygons[[1]]@Polygons[[1]]@coords,type='l',col='red')  
       lines(boundary)
     }
   }
@@ -128,17 +130,35 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,coulBreaks=0,texMain
 #########################################################
 #'
 #' dispZmap
-#' @details description, a paragraph
-#' @param map xxxx
-#' @param Z
-#' @param m
-#' @param valbp
-#' @param scale
-#' @param lev
-#' @param palCol
-#' @param legend.width
+#' @details plots a color representation of values and zones
+#' @param map map object returned by genMap function
+#' @param Z zoning geometry (list of SpatialPolygons) 
+#' @param qProb quantile associated probability vector
+#' @param valbp values used for boxplots
+#' @param scale field scale
+#' @param lev number of color levels
+#' @param palCol color palette
+#' @param legend.width relative width of legend
+#'
+#' @return an empty value
+#' @importFrom grDevices colorRampPalette
+#' @importFrom graphics text
+#' @importFrom fields image.plot
+#'
+#' @export
+#'
+#' @examples
+#' seed=80
+#' data(mapTest)
+#' ZK=initialZoning(c(0.5,0.7),mapTest)
+#' K=ZK$resZ
+#' Z=K$zonePolygone
+#' order zone ids by attribute mean value
+#' ord=order(K$meanZone)
+#'   Z=orderZ(Z,ord)
+#'   plotZ(Z,id=TRUE)
 #' # not run
-dispZmap=function(map,Z=NULL,m=NULL,valbp=NULL,scale=NULL,lev=20,palCol=colorRampPalette(c("brown","yellow")),legend.width=1,parG=NULL,ptz=NULL)
+dispZmap=function(map,Z=NULL,qProb=NULL,valbp=NULL,scale=NULL,lev=20,palCol=colorRampPalette(c("brown","yellow")),legend.width=1,parG=NULL,ptz=NULL)
 #########################################################
 {
 step=map$step
@@ -155,7 +175,7 @@ par(mar=c(0,0,5,0))#c(bottom, left, top, right))
 }
 image(seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
 image.plot( zlim=range(matVal,na.rm=TRUE), nlevel=20,legend.only=TRUE, vertical=FALSE,col=palCol(20))
-if (!is.null(m)) title(paste("Best zoning for nL=",length(m)+1,"\nm=[",paste(m,collapse=","),"]",sep=""),cex.main=1.5)
+if (!is.null(qProb)) title(paste("Best zoning for nL=",length(qProb)+1,"\nm=[",paste(qProb,collapse=","),"]",sep=""),cex.main=1.5)
 #
 dec=0.03
 decy=0.05

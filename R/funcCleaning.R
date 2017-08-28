@@ -240,9 +240,9 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0
 	# either grow isolated zone or group 2 zones together
 	# if isolated zone, optim procedure to find the new quantile
 	# if zone very small, skip (useless) growing step
-	if(disp>0) print(paste("trying to grow zone",getZoneId(Z[[iC]])))
 #
   Z=K$zonePolygone
+  if(disp>0) print(paste("trying to grow zone id",getZoneId(Z[[iC]]), "- new number", iC))
   Ns = getNs(K$zoneNModif,iC)
   qProb=K$qProb
   if(is.null(qProb)) return(NULL)
@@ -266,10 +266,10 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0
   {
 	  if (disp>0) print(paste("growing isolated zone: ",getZoneId(Z[[iC]])))
     ##############################################################
-	  #fonction qui trouve le meilleur quantile pour agrandir la zone
+	  #searches for the best quantile to grow zone
     ##############################################################
     resZ = optiGrow(K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
-		# renvoie NULL si voie sans issue
+		# returns NULL if dead end
 		if (!is.null(resZ))
 		{
 			if(disp) print("growing successful")

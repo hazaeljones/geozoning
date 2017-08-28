@@ -56,7 +56,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
   
 
     # precaution !
-  qProb=sort(unique(qProb))
+  qProb=sort(unique(as.numeric(qProb)))
   #
   if(disp>0) print(paste("qProb=",qProb))
   #
@@ -170,7 +170,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
        if(disp>0)
 	{
 		cat("\n")
-		print(paste("in loop level=",indCur+1,",zone to handle initial number= ",resini$resZ$zonePolygone[[indZS]]@polygons[[1]]@ID,",",curLen, "branch(es) to examine "))
+		print(paste("in loop level=",indCur+1,",zone to handle initial number (id)= ",resini$resZ$zonePolygone[[indZS]]@polygons[[1]]@ID,",",curLen, "branch(es) to examine "))
 	}
 
       for (iter in (1:curLen))
@@ -212,7 +212,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
          # 2 = grow zone indZS
 
       	 zpCopy2 = zoneGrow(K,map,iC,optiCrit,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
-         if (disp>0) print(paste(length(zpCopy2)," polygons after zone growing"))
+         if (disp>0) print(paste(length(zpCopy2)," zones after zone growing"))
          ###############################################################################################
         } # end else disparition
 
