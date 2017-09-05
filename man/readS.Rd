@@ -4,22 +4,25 @@
 \alias{readS}
 \title{readS returns coords, ranges for x and y of a shapefile}
 \usage{
-readS(file, rep)
+readS(file, dir)
 }
 \arguments{
 \item{file}{file name}
 
-\item{rep}{directory}
+\item{dir}{directory}
 }
 \value{
-a ?
+a list with components
+SpatialPolygonsDataFrame, ranges for x and y
 }
 \description{
 readS returns coords, ranges for x and y of a shapefile
 }
 \details{
-description, a paragraph
+reads a polygon shp file in a directory and extracts coordinates and x and y ranges.
 }
 \examples{
+#z=readS("Field_8_zones.shp",dir="../data/")
+#plot(z$sp)
 # not run
 }

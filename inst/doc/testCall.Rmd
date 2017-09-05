@@ -15,19 +15,18 @@ vignette: >
   library(geozoning)
 ```
 
-RAJOUTER DU TEXTE DESCRIPTIF
 
-# ceci est un titre
-## ceci est un sous-titre
+# 2D map simulation 
+## 
 ### etc...
 
-some description
+A map object is simulated with a Gaussian field. 450 points are randomly allocated on a square field of size 1.Then points are kriged using inverse distance weighted interpolation.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
   ################################################################
   # step 1 - generate 2D map from simulation - default = 450 pts
   ################################################################
-  # kriging default 2000 pt grid
+  # kriging default 2000 pt 
   seed=80
   map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
 

@@ -107,89 +107,6 @@ getIds=function(Z,nums=NULL)
 	return(ids)
 }
 
-##################################################################
-#' Identify
-#'
-#' @details identify zone number in a zoning, using its identifier
-#' @param Z zoning geometry (list of SpatialPolygons) 
-#'
-#' @return the zone number
-#'
-#' @export
-#'
-#' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' Identify(6,Z)
-#' # not run
-Identify=function(id,Z)
-###########################################################################
-{
-#returns the zone number corresponding to the id given in argument
-#returns 0 if no id
-  for (i in (1:length(Z)))
-  {
-    if (Z[[i]]@polygons[[1]]@ID == id) return(i)
-  }
-  return(0)
-}
-
-##################################################################
-#' getId
-#'
-#' @details get zone identifier in a zoning
-#' @param Z zoning geometry (list of SpatialPolygons)
-#' @param iZ zone number
-#'
-#' @return a character vector giving the zone identifier
-#'
-#' @export
-#'
-#' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' getId(Z,6)
-#' # not run
-getId=function(Z,iZ)
-##################################################################
-{
-	id = Z[[iZ]]@polygons[[1]]@ID
-	return(id)
-}
-
-##################################################################
-#' getIds
-#'
-#' @details get zone identifiers in a zoning
-#' @param Z zoning geometry (list of SpatialPolygons)
-#' @param nums zone numbers
-#'
-#' @return a character vector giving the zone identifiers
-#'
-#' @export
-#'
-#' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' getIds(Z)
-#' # not run
-getIds=function(Z,nums=NULL)
-##################################################################
-{
-	ids=c()
-	if (is.null(nums))
-	   iZZ = 1:length(Z)
-	else
-	   iZZ = nums
-	for (iZ in iZZ)
-	{
-		ids = c(ids,Z[[iZ]]@polygons[[1]]@ID)
-	}
-	return(ids)
-}
 
 ##################################################################
 #' setId
@@ -362,7 +279,7 @@ if (!is.null(gas))
 ##################################################################
 #' getZonePts
 #'
-#' @details 
+#' @details get all data points within a zone
 #' @param ptsp SpatialPointsDataFrame with data values
 #' @param zone SpatialPolygons defining a zone
 #'
@@ -553,7 +470,8 @@ crComment = function(Z)
 #' @param i2 second zone number
 #'
 #' @return a Logical value, TRUE if there is an intersection, FALSE if not.
-#'
+#' @importFrom rgeos gOverlaps
+
 #' @export
 #'
 #' @examples
@@ -563,7 +481,7 @@ crComment = function(Z)
 #' K=ZK$resZ
 #' Z=K$zonePolygone
 #' plotZ(Z)
-#' Z58=gConvexHull(gUnion(Z[[8]],Z[[5]]))
+#' Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
 #' Z[[length(Z)+1]]=Z58 # add new zone to zoning
 #' plotZ(Z)
 #' testInterSpe(Z,6,length(Z))
@@ -598,7 +516,7 @@ else
 #' K=ZK$resZ
 #' Z=K$zonePolygone
 #' plotZ(Z)
-#' Z58=gConvexHull(gUnion(Z[[8]],Z[[5]]))
+#' Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
 #' Z[[length(Z)+1]]=Z58 # add new zone to zoning
 #' plotZ(Z)
 #' testInterSpe(Z,6,length(Z))
@@ -634,7 +552,7 @@ testInterSpeZ1=function(Z,iZ)
 #' K=ZK$resZ
 #' Z=K$zonePolygone
 #' plotZ(Z)
-#' Z58=gConvexHull(gUnion(Z[[8]],Z[[5]]))
+#' Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
 #' Z[[length(Z)+1]]=Z58 # add new zone to zoning
 #' plotZ(Z)
 #' testInterSpeZ(Z)
@@ -722,8 +640,8 @@ ptInZone=function(zone,pts,numpt)
 ##################################################################
 #' printLabZ
 #'
-#' @details print zoning labels
-#' @param Klist 
+#' @details print zoning labels for a list of zoning objects
+#' @param Klist list of zoning objects, typically result of a call to correctionTree
 #'
 #' @return a list of zoning objects
 #'
@@ -754,7 +672,7 @@ printLabZ=function(Klist)
 #' trLabZone
 #'
 #' @details transfer zone labels from K1 to K2
-#' @param K zoning object (such as returned by calNei function)
+#' @param K1 zoning object (such as returned by calNei function)
 #' @param K2 zoning object (such as returned by calNei function)
 #' @param map object returned by genMap function
 #' @param qProb probability vector used to generate quantile values
@@ -829,9 +747,9 @@ return(K2)
 #' getClosestZone
 #'
 #' @details get closest non neighbor zone (i.e. excluding neighbor zones and englobing zone)
-#' @param iZ current zone index
+#' @param iZ current zone number
+#' @param Z current zone
 #' @param zoneN zone neighborhood Logical matrix
-#' @param K zoning object, as returned by the calNei function
 #'
 #' @return the closest zone index
 #'
@@ -907,7 +825,7 @@ return(imin)
 #' Z=K$zonePolygone
 #' data(mapTest)
 #' MeanVarWPts(mapTest,Z[[1]])
-#' Weights are areas of the Voronoi polygons corresponding to data points
+#' # Weights are areas of the Voronoi polygons corresponding to data points
 #' MeanVarWPts(mapTest,Z[[1]],mapTest$krigSurfVoronoi) #slightly different result
 #' # not run
 MeanVarWPts=function(map,zone,w=NULL)
@@ -1025,7 +943,7 @@ getPoly = function(Z,iZ,k)
 #' Z=ZK$resZ$zonePolygone
 #' sph=polyToSp(Z,5,2)
 #' plotZ(Z)
-#' lines(sph,type="l",col="blue")
+#' sp::plot(sph,type="l",col="blue",add=TRUE)
 #' # not run
 polyToSp=function(Z,iZ,k)
 ##################################################################
@@ -1080,8 +998,8 @@ calcDCrit=function(Z,map,optiCrit=2,pErr=0.9,simplitol=1e-3)
 #' normZcoords
 #'
 #' @details description, a paragraph
-#' @param Z list of SpatialPolygons}
-#' @param boundary list with components x and y, used to normalize
+#' @param Z list of SpatialPolygons
+#' @param boundary list with components x and y, used to normalize polygons in zoning
 #'
 #' @return a list with components
 #' \describe{
@@ -1091,10 +1009,12 @@ calcDCrit=function(Z,map,optiCrit=2,pErr=0.9,simplitol=1e-3)
 #' @export
 #'
 #' @examples
-#' z=readS("Field_8_zones.shp","dir=../data/")
-#' P=SpatialPolygons(z$sp@polygons) #SpatialPolygons
+#  Import shape1 object (was read from a shapefile)
+#' shape1 = geozoning::shape1
+#' p = shape1@polygons
+#' P=sp::SpatialPolygons(p) #SpatialPolygons
 #' Z1=list()
-#' for (kk in 1:length(Z)){Z1[[kk]]=P[k]} # transform into list of SpatialPolygons
+#' for (kk in 1:length(P)){Z1[[kk]]=P[kk]} # transform into list of SpatialPolygons
 #' bd=list(x=c(7723131,7723132,7723294,7723295,7723131),y=c(3576432,3576814,3576809,3576436,3576432))
 #  Z2=normZcoords(Z1,bd)
 #' # not run
@@ -1206,7 +1126,7 @@ moveHoles = function(zoneMain,zoneSuppr)
 #' \item{area}{area of SpatialPolygons corresponding to contour}
 #' \item{contourSp}{SpatialPolygons corresponding to contour}
 #' }
-#'
+#' @importFrom sp plot
 #' @export
 #'
 #' @examples
@@ -1218,10 +1138,10 @@ moveHoles = function(zoneMain,zoneSuppr)
 #' plotZ(Z)
 #' iC=4
 #' envel=calFrame(iC,Z,best$zoneNModif)
-#' lines(envel,col="blue")
+#' sp::plot(envel,col="blue",add=TRUE)
 #' vRef=quantile(mapTest$krigGrid,0.6)
 #' resp=findCinZ(iC,Z,best,mapTest,vRef,envel)
-#' lines(resp,col="red")
+#' sp::plot(resp$contourSp,col="red",add=TRUE)
 #' # not run
 findCinZ = function(iC,Z,K,map,vRef,envel)
 ##################################################################
@@ -1367,7 +1287,9 @@ getClosePt=function(Z,iC,iZC,disp=FALSE)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' Z=criti$zk[[2]][[1]]$zonePolygone
 #' findZCenter(Z)
 #' # not run
@@ -1407,7 +1329,9 @@ return(ptz)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' K=criti$zk[[2]][[1]]
 #' data=mapTest$krigData
 #' findZCenterpt(data,K)

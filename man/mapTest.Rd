@@ -3,7 +3,7 @@
 \docType{data}
 \name{mapTest}
 \alias{mapTest}
-\title{une carte décrire}
+\title{a map}
 \format{a list 9 SpatialPolygons}
 \usage{
 mapTest

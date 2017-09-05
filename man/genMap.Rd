@@ -4,8 +4,9 @@
 \alias{genMap}
 \title{wrapper for randKmap, generate 2D map}
 \usage{
-genMap(DataObj = NULL, seed = 80, krig = 1, Vpsill = 5, Vrange = 0.2,
-  Vnugget = 0, Vmean = 8, disp = 0, FULL = FALSE)
+genMap(DataObj = NULL, seed = 80, krig = 2, Vpsill = 5, Vrange = 0.2,
+  Vnugget = 0.2, Vmean = 8, nPointsK = 1000, boundary = list(x = c(0, 0,
+  1, 1, 0), y = c(0, 1, 1, 0, 0)), disp = 0, FULL = FALSE)
 }
 \arguments{
 \item{DataObj}{=NULL: simulated data with seed or = a data frame with real data}
@@ -14,20 +15,24 @@ genMap(DataObj = NULL, seed = 80, krig = 1, Vpsill = 5, Vrange = 0.2,
 
 \item{krig}{numeric, 1: kriging with vgm model, 2: inverse distance kriging}
 
-\item{Vpsill}{numeric,}
+\item{Vpsill}{numeric parameter of the variogram model,}
 
-\item{Vrange}{numeric,}
+\item{Vrange}{numeric parameter of the variogram model,}
 
-\item{Vnugget}{numeric,}
+\item{Vnugget}{numeric parameter of the variogram model,}
 
-\item{Vmean}{numeric,}
+\item{Vmean}{numeric parameter of the variogram model,}
+
+\item{nPointsK}{number of generated points after kriging}
+
+\item{boundary}{list, contains x and y coordinates of map boundaries}
 
 \item{disp}{numeric,}
 
 \item{FULL}{logical, if TRUE the returned list is complete}
 }
 \value{
-a map in a list
+a map object as a list with components
 \describe{
 \item{tabAlea}{raw data, SpatialPointsDataFrame}
 \item{surfaceVoronoi}{Voronoi polygon surfaces}
@@ -40,8 +45,10 @@ a map in a list
 wrapper for randKmap, generate 2D map
 }
 \details{
-wrapper for randKmap, generate 2D map
+wrapper for randKmap, generate 2D map with 1000 kriged data points, Gaussian field
 }
 \examples{
+m=genMap(seed=1,krig=2,disp=1) #generates a map and plots data
+mean(m$krigGrid) # mean of generated kriged data
 # not run
 }

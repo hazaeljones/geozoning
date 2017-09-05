@@ -201,7 +201,7 @@ holeSp = function(sp)
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
-#' maxDistSp(Z[[5]])
+#' maxDistSP(Z[[5]])
 #' # not run
 maxDistSP=function(sp)
 ##################################################################
@@ -213,6 +213,7 @@ maxDistSP=function(sp)
 #' getPolySp
 #'
 #' @details get the kth polygon of the current SpatialPolygons
+#' @param sp SpatialPolygons object
 #' @param k polygon number
 #'
 #' @return a polygon (object of class Polygon)
@@ -253,7 +254,7 @@ getPolySp = function(sp,k=1)
 #' P1=getPolySp(sp,1)
 #' sph=polyToSp2(P1)
 #' plotZ(Z)
-#' lines(sph,col="blue",lwd=2)
+#' sp::plot(sph,col="blue",lwd=2,add=TRUE)
 #' # not run
 polyToSp2=function(p)
 ##################################################################
@@ -276,7 +277,7 @@ polyToSp2=function(p)
 #' data(mapTest)
 #' cL=list()
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#  lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
+#' lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
 #' sp=lineToSp(lin)
 #' # not run
 lineToSp=function(lin)
@@ -289,7 +290,7 @@ lineToSp=function(lin)
 ##################################################################
 #' spnorm
 #'
-#' @details normise Polygon according to border limits
+#' @details normalize Polygon according to border limits
 #' @param sp object of class Polygons
 #' @param boundary list with x and y components, used to normalize sp
 #'
@@ -302,9 +303,12 @@ lineToSp=function(lin)
 #' @export
 #'
 #' @examples
-#' z=readS("Field_8_zones.shp",dir="../data/")
-#' bb=list(x=z$sp@bbox[1,],y=z$sp@bbox[2,])
-#' P1=getPolySp(z$sp,1)
+#  shape1: result of call to readS on shapefile
+#' z=geozoning::shape1
+#' bb=list(x=z@bbox[1,],y=z@bbox[2,])
+#' p=z@polygons
+#' p1=p[[1]]
+#' P1=p1@Polygons[[1]]
 #' NP1=spnorm(P1,bb)$pn
 #' Nbb=spnorm(P1,bb)$boundaryn
 #' plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
@@ -603,18 +607,21 @@ genQseq = function(qProb,K,map,i1,i2,LEQ=5,MAXP=0.1,disp=0)
 #' \item{contourSp}{SpatialPolygons corresponding to admissible contour}
 #' \item{}{polyBuff}{SpatialPolygons corresponding to gBuffer around admissible contour}
 #' }
-#'
+#' @importFrom sp Polygon
+#' @importFrom rgeos plot
+#' @importFrom rgeos gCentroid
 #' @export
 #'
 #' @examples
 #' data(mapTest)
-#' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' pG=polyToSp2(Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
-#' plot(pG)
+#' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
+#'    mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
+#' rgeos::plot(pG)
 #' sp8 = contourToSpp(cL[[8]],0.1)$sp
-#' refPoint = gCentroid(sp8)
+#' refPoint = rgeos::gCentroid(sp8)
 #' resp=checkContour(sp8,mapTest$step,refPoint)
-#' lines(resp$contourSp,col="red")
+#' rgeos::plot(resp$contourSp,col="red",add=TRUE)
 #' # not run
 checkContour = function(contourSp,step,refPoint,minSizeNG=1e-3)
 ##################################################################
@@ -683,7 +690,6 @@ cleanSp = function(sp,tol=1e-5)
 #' @export
 #'
 #' @examples
-#' @examples
 #' data(mapTest)
 #' data(resZTest)
 #' Z=resZTest$zonePolygone
@@ -732,7 +738,7 @@ ptsInSp=function(sp,pts,hole=FALSE)
 #' @export
 #'
 #' @examples
-#'qProb=c(0.1,0.2);criti=correctionTree(qProb,map)
+#'qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
 #'res=searchNODcrit1(qProb,criti)
 #' # not run
 searchNODcrit=function(qProb,le,zk,criterion,cost,costL,nz)
@@ -904,7 +910,8 @@ le=length(zk)
 #' # load zoning results from test file
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'         mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' normDistMat(resD$matDistanceCorr,2)
 #' # not run
 normDistMat=function(matDistanceCorr,optiCrit)
@@ -925,7 +932,7 @@ return(normMD)
 #' linesC
 #'
 #' @details add contour Lines to plot
-#' @param list of contour lines
+#' @param listContour list of contour lines
 #' @param col line color
 #'
 #' @return an empty value
@@ -958,18 +965,20 @@ return()
 #' @param bd map boundary
 #' @param envel envelope
 #' @param disp info level (0-no info, 1- add lines to plot)
-#'
+#' @importFrom sp Polygon
+#' @importFrom sp plot
 #' @return a SpatialPolygons
 #'
 #' @export
 #'
 #' @examples
 #' data(mapTest)
-#' pG=polyToSp2(Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
-#' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+#' pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
+#' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
+#'    mapTest$krigGrid,c(5,7),mapTest$boundary)
 #' ps = interCB(cL[[8]],mapTest$step,mapTest$boundary,pG)#envelope is the whole map
-#' plot(pG)
-#' lines(ps,col="red")
+#' sp::plot(pG)
+#' sp::plot(ps,col="red",add=TRUE)
 #' # not run
 interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 ##############################################################################
@@ -1010,7 +1019,9 @@ interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save only best last level results
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving only best last level results
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE) 
 #' getNq(criti$critList)
 #' # not run
 getNq=function(critList)
@@ -1036,14 +1047,14 @@ getNq=function(critList)
 #' @param super if TRUE add to existing plot lines coresponding to contour, if FALSE plot boundary and add lines
 #'
 #' @return void
-#'
+#' 
 #' @export
 #'
 #' @examples
 #' data(mapTest)
-#' addContour(mapTest,c(5,7),super=F)
+#' addContour(mapTest,c(5,7),super=FALSE)
 #' # not run
-addContour=function(map,val,col="blue",super=T)
+addContour=function(map,val,col="blue",super=TRUE)
 ##################################################################
 {
 for ( v in val)
@@ -1139,7 +1150,9 @@ plotVario=function(map,ylim=NULL)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' K=criti$zk[[1]][[1]] # initial zoning
 #' costLab(K,mapTest) #identical to criti$costL[[1]][[1]]
 #' # not run
@@ -1178,7 +1191,7 @@ costLab=function(K,map)
 #' @return a list with components
 #' \describe{
 #' \item{cL}{weighted (with Voronoi surfaces) average of per label variances}
-#' \item{SigmaL2}vector of per label variances}
+#' \item{SigmaL2}{vector of per label variances}
 #' \item{SL}{vector of per label Voronoi surfaces}
 #' \item{mL}{vector of weighted (with Voronoi surfaces) per label average values}
 #' \item{voroLab}{vector of per label data}
@@ -1188,7 +1201,9 @@ costLab=function(K,map)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+# save initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' K=criti$zk[[2]][[1]]
 #' uni=unique(K$lab)
 #' zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
@@ -1255,7 +1270,9 @@ SigmaL2=function(zlab,listZonePoint,tabVal,surfVoronoi)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' K=criti$zk[[2]][[1]]
 #' uni=unique(K$lab)
 #' zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
@@ -1304,10 +1321,6 @@ meansdSimu=function(vseed=NULL,krig=2)
 ######################################
 {
 
-if (is.null(vseed))
-{
-	vseed=listSeeds()
-}
 m=c()
 km=m
 sdd=m
@@ -1379,7 +1392,9 @@ valZ=function(map,K)
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' K=criti$zk[[2]][[1]]
 #' valZ(mapTest,K)
 #' # not run
@@ -1402,12 +1417,11 @@ k=0
 }
 
 ###################
-orderZ=function(Z,ord)
 #' orderZ
 #'
-#' @details sorts zones according to attribute mean value
-#' @param map map object returned by genMap function
-#' @param K zoning object (such as returned by calNei function)
+#' @details sorts zones according to ord vector
+#' @param Z zoning geometry
+#' @param ord sorting order
 #'
 #' @importFrom sp coordinates
 #' @importMethodsFrom sp coordinates
@@ -1430,6 +1444,7 @@ orderZ=function(Z,ord)
 #' plotZ(Z)
 #' # not run
 ###################
+orderZ=function(Z,ord)
 {
 k=0
 for (iZ in ord)
@@ -1456,7 +1471,7 @@ return(Z)
 #' @examples
 #' data(mapTest)
 #' superL=superLines(mapTest$boundary)
-#' plot(superL)
+#' sp::plot(superL)
 #' # not run
 superLines=function(boundary)
 #############################

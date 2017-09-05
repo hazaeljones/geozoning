@@ -7,23 +7,27 @@
 wMean(type, listZonePoint, surfVoronoi, data)
 }
 \arguments{
-\item{type}{xxxx}
+\item{type}{1-squared mean, 2-mean}
 
-\item{listZonePoint}{xxxx}
+\item{listZonePoint}{list of data points belonging to zone}
 
-\item{surfVoronoi}{xxxx}
+\item{surfVoronoi}{areas of Voronoi polygon corresponding to data points}
 
-\item{data}{xxxx}
+\item{data}{SpatialPointsDataFrame}
 }
 \value{
-a ?
+a vector of mean zone values
 }
 \description{
 wMean
 }
 \details{
-description, a paragraph
+computes weighted mean or squared mean of zone data
 }
 \examples{
+data(mapTest)
+data(resZTest)
+K=resZTest
+wMean(1,K$listZonePoint,mapTest$krigSurfVoronoi,mapTest$krigData)
 # not run
 }

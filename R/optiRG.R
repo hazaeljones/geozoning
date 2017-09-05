@@ -10,7 +10,7 @@
 #' @param disp 0: no info, 1: detailed info
 #'
 #' @return a zoning object
-#'
+#' @importFrom rgeos createSPComment
 #' @export
 #'
 #' @examples
@@ -22,7 +22,7 @@
 #' plotZ(K$zonePolygone) # zoning
 #' kmi=optiRG(K,mapTest,6,8,disp=1)
 #' #zones 6 and 8 are joined into new zone 7
-#' plot(kmi$zonePolygone[[7]],col="red",add=T)
+#' sp::plot(kmi$zonePolygone[[7]],col="red",add=TRUE)
 #' # not run
 optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
 ###########################################################
@@ -105,12 +105,12 @@ optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
   if (le >2) # msg from separationPoly, save elements to test and exit
   # if more than one (non hole) polygon there is an intersection pb
   {
-	if (disp >0) print("pb in optiRG - no junction")
-	Zoptipb <<-Zopti
-	Zpb <<- Z
-	indpbZE <<- iZE
-	indpbC <<- iC
-	indpbP <<- iZC
+	if (disp >0) print("problem in optiRG - no junction")
+#	Zoptipb <<-Zopti
+#	Zpb <<- Z
+#	indpbZE <<- iZE
+#	indpbC <<- iC
+#	indpbP <<- iZC
 	return(NULL)
   }
 

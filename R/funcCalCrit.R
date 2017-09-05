@@ -3,7 +3,7 @@
 #'
 #' @details computes a quality criterion equal to min(mean(dij^2/(dii^2+dij^2)))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value
 #'
@@ -13,7 +13,8 @@
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit1(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCrit1=function(matDistance,zoneNModif)
@@ -67,7 +68,7 @@ calCrit1=function(matDistance,zoneNModif)
 #'
 #' @details computes a quality criterion equal to min(2*min(dij/(dii+djj)))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value equal to min(mean(dij^2/(dii^2+dij^2)))
 #'
@@ -77,7 +78,8 @@ calCrit1=function(matDistance,zoneNModif)
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit2(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCrit2=function(matDistance,zoneNModif)
@@ -129,7 +131,7 @@ calCrit2=function(matDistance,zoneNModif)
 #'
 #' @details computes a quality criterion equal to  min(min(dij/(dii^2+dij^2)))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
 #'
@@ -139,7 +141,8 @@ calCrit2=function(matDistance,zoneNModif)
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit2(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 
@@ -195,7 +198,7 @@ calCrit2bis=function(matDistance,zoneNModif)
 #' calCrit3
 #' @details computes a quality criterion equal to min(mean(dij^2/sqrt(dii^2*dij^2))) 
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
 #'
@@ -205,7 +208,8 @@ calCrit2bis=function(matDistance,zoneNModif)
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit3(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCrit3=function(matDistance,zoneNModif)
@@ -255,7 +259,7 @@ calCrit3=function(matDistance,zoneNModif)
 #' calCrit4
 #' @details computes a quality criterion equal to min(min(dij^2/sqrt(dii^2*djj^2)))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
 #'
@@ -265,7 +269,8 @@ calCrit3=function(matDistance,zoneNModif)
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit4(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCrit4=function(matDistance,zoneNModif)
@@ -316,7 +321,7 @@ nbPoly=length(diag(matDistance))
 #'
 #' @details computes a quality criterion equal to min(median(dij/sqrt(dii*dij))) 
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
 #'
@@ -326,7 +331,8 @@ nbPoly=length(diag(matDistance))
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit5(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCrit5=function(matDistance,zoneNModif)
@@ -372,7 +378,7 @@ nbPoly=length(diag(matDistance))
 #'
 #' @details computes a quality criterion equal to min(mean(dij^2/sqrt(dii^2*djj^2)))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
 #'
@@ -382,7 +388,8 @@ nbPoly=length(diag(matDistance))
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCritMinMean(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCritMinMean=function(matDistance,zoneNModif)
@@ -427,7 +434,7 @@ calCritMinMean=function(matDistance,zoneNModif)
 #'
 #' @details computes a quality criterion equal to mean(2*mean(dij/(dii+djj)))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
-#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal}
+#' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
 #'
@@ -437,7 +444,8 @@ calCritMinMean=function(matDistance,zoneNModif)
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' calCrit7(resD$matDistanceCorr,K$zoneNModif)
 #' # not run
 calCrit7=function(matDistance,zoneNModif)

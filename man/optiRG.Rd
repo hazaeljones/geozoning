@@ -4,32 +4,39 @@
 \alias{optiRG}
 \title{optiRG}
 \usage{
-optiRG(Z, K, map, iC, iZC, simplitol, disp = 0)
+optiRG(K, map, iC, iZC, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object (such as returned by calNei function)}
 
-\item{K}{xxxx}
+\item{map}{object returned by function genMap or genMapR}
 
-\item{map}{xxxx}
+\item{iC}{first zone}
 
-\item{iC}{xxxx}
+\item{iZC}{second zone}
 
-\item{iZC}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{simplitol}{xxxx}
-
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: detailed info}
 }
 \value{
-a ?
+a zoning object
 }
 \description{
 optiRG
 }
 \details{
-description, a paragraph
+join two zones close to each other
 }
 \examples{
+data(mapTest)
+qProb=c(0.2,0.5)
+ZK = initialZoning(qProb, mapTest)
+K=ZK$resZ
+Z=K$zonePolygone
+plotZ(K$zonePolygone) # zoning
+kmi=optiRG(K,mapTest,6,8,disp=1)
+#zones 6 and 8 are joined into new zone 7
+sp::plot(kmi$zonePolygone[[7]],col="red",add=TRUE)
 # not run
 }

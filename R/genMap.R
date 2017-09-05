@@ -10,6 +10,7 @@
 #' @param Vnugget numeric parameter of the variogram model,
 #' @param Vmean numeric parameter of the variogram model,
 #' @param nPointsK number of generated points after kriging
+#' @param boundary list, contains x and y coordinates of map boundaries
 #' @param disp numeric, 
 #' @param FULL logical, if TRUE the returned list is complete
 #'

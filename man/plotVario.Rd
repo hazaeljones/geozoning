@@ -7,19 +7,21 @@
 plotVario(map, ylim = NULL)
 }
 \arguments{
-\item{map}{xxxx}
+\item{map}{object returned by function genMap}
 
-\item{ylim}{xxxx}
+\item{ylim}{range of y axis}
 }
 \value{
-a ?
+a plot
 }
 \description{
 plotVario
 }
 \details{
-description, a paragraph
+plot empirical variogram for model and data in map (raw data plus kriged data)
 }
 \examples{
+data(mapTest)
+plotVario(mapTest)
 # not run
 }

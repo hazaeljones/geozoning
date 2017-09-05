@@ -4,26 +4,28 @@
 \alias{addContour}
 \title{addContour}
 \usage{
-addContour(map, val, col = "blue", super = T)
+addContour(map, val, col = "blue", super = TRUE)
 }
 \arguments{
-\item{map}{xxxx}
+\item{map}{object returned by function genMap}
 
-\item{val}{xxxx}
+\item{val}{quantile value vector}
 
-\item{col}{xxxx}
+\item{col}{color parameter}
 
-\item{super}{xxxx}
+\item{super}{if TRUE add to existing plot lines coresponding to contour, if FALSE plot boundary and add lines}
 }
 \value{
-a ?
+void
 }
 \description{
 addContour
 }
 \details{
-description, a paragraph
+add contour lines to plot
 }
 \examples{
+data(mapTest)
+addContour(mapTest,c(5,7),super=FALSE)
 # not run
 }

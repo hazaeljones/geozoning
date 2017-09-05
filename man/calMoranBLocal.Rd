@@ -2,12 +2,12 @@
 % Please edit documentation in R/funcCalIndices.R
 \name{calMoranBLocal}
 \alias{calMoranBLocal}
-\title{fonction calant un vecteur d'indices de moran locaux(= par zone)}
+\title{compute local Moran indices (per zone)}
 \usage{
-calMoranBLocal(voisinZone, matDistanceMoranB, vectSurface)
+calMoranBLocal(NZone, matDistanceMoranB, vectSurface)
 }
 \arguments{
-\item{voisinZone}{xxxx}
+\item{NZone}{xxxx}
 
 \item{matDistanceMoranB}{xxxx}
 
@@ -17,7 +17,7 @@ calMoranBLocal(voisinZone, matDistanceMoranB, vectSurface)
 a ?
 }
 \description{
-fonction calant un vecteur d'indices de moran locaux(= par zone)
+compute local Moran indices (per zone)
 }
 \details{
 description, a paragraph

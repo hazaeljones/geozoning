@@ -6,38 +6,43 @@
 \usage{
 figCritN(seed = 89, m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL,
   m5 = NULL, NEW = FALSE, ONE = FALSE,
-  title = "Gaussian field simulation", pdf = NULL)
+  title = "Gaussian field simulation", pdf = NULL,
+  basefile = "res-simuseed,pErr=0.9")
 }
 \arguments{
-\item{seed}{xxxx}
+\item{seed}{simulation seed used to generate map data}
 
-\item{m1}{xxxx}
+\item{m1}{dataset with loopQ1 results}
 
-\item{m2}{xxxx}
+\item{m2}{dataset with loopQ2 results}
 
-\item{m3}{xxxx}
+\item{m3}{dataset with loopQ3 results}
 
-\item{m4}{xxxx}
+\item{m4}{dataset with loopQ4 results}
 
-\item{m5}{xxxx}
+\item{m5}{dataset with loopQ5 results}
 
-\item{NEW}{xxxx}
+\item{NEW}{new plot}
 
-\item{ONE}{xxxx}
+\item{ONE}{single plot}
 
-\item{title}{xxxx}
+\item{title}{plot title}
 
-\item{pdf}{xxxx}
+\item{pdf}{pdf file name}
+
+\item{basefile}{loop results basefile name}
 }
 \value{
-a plot
+a vector of probabilities corresponding to best results
 }
 \description{
 figCritN
 }
 \details{
-description, a paragraph
+reads loopQ1-5 results, filters results by keeping th best criteria ) and plots them together with corresponding costs.
 }
 \examples{
+#assuming that loopQ results for seed 33 and pErr=0.9 were saved in RESD directory
 # not run
+#figCritN(seed=33,basefile="RESD/res-simuseed")
 }

@@ -6,39 +6,56 @@
 \usage{
 correctionTree(qProb, map, pErr = 0.9, optiCrit = 2, minSize = 0.012,
   minSizeNG = 0.001, distIsoZ = 0.075, simplitol = 0.001, LEQ = 5,
-  MAXP = 0.1, LASTPASS = TRUE, disp = 0, SAVE = TRUE, ONE = FALSE)
+  MAXP = 0.1, LASTPASS = TRUE, disp = 0, SAVE = TRUE, ONE = FALSE,
+  ALL = FALSE)
 }
 \arguments{
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values}
 
-\item{map}{xxxx}
+\item{map}{object returned by function genMap}
 
-\item{pErr}{xxxx}
+\item{pErr}{equality tolerance for distance calculations}
 
-\item{optiCrit}{xxxx}
+\item{optiCrit}{criterion choice}
 
-\item{minSize}{xxxx}
+\item{minSize}{zone area threshold under which a zone is too small to be manageable}
 
-\item{minSizeNG}{xxxx}
+\item{minSizeNG}{zone area threshold under which a zone will be removed}
 
-\item{distIsoZ}{xxxx}
+\item{distIsoZ}{threshold distance to next zone, above which a zone is considered to be isolated}
 
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{LEQ}{xxxx}
+\item{LEQ}{length of quantile sequence used to grow isolated zone}
 
-\item{MAXP}{xxxx}
+\item{MAXP}{quantile sequence maximum shift quantile sequence maximum shift}
 
-\item{LASTPASS}{xxxx}
+\item{LASTPASS}{if TRUE, remove zones that are still too small at the last level of the correction tree}
 
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: some info, 2: detailed info}
 
-\item{SAVE}{xxxx}
+\item{SAVE}{logical value, if TRUE function returns last level zonings, if FALSE function only returns best last level results}
 
-\item{ONE}{xxxx}
+\item{ONE}{logical value, if TRUE function returns only criterion value}
+
+\item{ALL}{logical value, if TRUE function returns zonings at all levels}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{bestcrit}{best criterion value at last level (in all cases)}
+\item{critList}{criterion values at last level (in all cases if ONE=FALSE)}
+\item{costList}{cost values at last level (in all cases if ONE=FALSE)}
+\item{costLList}{cost per label  values at last level (in all cases if ONE=FALSE)}
+\item{nzList}{vector of number of zones at last level (in all cases if ONE=FALSE)}
+\item{qProb}{vector of probabilities values used for quantiles (in all cases if ONE=FALSE)}
+\item{zk}{list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects (only if SAVE=TRUE)}
+\item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices (only if SAVE=TRUE)}
+\item{criterion}{list of initial criterion and all (last if ALL=FALSE) level criteria (only if SAVE=TRUE)}
+\item{cost}{list of initial cost and all (last if ALL=FALSE) level costs   (only if SAVE=TRUE)}
+\item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label (only if SAVE=TRUE)}
+\item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones (only if SAVE=TRUE)}
+}
 }
 \description{
 correctionTree
@@ -47,5 +64,9 @@ correctionTree
 description, a paragraph
 }
 \examples{
-# not run
+data(mapTest)
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+plotZ(criti$zk[[1]][[1]]$zonePolygone)
+plotZ(criti$zk[[2]][[1]]$zonePolygone) # zones 7 and 8 were handled
+
 }

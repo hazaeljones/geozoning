@@ -8,7 +8,7 @@
 #' @param distIsoZ threshold distance above which a zone is considered as isolated
 #'
 #' @return a apatial polygon corresponding to the frame within which grown zone must be contained 
-#'
+#' @importFrom rgeos plot
 #' @export
 #'
 #' @examples
@@ -17,7 +17,7 @@
 #' zN=resZTest$zoneNModif
 #' f=calFrame(6,Z,zN)
 #' plotZ(Z)
-#' plot(f,add=TRUE,col="red")
+#' rgeos::plot(f,add=TRUE,col="red")
 calFrame = function(iZ,Z,zoneNModif,distIsoZ=0.075)
 # returns spatial polygon = frame within which grown zone must be contained
 ##################################################################

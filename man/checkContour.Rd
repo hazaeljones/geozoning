@@ -4,26 +4,39 @@
 \alias{checkContour}
 \title{checkContour}
 \usage{
-checkContour(contourSp, step, refPoint, minSizeNG)
+checkContour(contourSp, step, refPoint, minSizeNG = 0.001)
 }
 \arguments{
-\item{contourSp}{xxxx}
+\item{contourSp}{SpatialPolygons corresponding to closed contour line}
 
-\item{step}{xxxx}
+\item{step}{grid resolution}
 
-\item{refPoint}{xxxx}
+\item{refPoint}{referene point}
 
-\item{minSizeNG}{xxxx}
+\item{minSizeNG}{zone area threshold under which a zone is not admissible}
 }
 \value{
-a plot
+Null if contour is not admissible or a list with components
+\describe{
+\item{contourSp}{SpatialPolygons corresponding to admissible contour}
+\item{}{polyBuff}{SpatialPolygons corresponding to gBuffer around admissible contour}
+}
 }
 \description{
 checkContour
 }
 \details{
-description, a paragraph
+check admissibility for contour line: surface >minSizeNG and refPoint close enough
 }
 \examples{
+data(mapTest)
+cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
+   mapTest$krigGrid,c(5,7),mapTest$boundary)
+pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
+rgeos::plot(pG)
+sp8 = contourToSpp(cL[[8]],0.1)$sp
+refPoint = rgeos::gCentroid(sp8)
+resp=checkContour(sp8,mapTest$step,refPoint)
+rgeos::plot(resp$contourSp,col="red",add=TRUE)
 # not run
 }

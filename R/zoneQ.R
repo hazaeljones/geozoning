@@ -7,9 +7,9 @@
 #' @param iE englobing zone
 #' @param Z zoning geometry (list of SpatialPolygons)
 #' @param K zoning object (such as returned by calNei function)
-#' @param map object returned by function genMap or genMapR
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @return a zoning geometry updated with the grown zone(list of SpatialPolygons)
+#' @importFrom rgeos createSPComment
 #' @export
 #'
 #' @examples
@@ -21,14 +21,14 @@
 #' plotZ(Z)
 #' iC=4
 #' iE=detZoneEng(iC,Z,K$zoneNModif)
-#' envel=calFrame(iC,Z,K$zoneNModif,distIsoZ)
-#' plot(envel,add=TRUE,col="blue"
+#' envel=calFrame(iC,Z,K$zoneNModif)
+#' sp::plot(envel,add=TRUE,col="blue")
 #' Qseq = genQseq(qProb,K,mapTest,iC,iE)
 #' resi = findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
-#' Zopti=zoneQ(resi$contourSp,iC,iE,Z,K,mapTest)
+#' Zopti=zoneQ(resi$contourSp,iC,iE,Z,K)
 #' plotZ(Zopti)
 #' # not run
-zoneQ = function (contourSp,iC,iE,Z,K,map,simplitol=1e-3)
+zoneQ = function (contourSp,iC,iE,Z,K,simplitol=1e-3)
 ##################################################################
 {
 	# add one contour to replace zone in existing zoning
@@ -39,7 +39,7 @@ zoneQ = function (contourSp,iC,iE,Z,K,map,simplitol=1e-3)
 	idE = getId(Z,iE)
 	idC = getId(Z,iC) # keep current zone id from initial zoning
 	# first merge current zone and englobing zone
-	Zopti = zoneFusion4(Z,iC,iE,map,simplitol,disp=FALSE)
+	Zopti = zoneFusion4(Z,iC,iE,simplitol,disp=FALSE)
 
 	if (is.null(Zopti)) return(NULL)
 	# englobing zone number may have changed-find it using zone id

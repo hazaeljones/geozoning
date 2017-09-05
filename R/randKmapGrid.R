@@ -3,18 +3,9 @@
 #'
 #' @details Prepare real data for zoning, data are already on a regular grid, hence no kriging is done.
 #' @param DataObj =NULL: simulated data with seed or = a data frame with real data
-#' @param seed numeric, seed
-#' @param nPoints numeric, number of points, default 450
-#' @param nPointsK numeric, default 2000
 #' @param nSimuCond numeric
-#' @param typeMod character, model type
-#' @param Vpsill numeric, default 5
-#' @param Vrange numeric, default 0.2
-#' @param Vmean numeric, default 8
-#' @param Vnugget numeric, default 0
 #' @param boundary list contains x and y
 #' @param manualBoundary logical, default FALSE
-#' @param krig numeric
 #' @param disp numeric
 #' @param FULL logical, if TRUE the returned list is complete
 #'
@@ -51,6 +42,7 @@ randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1
  
     x=as.numeric(rawDataRaw[,1])
     xsize=max(x)-min(x)
+    step=x[2]-x[1]
     y=as.numeric(rawDataRaw[,2])
     ysize=max(y)-min(y)
     z=as.numeric(rawDataRaw[,3])
@@ -105,15 +97,15 @@ randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1
     if(FULL)
     {
 	     krigVoronoi=resVoronoi$voronoi
-	     nbPB= nrow(tabAleaNa)
+	     nbPB= nrow(rawDataNa)
       	     neighB=matrix(logical(nbPB^2),nbPB,nbPB)
-     	     resVoronoiB=voronoiPolygons(tabAleaNa,neighB)
+     	     resVoronoiB=voronoiPolygons(rawDataNa,neighB)
       	     voronoiB=resVoronoiB$voronoi
       	     surfVoronoiNaB=resVoronoiB$surfVoronoi
-      	     surfVoronoiB=surfVoronoiNaB[tabAleaNa$ptsIns!=0]
+      	     surfVoronoiB=surfVoronoiNaB[rawDataNa$ptsIns!=0]
       	     neighNaB=resVoronoiB$neighBool
-      	     neighB=neighNaB[tabAleaNa$ptsIns!=0,tabAleaNa$ptsIns!=0]
-     	      ptNB = vL(neighB)
+      	     neighB=neighNaB[rawDataNa$ptsIns!=0,rawDataNa$ptsIns!=0]
+     	     ptNB = ptNei(neighB)
     }
 
     # conditional simulation - to be added

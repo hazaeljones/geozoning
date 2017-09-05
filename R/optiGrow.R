@@ -32,8 +32,8 @@
 #' best = criti$zk[[2]][[8]]
 #' Z=best$zonePolygone
 #' plotZ(Z)
-#' refPoint = gCentroid(Z[[4]])
-#' plot(refPoint,add=T,col="blue",pch=21)
+#' refPoint = rgeos::gCentroid(Z[[4]])
+#' sp::plot(refPoint,add=TRUE,col="blue",pch=21)
 #' zg=optiGrow(best,4,qProb,refPoint,mapTest) #grow zone 4
 #' id=as.numeric(getZoneId(Z[[4]]))
 #' linesSp(zg$Zopti[[id]],col="blue") # new zoning with grown zone 4
@@ -78,7 +78,7 @@ optiGrow = function(K,iC,qProb,refPoint,map,optiCrit=2,minSize=0.012,minSizeNG=1
 	resp = checkContour(resi$contourSp,step,refPoint,minSizeNG)
 	# if  condition not met try next contour
 	if (is.null(resp)) next
-	Zopti=zoneQ(resi$contourSp,iC,iE,Z,K,map,simplitol) # current zone is now last zone
+	Zopti=zoneQ(resi$contourSp,iC,iE,Z,K,simplitol) # current zone is now last zone
 	 if (!is.null(Zopti))
       	 {
 	 # create comments for holes

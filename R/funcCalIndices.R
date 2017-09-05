@@ -8,11 +8,11 @@
 #' @param vectSurface vector of zone areas
 #'
 #' @return a vector of local Geary criteria
-#'
+#' @importFrom rgeos gArea
 #' @export
 #' @examples
 #' K=resZTest
-#' zoneA=sapply(K$zonePolygone,gArea)
+#' zoneA=sapply(K$zonePolygone,rgeos::gArea)
 #' calGearyLoc(K$zoneNModif,K$meanZone,K$meanTot,zoneA)
 #' # not run
 calGearyLoc=function(matN,vectMean,meanTot,vectSurface)

@@ -7,17 +7,15 @@
 calRMmodel(vgmodel)
 }
 \arguments{
-\item{vgmodel}{à remplir}
+\item{vgmodel}{model provided by a call to vgm}
 }
 \value{
-anisotropy matrix
+model suitable for RandomFields simulation
 }
 \description{
 transform VGM model into model usable by RandomFields
 }
 \examples{
-# not run
-}
-\seealso{
-http://www.techmat.vgtu.lt/~art/proc/file/BudrLi.pdf
+modv=gstat::vgm(model="Gau",range=100,psill=10,mean=7)
+RMmodel=calRMmodel(modv)
 }

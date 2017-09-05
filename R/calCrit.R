@@ -24,7 +24,8 @@
 #' # load zoning results from test file
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,
+#'        K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' crit = calCrit(resD$matDistanceCorr,K$zoneNModif,2)
 #' print(crit)
 calCrit=function(matDistanceCorr,zoneNModif,optiCrit=2)

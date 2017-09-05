@@ -7,19 +7,27 @@
 zoneAssign(tab, Z)
 }
 \arguments{
-\item{tab}{xxxx}
+\item{tab}{data frame with data values}
 
-\item{Z}{xxxx}
+\item{Z}{zoning object}
 }
 \value{
-a ?
+a list of data points within each zone
 }
 \description{
 zoneAssign
 }
 \details{
-description, a paragraph
+assigns points to zones
 }
 \examples{
+data(mapTest)
+ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+Z=ZK$resZ$zonePolygone
+listZpts=zoneAssign(mapTest$krigData,Z)
+#identical to ZK$resZ$listZonePoint
+listZptsRaw=zoneAssign(mapTest$rawData,Z)
+plotZ(Z)
+points(mapTest$rawData[listZptsRaw[[1]],],col="blue") # add raw data for zone 1
 # not run
 }

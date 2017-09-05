@@ -7,9 +7,9 @@
 #'
 #' @export
 #' @importFrom RandomFields RMgauss RMspheric
-#'
+#' @importFrom gstat vgm
 #' @examples
-#' modv=vgm(model="Gau",range=100,psill=10,mean=7)
+#' modv=gstat::vgm(model="Gau",range=100,psill=10,mean=7)
 #' RMmodel=calRMmodel(modv)
 
 calRMmodel=function(vgmodel)

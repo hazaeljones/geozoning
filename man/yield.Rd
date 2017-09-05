@@ -3,7 +3,7 @@
 \docType{data}
 \name{yield}
 \alias{yield}
-\title{une carte décrire}
+\title{A XXXXXX}
 \format{a data frame with 6415 rows and 3 variables:
 \describe{
   \item{x}{x coordinate}

@@ -3,7 +3,7 @@
 \docType{data}
 \name{ZPSTest}
 \alias{ZPSTest}
-\title{une carte décrire}
+\title{A XXXXXX}
 \format{a list 6 SpatialPolygons}
 \usage{
 ZPSTest

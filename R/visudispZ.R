@@ -5,6 +5,7 @@
 #' @param step grid resolution
 #' @param matVal data frame of values
 #' @param nbLvl number of contour lines to generate
+#' @param zonePolygone zoning geometry (list of SpatialPolygons)
 #' @param K zoning object, as returned by the calNei function
 #' @param colBreaks if vector of length 1 number of color breaks, or else color breaks themselves
 #' @param texMain main title
@@ -12,14 +13,19 @@
 #' @param id logical value (if TRUE display zone ids on plot)
 #' @param valQ quantile values to use for contour lines 
 #' @param palCol color palette
+#' @param noXY if TRUE do not draw axes
 #' @param iZ index of zone to outline in red
 #' @param mu mu=1-only display zone number or id, mu=2-also display mean zone value
+#' @param cex text size
+#' @param ptz zone id location, if NULL automatically find the best locations
 #'
 #' @return an empty value
 #' @importFrom grDevices colorRampPalette
 #' @importFrom graphics text
+#' @importFrom graphics plot
 #' @importFrom fields image.plot
-#'
+#' @importFrom rgeos plot
+#' 
 #' @export
 #'
 #' @examples
@@ -38,60 +44,57 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain=
   Z=zonePolygone
   nbPoly=length(Z) #0 if Z is NULL
   levelsList=NULL
-  if (!is.null(Z))
-     {
-	vs=getZsize(Z)
-	xsize=vs["x"]
-  	ysize=vs["y"]
-	}
-  else
-  {
-	cn=as.numeric(rownames(matVal))
-	xsize=max(cn)+step
-	rn=as.numeric(rownames(matVal))
-	ysize=max(rn)+step
-  }
- 
+
   #generate isocontours with given valQ 
   if(!is.null(valQ))
-  {
-    levelsList=valQ     
+	{
+    	levelsList=valQ     
    
-  }  else if(nbLvl!=0) #else generate  nbLvls regularly spaced isocontours (if valQ not given)
-  {
-    levelsList=seq(min(matVal,na.rm=TRUE),max(matVal,na.rm=TRUE),length=nbLvl)
-  }
-
-  #if color breaks are given in colBreaks vector
-  if(length(colBreaks)!=1){
-    
-    image.plot(main=texMain,seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal,
-          breaks=colBreaks,col=palCol(length(colBreaks)-1),legend.shrink=0.4,legend.width=0.6)   
-  }
-  else{
-    #if not, take regularly spaced colors
+   }  else if(nbLvl!=0) #else generate  nbLvls regularly spaced isocontours (if valQ not given)
+   {
+	levelsList=seq(min(matVal,na.rm=TRUE),max(matVal,na.rm=TRUE),length=nbLvl)
+  	}
+    # if data, plot them as image
     if (!is.null(matVal))
-       image.plot(seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal,col=palCol(20),legend.shrink=0.4,legend.width=0.6,xlab="X",ylab="Y",cex.axis=1.5,cex.lab=1.5)
-    else
+    {
+	cn=as.numeric(colnames(matVal))
+	rn=as.numeric(rownames(matVal))
+     #if color breaks are given in colBreaks vector
+ 	if(length(colBreaks)!=1)
+	{
+ 	image.plot(main=texMain,rn, cn,matVal,
+        breaks=colBreaks,col=palCol(length(colBreaks)-1),legend.shrink=0.4,legend.width=0.6)   
+  	}
+  	else
+	{
+       image.plot(rn,cn,matVal,col=palCol(20),legend.shrink=0.4,legend.width=0.6,xlab="X",ylab="Y",cex.axis=1.5,cex.lab=1.5)
+       }
+     } #end case where data are available
+    else # if no data just plot axes
+    	 {
+	 vs=getZsize(Z)
+  	 xsize=vs["x"]
+  	 ysize=vs["y"]
 	plot(0,0,xlim=c(0,xsize),ylim=c(0,ysize),type="n") #no data, only set axes
-  }
+	}
+
     
-    #plus contours if any
+    #add contour lines if there are data and if levels were given
   if(!is.null(levelsList))
   {
        if (!is.null(matVal))
        	  {
-		contour(seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal, levels = levelsList,add=TRUE)
+		contour(rn,cn,matVal,levels = levelsList,add=TRUE)
     
            }
   }
   
- if(!is.null(boundary))
+ if(!is.null(boundary)) # add boundary if given
   {
     lines(boundary)
   }
    
-  if(nbPoly!=0)
+  if(nbPoly!=0) # if there are zones
   {    
     
     for (j in (1:nbPoly))
@@ -139,6 +142,8 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain=
 #' @param lev number of color levels
 #' @param palCol color palette
 #' @param legend.width relative width of legend
+#' @param parG graphics parameters (result of call to par)
+#' @param ptz zone id location, if NULL automatically find the best locations
 #'
 #' @return an empty value
 #' @importFrom grDevices colorRampPalette
@@ -153,7 +158,7 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain=
 #' ZK=initialZoning(c(0.5,0.7),mapTest)
 #' K=ZK$resZ
 #' Z=K$zonePolygone
-#' order zone ids by attribute mean value
+#' #order zone ids by attribute mean value
 #' ord=order(K$meanZone)
 #'   Z=orderZ(Z,ord)
 #'   plotZ(Z,id=TRUE)
@@ -325,7 +330,7 @@ plotSp = function(sp,k=1,xlim,ylim)
 #' @param noXY logical value, if TRUE do not display x and y axes
 #' @param palCol argument of colorRampPalette
 #'
-#' @return a plot
+#' @return an empty value
 #'
 #' @export
 #'
@@ -336,7 +341,7 @@ plotSp = function(sp,k=1,xlim,ylim)
 #' Z=K$zonePolygone
 #' plotZ(Z,mapTest)
 #' # not run
-plotZ = function(Z,map=NULL,id=FALSE,noXY=FALSE,colPal=colorRampPalette(topo.colors(20)))
+plotZ = function(Z,map=NULL,id=FALSE,noXY=FALSE,palCol=colorRampPalette(topo.colors(20)))
 ##################################################################
 {
 
@@ -354,6 +359,7 @@ plotZ = function(Z,map=NULL,id=FALSE,noXY=FALSE,colPal=colorRampPalette(topo.col
 #'
 #' @details add contour lines to a plot
 #' @param cL list of contour lines
+#' @param col color to use
 #'
 #' @return a plot
 #'

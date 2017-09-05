@@ -4,14 +4,14 @@
 \alias{calGearyGlo}
 \title{calGearyGlo}
 \usage{
-calGearyGlo(matVoisin, vectMoy, moyTot, vectSurface)
+calGearyGlo(matN, vectMean, meanTot, vectSurface)
 }
 \arguments{
-\item{matVoisin}{xxxx}
+\item{matN}{xxxx}
 
-\item{vectMoy}{xxxx}
+\item{vectMean}{xxxx}
 
-\item{moyTot}{xxxx}
+\item{meanTot}{xxxx}
 
 \item{vectSurface}{xxxx}
 }
@@ -22,7 +22,7 @@ a ?
 calGearyGlo
 }
 \details{
-description, a paragraph
+computes global Geary criterion
 }
 \examples{
 # not run

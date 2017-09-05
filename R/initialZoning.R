@@ -11,10 +11,10 @@
 #' @param GridData logical value indicating if data are already on a regular grid (no kriging in that case)
 #'
 #' @return a list with components
-#'\describe{
+#' \describe{
 #' \item{resCrit}{criterion value}
 #' \item{resDist}{list with components matDistance, matDistanceCorr and cost, such as returned by a call to calDistance}
-#' \item{resZ}{list with components zoneN, zoneNModif, listZonePoint, meanTot, meanZone,listSurf, critSurf, zonePolygone, such as the object returned by calNei
+#' \item{resZ}{list with components zoneN, zoneNModif, listZonePoint, meanTot, meanZone,listSurf, critSurf, zonePolygone, such as the object returned by calNei}
 #' }
 #'
 #' @export

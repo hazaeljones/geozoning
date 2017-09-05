@@ -7,23 +7,33 @@
 meanL(zlab, listZonePoint, tabVal, surfVoronoi)
 }
 \arguments{
-\item{zlab}{xxxx}
+\item{zlab}{list with zone numbers for each zone label}
 
-\item{listZonePoint}{xxxx}
+\item{listZonePoint}{list of indices of data points within zones, result of call to \code{\link{calNei}}}
 
-\item{tabVal}{xxxx}
+\item{tabVal}{SpatialPointsDataFrame containing data values}
 
-\item{surfVoronoi}{xxxx}
+\item{surfVoronoi}{Surfaces of the Voronoi polygons corresponding to data pts}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{mL}{vector of weighted (with Voronoi surfaces) per label average values}
+\item{SL}{vector of per label Voronoi surfaces}
+}
 }
 \description{
 meanL
 }
 \details{
-description, a paragraph
+compute overall mean of all zones for each label
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+K=criti$zk[[2]][[1]]
+uni=unique(K$lab)
+zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
+resL=meanL(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
 # not run
 }

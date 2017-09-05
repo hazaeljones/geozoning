@@ -2,24 +2,39 @@
 % Please edit documentation in R/util.R
 \name{datanorm}
 \alias{datanorm}
-\title{normalize data coords and border}
+\title{normalize data coordinates and border}
 \usage{
 datanorm(data, bd)
 }
 \arguments{
-\item{data}{xxxx}
+\item{data}{data frame with x and y components}
 
-\item{bd}{xxxx}
+\item{bd}{boundary (list with x and y components)}
 }
 \value{
-a list
+a list with components
+\describe{
+\item{dataN}{normalized data}
+\item{boundaryN}{normalized boundary}
+\item{xmin}{minimum vaue of x within boundary}
+\item{xmax}{maximum vaue of x within boundary}
+\item{ymin}{minimum vaue of y within boundary}
+\item{ymax}{maximum vaue of y within boundary}
+}
 }
 \description{
-normalize data coords and border
+normalize data coordinates and border
 }
 \details{
-description, a paragraph
+normalize boundary between 0 and 1 and data coordinates accordingly
 }
 \examples{
+x=runif(100, min=0, max=1)
+y=runif(100, min=0.2, max=1.7)
+range(x) # not [0,1]
+tabData=data.frame(x=x,y=y)
+bd=list(x=c(0,0,1,1,0), y=c(0.2,1.7,1.7,0.2,0.2))
+res=datanorm(tabData,bd) 
+apply(res$dataN,2,range)# 
 # not run
 }

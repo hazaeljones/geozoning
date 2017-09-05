@@ -1,11 +1,11 @@
 ##############################################
 #' detectSmallZones
 #'
-#' @details description, a paragraph
+#' @details detect zones with area < minSize
 #' @param zonePolygone list of zones, each zone is a SpatialPolygons
 #' @param minSize zone area threshold under which a zone is too small to be manageable
 #'
-#' @return a vector pf small zones indices
+#' @return a vector of small zones indices
 #' @importFrom rgeos gArea
 #'
 #' @export
@@ -14,16 +14,12 @@
 #' data(mapTest)
 #' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
+#' minSize=0.012
 #' iSmall=detectSmallZones(Z,minSize) # 2 small zones 
 #' # not run
 detectSmallZones=function(zonePolygone,minSize)
 ##############################################
 {
-  # On détecte la taille des zones (ici la taille est la plus grande distance entre deux points du polygone)
-  #  et leur largeur(on tente une érosion,si elle échoue la zone etait trop étroite)
-  #  et on renvoie leurs inds en vue d'une suppression
-  # bch septembre 2015
-  # gArea(zonePolygone[[i]] renvoie la surface
   vectSize=numeric()
   vectIndex=numeric()
 
@@ -55,7 +51,7 @@ detectSmallZones=function(zonePolygone,minSize)
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #'
 #' @return a zone
-#' @importFrom rgeos createPolygonsComment gSimplify gUnion
+#' @importFrom rgeos createPolygonsComment gSimplify gUnion gBuffer
 #'
 #' @export
 #'
@@ -63,7 +59,7 @@ detectSmallZones=function(zonePolygone,minSize)
 #' data(resZTest)
 #' Z=resZTest$zonePolygone
 #' plotZ(Z)
-#' plot(zoneFusion2(Z[[6]],Z[[2]]),add=T,col="blue")
+#' sp::plot(zoneFusion2(Z[[6]],Z[[2]]),add=TRUE,col="blue")
 #' # not run
 zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 ##################################################################
@@ -135,10 +131,6 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
     	  Z[[iC]]=NULL
 	if (disp==2)
 	{
-	   # plot (bch)
-	   # IS 19/05/2017: add comment for x11
-	   x11()
-	   #IS 19/05/2017: modify this call...
      dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	}
   return(Z)
@@ -151,7 +143,6 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 #' @param Z zoning geometry (list of SpatialPolygons)
 #' @param iSmall index of zone to remove by merging it into other zone
 #' @param iBig index of zone to merge into
-#' @param map map object returned by function genMap
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @param disp 0: no info, 1: some info
 #'
@@ -160,13 +151,12 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 #' @export
 #'
 #' @examples
-#' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
 #' Z=K$zonePolygone
-#' zoneFusion4(Z,5,4,mapTest,disp=2)
+#' zoneFusion4(Z,5,4,disp=2)
 #' # not run
-zoneFusion4=function(Z,iSmall,iBig,map,simplitol=1e-3,disp=0)
+zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 ######################################################################
 {
 #########################################
@@ -186,9 +176,7 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol=1e-3,disp=0)
 	 if (disp==1)
 	 {
 	    # plot resulting zoning
-	    # IS 19/05/2017: add comment for x11
-      #x11()
-      dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
+            plotZ(Z)
 	 }
 
   return(Z)
@@ -229,8 +217,8 @@ zoneFusion4=function(Z,iSmall,iBig,map,simplitol=1e-3,disp=0)
 #' best = criti$zk[[2]][[8]]
 #' Z=best$zonePolygone
 #' plotZ(Z)
-#' refPoint = gCentroid(Z[[4]])
-#' plot(refPoint,add=T,col="blue",pch=21)
+#' refPoint = rgeos::gCentroid(Z[[4]])
+#' sp::plot(refPoint,add=TRUE,col="blue",pch=21)
 #' zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
 #' plotZ(zg)
 #' # not run
@@ -349,7 +337,7 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 	  iN = iNP[kk[1]]
 	}
   newId= Z[[iN]]@polygons[[1]]@ID
-  Z=zoneFusion4(Z,iC,iN,map,simplitol,disp)
+  Z=zoneFusion4(Z,iC,iN,simplitol,disp)
 
 	return(Z)
 }
@@ -363,7 +351,7 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 #' @param zoneN zone neighborhood Logical matrix
 #' @param ptN indices of data pts neighbours
 #' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
-#' @param data SpatialPointsDataFrame with data values
+#' @param spdata spatial data
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @param n minimal number of points below which a zone is removed from zoning
 #'
@@ -376,20 +364,19 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 #' @export
 #'
 #' @examples
-#' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' plotZ(Z)
-#' remove from Z all zones with less than 10 data points
+#' # remove from Z all zones with less than 10 data points
 #' Z2=removeFromZ(Z,K$zoneN,K$krigN,K$listZonePoint,mapTest$krigData,n=10)
 #' printZid(Z2$Z)
 #' # not run
-removeFromZ = function(Z,zoneN,ptN,listZonePoint,data,simplitol=1e-3,n=1)
+removeFromZ = function(Z,zoneN,ptN,listZonePoint,spdata,simplitol=1e-3,n=1)
 ##########################################################################
 {
 # remove from Z all zones with npts<=n or area<minSizeNG
-
+ 
   mask1 = sapply(listZonePoint,function(x){return(length(x)<=n)})
   mask2 = sapply(Z,function(x){return(gArea(x)<minSizeNG)})
   nbZ=length(Z)
@@ -405,7 +392,7 @@ removeFromZ = function(Z,zoneN,ptN,listZonePoint,data,simplitol=1e-3,n=1)
       nbZ=length(Z)
       zoneN=matrix(logical(nbZ^2),nbZ,nbZ)
       #update zone assignment
-      listZonePoint=zoneAssign(data,Z)
+      listZonePoint=zoneAssign(spdata,Z)
       #recreate zone neighbors
       vZ=calZoneN(ptN,zoneN,listZonePoint)
       zoneN = vZ$zoneN

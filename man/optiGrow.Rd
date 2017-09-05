@@ -4,48 +4,63 @@
 \alias{optiGrow}
 \title{optiGrow}
 \usage{
-optiGrow(Z, K, iC, qProb, refPoint, map, optiCrit, minSize = 0.012,
+optiGrow(K, iC, qProb, refPoint, map, optiCrit = 2, minSize = 0.012,
   minSizeNG = 0.001, distIsoZ = 0.075, LEQ = 5, MAXP = 0.1,
   simplitol = 1e-12, disp = 0)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object (such as returned by calNei function)}
 
-\item{K}{xxxx}
+\item{iC}{index of zone to grow}
 
-\item{iC}{xxxx}
-
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values}
 
 \item{refPoint}{xxxx}
 
-\item{map}{xxxx}
+\item{map}{object returned by genMap function}
 
-\item{optiCrit}{xxxx}
+\item{optiCrit}{criterion choice}
 
-\item{minSize}{xxxx}
+\item{minSize}{zone area threshold under which a zone is too small to be manageable}
 
-\item{minSizeNG}{xxxx}
+\item{minSizeNG}{zone area threshold under which a zone will be removed}
 
-\item{distIsoZ}{xxxx}
+\item{distIsoZ}{threshold distance to next zone, above which a zone is considered to be isolated}
 
-\item{LEQ}{xxxx}
+\item{LEQ}{length of quantile sequence used to grow zone}
 
-\item{MAXP}{xxxx}
+\item{MAXP}{quantile sequence maximum shift}
 
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: detailed info}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{crit}{criterion value of the new zoning}
+\item{area}{area of the grown zone}
+\item{Zopti}{new zoning geometry (list of SpatialPolygons)}
+\item{qM}{quantile corresponding to new zone}
+}
 }
 \description{
 optiGrow
 }
 \details{
-description, a paragraph
+grow an isolated zone by finding a bigger contour line
 }
 \examples{
+data(mapTest)
+qProb=c(0.3,0.5)
+criti = correctionTree(qProb,mapTest)
+best = criti$zk[[2]][[8]]
+Z=best$zonePolygone
+plotZ(Z)
+refPoint = rgeos::gCentroid(Z[[4]])
+sp::plot(refPoint,add=TRUE,col="blue",pch=21)
+zg=optiGrow(best,4,qProb,refPoint,mapTest) #grow zone 4
+id=as.numeric(getZoneId(Z[[4]]))
+linesSp(zg$Zopti[[id]],col="blue") # new zoning with grown zone 4
 # not run
 }

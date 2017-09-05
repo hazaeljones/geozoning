@@ -7,19 +7,27 @@
 normDistMat(matDistanceCorr, optiCrit)
 }
 \arguments{
-\item{matDistanceCorr}{xxxx}
+\item{matDistanceCorr}{corrected distance matrix using pErr, result of calDistance}
 
-\item{optiCrit}{xxxx}
+\item{optiCrit}{criterion choice}
 }
 \value{
-a ?
+a normalized distance matrix
 }
 \description{
 normDistMat
 }
 \details{
-description, a paragraph
+normalize distance matrix so that diagonal is equal to 1
 }
 \examples{
+# load test map with simulated data
+data(mapTest)
+# load zoning results from test file
+data(resZTest)
+K=resZTest
+resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+normDistMat(resD$matDistanceCorr,2)
 # not run
 }

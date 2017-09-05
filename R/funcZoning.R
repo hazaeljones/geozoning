@@ -96,9 +96,12 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #' @details builds contout Lines qith the quantile vector given in argument and closes them with the map border
 #' @param cL empty or existing list of contour lines
 #' @param step grid step as returned by calStep
+#' @param xsize size of map along x-axis
+#' @param ysize size of map along y-axis
 #' @param matVal dataframe with data values organized into a grid
 #' @param vRef quantile vector 
 #' @param boundary list, contains x and y dy on a regular grid
+#' @param GridData logical value indicating if data are already on a regular grid 
 #'
 #' @return a list of contour lines
 #' @importFrom grDevices contourLines
@@ -277,11 +280,11 @@ for (ind in noZ)
 #' cL=list()
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 #' plot(mapTest$boundary,type="l",col="red")
-#' lines(cL[[8]])
-#' pG=polyToSp2(Polygon(mapTest$boundary)) # transform boundary into SpatialPolygons objects
-#' cLSp=ContourLines2SLDF(list(cL[[8]])) # transform contour line into SpatialLines objects
-#' polyBuff=gBuffer(cLSp,width=0.00001) # extend geometry
-#' polyDiff=gDifference(pG,polyBuff)
+#' graphics::lines(cL[[8]])
+#' pG=polyToSp2(sp::Polygon(mapTest$boundary)) # transform boundary into SpatialPolygons objects
+#' cLSp=maptools::ContourLines2SLDF(list(cL[[8]])) # transform contour line into SpatialLines objects
+#' polyBuff=rgeos::gBuffer(cLSp,width=0.00001) # extend geometry
+#' polyDiff=rgeos::gDifference(pG,polyBuff)
 #' recupPoly=separationPoly(polyDiff)
 #' Z1=list(recupPoly[[1]],recupPoly[[2]])
 #' plotZ(Z1)
@@ -321,13 +324,13 @@ separationPoly=function(polyTot)
 #' extensionLine
 #'
 #' @details closes contour lines by extending them to their interesection with the map border
-#' @param contour contour line
+#' @param contourL contour line
 #' @param step grid step as returned by calStep
-#' @param boundary list, contains x and y coordinates of map boundaries
-#' @param bspl xxxx
+#' @param bdSP list, contains x and y coordinates of map boundaries
+#' @param superLines object returned by superLines(bdSP)
 #'
 #' @return a list
-#'
+#' @importFrom sp SpatialPoints
 #' @export
 #'
 #' @examples
@@ -335,10 +338,12 @@ separationPoly=function(polyTot)
 #' step=mapTest$step
 #' xsize=mapTest$xsize
 #' ysize=mapTest$ysize
-#' cL=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),mapTest$krigGrid, levels = c(5,7))
+#' cL=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),
+#'                mapTest$krigGrid, levels = c(5,7))
 #' plot(mapTest$boundary,type="l",col="red")
 #' lines(cL[[1]])#contour line is not closed
-#' lines(extensionLine(cL[[1]],step,bdSP,superL),col="red") #contour line is closed
+#' lines(extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
+#'      superLines(mapTest$boundary)),col="red") #contour line is closed
 #' # not run
 extensionLine=function(contourL=NULL,step=NULL,bdSP,superLines)
 ################################################################################

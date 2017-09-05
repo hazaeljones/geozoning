@@ -4,24 +4,31 @@
 \alias{labZone}
 \title{labZone}
 \usage{
-labZone(listK, qProb, matVal)
+labZone(K, qProb, dataF)
 }
 \arguments{
-\item{listK}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values for Z}
 
-\item{matVal}{xxxx}
+\item{dataF}{data used to generate labels and zoning}
 }
 \value{
-a ?
+a zoning object with labelled zones in lab component
 }
 \description{
 labZone
 }
 \details{
-description, a paragraph
+assigns a class label (integer) to a zone depending on the zone mean value
+and on the quantile values (as in PA paper). Default label is 1, corresponding to me#' an value smaller or equal to first quantile. For p ordered quantile values, if mean #' value is greater than quantile k and smaller or equal to quantile k+1, zone label is#' k+1. if mean value is greater than quantile p, zone lable is p+1.
 }
 \examples{
+data(mapTest)
+dataF=mapTest$krigGrid
+data(resZTest)
+K=resZTest
+p = K$qProb
+labZone(K,p,dataF)
 # not run
 }

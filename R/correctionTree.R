@@ -39,7 +39,9 @@
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7, save initial zoning and last level zonings
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+# saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 #' plotZ(criti$zk[[1]][[1]]$zonePolygone)
 #' plotZ(criti$zk[[2]][[1]]$zonePolygone) # zones 7 and 8 were handled
 #'

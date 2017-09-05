@@ -7,17 +7,26 @@
 testInterSpeZ(Z)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 }
 \value{
-a ?
+a Logical value, TRUE if there is any intersection, FALSE if not
 }
 \description{
 testInterSpeZ
 }
 \details{
-description, a paragraph
+checks, within a zoning, if any zone intersects with any other zone  not within it and not englobing it
 }
 \examples{
+qProb=c(0.2,0.5)
+ZK = initialZoning(qProb, mapTest)
+K=ZK$resZ
+Z=K$zonePolygone
+plotZ(Z)
+Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
+Z[[length(Z)+1]]=Z58 # add new zone to zoning
+plotZ(Z)
+testInterSpeZ(Z)
 # not run
 }

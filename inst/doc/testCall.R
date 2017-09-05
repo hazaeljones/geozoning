@@ -5,7 +5,7 @@
   ################################################################
   # step 1 - generate 2D map from simulation - default = 450 pts
   ################################################################
-  # kriging default 2000 pt grid
+  # kriging default 2000 pt 
   seed=80
   map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
 

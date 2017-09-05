@@ -4,28 +4,33 @@
 \alias{findN}
 \title{findN}
 \usage{
-findN(Z, K, listN, iC, minSize = 0.012)
+findN(K, listN, iZ, minSize = 0.012)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{K}{xxxx}
+\item{listN}{list of neighbor zones}
 
-\item{listN}{xxxx}
+\item{iZ}{index of current zone in zoning}
 
-\item{iC}{xxxx}
-
-\item{minSize}{xxxx}
+\item{minSize}{minimum admissible zone size}
 }
 \value{
-a ?
+the index of the zone into which to merge the current zone
 }
 \description{
 findN
 }
 \details{
-description, a paragraph
+Find the neighbor zone into which to merge the current zone.
+It must be a neighbor in the sense of Voronoi polygons. In case of ties, choose the smallest zone for merging into
 }
 \examples{
+data(mapTest)
+data(resZTest)
+K=resZTest
+Ns=getNs(K$zoneNModif,4) # neighbors of zone 4
+listN =  grep( TRUE , Ns) # zones 2 and 5
+findN(K,listN,4) # zone 4 will be merged into zone 5
 # not run
 }

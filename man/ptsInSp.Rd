@@ -2,26 +2,31 @@
 % Please edit documentation in R/util.R
 \name{ptsInSp}
 \alias{ptsInSp}
-\title{ptInZone}
+\title{ptInSp}
 \usage{
 ptsInSp(sp, pts, hole = FALSE)
 }
 \arguments{
-\item{sp}{xxxx}
+\item{sp}{SpatialPolygons}
 
-\item{pts}{xxxx}
+\item{pts}{data points}
 
-\item{hole}{xxxx}
+\item{hole}{if TRUE also consider points in holes}
 }
 \value{
-a ?
+a data frame with data points within sp
 }
 \description{
-ptInZone
+ptInSp
 }
 \details{
-description, a paragraph
+finds data points in sp
 }
 \examples{
+data(mapTest)
+data(resZTest)
+Z=resZTest$zonePolygone
+ptsInSp(Z[[5]],mapTest$krigData) # 5 data points within zone 5
+
 # not run
 }

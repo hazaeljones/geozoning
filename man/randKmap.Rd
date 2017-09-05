@@ -2,12 +2,12 @@
 % Please edit documentation in R/randKmap.R
 \name{randKmap}
 \alias{randKmap}
-\title{randKmap : todo title of the function in one line}
+\title{randKmap:  Generate data for zoning or prepare real data}
 \usage{
-randKmap(DataObj, seed, nPoints = 450, nPointsK = 2000, nSimuCond = 0,
-  typeMod = "Gau", Vpsill = 5, Vrange = 0.2, Vmean = 8, Vnugget = 0,
-  boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
-  manualBoundary = FALSE, krig = 1, disp = 0, FULL = FALSE)
+randKmap(DataObj, seed = NULL, nPoints = 450, nPointsK = 2000,
+  nSimuCond = 0, typeMod = "Gau", Vpsill = 5, Vrange = 0.2, Vmean = 8,
+  Vnugget = 0, boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
+  manualBoundary = FALSE, krig = 2, disp = 0, FULL = FALSE)
 }
 \arguments{
 \item{DataObj}{=NULL: simulated data with seed or = a data frame with real data}
@@ -43,25 +43,27 @@ randKmap(DataObj, seed, nPoints = 450, nPointsK = 2000, nSimuCond = 0,
 \value{
 a list
 \describe{
-\item{rawData}{rawData}
-\item{step}{step}
-\item{krigData}{krigData}
-\item{krigGrid}{krigGrid}
-\item{krigN}{krigN}
-\item{krigSurfVoronoi}{krigSurfVoronoi}
-\item{modelGen}{modelGen}
-\item{modelVGM}{modelVGM}
-\item{boundary}{boundary}
+\item{rawData}{simulated or real raw data within the boundary}
+\item{step}{grid step}
+\item{krigData}{kriged data}
+\item{krigGrid}{kriged data in form of grid}
+\item{krigN}{kriged neighbours of each data point}
+\item{krigSurfVoronoi}{areas of Voronoi polygons in the tesselation of kriged data}
+\item{modelGen}{random fields model}
+\item{VGMmodel}{vgm model}
+\item{boundary}{(x,y) list of boundary points}
 }
 }
 \description{
-randKmap : todo title of the function in one line
+randKmap:  Generate data for zoning or prepare real data
 }
 \details{
-description, a paragraph
+generates a map object from simulated data or real data
 }
 \examples{
 # not run
-# map<-randKmap(DataObj,seed=seed,Vpsill=5,Vrange=0.2,Vnugget=0,Vmean=8,krig=1,disp=0,FULL=FALSE)
+map = randKmap(NULL,nPointsK=500,Vmean=15,krig=2)
+mean(map$krigGrid) # mean of generated kriged data
+plotMap(map)
 
 }

@@ -4,21 +4,21 @@
 \alias{remove1FromZ}
 \title{remove1FromZ}
 \usage{
-remove1FromZ(Z, iC, zoneN, simplitol, disp = 0)
+remove1FromZ(Z, iC, zoneN, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 
-\item{iC}{xxxx}
+\item{iC}{current zone index}
 
-\item{zoneN}{xxxx}
+\item{zoneN}{zone neighborhood Logical matrix}
 
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: some info}
 }
 \value{
-a ?
+a new zoning where current zone has been removed
 }
 \description{
 remove1FromZ
@@ -27,5 +27,10 @@ remove1FromZ
 description, a paragraph
 }
 \examples{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+plotZ(Z)
+plotZ(remove1FromZ(Z,2,K$zoneN))
 # not run
 }

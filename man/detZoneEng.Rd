@@ -4,17 +4,17 @@
 \alias{detZoneEng}
 \title{detZoneEng}
 \usage{
-detZoneEng(iC, Z, K)
+detZoneEng(iZ, Z, zoneN)
 }
 \arguments{
-\item{iC}{xxxx}
+\item{iZ}{index of zone for which englobing zone is searched}
 
-\item{Z}{xxxx}
+\item{Z}{zoning}
 
-\item{K}{xxxx}
+\item{zoneN}{modified zone neighborhood matrix (FALSE values on diagonal)}
 }
 \value{
-a ?
+an integer value (0 if no englobing zone was found, englobing zone index otherwise)
 }
 \description{
 detZoneEng
@@ -23,5 +23,10 @@ detZoneEng
 description, a paragraph
 }
 \examples{
-# not run
+# load zoning results from test file
+data(resZTest)
+Z=resZTest$zonePolygone
+zoneN=resZTest$zoneNModif
+detZoneEng(3,Z,zoneN) # zone 2 englobes zone 3
+detZoneEng(2,Z,zoneN) # no englobing zone for zone 2 
 }

@@ -26,12 +26,12 @@
 #' zoneClose = resP$zoneClose
 #' kmi = zoneModifnonIso(K,qProb,mapTest,zoneClose,6,disp=1)
 #' plotZ(kmi$zonePolygone) # zones 6 and 8 are joined into new zone 7
-#' now it is the turn of zone 5
+#' # now it is the turn of zone 5
 #' Z=kmi$zonePolygone
 #' resP=detZoneClose(5,Z,kmi$zoneNModif) # zone 5 is close to zone 7 and zone 6
 #' kmi2 = zoneModifnonIso(kmi,qProb,mapTest,resP$zoneClose,5,disp=1)
 #' plotZ(kmi2$zonePolygone) # zones 5 and 7 are joined into new zone 6
-#' now it is the turn of zone 5 again
+#' # now it is the turn of zone 5 again
 #' Z=kmi2$zonePolygone
 #' resP=detZoneClose(5,Z,kmi2$zoneNModif) # zone 5 is close to zone 7 and zone 6
 #' kmi3 = zoneModifnonIso(kmi2,qProb,mapTest,resP$zoneClose,5,disp=1)

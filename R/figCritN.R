@@ -2,7 +2,7 @@
 #' figCritN
 #'
 #' @details  reads loopQ1-5 results, filters results by keeping th best criteria ) and plots them together with corresponding costs.
-#' @param seed 
+#' @param seed simulation seed used to generate map data
 #' @param m1 dataset with loopQ1 results
 #' @param m2 dataset with loopQ2 results
 #' @param m3 dataset with loopQ3 results
@@ -12,16 +12,17 @@
 #' @param ONE single plot
 #' @param title plot title
 #' @param pdf pdf file name
+#' @param basefile loop results basefile name
 #'
 #' @return a vector of probabilities corresponding to best results
 #'
 #' @export
 #'
 #' @examples
-#' assuming that loopQ results for seed 33 were saved in RESD directory
-#' figCritN(seed=33,basefile="RESD/res-simuseed")
+#' #assuming that loopQ results for seed 33 and pErr=0.9 were saved in RESD directory
 #' # not run
-figCritN=function(seed=89,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL,basefile="res-simuseed")
+#' #figCritN(seed=33,basefile="RESD/res-simuseed")
+figCritN=function(seed=89,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL,basefile="res-simuseed,pErr=0.9")
 #########################################################
 {
  if(is.null(m1)) m1=read.table(paste(basefile,seed,"-1q-pE",pErr,".csv",sep=""))
@@ -29,9 +30,8 @@ if(is.null(m2)) m2=read.table(paste(basefile,seed,"-2q-pE",pErr,".csv",sep=""))
 if(is.null(m3)) m3=read.table(paste(basefile,seed,"-3q-pE",pErr,".csv",sep=""))
 if(is.null(m4)) m4=read.table(paste(basefile,seed,"-4q-pE",pErr,".csv",sep=""))
 if(is.null(m5)) m5=read.table(paste(basefile,seed,"-5q-pE",pErr,".csv",sep=""))
-# en x nq
-# en y pour chaque q, crit (noir) et cost(rouge)
-# tels que (max(crit)-crit) <=maxd
+# 
+# plot results if (max(crit)-crit) <=maxd
 
 if (NEW)
 {
@@ -59,6 +59,7 @@ miny=min(miny,min(mbk[,"crit"]))
 }
 miny=min(miny,4)
 
+mb1=get(paste("mb1"))
 plot(2:nl,rep(mb1[1,"crit"],nl-1),type="n",xlim=c(1.5,6),ylim=c(miny,ceiling(maxy)),ylab="Criteria",xlab="Number of labels",xaxt="n",cex=2,main=title)
 axis(1,at=2:nl,cex=2)
 step=0.05

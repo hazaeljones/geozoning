@@ -79,9 +79,10 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 #'
 #' @details determines the Voronoi neighborhood of data points
 #' @param spdata SpatialPointsDataFrame
+#' @param gridLim list of boundary coordinates 
 #' @param neighBool empty point neighborhood Logical matrix 
-#' @param PTJUNCTION=FALSE (default): pts are not neighbors if their Voronoi polygons only have a vertex in common
-#' @param FULL=FALSE (default): do not return Vornoi polygons
+#' @param PTJUNCTION logical value, if FALSE (default): pts are not neighbors if their Voronoi polygons only have a vertex in common
+#' @param FULL logical value, if FALSE (default): do not return Vornoi polygons
 #'
 #' @return a list with components
 #' \describe{

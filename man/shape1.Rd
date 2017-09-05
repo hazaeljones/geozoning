@@ -3,7 +3,7 @@
 \docType{data}
 \name{shape1}
 \alias{shape1}
-\title{une carte décrire}
+\title{A XXXXXX}
 \format{a SpatialPolygons object:}
 \usage{
 shape1

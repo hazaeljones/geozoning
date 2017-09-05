@@ -133,7 +133,10 @@ Sigmai2=function(index,listZonePoint,tabVal,surfaceVoronoi,meanZone)
 #' K=resZTest
 #' nz=length(K$zonePolygone)
 #' si2=rep(NA,nz)
-#' for (kk in 1:nz){si2[kk]=Sigmai2(kk,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi,K$meanZone)$sigmai2}
+#' for (kk in 1:nz){
+#' si2[kk]=Sigmai2(kk,K$listZonePoint,mapTest$krigData,
+#'         mapTest$krigSurfVoronoi,K$meanZone)$sigmai2
+#' }
 #' d12=DIJ(1,2,si2,K$meanzone,0.9)
 #' # not run
 DIJ=function(i,j,sigmai2,meanZone,pErr)
@@ -162,7 +165,8 @@ DIJ=function(i,j,sigmai2,meanZone,pErr)
 #' # load zoning results from test file
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' distanceNormalisationSqrt(resD$matDistanceCorr)
 #' # not run
 distanceNormalisationSqrt=function(matDistance)
@@ -191,7 +195,8 @@ distanceNormalisationSqrt=function(matDistance)
 #' # load zoning results from test file
 #' data(resZTest)
 #' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
+#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+#'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' distanceNormalisationSqrt(resD$matDistanceCorr)
 #' # not run
 distanceNormalisationSum=function(matDistance)

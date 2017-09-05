@@ -31,16 +31,18 @@
 #'
 #' @examples
 #' data(mapTest)
-#' criti=correctionTree(c(0.4,0.7),mapTest,LASTPASS=FALSE,SAVE=TRUE) # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+#' criti=correctionTree(c(0.4,0.7),mapTest,LASTPASS=FALSE,SAVE=TRUE) 
 #' K1=criti$zk[[1]][[1]]#initial zoning
 #' Z1=K1$zonePolygone 
 #' printZsurf(Z1) # 8 zones with 2 small zones (7 and 8)
 #' Z2 = remove1FromZ(Z1,7,K1$zoneN)
 #' printZsurf(Z2) #7 zones
-#' indCur=length(criti$zk[2])
-#' newRes=saveZK(mapTest,K1,Z2,c(0.4,0.7),criti$zk,indCur,criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist)
-#' newZ=newRes$listOfZ[[2]][[2]]$zonePolygone
-#' printZsurf(newZ) #7 zones
+#' indCur=2
+#' newRes=saveZK(mapTest,K1,Z2,c(0.4,0.7),criti$zk,indCur,
+#'         criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist)
+#' newZ=newRes$listOfZ[[2]][[1]]$zonePolygone
+#' printZsurf(newZ) #6 zones
 #' # not run
 saveZK=function(map,K1,Z2,qProb,listOfZ, indCur,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2,simplitol=1e-3)
 ######################################################

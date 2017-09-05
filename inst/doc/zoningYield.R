@@ -30,14 +30,15 @@
   
   # plot data
   ggplot(data=yield,aes(x=x,y=y,colour=Yield)) + geom_point() #+
-    #geom_line(data=boundary1, aes(x=x,y=y),col="red")
+    geom_line(data=boundary1, aes(x=x,y=y),col="red")
   
   plot(x=yield$x, y=yield$y)
   lines(boundary0$x,boundary0$y,col="red")
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
-  # normalize data coordinates and border
-  resNorm = datanorm(yield, boundary0)
+  # normalize data coordinates and border in a rectangular field
+  # x range will be equal to 1 and y range respecting the initial y/x ratio
+  resNorm = datanormX(yield, boundary0)
   if (is.null(resNorm)) print("error in coordinates")
   yieldN = resNorm$dataN 
   boundaryN = resNorm$boundaryN
@@ -45,14 +46,14 @@
   xmax=resNorm$xmax
   ymin=resNorm$ymin
   ymax=resNorm$ymax
+  ratio=resNorm$ratio
 
   #plot normalized data
   plot(x=yieldN$x, y=yieldN$y)
   lines(boundaryN$x,boundaryN$y,col="red")
 
-  #compute zoning on normalized data
-  # build  kriging data based on real data DataCsvN
-  map=genMapR(yieldN,seed=0,boundary=boundaryN,disp=0,nPointsK=7000)
+  # build map data based on real yield data
+  map=genMap(yieldN,seed=0,boundary=boundaryN,disp=0,nPointsK=3000)
   boundary=map$boundary
 
   # transform minSize as a percentage of frame
@@ -71,7 +72,7 @@
   	sp[[k]] = (p[[k]]@Polygons)[[1]]
   	co=coordinates(sp[[k]])
 	  co[,1]=(co[,1]-xmin)/(xmax-xmin)
-	  co[,2]=(co[,2]-ymin)/(ymax-ymin)
+	  co[,2]=(co[,2]-ymin)/(xmax-xmin)
 	  sp[[k]]@coords=co
 	  sp[[k]] = polyToSp2(sp[[k]])
 	}
@@ -84,11 +85,16 @@
 
   #calNei removes zones with n=0 or n=1 pt
   K =calNei(sp,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol=simplitol)
+  # zoning Z is obtained as follows
   Z =K$zonePolygone
   nZ=length(Z)
 
   dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0)
-  
+  # compute distance matrix between zones
+  resD = calDistance(typedist=1,map$krigData,K$listZonePoint,K$zoneN,map$krigSurfVoronoi,K$meanZone,pErr=0.9)
+  # now compute criterion corresponding to zoning
+  crit = calCrit(resD$matDistanceCorr,K$zoneNModif,2)
+  print(crit)
 
 ## ----session,echo=FALSE,message=FALSE, warning=FALSE---------------------
   sessionInfo()

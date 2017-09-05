@@ -4,25 +4,33 @@
 \alias{searchNODcrit}
 \title{searchNODcrit}
 \usage{
-searchNODcrit(qProb, le, zk, critere, cost, costL, nz)
+searchNODcrit(qProb, le, zk, criterion, cost, costL, nz)
 }
 \arguments{
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values}
 
-\item{le}{xxxx}
+\item{le}{level index}
 
-\item{zk}{xxxx}
+\item{zk}{list of zonings}
 
-\item{critere}{xxxx}
+\item{criterion}{list of criteria}
 
-\item{cost}{xxxx}
+\item{cost}{list of costs}
 
-\item{costL}{xxxx}
+\item{costL}{list of per label costs}
 
-\item{nz}{xxxx}
+\item{nz}{list of numbers of zones}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{ind}{index of last level zoning that has the higher criterion value}
+\item{critList}{criterion value corresponding to best last level zoning}
+\item{costlist}{cost value corresponding to best last level zoning}
+\item{costLlist}{cost per label value corresponding to best last level zoning}
+\item{nzList}{number of zones of best last level zoning}
+\item{nq}{lenght of quantile vector}
+}
 }
 \description{
 searchNODcrit
@@ -31,5 +39,7 @@ searchNODcrit
 description, a paragraph
 }
 \examples{
+qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
+res=searchNODcrit1(qProb,criti)
 # not run
 }

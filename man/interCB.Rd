@@ -4,29 +4,36 @@
 \alias{interCB}
 \title{interCB}
 \usage{
-interCB(contour1, step, bd = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
+interCB(co, step, bd = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
   envel, disp = 0)
 }
 \arguments{
-\item{contour1}{xxxx}
+\item{co}{contour line}
 
-\item{step}{xxxx}
+\item{step}{map grid resolution}
 
-\item{bd}{xxxx}
+\item{bd}{map boundary}
 
-\item{envel}{xxxx}
+\item{envel}{envelope}
 
-\item{disp}{xxxx}
+\item{disp}{info level (0-no info, 1- add lines to plot)}
 }
 \value{
-a ?
+a SpatialPolygons
 }
 \description{
 interCB
 }
 \details{
-description, a paragraph
+generates SpatialPolygons object corresponding to intersection of contour with boundary, must be within SpatialPolygons given in envel argument
 }
 \examples{
+data(mapTest)
+pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
+cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
+   mapTest$krigGrid,c(5,7),mapTest$boundary)
+ps = interCB(cL[[8]],mapTest$step,mapTest$boundary,pG)#envelope is the whole map
+sp::plot(pG)
+sp::plot(ps,col="red",add=TRUE)
 # not run
 }

@@ -4,47 +4,45 @@
 \alias{randKmapGrid}
 \title{randKmapGrid}
 \usage{
-randKmapGrid(DataObj, seed = NULL, nPointsK = 200, nSimuCond = 0,
-  typeMod = "Gau", Vpsill = 5, Vrange = 0.2, Vmean = 8,
-  boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
-  manualBoundary = FALSE, krig = 1, disp = 0, FULL = FALSE)
+randKmapGrid(DataObj, nSimuCond = 0, boundary = list(x = c(0, 0, 1, 1, 0), y
+  = c(0, 1, 1, 0, 0)), manualBoundary = FALSE, disp = 0, FULL = FALSE)
 }
 \arguments{
-\item{DataObj}{xxxx}
+\item{DataObj}{=NULL: simulated data with seed or = a data frame with real data}
 
-\item{seed}{xxxx}
+\item{nSimuCond}{numeric}
 
-\item{nPointsK}{xxxx}
+\item{boundary}{list contains x and y}
 
-\item{nSimuCond}{xxxx}
+\item{manualBoundary}{logical, default FALSE}
 
-\item{typeMod}{xxxx}
+\item{disp}{numeric}
 
-\item{Vpsill}{xxxx}
-
-\item{Vrange}{xxxx}
-
-\item{Vmean}{xxxx}
-
-\item{boundary}{xxxx}
-
-\item{manualBoundary}{xxxx}
-
-\item{krig}{xxxx}
-
-\item{disp}{xxxx}
-
-\item{FULL}{xxxx}
+\item{FULL}{logical, if TRUE the returned list is complete}
 }
 \value{
-a ?
+a list
+\describe{
+\item{rawData}{simulated or real raw data within the boundary}
+\item{step}{grid step}
+\item{krigData}{kriged data}
+\item{krigGrid}{kriged data in form of grid}
+\item{krigN}{kriged neighbours of each data point}
+\item{krigSurfVoronoi}{areas of Voronoi polygons in the tesselation of kriged data}
+\item{modelGen}{random fields model}
+\item{VGMmodel}{vgm model}
+\item{boundary}{(x,y) list of boundary points}
+}
 }
 \description{
 randKmapGrid
 }
 \details{
-description, a paragraph
+Prepare real data for zoning, data are already on a regular grid, hence no kriging is done.
 }
 \examples{
+data(dataReg) #regular data on a square grid between 0 and 1
+map = randKmapGrid(dataReg)
+plotMap(map)
 # not run
 }

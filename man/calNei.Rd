@@ -4,32 +4,55 @@
 \alias{calNei}
 \title{calNei}
 \usage{
-calNei(Z, data, surfVoronoi, ptN, simplitol, remove = TRUE, correct = FALSE)
+calNei(Z, spdata, surfVoronoi, ptN, simplitol = 0.001, remove = TRUE,
+  correct = FALSE, nmin = 1)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list pf SpatialPolygons)}
 
-\item{data}{xxxx}
+\item{spdata}{SpatialPointsDataFrame containing the data pts and values}
 
-\item{surfVoronoi}{xxxx}
+\item{surfVoronoi}{Surfaces of the Voronoi polygons corresponding to data pts}
 
-\item{ptN}{xxxx}
+\item{ptN}{indices of data pts neighbours}
 
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{remove}{xxxx}
+\item{remove}{if TRUE remove zones with less than nmin data points}
 
-\item{correct}{xxxx}
+\item{correct}{if TRUE correct zone neighborhood}
+
+\item{nmin}{number of points below wich a zone is removed from the zoning}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{zoneN}{matrix of zone neigbors}
+\item{zoneNModif}{modified matrix with FALSE on the diagonal}
+\item{listZonePoint}{ indices of pts within each zone}
+\item{meanTot}{zoning mean data value}
+\item{meanZone}{vector of zone data mean values}
+\item{listSurf}{vector of zone areas}
+\item{critSurf}{vector of filiform zone characteristics}
+\item{zonePolygone}{list of zones, each zone is a SpatialPolygons}
+}
 }
 \description{
 calNei
 }
 \details{
-description, a paragraph
+calculates neighborhood for zoning geometry Z (list of SpatialPolygons)
 }
 \examples{
-# not run
+data(mapTest)
+ptN=mapTest$krigN
+spdata=mapTest$krigData
+surfVoronoi=mapTest$surfVoronoi
+data(resZTest)
+Z=resZTest$zonePolygone
+K=calNei(Z,spdata,surfVoronoi,ptN)
+names(K)
+plotZ(K$zonePolygone)
+K=calNei(Z,spdata,surfVoronoi,ptN,nmin=20) #keep only zones with a minimum of 20 data points
+plotZ(K$zonePolygone)
 }

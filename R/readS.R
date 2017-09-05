@@ -11,8 +11,9 @@
 #'
 #' @export
 #' @examples
-#' z=readS("Field_8_zones.shp",dir="../data/")
-#' plot(z$sp)
+#  readS was used to create the shape1 object in geozoning package
+#' #z=readS("Field_8_zones.shp",dir="../data/")
+#' #plot(z$sp)
 #' # not run
 ###############################################################
 readS = function(file, dir)
@@ -29,8 +30,8 @@ readS = function(file, dir)
     shape1 <- shapefile(name)
 
     #obtention of coords
-    xlim=shap1@bbox[1,]
-    ylim=shap1@bbox[2,]
+    xlim=shape1@bbox[1,]
+    ylim=shape1@bbox[2,]
     # return list with coords, ranges for x and y
     return(list(sp=shape1,xlim = xlim, ylim = ylim))
   }

@@ -4,47 +4,58 @@
 \alias{zoneGrow}
 \title{zoneGrow}
 \usage{
-zoneGrow(Z, K, iC, Ns, map, optiCrit, valRef, qProb, minSizeNG, distIsoZ, LEQ,
-  MAXP, simplitol, disp = 0)
+zoneGrow(K, map, iC, optiCrit = 2, minSizeNG = 0.001, distIsoZ = 0.075,
+  LEQ = 5, MAXP = 0.1, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object, such as returned by the calNei function}
 
-\item{K}{xxxx}
+\item{map}{object returned by function genMap}
 
-\item{iC}{xxxx}
+\item{iC}{index of current zone}
 
-\item{Ns}{xxxx}
+\item{optiCrit}{criterion choice}
 
-\item{map}{xxxx}
+\item{minSizeNG}{zone area threshold under which a zone will be removed}
 
-\item{optiCrit}{xxxx}
+\item{distIsoZ}{threshold distance to next zone, above which a zone is considered to be isolated}
 
-\item{valRef}{xxxx}
+\item{LEQ}{length of quantile sequence used to grow isolated zone}
 
-\item{qProb}{xxxx}
+\item{MAXP}{quantile sequence maximum shift from center}
 
-\item{minSizeNG}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{distIsoZ}{xxxx}
-
-\item{LEQ}{xxxx}
-
-\item{MAXP}{xxxx}
-
-\item{simplitol}{xxxx}
-
-\item{disp}{xxxx}
+\item{disp}{information level (0-no info, 1-print info)}
 }
 \value{
-a ?
+a zone obtained by growing current zone
 }
 \description{
 zoneGrow
 }
 \details{
-description, a paragraph
+either grow isolated zone or group 2 zones together
+if isolated zone, run optimization procedure to find the new quantile
+if zone very small (area < minSizeNG) do not grow it
 }
 \examples{
+data(mapTest)
+qProb=c(0.2,0.5)
+ZK = initialZoning(qProb, mapTest)
+K=ZK$resZ
+Z=K$zonePolygone
+plotZ(K$zonePolygone) # plot zoning
+kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
+linesSp(kmi[[7]])
+qProb=c(0.3,0.5)
+criti = correctionTree(qProb,mapTest)
+best = criti$zk[[2]][[8]]
+Z=best$zonePolygone
+plotZ(Z)
+refPoint = rgeos::gCentroid(Z[[4]])
+sp::plot(refPoint,add=TRUE,col="blue",pch=21)
+zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
+plotZ(zg)
 # not run
 }

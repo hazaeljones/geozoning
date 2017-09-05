@@ -5,11 +5,12 @@
 #' @param iZ zone number
 #' @param Z zoning geometry (list of SpatialPolygons)
 #' @param zoneN modified zone neighborhood Logical matrix (FALSE values on diagonal)
+#' @param distIsoZ threshold distance above which a zone is considered as isolated
 #'
 #' @return a list with components
 #' \describe{
 #' \item{InterZoneSpace}{TRUE if zone is isolated, FALSE otherwise}
-#' \item{zoneClose}indices of zones close to zone iZ, empty if zone is isolated}
+#' \item{zoneClose}{indices of zones close to zone iZ, empty if zone is isolated}
 #' }
 #'
 #' @export

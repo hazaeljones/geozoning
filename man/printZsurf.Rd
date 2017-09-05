@@ -7,19 +7,23 @@
 printZsurf(Z, minSize = 0.012)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 
-\item{minSize}{xxxx}
+\item{minSize}{minimum size threshold}
 }
 \value{
-a ?
+a vector of small zone indices
 }
 \description{
 printZsurf
 }
 \details{
-description, a paragraph
+print zone surfaces
 }
 \examples{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+printZsurf(Z,0.03)
 # not run
 }

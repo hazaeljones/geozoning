@@ -4,22 +4,32 @@
 \alias{contourToSpp}
 \title{contourToSpp}
 \usage{
-contourToSpp(contour1, step)
+contourToSpp(co, step)
 }
 \arguments{
-\item{contour1}{xxxx}
+\item{co}{contour line (list with contour level and x,y coordinates}
 
-\item{step}{xxxx}
+\item{step}{grid resolution}
 }
 \value{
-a numeric?
+a list with components
+\describe{
+\item{sp}{SpatialPolygons corresponding to contour line}
+\item{contour}{SpatialLines corresponding to contour line}
+\item{polyBuff}{SpatialPolygons corresponding to buffer around contour line}
+\item{surface}{SpatialPolygons area}
+}
 }
 \description{
 contourToSpp
 }
 \details{
-description, a paragraph
+transform contour line into SpatialPolygons
 }
 \examples{
+data(mapTest)
+cL=list()
+cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+contourToSpp(cL[[8]],0.1)
 # not run
 }

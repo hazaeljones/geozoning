@@ -3,7 +3,7 @@
 \docType{data}
 \name{resZTest}
 \alias{resZTest}
-\title{une carte décrire}
+\title{A XXXXXX}
 \format{a list 11 SpatialPointsDataFrame}
 \usage{
 resZTest

@@ -4,34 +4,36 @@
 \alias{zoneFusion3}
 \title{zoneFusion3}
 \usage{
-zoneFusion3(Z, K, iC, Ns, map, minSize, simplitol, disp = 0)
+zoneFusion3(K, iC, Ns, map, minSize = 0.01, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{K}{xxxx}
+\item{iC}{index of current zone in zoning}
 
-\item{iC}{xxxx}
+\item{Ns}{zone neighborhood Boolean matrix}
 
-\item{Ns}{xxxx}
+\item{map}{object returned by function genMap or genMapR}
 
-\item{map}{xxxx}
+\item{minSize}{minimum admissible zone size}
 
-\item{minSize}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{simplitol}{xxxx}
-
-\item{disp}{xxxx}
+\item{disp}{information level (0-no info, 1-print info, 2-plot)}
 }
 \value{
-a ?
+a zone obtained by merging current zone with neighbor zone
 }
 \description{
 zoneFusion3
 }
 \details{
-description, a paragraph
+merge current zone #iC with neighbor zone in zoning. If there are several neighbor zones, the selected one is the zone whose area is greater than the admissible size threshold that has the closest average value to the current one.
 }
 \examples{
-# not run
+data(mapTest)
+data(resZTest)
+K=resZTest
+Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
+zoneFusion3(K,5,Ns,mapTest,disp=2) # merge and plot result of merging
 }

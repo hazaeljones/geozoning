@@ -4,28 +4,28 @@
 \alias{findNptInZone}
 \title{findNptInZone}
 \usage{
-findNptInZone(Z, K, i1, i2, map)
+findNptInZone(K, i1, i2, map)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{K}{xxxx}
+\item{i1}{first zone}
 
-\item{i1}{xxxx}
+\item{i2}{second zone, where to search for neighbors of points in first zone}
 
-\item{i2}{xxxx}
-
-\item{map}{xxxx}
+\item{map}{object returned by function genMap}
 }
 \value{
-a ?
+a two-column matrix, the first column contains indices of pts in first zone which have at least one neighbor in second zone, the second column contains the neighbor indices.
 }
 \description{
 findNptInZone
 }
 \details{
-description, a paragraph
+find, in a given zone, neighbor points of points belonging to another zone
 }
 \examples{
+data(resZTest)
+K=resZTest
 # not run
 }

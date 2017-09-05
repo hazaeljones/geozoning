@@ -88,7 +88,7 @@ calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALS
 #' and on the quantile values. Default label is 1, corresponding to mean value samller #' or equal to first quantile. For k ordered quantile values, if mean value is greater #' than quantile k plus 10% of the data range, zone label is k. 
 #' @param K zoning object, as returned by the calNei function
 #' @param qProb probability vector used to generate quantile values for Z
-#' @param data data used to generate labels and zoning 
+#' @param dataF data used to generate labels and zoning 
 #'
 #' @return a zoning object with labelled zones in lab component
 #'
@@ -136,7 +136,7 @@ return(K)
 #' and on the quantile values (as in PA paper). Default label is 1, corresponding to me#' an value smaller or equal to first quantile. For p ordered quantile values, if mean #' value is greater than quantile k and smaller or equal to quantile k+1, zone label is#' k+1. if mean value is greater than quantile p, zone lable is p+1.
 #' @param K zoning object, as returned by the calNei function
 #' @param qProb probability vector used to generate quantile values for Z
-#' @param data data used to generate labels and zoning 
+#' @param dataF data used to generate labels and zoning 
 #'
 #' @return a zoning object with labelled zones in lab component
 #'

@@ -8,8 +8,9 @@
 #' @param typeMod type of variogram model (see vgm)
 #' @param Vpsill partial sill in variogram 
 #' @param Vrange variogram range
-#' @param Vmean average data value,
-#' @param Vnugget nugget in variogram,
+#' @param Vmean average data value
+#' @param Vnugget nugget in variogram
+#' @param Vanis anisotropy in variogram
 #' @param boundary list, contains x and y boundaries
 #' @param manualBoundary logical, if TRUE a manual boundary is drawn.
 #'
@@ -25,10 +26,12 @@
 #' @importFrom stats runif
 #' @importFrom sp coordinates
 #' @importFrom gstat vgm
+#' @importFrom gstat variogram fit.variogram
 #' @importFrom RandomFields RMtrend RMnugget RFsimulate
 #'
 #' @examples
-#' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) # simulated data with Gaussian model
+# simulate data with Gaussian model
+#' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) 
 #' plot(resGene$tabData)
 #'
 #' # not run
@@ -54,7 +57,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     if(manualBoundary)
       {
         print("Draw boundary")
-        plot(coordinates(tabData))
+        plot(sp::coordinates(tabData))
         boundary=locator(500,type="l")
 
         boundary$x[length(boundary$x)]=boundary$x[1]
@@ -84,7 +87,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     
 # fit experimental variogram to model
   tabDataSp=tabData
-  coordinates(tabDataSp)=~x+y
+  sp::coordinates(tabDataSp)=~x+y
   expVario=variogram(z~1,data=tabDataSp)
   VGMmodel1=fit.variogram(expVario,vgm(c("Exp","Sph","Gau"))) # find best model to be fitted
 
@@ -149,14 +152,14 @@ calStep=function(nPointsK,xsize,ysize)
 #' generate grid from raw data
 #'
 #' @param step numeric step for grid
-#' @param nKrigE numeric value giving the number of points after kriging
 #' @param xsize numeric value giving the data range on the x axis
 #' @param ysize numeric value giving the data range on the y axis
 #' @importFrom sp coordinates
 #'
 #' @return a list that contains x and y kriged positions based on original ones,#' plus nx and ny (number of x and y positions).
 #' @export
-#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
 #' @examples
 #' genEmptyGrid(calStep(1000,1,1),1,1)
 #' # not run
@@ -175,7 +178,7 @@ genEmptyGrid=function(step,xsize,ysize)
   
   # turn into dataframe 
   tabEmpty=data.frame(x=xempty,y=yempty,z=z)
-  coordinates(tabEmpty)=~x+y
+  sp::coordinates(tabEmpty)=~x+y
   return(list(tabEmpty=tabEmpty,xx=xx,yy=yy,nx=nx,ny=ny))
 }
 
