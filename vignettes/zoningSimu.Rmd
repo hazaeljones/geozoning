@@ -101,7 +101,6 @@ vignette: >
    # then the correction procedure is done for zone #8 in these two zonings
    for (ii in 1:length(zk[[3]]))
    {
-   X11()
    plotZ(zk[[3]][[ii]]$zonePolygone) # result of removal of zone #8 in Z21
    }
    #successively:  removal of zone#8  in Z21, growing of zone#8  in Z21

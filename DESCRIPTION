@@ -14,9 +14,7 @@ Depends: R (>= 3.3.2)
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: gstat, RandomFields, sp, maptools, colorspace, xtable, deldir, mmand,
-  permute, plotrix, fields, optimx, rgdal, raster, ggplot2, profvis, graphics, stats, utils,
-  grDevices, methods, rgeos
+Imports: gstat, RandomFields, sp, maptools, deldir, fields, raster, graphics, stats, utils,grDevices, rgeos
 Suggests: rmarkdown,
     knitr
 RoxygenNote: 6.0.1

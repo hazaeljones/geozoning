@@ -1,0 +1,60 @@
+---
+title: "test zone junction"
+author: "B. Charnomordic"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{a title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+  library(geozoning)
+```
+
+
+# 2D map simulation 
+A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point neighborhood in the sense of Voronoi.
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
+  seed=80
+  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+# Check the mean and standard deviation of generated data.
+  meanvarSimu(map)
+```
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+   ################################################################
+   # step 2 - generate zoning Z from map and quantile vector 
+   ################################################################
+   # Given a probability vector, a vector of values is obtained using the quantile function.
+   qProb=c(0.5,0.7)
+   qq=quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
+   #A zoning is done on the kriged data, by computing the contour lines corresponding to the vector qq of quantile values corresponding to the probability vector, trimming them to the map boundary and defining zones corresponding to the closed contour lines.
+   # A zoning is a list of SpatialPolygons objects. It does not contain data, only polygon geometry.
+   ZK=initialZoning(qProb,map) # names(ZK)  "resCrit"  "resDist" "resZ" "cL" "qProb"
+   # initialZoning calls zoneGeneration, calNei, calDistance, calCrit
+   # zoneGeneration calls contourAuto
+   # contourAuto calls contourLines and extensionLine
+ 
+   # plot zoning (12 zones in this case)
+   K=ZK$resZ
+   Z=K$zonePolygone
+   plotZ(Z)
+   printLabZ(list(K)) # zones 9 to 12 have the same label(0)
+   # join zone 11 with another zone near by (zone 12)- both zones have the same label
+   kmi=optiRG(K,map,11,12,disp=1)
+   plotZ(kmi$zonePolygone)
+  
+   
+```
+
+
+# Session informations
+```{r session,echo=FALSE,message=FALSE, warning=FALSE}
+  sessionInfo()
+```
+
