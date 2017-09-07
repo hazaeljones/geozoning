@@ -38,7 +38,7 @@
 #' K=calNei(Z,spdata,surfVoronoi,ptN,nmin=20) #keep only zones with a minimum of 20 data points
 #' plotZ(K$zonePolygone)
 
-calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALSE,nmin=1)
+calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALSE,nmin=2)
 #################################################################################
 {
   nbZ=length(Z)

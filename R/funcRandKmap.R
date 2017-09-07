@@ -41,7 +41,8 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 {
   modelGen=NULL #variogram model
   VGMmodel1=NULL
-
+  Vang=0
+  
   # real or simulated data
   if(!is.null(DataObj))
     print(paste("reading DataObj,nrow(DataObj)=",nrow(DataObj),",ncol(DataObj)=",ncol(DataObj),collapse=","))

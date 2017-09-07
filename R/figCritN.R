@@ -12,7 +12,6 @@
 #' @param ONE single plot
 #' @param title plot title
 #' @param pdf pdf file name
-#' @param basefile loop results basefile name
 #'
 #' @return a vector of probabilities corresponding to best results
 #'
@@ -22,7 +21,7 @@
 #' #assuming that loopQ results for seed 33 and pErr=0.9 were saved in RESD directory
 #' # not run
 #' #figCritN(seed=33,basefile="RESD/res-simuseed")
-figCritN=function(seed=89,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL,basefile="res-simuseed,pErr=0.9")
+figCritN=function(seed=89,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL)
 #########################################################
 {
  if(is.null(m1)) m1=read.table(paste(basefile,seed,"-1q-pE",pErr,".csv",sep=""))

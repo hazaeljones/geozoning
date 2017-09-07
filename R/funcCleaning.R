@@ -192,6 +192,7 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 #' @param map object returned by function genMap
 #' @param iC index of current zone
 #' @param optiCrit criterion choice
+#' @param minSize admissible zone area threshold
 #' @param minSizeNG zone area threshold under which a zone will be removed
 #' @param distIsoZ threshold distance to next zone, above which a zone is considered to be isolated
 #' @param LEQ length of quantile sequence used to grow isolated zone
@@ -214,7 +215,7 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 #' linesSp(kmi[[7]])
 #' qProb=c(0.3,0.5)
 #' criti = correctionTree(qProb,mapTest)
-#' best = criti$zk[[2]][[8]]
+#' best = criti$zk[[2]][[1]]
 #' Z=best$zonePolygone
 #' plotZ(Z)
 #' refPoint = rgeos::gCentroid(Z[[4]])
@@ -222,7 +223,7 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 #' zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
 #' plotZ(zg)
 #' # not run
-zoneGrow=function(K,map,iC,optiCrit=2,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0.1,simplitol=1e-3,disp=0)
+zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0.1,simplitol=1e-3,disp=0)
 ############################################################################
 {
 	# either grow isolated zone or group 2 zones together
@@ -375,13 +376,14 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 removeFromZ = function(Z,zoneN,ptN,listZonePoint,spdata,simplitol=1e-3,n=1)
 ##########################################################################
 {
-# remove from Z all zones with npts<=n or area<minSizeNG
+# remove from Z all zones with npts<=n
  
   mask1 = sapply(listZonePoint,function(x){return(length(x)<=n)})
-  mask2 = sapply(Z,function(x){return(gArea(x)<minSizeNG)})
+  #mask2 = sapply(Z,function(x){return(gArea(x)<minSizeNG)})
   nbZ=length(Z)
   ind = 1:nbZ
-  ind = ind[mask1 | mask2]
+  #ind = ind[mask1 | mask2]
+  ind = ind[mask1]
   ids=c()
   if (!is.null(ind))
      ids = getIds(Z,ind)

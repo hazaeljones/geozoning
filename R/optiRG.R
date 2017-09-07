@@ -20,9 +20,9 @@
 #' K=ZK$resZ
 #' Z=K$zonePolygone
 #' plotZ(K$zonePolygone) # zoning
-#' kmi=optiRG(K,mapTest,6,8,disp=1)
-#' #zones 6 and 8 are joined into new zone 7
-#' sp::plot(kmi$zonePolygone[[7]],col="red",add=TRUE)
+#' kmi=optiRG(K,mapTest,6,7,disp=1)
+#' #zones 6 and 7 are joined into new zone 6
+#' sp::plot(kmi$zonePolygone[[6]],col="red",add=TRUE)
 #' # not run
 optiRG = function(K,map,iC,iZC,simplitol=1e-3,disp=0)
 ###########################################################

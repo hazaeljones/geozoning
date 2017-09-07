@@ -1133,7 +1133,7 @@ moveHoles = function(zoneMain,zoneSuppr)
 #' data(mapTest)
 #' qProb=c(0.3,0.5)
 #' criti = correctionTree(qProb,mapTest)
-#' best = criti$zk[[2]][[8]]
+#' best = criti$zk[[2]][[1]]
 #' Z=best$zonePolygone
 #' plotZ(Z)
 #' iC=4

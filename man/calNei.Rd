@@ -5,7 +5,7 @@
 \title{calNei}
 \usage{
 calNei(Z, spdata, surfVoronoi, ptN, simplitol = 0.001, remove = TRUE,
-  correct = FALSE, nmin = 1)
+  correct = FALSE, nmin = 2)
 }
 \arguments{
 \item{Z}{zoning geometry (list pf SpatialPolygons)}

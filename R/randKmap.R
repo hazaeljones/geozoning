@@ -45,7 +45,7 @@ randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000, nSimuCond=0,typeM
 
  #simulation seed for random fields
       set.seed(seed)
-
+      Vanis=0 # no anisotropy
  # genData reads real data in DataObj data frame and returns data and a vgm model
  # or simulates them if DataObj=NULL according to vgm model
       resGene=genData(DataObj,seed,nPoints,typeMod,Vpsill,Vrange,Vmean,Vnugget,Vanis,boundary,manualBoundary)

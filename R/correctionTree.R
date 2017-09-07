@@ -213,7 +213,7 @@ correctionTree=function(qProb,map,pErr=0.9,optiCrit=2,minSize=0.012,minSizeNG=1e
          if(disp>0) print(paste(length(zpCopy1)," polygons after zone merging"))
          # 2 = grow zone indZS
 
-      	 zpCopy2 = zoneGrow(K,map,iC,optiCrit,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+      	 zpCopy2 = zoneGrow(K,map,iC,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
          if (disp>0) print(paste(length(zpCopy2)," zones after zone growing"))
          ###############################################################################################
         } # end else disparition

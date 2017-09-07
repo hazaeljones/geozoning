@@ -4,8 +4,8 @@
 \alias{zoneGrow}
 \title{zoneGrow}
 \usage{
-zoneGrow(K, map, iC, optiCrit = 2, minSizeNG = 0.001, distIsoZ = 0.075,
-  LEQ = 5, MAXP = 0.1, simplitol = 0.001, disp = 0)
+zoneGrow(K, map, iC, optiCrit = 2, minSize = 0.012, minSizeNG = 0.001,
+  distIsoZ = 0.075, LEQ = 5, MAXP = 0.1, simplitol = 0.001, disp = 0)
 }
 \arguments{
 \item{K}{zoning object, such as returned by the calNei function}
@@ -15,6 +15,8 @@ zoneGrow(K, map, iC, optiCrit = 2, minSizeNG = 0.001, distIsoZ = 0.075,
 \item{iC}{index of current zone}
 
 \item{optiCrit}{criterion choice}
+
+\item{minSize}{admissible zone area threshold}
 
 \item{minSizeNG}{zone area threshold under which a zone will be removed}
 
@@ -50,7 +52,7 @@ kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor
 linesSp(kmi[[7]])
 qProb=c(0.3,0.5)
 criti = correctionTree(qProb,mapTest)
-best = criti$zk[[2]][[8]]
+best = criti$zk[[2]][[1]]
 Z=best$zonePolygone
 plotZ(Z)
 refPoint = rgeos::gCentroid(Z[[4]])

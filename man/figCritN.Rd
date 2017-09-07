@@ -6,8 +6,7 @@
 \usage{
 figCritN(seed = 89, m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL,
   m5 = NULL, NEW = FALSE, ONE = FALSE,
-  title = "Gaussian field simulation", pdf = NULL,
-  basefile = "res-simuseed,pErr=0.9")
+  title = "Gaussian field simulation", pdf = NULL)
 }
 \arguments{
 \item{seed}{simulation seed used to generate map data}
@@ -29,8 +28,6 @@ figCritN(seed = 89, m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL,
 \item{title}{plot title}
 
 \item{pdf}{pdf file name}
-
-\item{basefile}{loop results basefile name}
 }
 \value{
 a vector of probabilities corresponding to best results

@@ -32,7 +32,7 @@ called by optiGrow,replaces the current zone by a bigger one
 data(mapTest)
 qProb=c(0.3,0.5)
 criti = correctionTree(qProb,mapTest)
-K = criti$zk[[2]][[8]]
+K = criti$zk[[2]][[1]]
 Z=K$zonePolygone
 plotZ(Z)
 iC=4
