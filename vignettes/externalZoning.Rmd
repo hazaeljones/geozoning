@@ -1,12 +1,12 @@
 ---
-title: "zoning on yield data"
+title: "Import external zoning on yield data"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
   html_document:
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{zoning on yield data}
+  %\VignetteIndexEntry{Import external zoning}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

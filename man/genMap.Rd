@@ -39,6 +39,7 @@ a map object as a list with components
 \item{krigTabAlea}{kriged data, SpatialPointsDataFrame}
 \item{fitVarioAlea}{variogram}
 \item{DataObj}{DataObj}
+\item{ratio}{ratio used to normalize x data}
 }
 }
 \description{

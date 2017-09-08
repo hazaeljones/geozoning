@@ -1,12 +1,12 @@
 ---
-title: "test zone junction"
+title: "View zoning with zone distribution"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
   html_document:
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{a title}
+  %\VignetteIndexEntry{zoning and value distribution}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -45,7 +45,7 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
    Z=orderZ(Z,ord)
    plotZ(Z,id=TRUE)
    #plot zoning together with zone distribution of values
-   #dispZmap(map,Z,qProb,val)
+   dispZmap(map,Z,qProb,val)
 ```
 
 

@@ -172,13 +172,16 @@ ysize=map$ysize
 matVal=map$krigGrid
 bd=map$boundary
 xlim=c(0,xsize);ylim=c(0,ysize)
+cn=as.numeric(colnames(matVal))
+rn=as.numeric(rownames(matVal))
 
 if(is.null(parG))
 {
 par(fig=c(0,1,0.3,1))#c(x1,x2,y1,y2) bottom=0,0 - top=1,1
 par(mar=c(0,0,5,0))#c(bottom, left, top, right))
 }
-image(seq(step,xsize-step,by=step), seq(step,ysize-step,by=step),matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
+	
+image(rn, cn,matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
 image.plot( zlim=range(matVal,na.rm=TRUE), nlevel=20,legend.only=TRUE, vertical=FALSE,col=palCol(20))
 if (!is.null(qProb)) title(paste("Best zoning for nL=",length(qProb)+1,"\nm=[",paste(qProb,collapse=","),"]",sep=""),cex.main=1.5)
 #

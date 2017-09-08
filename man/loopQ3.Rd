@@ -4,7 +4,8 @@
 \alias{loopQ3}
 \title{loopQ3}
 \usage{
-loopQ3(map, disp = 1, step = 0.075, QUIET = F)
+loopQ3(map, disp = 1, step = 0.075, minSize = 0.012, minSizeNG = 0.001,
+  QUIET = F)
 }
 \arguments{
 \item{map}{object returned by function genMa}
@@ -12,6 +13,10 @@ loopQ3(map, disp = 1, step = 0.075, QUIET = F)
 \item{disp}{0: no info, 1: some info, 2: detailed info}
 
 \item{step}{loop increment}
+
+\item{minSize}{zone area threshold under which a zone is too small to be manageable}
+
+\item{minSizeNG}{zone area threshold under which a zone will be removed}
 
 \item{QUIET}{run in silence-no display}
 }

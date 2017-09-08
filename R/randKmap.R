@@ -28,6 +28,7 @@
 #' \item{modelGen}{random fields model}
 #' \item{VGMmodel}{vgm model}
 #' \item{boundary}{(x,y) list of boundary points}
+#' \item{ratio}{ratio used to normalize x data}
 #' }
 #' @export
 #' @importFrom gstat krige
@@ -52,6 +53,7 @@ randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000, nSimuCond=0,typeM
       if(is.null(resGene)) return(NULL)
       rawDataRaw=resGene$tabData
       boundary=resGene$boundary
+      ratio=resGene$ratio
 
       x=as.numeric(rawDataRaw[,1])
       xsize=max(x)-min(x)
@@ -147,8 +149,8 @@ randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000, nSimuCond=0,typeM
 
       # reduced object size except if FULL argument was given
       if(FULL)
-        return(list(rawData=rawData,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,boundary=boundary,krigVoronoi=krigVoronoi,matMeanCond=matMeanCond,boundary=boundary,meanCondTab=meanCondTab,meanCondTabNa=meanCondTabNa,surfVoronoiB=surfVoronoiB,voronoiB=voronoiB,ptNB=ptNB))
+        return(list(rawData=rawData,ratio=ratio,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,boundary=boundary,krigVoronoi=krigVoronoi,matMeanCond=matMeanCond,boundary=boundary,meanCondTab=meanCondTab,meanCondTabNa=meanCondTabNa,surfVoronoiB=surfVoronoiB,voronoiB=voronoiB,ptNB=ptNB))
         else
-	return(list(rawData=rawData,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,boundary=boundary))
+	return(list(rawData=rawData,ratio=ratio,step=step,xsize=xsize,ysize=ysize,krigData=krigData[maskIns,],krigGrid=krigGrid,krigN=krigN,krigSurfVoronoi=surfVoronoi,modelGen=resGene$modelGen,VGMmodel=resGene$VGMmodel,boundary=boundary))
 
 }

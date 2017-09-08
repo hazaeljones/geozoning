@@ -5,6 +5,8 @@
 #' @param map object returned by function genMa
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param step loop increment
+#' @param minSize zone area threshold under which a zone is too small to be manageable
+#' @param minSizeNG zone area threshold under which a zone will be removed
 #' @param QUIET run in silence-no display
 #'
 #' @return a matrix with 8 columns and as many rows as loop elements. Columns contain the following values calculated for each quantile vector:  criterion, cost, cost per label, number of zones, quantile associated probability values and number of non degenerated quantiles.
@@ -16,8 +18,8 @@
 #' # not run
 #' loopQ3(map,step=0.1,disp=0,QUIET=TRUE)
 #' 
-loopQ3=function(map,disp=1,step=0.075,QUIET=F)
-########################################################
+loopQ3=function(map,disp=1,step=0.075,minSize=0.012,minSizeNG=1e-3,QUIET=F)
+#################################################################################
 {
 #loop with correction-3 quantiles
 iseq=seq(0.05,0.95,step)
@@ -34,7 +36,7 @@ for (i in iseq)
 		for(k in kseq)
     	  	{
 	  	if ((k-j) < (diffQ-1e-3)) next
-    	  	resC=correctionTree(c(i,j,k),map,disp=disp,SAVE=F)
+    	  	resC=correctionTree(c(i,j,k),map,minSize=minSize,minSizeNG=minSizeNG,disp=disp,SAVE=F)
 		 critList=resC$critList
     		 costList=resC$costList
     		 costLList=resC$costLList

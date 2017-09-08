@@ -4,13 +4,11 @@
 \alias{figCritN}
 \title{figCritN}
 \usage{
-figCritN(seed = 89, m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL,
-  m5 = NULL, NEW = FALSE, ONE = FALSE,
-  title = "Gaussian field simulation", pdf = NULL)
+figCritN(m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL, m5 = NULL,
+  NEW = FALSE, ONE = FALSE, title = "Gaussian field simulation",
+  pdf = NULL)
 }
 \arguments{
-\item{seed}{simulation seed used to generate map data}
-
 \item{m1}{dataset with loopQ1 results}
 
 \item{m2}{dataset with loopQ2 results}
@@ -39,7 +37,6 @@ figCritN
 reads loopQ1-5 results, filters results by keeping th best criteria ) and plots them together with corresponding costs.
 }
 \examples{
-#assuming that loopQ results for seed 33 and pErr=0.9 were saved in RESD directory
 # not run
-#figCritN(seed=33,basefile="RESD/res-simuseed")
+
 }

@@ -4,25 +4,30 @@
 \alias{loopQ2}
 \title{loopQ2}
 \usage{
-loopQ2(map, disp = 1, step = 0.075, QUIET = FALSE)
+loopQ2(map, disp = 1, step = 0.075, minSize = 0.012, minSizeNG = 0.001,
+  QUIET = FALSE)
 }
 \arguments{
-\item{map}{xxxx}
+\item{map}{object returned by function genMa}
 
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: some info, 2: detailed info}
 
-\item{step}{xxxx}
+\item{step}{loop increment}
 
-\item{QUIET}{xxxx}
+\item{minSize}{zone area threshold under which a zone is too small to be manageable}
+
+\item{minSizeNG}{zone area threshold under which a zone will be removed}
+
+\item{QUIET}{run in silence-no display}
 }
 \value{
-a ?
+a matrix with 7 columns and as many rows as loop elements. Columns contain the following values calculated for each quantile vector:  criterion, cost, cost per label, number of zones, quantile associated probability values and number of non degenerated quantiles.
 }
 \description{
 loopQ2
 }
 \details{
-description, a paragraph
+exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
 }
 \examples{
 # not run

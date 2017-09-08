@@ -161,8 +161,8 @@ labZone=function(K,qProb,dataF)
   # consider range of data values
   qvec= quantile(dataF,na.rm=TRUE,prob=qProb)
   nL=length(qvec)+1
-  dmin=min(dataF)
-  dmax=max(dataF)
+  dmin=min(dataF,na.rm=TRUE)
+  dmax=max(dataF,na.rm=TRUE)
   lab=as.numeric(cut(K$meanZone,c(dmin,qvec,dmax),1:nL))
   K$lab=lab
   K$qProb=qProb

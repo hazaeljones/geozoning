@@ -52,6 +52,7 @@ a list
 \item{modelGen}{random fields model}
 \item{VGMmodel}{vgm model}
 \item{boundary}{(x,y) list of boundary points}
+\item{ratio}{ratio used to normalize x data}
 }
 }
 \description{

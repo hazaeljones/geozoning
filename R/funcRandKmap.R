@@ -20,6 +20,7 @@
 #' \item{boundary}{standardized boundary}
 #' \item{VGMmodel}{VGM variogram model}
 #' \item{modelGen}{RM transformed variogram model}
+#' \item{ratio}{ratio used to normalize x data}
 #' }
 #'
 #' @export
@@ -41,7 +42,8 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 {
   modelGen=NULL #variogram model
   VGMmodel1=NULL
-  Vang=0
+  Vang=0# anistotropy angle
+  ratio=1 # scale for real data
   
   # real or simulated data
   if(!is.null(DataObj))
@@ -66,8 +68,9 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
       }
 
   #Normalize coordinates and boundary
+    ratio=max(tabData$x)-min(tabData$x)
     resNorm=datanormX(tabData,boundary)
-   if(is.null(resNorm)) return(NULL)
+    if(is.null(resNorm)) return(NULL)
     tabData = resNorm$dataN 
     boundary = resNorm$boundaryN
     xmin=resNorm$xmin
@@ -120,7 +123,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     colnames(xyminmaxI)=c("min","max")
   }
 
-  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,VGMmodel=VGMmodel1,modelGen=modelGen))
+  return(list(tabData=tabData,boundary=boundary,xyminmaxI=xyminmaxI,VGMmodel=VGMmodel1,modelGen=modelGen,ratio=ratio))
 }
 
 

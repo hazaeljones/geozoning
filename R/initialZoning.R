@@ -27,16 +27,7 @@
 initialZoning=function(qProb, map, pErr=0.9,simplitol=1e-3,optiCrit=2,disp=0,GridData=F)
 ##################################################################
   {
-    #arguments
-    #qProb=vecteur de quantiles
-    #map=donnees brutes et krigees
-    #choix=critere dans initParam
-    #calcule zonage et criteres pour 1 vecteur de quantiles
-    # attention zonage pas forcement admissible
-    #chercher les valeurs des quantiles
-    #simple generation de zones correspondant aux contours des quantiles
-    # genere zonage a partir des donnees de map$krigGrid
-    #
+
   qProb=as.numeric(qProb)
   Z=zoneGeneration(map,qProb,GridData) #in funcZoning
   if(is.null(Z)) return(NULL) # no zones

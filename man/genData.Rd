@@ -39,6 +39,7 @@ a list
 \item{boundary}{standardized boundary}
 \item{VGMmodel}{VGM variogram model}
 \item{modelGen}{RM transformed variogram model}
+\item{ratio}{ratio used to normalize x data}
 }
 }
 \description{

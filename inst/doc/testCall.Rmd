@@ -1,12 +1,12 @@
 ---
-title: "test call"
+title: "Test calls"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
   html_document:
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{a title}
+  %\VignetteIndexEntry{Test calls}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

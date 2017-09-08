@@ -62,8 +62,8 @@ randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1
     xempty= unique(MatTest$x)
     yempty= unique(MatTest$y)
     tempty = matrix(NA,nrow=length(xempty),ncol=length(yempty))
-    colnames(tempty)= paste("Y",round(yempty,3),sep="")
-    rownames(tempty)= paste("X",round(xempty,3),sep="")
+    colnames(tempty)= round(yempty,3)
+    rownames(tempty)= round(xempty,3)
     # fill matrix with data values
     # no kriging - pts are already on grid
     for (ii in 1:length(xempty))

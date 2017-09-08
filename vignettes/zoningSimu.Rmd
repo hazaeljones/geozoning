@@ -6,7 +6,7 @@ output:
   html_document:
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{a title}
+  %\VignetteIndexEntry{Zoning simulated data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
