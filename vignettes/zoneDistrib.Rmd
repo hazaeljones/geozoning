@@ -1,5 +1,5 @@
 ---
-title: "View zoning with zone distribution"
+title: "View zoning together with zone distribution"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
@@ -13,10 +13,11 @@ vignette: >
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   library(geozoning)
+  library(sp)
+  library(fields)
 ```
 
 
-# 2D map simulation 
 A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point neighborhood in the sense of Voronoi.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
@@ -25,11 +26,10 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
 # Check the mean and standard deviation of generated data.
   meanvarSimu(map)
 ```
-
+Generate zoning Z from map and quantile vector with small zone correction. Small zones are kept until the end so that they get more chance to grow.
+LASTPASS=FALSE does not remove in a final step zones that are still too small.
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-   # Generate zoning Z from map and quantile vector with small zone correction
-   # small zones are kept until the end so that they get more chance to grow.
-   # LASTPASS=FALSE does not remove in a final step zones that are still too small.
+   
    ################################################################
    qProb=c(0.275,0.8)
    criti=correctionTree(qProb,map,LASTPASS=FALSE)
@@ -45,7 +45,9 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
    Z=orderZ(Z,ord)
    plotZ(Z,id=TRUE)
    #plot zoning together with zone distribution of values
-   dispZmap(map,Z,qProb,val)
+   palCol=colorRampPalette(c("brown","yellow"))
+   dispZ(map$step,map$krigGrid,zonePolygone=Z,id=TRUE,palCol=palCol)
+   boxplot(val,col=palCol(length(val)))
 ```
 
 

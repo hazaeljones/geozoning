@@ -148,6 +148,8 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain=
 #' @return an empty value
 #' @importFrom grDevices colorRampPalette
 #' @importFrom graphics text
+#' @importFrom graphics boxplot
+#' @importFrom sp plot
 #' @importFrom fields image.plot
 #'
 #' @export
@@ -181,7 +183,7 @@ par(fig=c(0,1,0.3,1))#c(x1,x2,y1,y2) bottom=0,0 - top=1,1
 par(mar=c(0,0,5,0))#c(bottom, left, top, right))
 }
 	
-image(rn, cn,matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
+image.plot(rn, cn,matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
 image.plot( zlim=range(matVal,na.rm=TRUE), nlevel=20,legend.only=TRUE, vertical=FALSE,col=palCol(20))
 if (!is.null(qProb)) title(paste("Best zoning for nL=",length(qProb)+1,"\nm=[",paste(qProb,collapse=","),"]",sep=""),cex.main=1.5)
 #
@@ -214,7 +216,7 @@ if(!is.null(Z))
 {
 for (k in 1:length(Z))
 {
-lines(Z[[k]])
+lines(getCoords(Z[[k]]))
 if(is.null(ptz))
 #pointLabel=Z[[k]]@polygons[[1]]@Polygons[[1]]@labpt
 pointLabel=findZCenter(Z,k)

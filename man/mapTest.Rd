@@ -4,11 +4,11 @@
 \name{mapTest}
 \alias{mapTest}
 \title{a map}
-\format{a list 9 SpatialPolygons}
+\format{a list of SpatialPolygons}
 \usage{
 mapTest
 }
 \description{
-A XXXXXX
+A map object for zoning, result from the genMap function
 }
 \keyword{datasets}

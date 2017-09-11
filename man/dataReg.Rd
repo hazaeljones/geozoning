@@ -3,8 +3,8 @@
 \docType{data}
 \name{dataReg}
 \alias{dataReg}
-\title{A XXXXXX}
-\format{a data frame holding a regular grid with 1936 rows and 3 variables
+\title{A data frame with simulated data on a regular grid}
+\format{a data frame containing a regular grid with 1936 rows and 3 variables
 \describe{
   \item{x}{x coordinate}
   \item{y}{y coordinate}
@@ -14,6 +14,6 @@
 dataReg
 }
 \description{
-A XXXXXX
+A data frame with simulated data on a regular grid
 }
 \keyword{datasets}

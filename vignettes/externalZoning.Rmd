@@ -15,49 +15,49 @@ vignette: >
   library(geozoning)
   library(ggplot2)
   library(sp)
-  library(fields)
-
-  minSize = 0.012 # valid zone surface threshold - initial step
-  minSizeNG= 1e-3 #threshold for both no grow and zone grow acceptance (checkContour)
 
 ```
 Read existing zoning, that was not done with geozoning.
-The shape1 object is a SpatialPolygonsDataFrame, where each SpatialPolygons is a zone. Yield contains yield data.
+Use 2 objects from geozoning package.
+The shape1 object is a SpatialPolygonsDataFrame, where each SpatialPolygons is a zone.
+Yield contains yield data, imported from a csv file.
 
-# Import yield 
+View yield data
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  #read border
   data(yield)
   plot(x=yield$x, y=yield$y)
 ```
-
+Draw manual boundary (could also be read from a shape file)
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  # draw manual boundary
   boundary0=list()
   boundary0$x=c(7723128,7723223,7723283,7723376,7723430,7723453,7723605,7723713,7723699,7723638,7723696,7723707,
                 7723562,7723531,7723494,7723459,7723344,7723356,7723221,7723158,7723129)
 
   boundary0$y=c(3576538,3576438,3576432,3576396,3576386,3576388,3576776,3577000,3577054,3577104,3577175,3577202,
                 3577389,3577388,3577455,3577445,3577211,3577151,3576860,3576697,3576547)
-
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   boundary0$x[length(boundary0$x)]=boundary0$x[1]
   boundary0$y[length(boundary0$y)]=boundary0$y[1]
   
   boundary1<-cbind.data.frame(boundary0$x,boundary0$y)
   colnames(boundary1)<-c("x","y")
-  
-  # plot data
+```  
+Plot data
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   ggplot(data=yield,aes(x=x,y=y,colour=Yield)) + geom_point() #+
     geom_line(data=boundary1, aes(x=x,y=y),col="red")
-  
-  plot(x=yield$x, y=yield$y)
-  lines(boundary0$x,boundary0$y,col="red")
+```
+Plot data with boundary
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+plot(x=yield$x, y=yield$y)
+lines(boundary0$x,boundary0$y,col="red")
 ```
 
+
+Normalize data coordinates and border in a rectangular field.
+x range will be equal to 1 and y range respecting the initial y/x ratio
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  # normalize data coordinates and border in a rectangular field
-  # x range will be equal to 1 and y range respecting the initial y/x ratio
-  resNorm = datanormX(yield, boundary0)
+resNorm = datanormX(yield, boundary0)
   if (is.null(resNorm)) print("error in coordinates")
   yieldN = resNorm$dataN 
   boundaryN = resNorm$boundaryN
@@ -66,17 +66,22 @@ The shape1 object is a SpatialPolygonsDataFrame, where each SpatialPolygons is a
   ymin=resNorm$ymin
   ymax=resNorm$ymax
   ratio=resNorm$ratio
-
-  #plot normalized data
+```
+Plot normalized data
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   plot(x=yieldN$x, y=yieldN$y)
   lines(boundaryN$x,boundaryN$y,col="red")
-
-  # build map data based on real yield data
+```
+Build map data based on real yield data.
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   map=genMap(yieldN,seed=0,boundary=boundaryN,disp=0,nPointsK=7000)
   boundary=map$boundary
-
-  # transform minSize as a percentage of frame
-  # compute frame area
+```
+Transform minSize as a percentage of frame
+ ```{r,echo=TRUE,message=FALSE, warning=FALSE} 
+  minSize = 0.012 # default zone surface threshold 
+  minSizeNG= 1e-3 # default threshold for both no grow and zone grow
+  
   resT=normSize(boundaryN,minSize,minSizeNG)
   minSize=resT$minSize
   minSizeNG=resT$minSizeNG
@@ -103,19 +108,28 @@ The shape1 object is a SpatialPolygonsDataFrame, where each SpatialPolygons is a
   {
 	  sp=setId(sp,iZ,iZ)
   }
-
-  #calNei removes zones with n=0 or n=1 pt
+```
+calNei removes zones with n=0 or n=1 pt
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   K =calNei(sp,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol=simplitol)
   # zoning Z is obtained as follows
   Z =K$zonePolygone
   nZ=length(Z)
-
+```
+View external zoning
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0)
-  # compute distance matrix between zones
+```
+Compute distance matrix between zones
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   resD = calDistance(typedist=1,map$krigData,K$listZonePoint,K$zoneN,map$krigSurfVoronoi,K$meanZone,pErr=0.9)
-  # print normalized distance matrix (1 on diagonal)
+```  
+Print normalized distance matrix (1 on diagonal)
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   print(normDistMat(resD$matDistanceCorr,2)) # zone pairs (6,7) and (4,8) have low distance values
-  # now compute criterion corresponding to zoning
+ ``` 
+Now compute criterion corresponding to zoning
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   crit = calCrit(resD$matDistanceCorr,K$zoneNModif,2) # crit is the mimimum distance value (between zones 6 and 7)
   print(crit)
 ```

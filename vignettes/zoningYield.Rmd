@@ -14,18 +14,12 @@ vignette: >
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   library(geozoning)
   library(ggplot2)
-  library(sp)
-  library(fields)
-
-  minSize = 0.012 # valid zone surface threshold - initial step
-  minSizeNG= 1e-3 #threshold for both no grow and zone grow acceptance (checkContour)
 
 ```
 
-# Import yield data
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
+# Import yield data
   data(yield)
-  #plot(x=yield$x, y=yield$y)
 ```
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
@@ -55,14 +49,8 @@ vignette: >
   # build map data based on yield data
   map=genMap(yield,seed=0,boundary=boundary0,disp=0,nPointsK=3000,krig=1)
   boundaryN=map$boundary
-  #dispZmap(map)
+  dispZ(map$step,matVal=map$krigGrid,zonePolygone=Z,boundary=map$boundary)
   
-  # transform minSize as a percentage of frame
-  # compute frame area
-  resT=normSize(boundaryN,minSize,minSizeNG)
-  minSize=resT$minSize
-  minSizeNG=resT$minSizeNG
-
 
 ```
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}	
@@ -71,7 +59,7 @@ qProb=0.5
 ZK = initialZoning(qProb,map)
 K=ZK$resZ
 Z=K$zonePolygone
-#dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
+dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
 
 #apply corrections and display detailed information at each step
 criti= correctionTree(qProb=c(0.5),map,minSize=minSize,minSizeNG=minSizeNG,disp=1)
@@ -80,9 +68,13 @@ res=searchNODcrit1(qProb,criti)
 b=res$ind[[1]][1]
 K=criti$zk[[2]][[b]]
 Z=K$zonePolygone
-#dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
+dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
 #
-#Run optimization loops
+#Run exploratory loops to find the best zonings for nL=2 to 5
+#Set reasonable values for minimum size of zones and size threshold for not trying to grow zones (just remove them)
+minSizeNG=1e-2
+mimSize=2e-2
+#
 ro1=loopQ1(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
 ro2=loopQ2(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
 ro3=loopQ3(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
@@ -121,8 +113,11 @@ for (k in 1:4)
     }
 
 # for 4 labels, display data, best zonings and distribution of values within zones (boxplot)
-#dispZmap(map,Z3,m3,val3)
-
+   palCol=colorRampPalette(c("brown","yellow"))
+   dispZ(map$step,map$krigGrid,zonePolygone=Z3,id=TRUE,palCol=palCol(length(Z3)))
+   title("Best Zoning for nL=4")
+   boxplot(val3,col=palCol(length(val3)))
+    title("Distribution of values within zones")
 
 # Session informations
 ```{r session,echo=FALSE,message=FALSE, warning=FALSE}
