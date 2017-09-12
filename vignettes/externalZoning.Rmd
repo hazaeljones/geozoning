@@ -3,7 +3,7 @@ title: "Import external zoning on yield data"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  pdf_document:
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Import external zoning}
@@ -17,10 +17,9 @@ vignette: >
   library(sp)
 
 ```
-Read existing zoning, that was not done with geozoning.
-Use 2 objects from geozoning package.
-The shape1 object is a SpatialPolygonsDataFrame, where each SpatialPolygons is a zone.
-Yield contains yield data, imported from a csv file.
+This vignette reads an existing zoning, that was not done with geozoning, in order to calculate its quality criterion. It uses 2 objects from the geozoning package.
+The shape1 object contains the zoning, it is a SpatialPolygonsDataFrame, where each SpatialPolygons is a zone. It was read from a shapefile, available in the extdata directory.
+Yield contains yield data, imported from a csv file, also available in the extdata directory.
 
 View yield data
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}

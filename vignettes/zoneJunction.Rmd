@@ -3,7 +3,7 @@ title: "Demonstrate zone junction"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  pdf_document:
     toc: yes
 vignette: >
   %\VignetteIndexEntry{zone junction}
@@ -16,6 +16,10 @@ vignette: >
   library(sp)
   library(fields)
 ```
+This vignette illustrates the junction of 2 zones that do not have a common border but that are close to each other and share the same label. If the junction crosses another zone, it cannot be done.
+
+Step 1
+------
 A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point neighborhood in the sense of Voronoi.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
@@ -24,6 +28,8 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
 # Check the mean and standard deviation of generated data.
   meanvarSimu(map)
 ```
+Step 2
+-------
 Zoning Z is generated from map and quantile vector. Given a probability vector, a vector of values is obtained using the quantile function.
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
    qProb=c(0.5,0.7)
@@ -35,7 +41,7 @@ Zoning Z is generated from map and quantile vector. Given a probability vector, 
    plotZ(Z)
    printLabZ(list(K)) # zones 9 to 11 have the same label(1)
 ```
-Join zone 9 with another zone near by (zone 10)- both zones have the same label
+Step 3: Join zone 9 with another zone near by (zone 10)- both zones have the same label
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
    kmi=optiRG(K,map,9,10,disp=1)
    plotZ(kmi$zonePolygone)

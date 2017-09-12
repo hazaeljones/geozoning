@@ -3,7 +3,7 @@ title: "Criterion behaviour"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  pdf_document:
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Criterion behaviour}
@@ -14,6 +14,8 @@ vignette: >
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   library(geozoning)
 ```
+This vignette illustrates the criterion behaviour on 2 different zonings in 4 steps. First a simulated map is generated, second an exploraty loop is run to rank the zonings for a size 3 quantile vector (4-label map).  Then the correction procedure is run independently for the best and the worst zonings found in that exploratory loop. The criterion values are printed and explained.
+
 Step 1: Generate map 
 ----------------------
 A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point neighborhood in the sense of Voronoi.

@@ -3,7 +3,7 @@ title: "Zoning simulated data"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  pdf_document:
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Zoning simulated data}
@@ -16,6 +16,8 @@ vignette: >
   library(sp)
   library(fields)
 ```
+This vignette illustrates the zoning with corrections procedure on simulated data.
+
 Step 1: generate map 
 --------------------
 A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point neighborhood in the sense of Voronoi.

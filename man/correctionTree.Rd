@@ -61,7 +61,7 @@ a list with components
 correctionTree
 }
 \details{
-description, a paragraph
+builds a binary tree of possible corrections for small zone removal in a zoning. The zoning is based on contour lines corresponding to quantile values. These quantiles correspond the given probabilities. At each level, 2 branches (at max) are built, one for small zone removal, one for small zone growing or junction to another one. If growing or junction is not valid, the branch is not developped. Growing is done if the zone is isolated from others (see distIsoZ argument and optiGrow function).
 }
 \examples{
 data(mapTest)

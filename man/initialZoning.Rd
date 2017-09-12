@@ -34,7 +34,7 @@ a list with components
 initialZoning
 }
 \details{
-description, a paragraph
+calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary.
 }
 \examples{
 data(mapTest)

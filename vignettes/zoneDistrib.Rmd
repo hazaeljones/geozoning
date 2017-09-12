@@ -3,7 +3,7 @@ title: "View zoning together with zone distribution"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  pdf_document:
     toc: yes
 vignette: >
   %\VignetteIndexEntry{zoning and value distribution}
@@ -16,8 +16,10 @@ vignette: >
   library(sp)
   library(fields)
 ```
+This vignette shows how to use the zoning with corrections procedure. It first calls the correctionTree function, which generates a binary tree of corected zonings and then searches for the best corrected zoning. It plots the resulting zoning as well as the distribution of values within each zone.
 
-
+Step 1
+--------
 A map object is simulated with a Gaussian field and a variogram model. 450 points are randomly allocated on a square field of size 1.Then 1936 points are kriged on a regular grid using inverse distance weighted interpolation. A Delaunay tesselation yields point neighborhood in the sense of Voronoi.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
@@ -26,6 +28,8 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
 # Check the mean and standard deviation of generated data.
   meanvarSimu(map)
 ```
+Step 2
+-------
 Generate zoning Z from map and quantile vector with small zone correction. Small zones are kept until the end so that they get more chance to grow.
 LASTPASS=FALSE does not remove in a final step zones that are still too small.
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
@@ -39,16 +43,23 @@ LASTPASS=FALSE does not remove in a final step zones that are still too small.
    K=criti$zk[[2]][[b]]
    Z=K$zonePolygone
    plotZ(Z,id=TRUE)
-   # order zone ids by attribute mean value
+
+```
+Step 3
+------
+Order zones by attribute mean value
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
    val=valZ(map,K)$val
    ord=valZ(map,K)$ord
    Z=orderZ(Z,ord)
    plotZ(Z,id=TRUE)
    #plot zoning together with zone distribution of values
    palCol=colorRampPalette(c("brown","yellow"))
-   dispZ(map$step,map$krigGrid,zonePolygone=Z,id=TRUE,palCol=palCol)
+   dispZ(map$step,map$krigGrid,zonePolygone=Z,id=TRUE,palCol=palCol(length(val)))
    boxplot(val,col=palCol(length(val)))
-```
+   # another color palette
+    dispZ(map$step,map$krigGrid,zonePolygone=Z,id=TRUE,palCol=topo.colors)
+   boxplot(val,col=topo.colors(length(val)))
 
 
 # Session informations
