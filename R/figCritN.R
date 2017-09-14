@@ -42,7 +42,7 @@ for (k in q)
 mk=get(paste("m",k,sep=""))
 if(is.null(mk)) mask[k]=FALSE
 }
-# keep onlu non null mk
+# keep only non null mk
 q=q[mask]
 nl=length(q)+1
 maxy=0
@@ -65,7 +65,7 @@ miny=min(miny,4)
 
 firstq=q[1]
 mb1=get(paste("mb",firstq,sep=""))
-plot(2:6,rep(mb1[1,"crit"],5),type="n",xlim=c(1.5,6),ylim=c(miny,ceiling(maxy)),ylab="Criteria",xlab="Number of labels",xaxt="n",cex=2,main=title)
+plot(2:nl,rep(mb1[1,"crit"],nl-1),type="n",xlim=c(1.5,nl),ylim=c(miny,ceiling(maxy)),ylab="Criteria",xlab="Number of labels",xaxt="n",cex=2,main=title)
 axis(1,at=2:nl,cex=2)
 step=0.05
 

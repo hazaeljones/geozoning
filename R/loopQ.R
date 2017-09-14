@@ -207,7 +207,7 @@ loopQ5=function(map,disp=1,step=0.075,minSize=0.012,minSizeNG=1e-3,QUIET=F)
   jseq=seq(0.125,0.95,step)
   kseq=seq(0.2,0.95,step)
   pseq=seq(0.275,0.95,step)
-  qseq=seq(0.325,0.95,step)
+  qseq=seq(0.35,0.95,step)
 
   diffQ=0.15
   r=data.frame(NULL)
