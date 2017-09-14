@@ -1,5 +1,5 @@
 ####################################################################################
-#' correctionTree
+#' correctionTree - builds a binary tree of small zone corrections
 #'
 #' @details builds a binary tree of possible corrections for small zone removal in a zoning. The zoning is based on contour lines corresponding to quantile values. These quantiles correspond the given probabilities. At each level, 2 branches (at max) are built, one for small zone removal, one for small zone growing or junction to another one. If growing or junction is not valid, the branch is not developped. Growing is done if the zone is isolated from others (see distIsoZ argument and optiGrow function). Junction is done if the zone is not isolated, and if there is a zone close by having the same label (see optirG function). At the last level, all zones will have been corrected, and the resulting zonings are evaluated regarding criteria and costs.
 

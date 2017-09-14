@@ -2,16 +2,16 @@
 % Please edit documentation in R/genMap.R
 \name{genMap}
 \alias{genMap}
-\title{wrapper for randKmap, generate 2D map}
+\title{Wrapper for randKmap, generate 2D map}
 \usage{
 genMap(DataObj = NULL, seed = 80, krig = 2, Vpsill = 5, Vrange = 0.2,
   Vnugget = 0.2, Vmean = 8, nPointsK = 1000, boundary = list(x = c(0, 0,
   1, 1, 0), y = c(0, 1, 1, 0, 0)), disp = 0, FULL = FALSE)
 }
 \arguments{
-\item{DataObj}{=NULL: simulated data with seed or = a data frame with real data}
+\item{DataObj}{=NULL: simulated data with seed or a data frame with real data}
 
-\item{seed}{numeric,}
+\item{seed}{numeric, seed used to randomly generate data points}
 
 \item{krig}{numeric, 1: kriging with vgm model, 2: inverse distance kriging}
 
@@ -34,19 +34,23 @@ genMap(DataObj = NULL, seed = 80, krig = 2, Vpsill = 5, Vrange = 0.2,
 \value{
 a map object as a list with components
 \describe{
-\item{tabAlea}{raw data, SpatialPointsDataFrame}
-\item{surfaceVoronoi}{Voronoi polygon surfaces}
-\item{krigTabAlea}{kriged data, SpatialPointsDataFrame}
-\item{fitVarioAlea}{variogram}
-\item{DataObj}{DataObj}
+\item{rawData}{simulated or real raw data within the boundary}
+\item{step}{grid step}
+\item{krigData}{kriged data as a SpatialPointsDataFrame}
+\item{krigGrid}{kriged data in form of a grid-useful for image plots.}
+\item{krigN}{list of neighbours of each kriged data point}
+\item{krigSurfVoronoi}{list of areas of Voronoi polygons in the tesselation of kriged data}
+\item{modelGen}{random fields model}
+\item{VGMmodel}{vgm model}
+\item{boundary}{(x,y) list of boundary points}
 \item{ratio}{ratio used to normalize x data}
 }
 }
 \description{
-wrapper for randKmap, generate 2D map
+Wrapper for randKmap, generate 2D map
 }
 \details{
-wrapper for randKmap, generate 2D map with 1000 kriged data points, Gaussian field
+Wrapper for randKmap, generates a 2D map with a Gaussian field, either by simulating data or by reading data in a data frame. Kriged data are normalized so that x-coordinates are between 0 and 1. y-coordinates are normalized with the same ratio used for x-coordinates. Kriging is either done with inverse distance interpolation, or with a variogram model. It creates a structure that contains the data and parameters necessary to perform a zoning. The structure is identical wether the data are simulated or not.
 }
 \examples{
 m=genMap(seed=1,krig=2,disp=1) #generates a map and plots data

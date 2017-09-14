@@ -2,7 +2,7 @@
 % Please edit documentation in R/initialZoning.R
 \name{initialZoning}
 \alias{initialZoning}
-\title{initialZoning}
+\title{initialZoning zoning with no correction}
 \usage{
 initialZoning(qProb, map, pErr = 0.9, simplitol = 0.001, optiCrit = 2,
   disp = 0, GridData = F)
@@ -31,10 +31,10 @@ a list with components
 }
 }
 \description{
-initialZoning
+initialZoning zoning with no correction
 }
 \details{
-calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary.
+calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary. The distance matrices intra and inter zones are calculated as well as the quality criterion.
 }
 \examples{
 data(mapTest)

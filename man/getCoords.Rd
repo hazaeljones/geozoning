@@ -18,7 +18,7 @@ some coordinates
 getCoords
 }
 \details{
-description, a paragraph
+get SpatialPolygons coordinates
 }
 \examples{
 data(resZTest)

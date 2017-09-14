@@ -2,7 +2,7 @@
 % Please edit documentation in R/optiRG.R
 \name{optiRG}
 \alias{optiRG}
-\title{optiRG}
+\title{optiRG join two zones close to each other}
 \usage{
 optiRG(K, map, iC, iZC, simplitol = 0.001, disp = 0)
 }
@@ -23,10 +23,10 @@ optiRG(K, map, iC, iZC, simplitol = 0.001, disp = 0)
 a zoning object
 }
 \description{
-optiRG
+optiRG join two zones close to each other
 }
 \details{
-join two zones close to each other
+Within a zoning, two zones close to each other are geometrically joined. The zoning is updated accordingly. If the zone resulting from the junction is not valid, i.e. if it crosses another zone, the function returns NULL.
 }
 \examples{
 data(mapTest)

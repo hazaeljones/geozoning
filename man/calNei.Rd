@@ -2,13 +2,13 @@
 % Please edit documentation in R/calNei.R
 \name{calNei}
 \alias{calNei}
-\title{calNei}
+\title{calNei calculate zone neighborhood and assign data points to zones}
 \usage{
 calNei(Z, spdata, surfVoronoi, ptN, simplitol = 0.001, remove = TRUE,
   correct = FALSE, nmin = 2)
 }
 \arguments{
-\item{Z}{zoning geometry (list pf SpatialPolygons)}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 
 \item{spdata}{SpatialPointsDataFrame containing the data pts and values}
 
@@ -22,7 +22,7 @@ calNei(Z, spdata, surfVoronoi, ptN, simplitol = 0.001, remove = TRUE,
 
 \item{correct}{if TRUE correct zone neighborhood}
 
-\item{nmin}{number of points below wich a zone is removed from the zoning}
+\item{nmin}{number of points below wich a zone is removed from the zoning (default is 2)}
 }
 \value{
 a list with components
@@ -38,10 +38,10 @@ a list with components
 }
 }
 \description{
-calNei
+calNei calculate zone neighborhood and assign data points to zones
 }
 \details{
-calculates neighborhood for zoning geometry Z (list of SpatialPolygons)
+calNei first removes from zoning Z all zones with less than a minimum number of points. Then it calculates zone neighborhood, assigns each data point to a zone, computes zone mean values and areas. It does not assign zone labels (this is done by labZone function for the initial zoning, and by trLabZone function to transfer labels to corrected zonings).
 }
 \examples{
 data(mapTest)

@@ -1,15 +1,15 @@
 ######################################################################
-#' calNei
+#' calNei calculate zone neighborhood and assign data points to zones
 #'
-#' @details calculates neighborhood for zoning geometry Z (list of SpatialPolygons)
-#' @param Z zoning geometry (list pf SpatialPolygons)
+#' @details calNei first removes from zoning Z all zones with less than a minimum number of points. Then it calculates zone neighborhood, assigns each data point to a zone, computes zone mean values and areas. It does not assign zone labels (this is done by labZone function for the initial zoning, and by trLabZone function to transfer labels to corrected zonings).
+#' @param Z zoning geometry (list of SpatialPolygons)
 #' @param spdata  SpatialPointsDataFrame containing the data pts and values
 #' @param surfVoronoi Surfaces of the Voronoi polygons corresponding to data pts
 #' @param ptN indices of data pts neighbours
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @param remove if TRUE remove zones with less than nmin data points
 #' @param correct if TRUE correct zone neighborhood
-#' @param nmin number of points below wich a zone is removed from the zoning
+#' @param nmin number of points below wich a zone is removed from the zoning (default is 2)
 #' @return a list with components
 #' \describe{
 #' \item{zoneN}{matrix of zone neigbors}
@@ -133,7 +133,7 @@ return(K)
 #' labZone
 #'
 #' @details assigns a class label (integer) to a zone depending on the zone mean value
-#' and on the quantile values (as in PA paper). Default label is 1, corresponding to me#' an value smaller or equal to first quantile. For p ordered quantile values, if mean #' value is greater than quantile k and smaller or equal to quantile k+1, zone label is#' k+1. if mean value is greater than quantile p, zone lable is p+1.
+#' and on the quantile values (as in PA paper). Default label is 1, corresponding to a mean value smaller or equal to first quantile. For p ordered quantile values, if mean value is greater than quantile k and smaller or equal to quantile k+1, zone label is k+1. if mean value is greater than quantile p, zone label is p+1.
 #' @param K zoning object, as returned by the calNei function
 #' @param qProb probability vector used to generate quantile values for Z
 #' @param dataF data used to generate labels and zoning 

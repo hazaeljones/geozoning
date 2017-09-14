@@ -21,7 +21,7 @@ labZone
 }
 \details{
 assigns a class label (integer) to a zone depending on the zone mean value
-and on the quantile values (as in PA paper). Default label is 1, corresponding to me#' an value smaller or equal to first quantile. For p ordered quantile values, if mean #' value is greater than quantile k and smaller or equal to quantile k+1, zone label is#' k+1. if mean value is greater than quantile p, zone lable is p+1.
+and on the quantile values (as in PA paper). Default label is 1, corresponding to a mean value smaller or equal to first quantile. For p ordered quantile values, if mean value is greater than quantile k and smaller or equal to quantile k+1, zone label is k+1. if mean value is greater than quantile p, zone label is p+1.
 }
 \examples{
 data(mapTest)

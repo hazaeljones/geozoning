@@ -1,7 +1,7 @@
 ##################################################################
-#' initialZoning
+#' initialZoning zoning with no correction
 #'
-#' @details calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary. 
+#' @details calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary. The distance matrices intra and inter zones are calculated as well as the quality criterion.
 #' @param qProb probability vector used to generate quantile values
 #' @param map object returned by function genMap or genMapR
 #' @param pErr equality tolerance for distance calculations

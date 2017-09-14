@@ -1,7 +1,7 @@
 ###########################################################
-#' optiRG
+#' optiRG join two zones close to each other
 #'
-#' @details join two zones close to each other
+#' @details Within a zoning, two zones close to each other are geometrically joined. The zoning is updated accordingly. If the zone resulting from the junction is not valid, i.e. if it crosses another zone, the function returns NULL. 
 #' @param K zoning object (such as returned by calNei function)
 #' @param map object returned by function genMap or genMapR
 #' @param iC first zone

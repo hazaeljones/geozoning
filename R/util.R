@@ -1,7 +1,7 @@
 ###################################################################
 #' getCoords
 #'
-#' @details description, a paragraph
+#' @details get SpatialPolygons coordinates
 #' @param sp SpatialPolygons
 #' @param k polygon number
 #'
