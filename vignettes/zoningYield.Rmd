@@ -68,7 +68,8 @@ ZK = initialZoning(qProb,map)
 K=ZK$resZ
 Z=K$zonePolygone
 dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
-
+minSizeNG=0.001
+minSize=0.012
 #apply corrections and display detailed information at each step
 criti= correctionTree(qProb=c(0.5),map,minSize=minSize,minSizeNG=minSizeNG,disp=1)
 # search for best criterion at last level (once all corrections have been applied)
@@ -99,7 +100,7 @@ m4=best[7:10]
 for (k in 1:4)
     {
 	mk=get(paste("m",k,sep=""))
-	critk=correctionTree(mk,map,disp=0,SAVE=T)
+	critk=correctionTree(mk,map,minSize=minSize,minSizeNG=minSizeNG,disp=0,SAVE=T)
 	res=searchNODcrit1(mk,critk)
 	jj=res$ind[[1]][1]
 	zk=critk$zk
