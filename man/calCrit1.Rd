@@ -19,7 +19,7 @@ calCrit1
 }
 \details{
 computes a quality criterion equal to min(mean(dij^2/(dii^2+dij^2)))
-see also  \code{\link{calCrit2, calCrit3, calCrit4, calCrit5, calCritMinMean}} for other criteria
+see also  \code{\link{calCrit2}}, \code{\link{calCrit3}}, \code{\link{calCrit4}}, \code{\link{calCrit5}}, \code{\link{calCritMinMean}} for other criteria
 }
 \examples{
 data(mapTest)

@@ -19,7 +19,7 @@ calCrit5
 }
 \details{
 computes a quality criterion equal to min(median(dij/sqrt(dii*dij))) 
-see also  \code{\link{calCrit1, calCrit2, calCrit3, calCrit4, calCritMinMean}} for other criteria
+see also  \code{\link{calCrit1}}, \code{\link{calCrit2}}, \code{\link{calCrit3}}, \code{\link{calCrit4}}, \code{\link{calCritMinMean}} for other criteria
 }
 \examples{
 data(mapTest)
