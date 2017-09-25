@@ -21,18 +21,15 @@
 #' @examples
 #' # not run
 #' 
-plotCrit=function(m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL)
-#########################################################
+plotCrit=function(m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,ONE=FALSE,title="Gaussian field simulation")
+################################################################################################################
 {
 
 # 
 # plot results if (max(crit)-crit) <=maxd
 
-if (NEW)
-{
-if(!is.null(pdf)) pdf(pdf)
 if (!ONE) par(mfrow=c(3,2))
-}
+
 maxd=0.8
 # no need to give all mk arguments
 q=1:5
@@ -86,7 +83,6 @@ best=c(best,mbk[1,numic])
 }
 
 #legend(x=5.5,y=3,leg=c("Crit","Cost"),col=c("black","blue"),pch=c(20))
-if(ONE & !is.null(pdf)) dev.off()
 
 return(unlist(best))
 }
