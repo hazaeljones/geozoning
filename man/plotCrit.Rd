@@ -21,10 +21,6 @@ plotCrit(m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL, m5 = NULL,
 \item{ONE}{single plot}
 
 \item{title}{plot title}
-
-\item{NEW}{new plot}
-
-\item{pdf}{pdf file name}
 }
 \value{
 a vector of probabilities corresponding to best results

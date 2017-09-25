@@ -7,10 +7,8 @@
 #' @param m3 dataset with loopQ3 results
 #' @param m4 dataset with loopQ4 results
 #' @param m5 dataset with loopQ5 results
-#' @param NEW new plot
 #' @param ONE single plot
 #' @param title plot title
-#' @param pdf pdf file name
 #'
 #' @return a vector of probabilities corresponding to best results
 #' @importFrom graphics plot
