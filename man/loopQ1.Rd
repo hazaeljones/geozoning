@@ -27,7 +27,8 @@ a matrix with 6 columns and as many rows as loop elements. Columns contain the f
 loopQ1
 }
 \details{
-exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
+exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 2-label zoning).
+see also \code{\link{loopQ2, loopQ3, loopQ4, loopQ5}} for loopw with a different number of labels
 }
 \examples{
 # not run

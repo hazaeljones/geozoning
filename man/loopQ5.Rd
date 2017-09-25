@@ -28,6 +28,7 @@ loopQ5
 }
 \details{
 exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
+see also \code{\link{loopQ1, loopQ2, loopQ3, loopQ4}} for loopw with a different number of labels
 }
 \examples{
 # not run

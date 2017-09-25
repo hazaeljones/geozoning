@@ -2,6 +2,7 @@
 #' loopQ3
 #'
 #' @details exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 3 quantile loop (yielding a 4-label zoning).
+#' see also \code{\link{loopQ1, loopQ2, loopQ4, loopQ5}} for loopw with a different number of labels
 #' @param map object returned by function genMa
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param step loop increment

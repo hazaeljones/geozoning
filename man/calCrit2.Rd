@@ -19,6 +19,7 @@ calCrit2
 }
 \details{
 computes a quality criterion equal to min(2*min(dij/(dii+djj)))
+see also  \code{\link{calCrit1, calCrit3, calCrit4, calCrit5, calCritMinMean}} for other criteria
 }
 \examples{
 data(mapTest)

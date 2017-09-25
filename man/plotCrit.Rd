@@ -5,8 +5,7 @@
 \title{plotCrit}
 \usage{
 plotCrit(m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL, m5 = NULL,
-  NEW = FALSE, ONE = FALSE, title = "Gaussian field simulation",
-  pdf = NULL)
+  ONE = FALSE, title = "Gaussian field simulation")
 }
 \arguments{
 \item{m1}{dataset with loopQ1 results}
@@ -19,11 +18,11 @@ plotCrit(m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL, m5 = NULL,
 
 \item{m5}{dataset with loopQ5 results}
 
-\item{NEW}{new plot}
-
 \item{ONE}{single plot}
 
 \item{title}{plot title}
+
+\item{NEW}{new plot}
 
 \item{pdf}{pdf file name}
 }

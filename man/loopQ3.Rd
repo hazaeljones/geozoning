@@ -28,6 +28,7 @@ loopQ3
 }
 \details{
 exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 3 quantile loop (yielding a 4-label zoning).
+see also \code{\link{loopQ1, loopQ2, loopQ4, loopQ5}} for loopw with a different number of labels
 }
 \examples{
 seed=10

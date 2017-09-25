@@ -1,6 +1,7 @@
 ####################################################################
 #' loopQ1
-#' @details exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
+#' @details exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 2-label zoning).
+#' see also \code{\link{loopQ2, loopQ3, loopQ4, loopQ5}} for loopw with a different number of labels
 #' @param map object returned by function genMa
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param step loop increment
@@ -50,6 +51,7 @@ return(ro)
 #' loopQ2
 #'
 #' @details exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
+#' see also \code{\link{loopQ1, loopQ3, loopQ4, loopQ5}} for loopw with a different number of labels
 #' @param map object returned by function genMa
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param step loop increment
@@ -115,6 +117,7 @@ loopQ2=function(map,disp=1,step=0.075,minSize=0.012,minSizeNG=1e-3,QUIET=FALSE)
 #' loopQ4
 #'
 #' @details exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
+#' see also \code{\link{loopQ1, loopQ2, loopQ3, loopQ5}} for loopw with a different number of labels
 #' @param map object returned by function genMa
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param step loop increment
@@ -186,6 +189,7 @@ loopQ4=function(map,disp=1,step=0.075,minSize=0.012,minSizeNG=1e-3,QUIET=F)
 #' loopQ5
 #'
 #' @details exploratory loop on probability values associated to quantiles. Performs map zonings for each value of the 1 quantile loop (yielding a 42-label zoning).
+#' see also \code{\link{loopQ1, loopQ2, loopQ3, loopQ4}} for loopw with a different number of labels
 #' @param map object returned by function genMa
 #' @param disp 0: no info, 1: some info, 2: detailed info
 #' @param step loop increment
