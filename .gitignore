@@ -32,10 +32,3 @@
 -*.utf8.md
 -*.knit.md
 .Rproj.user
-
-# test files
--/CASESTUDYFUNCTIONS/
--/TESTFUNCTIONS/
--/R/calls*.R
--/R/srcZ.R
-

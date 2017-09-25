@@ -7,27 +7,21 @@
 normSize(boundaryN, minSize, minSizeNG)
 }
 \arguments{
-\item{boundaryN}{normalized map boundary}
+\item{boundaryN}{xxxx}
 
-\item{minSize}{minimum size threshold}
+\item{minSize}{xxxx}
 
-\item{minSizeNG}{no grow size threshold}
+\item{minSizeNG}{xxxx}
 }
 \value{
-a list with components
-\describe{
-\item{minSize}{normalized minimum size threshold}
-\item{minSizeNG}{normalized no grow size threshold}
-}
+a ?
 }
 \description{
 normSize
 }
 \details{
-normalize thresholds for small zone detection and no grow zone, considering mapo boundary
+description, a paragraph
 }
 \examples{
-data(mapTest)
-resT=normSize(mapTest$boundary,0.012,0.001)#normalize thresholds relatively to map boundary area
 # not run
 }

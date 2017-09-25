@@ -2,71 +2,50 @@
 % Please edit documentation in R/correctionTree.R
 \name{correctionTree}
 \alias{correctionTree}
-\title{correctionTree - builds a binary tree of small zone corrections}
+\title{correctionTree}
 \usage{
 correctionTree(qProb, map, pErr = 0.9, optiCrit = 2, minSize = 0.012,
   minSizeNG = 0.001, distIsoZ = 0.075, simplitol = 0.001, LEQ = 5,
-  MAXP = 0.1, LASTPASS = TRUE, disp = 0, SAVE = TRUE, ONE = FALSE,
-  ALL = FALSE)
+  MAXP = 0.1, LASTPASS = TRUE, disp = 0, SAVE = TRUE, ONE = FALSE)
 }
 \arguments{
-\item{qProb}{probability vector used to generate quantile values}
+\item{qProb}{xxxx}
 
-\item{map}{object returned by function genMap}
+\item{map}{xxxx}
 
-\item{pErr}{equality tolerance for distance calculations}
+\item{pErr}{xxxx}
 
-\item{optiCrit}{criterion choice}
+\item{optiCrit}{xxxx}
 
-\item{minSize}{zone area threshold under which a zone is too small to be manageable}
+\item{minSize}{xxxx}
 
-\item{minSizeNG}{zone area threshold under which a zone will be removed}
+\item{minSizeNG}{xxxx}
 
-\item{distIsoZ}{threshold distance to next zone, above which a zone is considered to be isolated}
+\item{distIsoZ}{xxxx}
 
-\item{simplitol}{tolerance for spatial polygons geometry simplification}
+\item{simplitol}{xxxx}
 
-\item{LEQ}{length of quantile sequence used to grow isolated zone}
+\item{LEQ}{xxxx}
 
-\item{MAXP}{quantile sequence maximum shift quantile sequence maximum shift}
+\item{MAXP}{xxxx}
 
-\item{LASTPASS}{if TRUE, remove zones that are still too small at the last level of the correction tree}
+\item{LASTPASS}{xxxx}
 
-\item{disp}{0: no info, 1: some info, 2: detailed info}
+\item{disp}{xxxx}
 
-\item{SAVE}{logical value, if TRUE function returns last level zonings, if FALSE function only returns best last level results}
+\item{SAVE}{xxxx}
 
-\item{ONE}{logical value, if TRUE function returns only criterion value}
-
-\item{ALL}{logical value, if TRUE function returns zonings at all levels}
+\item{ONE}{xxxx}
 }
 \value{
-a list with components
-\describe{
-\item{bestcrit}{best criterion value at last level (in all cases)}
-\item{critList}{criterion values at last level (in all cases if ONE=FALSE)}
-\item{costList}{cost values at last level (in all cases if ONE=FALSE)}
-\item{costLList}{cost per label  values at last level (in all cases if ONE=FALSE)}
-\item{nzList}{vector of number of zones at last level (in all cases if ONE=FALSE)}
-\item{qProb}{vector of probabilities values used for quantiles (in all cases if ONE=FALSE)}
-\item{zk}{list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects (only if SAVE=TRUE)}
-\item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices (only if SAVE=TRUE)}
-\item{criterion}{list of initial criterion and all (last if ALL=FALSE) level criteria (only if SAVE=TRUE)}
-\item{cost}{list of initial cost and all (last if ALL=FALSE) level costs   (only if SAVE=TRUE)}
-\item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label (only if SAVE=TRUE)}
-\item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones (only if SAVE=TRUE)}
-}
+a ?
 }
 \description{
-correctionTree - builds a binary tree of small zone corrections
+correctionTree
 }
 \details{
-builds a binary tree of possible corrections for small zone removal in a zoning. The zoning is based on contour lines corresponding to quantile values. These quantiles correspond the given probabilities. At each level, 2 branches (at max) are built, one for small zone removal, one for small zone growing or junction to another one. If growing or junction is not valid, the branch is not developped. Growing is done if the zone is isolated from others (see distIsoZ argument and optiGrow function). Junction is done if the zone is not isolated, and if there is a zone close by having the same label (see optirG function). At the last level, all zones will have been corrected, and the resulting zonings are evaluated regarding criteria and costs.
+description, a paragraph
 }
 \examples{
-data(mapTest)
-criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
-plotZ(criti$zk[[1]][[1]]$zonePolygone)
-plotZ(criti$zk[[2]][[1]]$zonePolygone) # zones 7 and 8 were handled
-
+# not run
 }

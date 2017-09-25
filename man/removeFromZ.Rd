@@ -4,30 +4,25 @@
 \alias{removeFromZ}
 \title{removeFromZ}
 \usage{
-removeFromZ(Z, zoneN, ptN, listZonePoint, spdata, simplitol = 0.001, n = 1)
+removeFromZ(Z, zoneN, ptN, listZonePoint, data, simplitol, n = 1)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{zoneN}{zone neighborhood Logical matrix}
+\item{zoneN}{xxxx}
 
-\item{ptN}{indices of data pts neighbours}
+\item{ptN}{xxxx}
 
-\item{listZonePoint}{list of indices of data points within zones, result of call to \code{\link{calNei}}}
+\item{listZonePoint}{xxxx}
 
-\item{spdata}{spatial data}
+\item{data}{xxxx}
 
-\item{simplitol}{tolerance for spatial polygons geometry simplification}
+\item{simplitol}{xxxx}
 
-\item{n}{minimal number of points below which a zone is removed from zoning}
+\item{n}{xxxx}
 }
 \value{
-a list with components
-\describe{
-\item{Z}{new zoning geometry (list of SpatialPolygons)} where zones with less than n points were removed
-\item{zoneN}{new zone neighborhood Logical matrix}
-\item{listZonePoint}{new list of indices of data points within zones}
-}
+a ?
 }
 \description{
 removeFromZ
@@ -36,12 +31,5 @@ removeFromZ
 description, a paragraph
 }
 \examples{
-data(resZTest)
-K=resZTest
-Z=K$zonePolygone
-plotZ(Z)
-# remove from Z all zones with less than 10 data points
-Z2=removeFromZ(Z,K$zoneN,K$krigN,K$listZonePoint,mapTest$krigData,n=10)
-printZid(Z2$Z)
 # not run
 }

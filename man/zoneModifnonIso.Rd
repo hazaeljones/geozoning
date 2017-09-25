@@ -4,47 +4,34 @@
 \alias{zoneModifnonIso}
 \title{zoneModifnonIso}
 \usage{
-zoneModifnonIso(K, qProb, map, zoneClose, iC, simplitol = 0.001, disp = 0)
+zoneModifnonIso(Z, K, qProb, map, zoneClose, iC, simplitol, disp = 0)
 }
 \arguments{
-\item{K}{zoning object (such as returned by calNei function)}
+\item{Z}{xxxx}
 
-\item{qProb}{probability vector used to generate quantile values}
+\item{K}{xxxx}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{qProb}{xxxx}
 
-\item{zoneClose}{indices of close zones}
+\item{map}{xxxx}
 
-\item{iC}{current zone index}
+\item{zoneClose}{xxxx}
 
-\item{simplitol}{tolerance for spatial polygons geometry simplification}
+\item{iC}{xxxx}
 
-\item{disp}{0: no info, 1: detailed info}
+\item{simplitol}{xxxx}
+
+\item{disp}{xxxx}
 }
 \value{
-a zoning object
+a ?
 }
 \description{
 zoneModifnonIso
 }
 \details{
-modify non isolated zone (depends on distIsoZ parameter) so that it is joined to the closest neighbour zone with the same label.
+description, a paragraph
 }
 \examples{
-data(mapTest)
-qProb=c(0.2,0.5)
-ZK = initialZoning(qProb, mapTest)
-K=ZK$resZ
-Z=K$zonePolygone
-plotZ(Z) 
-resP=detZoneClose(6,Z,K$zoneNModif) # zone 6 is close to zone 5 and zone 7
-zoneClose = resP$zoneClose
-kmi = zoneModifnonIso(K,qProb,mapTest,zoneClose,6,disp=1)
-plotZ(kmi$zonePolygone) # zones 6 and 7 are joined into new zone 6
-# now it is the turn of zone 5
-Z=kmi$zonePolygone
-resP=detZoneClose(5,Z,kmi$zoneNModif) # zone 5 is close to zone 7 and zone 6
-kmi2 = zoneModifnonIso(kmi,qProb,mapTest,resP$zoneClose,5,disp=1)
-plotZ(kmi2$zonePolygone) # zones 5 and 6 are joined into new zone 5
 # not run
 }

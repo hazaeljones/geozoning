@@ -4,27 +4,22 @@
 \alias{linesC}
 \title{linesC}
 \usage{
-linesC(listContour, col = "blue")
+linesC(listeContour, col = "blue")
 }
 \arguments{
-\item{listContour}{list of contour lines}
+\item{listeContour}{xxxx}
 
-\item{col}{line color}
+\item{col}{xxxx}
 }
 \value{
-an empty value
+a ?
 }
 \description{
 linesC
 }
 \details{
-add contour Lines to plot
+description, a paragraph
 }
 \examples{
-data(mapTest)
-cL=list()
-cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-plot(mapTest$boundary)
-linesC(cL,col="black")
 # not run
 }

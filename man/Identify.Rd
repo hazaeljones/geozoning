@@ -7,24 +7,19 @@
 Identify(id, Z)
 }
 \arguments{
-\item{id}{zone identifier (character vector)}
+\item{id}{xxxx}
 
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 }
 \value{
-the zone number
+a ?
 }
 \description{
 Identify
 }
 \details{
-get the number of a zone with a given identifier in a zoning
-this is necessary because correction procedures may remove zones from initial#' zoning. Therefore zone numbers change, but identifiers are conserved.
+description, a paragraph
 }
 \examples{
-data(mapTest)
-criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-Z=criti$zk[[2]][[1]]$zonePolygon
-Identify(6,Z)
 # not run
 }

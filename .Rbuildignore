@@ -1,12 +1,2 @@
-^\.git$
-^\.gitignore$
-^\.gitignore-BCK$
-^\.Rhistory$
-^\.Rproj$
+^.*\.Rproj$
 ^\.Rproj\.user$
-^R/CASESTUDYFUNCTIONS$
-^R/EXTRAS$
-^R/TESTFUNCTIONS$
-^R/*~$
-^R/RES*$
-^R/\.RData$

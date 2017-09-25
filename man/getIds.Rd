@@ -7,23 +7,19 @@
 getIds(Z, nums = NULL)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{nums}{zone numbers}
+\item{nums}{xxxx}
 }
 \value{
-a character vector giving the zone identifiers
+a ?
 }
 \description{
 getIds
 }
 \details{
-get zone identifiers in a zoning
+description, a paragraph
 }
 \examples{
-data(mapTest)
-criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-Z=criti$zk[[2]][[1]]$zonePolygon
-getIds(Z)
 # not run
 }

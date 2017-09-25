@@ -4,22 +4,19 @@
 \alias{genEmptyGrid}
 \title{generate grid from raw data}
 \usage{
-genEmptyGrid(step, xsize, ysize)
+genEmptyGrid(step, nKrigE)
 }
 \arguments{
-\item{step}{numeric step for grid}
+\item{step}{numeric}
 
-\item{xsize}{numeric value giving the data range on the x axis}
-
-\item{ysize}{numeric value giving the data range on the y axis}
+\item{nKrigE}{numeric}
 }
 \value{
-a list that contains x and y kriged positions based on original ones,#' plus nx and ny (number of x and y positions).
+a dataframe that contains kriged positions based on original ones
 }
 \description{
 generate grid from raw data
 }
 \examples{
-genEmptyGrid(calStep(1000,1,1),1,1)
 # not run
 }

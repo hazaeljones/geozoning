@@ -4,24 +4,20 @@
 \alias{listContourArea}
 \title{listContourArea}
 \usage{
-listContourArea(cL)
+listContourArea(listContour)
 }
 \arguments{
-\item{cL}{list of contour lines}
+\item{listContour}{xxxx}
 }
 \value{
-a list of areas
+a numeric?
 }
 \description{
 listContourArea
 }
 \details{
-area of all contour lines in list
+description, a paragraph
 }
 \examples{
-data(mapTest)
-cL=list()
-cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-listContourArea(cL)
 # not run
 }

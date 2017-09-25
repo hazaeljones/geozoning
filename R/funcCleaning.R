@@ -1,25 +1,25 @@
 ##############################################
 #' detectSmallZones
 #'
-#' @details detect zones with area < minSize
-#' @param zonePolygone list of zones, each zone is a SpatialPolygons
-#' @param minSize zone area threshold under which a zone is too small to be manageable
+#' @details description, a paragraph
+#' @param zonePolygone xxxx
+#' @param minSize xxxx
 #'
-#' @return a vector of small zones indices
+#' @return a ?
 #' @importFrom rgeos gArea
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' minSize=0.012
-#' iSmall=detectSmallZones(Z,minSize) # 2 small zones 
 #' # not run
 detectSmallZones=function(zonePolygone,minSize)
 ##############################################
 {
+  # On détecte la taille des zones (ici la taille est la plus grande distance entre deux points du polygone)
+  #  et leur largeur(on tente une érosion,si elle échoue la zone etait trop étroite)
+  #  et on renvoie leurs inds en vue d'une suppression
+  # bch septembre 2015
+  # gArea(zonePolygone[[i]] renvoie la surface
   vectSize=numeric()
   vectIndex=numeric()
 
@@ -43,25 +43,21 @@ detectSmallZones=function(zonePolygone,minSize)
 
 
 ##################################################################
-#' zoneFusion2 basic function for merging 2 zones
+#' zoneFusion2
 #'
-#' @details merge 2 zones, called by zoneFusion3 and zoneFusion4
-#' @param zoneMain zone to merge into
-#' @param zoneSuppr zone to remove by merging it into main zone
-#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @details description, a paragraph
+#' @param zoneMain xxxx
+#' @param zoneSuppr xxxx
+#' @param simplitol xxxx
 #'
-#' @return a zone
-#' @importFrom rgeos createPolygonsComment gSimplify gUnion gBuffer
+#' @return a ?
+#' @importFrom rgeos createPolygonsComment gSimplify gUnion
 #'
 #' @export
 #'
 #' @examples
-#' data(resZTest)
-#' Z=resZTest$zonePolygone
-#' plotZ(Z)
-#' sp::plot(zoneFusion2(Z[[6]],Z[[2]]),add=TRUE,col="blue")
 #' # not run
-zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
+zoneFusion2 = function( zoneMain,zoneSuppr,simplitol)
 ##################################################################
 {
   comment(zoneMain@polygons[[1]])=createPolygonsComment(zoneMain@polygons[[1]])
@@ -79,44 +75,42 @@ zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 ######################################################################
 #' zoneFusion3
 #'
-#' @details merge current zone #iC with neighbor zone in zoning. If there are several neighbor zones, the selected one is the zone whose area is greater than the admissible size threshold that has the closest average value to the current one. 
-#' @param K zoning object, as returned by the calNei function
-#' @param iC index of current zone in zoning
-#' @param Ns zone neighborhood Boolean matrix  
-#' @param map object returned by function genMap or genMapR
-#' @param minSize  minimum admissible zone size
-#' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param disp information level (0-no info, 1-print info, 2-plot)
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param K xxxx
+#' @param iC xxxx
+#' @param Ns xxxx
+#' @param map xxxx
+#' @param minSize xxxx
+#' @param simplitol xxxx
+#' @param disp xxxx
 #'
-#' @return a zone obtained by merging current zone with neighbor zone
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' K=resZTest
-#' Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
-#' zoneFusion3(K,5,Ns,mapTest,disp=2) # merge and plot result of merging
-zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
+#' # not run
+zoneFusion3=function(Z,K,iC,Ns,map,minSize,simplitol,disp=0)
 ######################################################################
 {
   #########################################
   #merge zone iC with neighbor in Ns
   #########################################
 	#
-	Z=K$zonePolygone
-  	listN =  grep( TRUE , Ns)
-	indZV = findN(K,listN,iC,minSize) # find the neighbor zone with which to merge the current zone
+  listN =  grep( TRUE , Ns)
+	indZV = findN(Z,K,listN,iC,minSize) # chercher le voisin (parmi tous) avec lequel fusionner
 
-	if (indZV == 0) return(NULL) # no neighbour found for merging
+	if (indZV == 0) return(NULL) # step de voisin avec lequel fusionner
 
-	  # could also be written as
+	  # on pourrait ecrire aussi :
     # slot(slot(Z[[indZV]],"polygons")[[1]],"ID")
     #########################################
 	  if(disp>0) print(paste("merging zone",iC," with main zone",indZV))
-	  # case when merging  ZA with ZB and ZB is within ZA
-	  # ids must be swapped 
+	  # attention, modif bch octobre 2016
+	  # cas ou on fusionne ZA avec ZB et ZB est inclus dans ZA
+	  # il faut alors echanger les ids, pour garder le label de ZB
+	  # (contour le plus exterieur)
 	  # keep outer polygon ID
 	  IN=gContains(gEnvelope(Z[[iC]]),Z[[indZV]])
 	  if (IN)
@@ -125,12 +119,17 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 	     newId= Z[[indZV]]@polygons[[1]]@ID #
 	  #
 	  Z[[indZV]] = zoneFusion2(  Z[[indZV]], Z[[ iC ]],simplitol)
- 	  # reset polygon ID
-    	  Z[[indZV]]@polygons[[1]]@ID = newId
-    	  #remove zone that was merged
-    	  Z[[iC]]=NULL
+    #Z[[indZV]]=gUnion(  Z[[indZV]], Z[[ iC ]] )
+    # reset polygon ID
+    Z[[indZV]]@polygons[[1]]@ID = newId
+    #remove zone that was merged
+    Z[[iC]]=NULL
 	if (disp==2)
 	{
+	   # plot (bch)
+	   # IS 19/05/2017: add comment for x11
+	   #x11()
+	   #IS 19/05/2017: modify this call...
      dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	}
   return(Z)
@@ -139,24 +138,21 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 ######################################################################
 #' zoneFusion4
 #'
-#' @details merge 2 zones from given zoning
-#' @param Z zoning geometry (list of SpatialPolygons)
-#' @param iSmall index of zone to remove by merging it into other zone
-#' @param iBig index of zone to merge into
-#' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param disp 0: no info, 1: some info
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param iSmall xxxx
+#' @param iBig xxxx
+#' @param map xxxx
+#' @param simplitol xxxx
+#' @param disp xxxx
 #'
-#' @return a new zoning geometry
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' zoneFusion4(Z,5,4,disp=2)
 #' # not run
-zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
+zoneFusion4=function(Z,iSmall,iBig,map,simplitol,disp=0)
 ######################################################################
 {
 #########################################
@@ -176,7 +172,9 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 	 if (disp==1)
 	 {
 	    # plot resulting zoning
-            plotZ(Z)
+	    # IS 19/05/2017: add comment for x11
+      #x11()
+      dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	 }
 
   return(Z)
@@ -185,69 +183,51 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 ############################################################################
 #' zoneGrow
 #'
-#' @details either grow isolated zone or group 2 zones together
-#' if isolated zone, run optimization procedure to find the new quantile
-#' if zone very small (area < minSizeNG) do not grow it
-#' @param K zoning object, such as returned by the calNei function
-#' @param map object returned by function genMap
-#' @param iC index of current zone
-#' @param optiCrit criterion choice
-#' @param minSize admissible zone area threshold
-#' @param minSizeNG zone area threshold under which a zone will be removed
-#' @param distIsoZ threshold distance to next zone, above which a zone is considered to be isolated
-#' @param LEQ length of quantile sequence used to grow isolated zone
-#' @param MAXP quantile sequence maximum shift from center
-#' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param disp information level (0-no info, 1-print info)
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param K xxxx
+#' @param iC xxxx
+#' @param Ns xxxx
+#' @param map xxxx
+#' @param optiCrit xxxx
+#' @param valRef xxxx
+#' @param qProb xxxx
+#' @param minSizeNG xxxx
+#' @param distIsoZ xxxx
+#' @param LEQ xxxx
+#' @param MAXP xxxx
+#' @param simplitol xxxx
+#' @param disp xxxx
 #'
-#' @return a zone obtained by growing current zone
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.2,0.5)
-#' ZK = initialZoning(qProb, mapTest)
-#' K=ZK$resZ
-#' Z=K$zonePolygone
-#' plotZ(K$zonePolygone) # plot zoning
-#' kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
-#' linesSp(kmi[[7]])
-#' qProb=c(0.3,0.5)
-#' criti = correctionTree(qProb,mapTest)
-#' best = criti$zk[[2]][[1]]
-#' Z=best$zonePolygone
-#' plotZ(Z)
-#' refPoint = rgeos::gCentroid(Z[[4]])
-#' sp::plot(refPoint,add=TRUE,col="blue",pch=21)
-#' zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
-#' plotZ(zg)
 #' # not run
-zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0.1,simplitol=1e-3,disp=0)
+zoneGrow=function(Z,K,iC,Ns,map,optiCrit,valRef,qProb,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp=0)
 ############################################################################
 {
-	# either grow isolated zone or group 2 zones together
-	# if isolated zone, optim procedure to find the new quantile
+	## On va lancer une procedure optimisation pour determiner la taille de lagrandissement
+  ## Si espace est suffisamment grand, alors on lagrandit, en choisisst la meilleure taille possible
+  ## parmi une courte liste (souci de vitesse execution).
+	# modif bch juin 2016
 	# if zone very small, skip (useless) growing step
-#
-  Z=K$zonePolygone
-  if(disp>0) print(paste("trying to grow zone id",getZoneId(Z[[iC]]), "- new number", iC))
-  Ns = getNs(K$zoneNModif,iC)
-  qProb=K$qProb
-  if(is.null(qProb)) return(NULL)
-  refSurf = gArea(Z[[iC]])
-  if (refSurf < minSizeNG) return(NULL)
+	# param minSizeNG in initParam.R
+	if(disp>0) print(paste("trying to grow zone",getZoneId(Z[[iC]])))
 
-  resC = detZoneClose(iC,Z,K$zoneNModif,distIsoZ) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
+  refSurf = gArea(Z[[iC]])
+	if (refSurf < minSizeNG) return(NULL)
+
+  resC = detZoneClose(iC,Z,K) # renvoie FALSE si zone trop proche dune autre, TRUE sinon
   ##############################################################
   InterZoneSpace = resC$InterZoneSpace
   zoneClose = resC$zoneClose
   step=map$step
 
-  # keep centroid of small zone
-  # used to check that it is the same zone that has grown
-  # contours can be anywhere on the plot
-  ##########################################################
+  # on conserve le centroide de la petite zone
+  # utilise apres agrandissement pour verifier que c'est la meme zone
+	##########################################################
   refPoint = gCentroid(Z[[iC]])
   ##########################################################
 	Zopti=NULL
@@ -255,10 +235,10 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.07
   {
 	  if (disp>0) print(paste("growing isolated zone: ",getZoneId(Z[[iC]])))
     ##############################################################
-	  #searches for the best quantile to grow zone
+	  #fonction qui trouve le meilleur quantile pour agrandir la zone
     ##############################################################
-    resZ = optiGrow(K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
-		# returns NULL if dead end
+    resZ = optiGrow(Z,K,iC,qProb,refPoint, map,optiCrit,minSize,minSizeNG,distIsoZ,LEQ,MAXP,simplitol,disp)
+		# renvoie NULL si voie sans issue
 		if (!is.null(resZ))
 		{
 			if(disp) print("growing successful")
@@ -273,15 +253,15 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.07
 	   if (length(zoneClose)==0) return(NULL) # no close zone
 	   if (disp>0) print(paste("growing non isolated zone ",getZoneId(Z[[iC]]), "(close to zone",getZoneId(Z[[zoneClose[[1]]]]),")"))
      # reuse zoneClose
-     Kopti = zoneModifnonIso(K,qProb,map,zoneClose,iC,simplitol,disp)
-     # create comments for holes
-     if (!is.null(Kopti$zonePolygone)) Zopti = crComment(Kopti$zonePolygone)
-     Kopti$zonePolygone=Zopti
+     Zopti = zoneModifnonIso(Z,K,qProb,map,zoneClose,iC,simplitol,disp)
+	 	 # create comments for holes
+		 Zopti = crComment(Zopti)
 	}
   ##########################################################
 
   if (disp==2 && !is.null(Zopti))
 	{
+	   #x11()
 	   dispZ(map$step,map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
 	 }
 	return(Zopti)
@@ -292,24 +272,20 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.07
 #' remove1FromZ
 #'
 #' @details description, a paragraph
-#' @param Z zoning geometry (list of SpatialPolygons)
-#' @param iC current zone index
-#' @param zoneN zone neighborhood Logical matrix
-#' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param disp 0: no info, 1: some info
+#' @param Z xxxx
+#' @param iC xxxx
+#' @param zoneN xxxx
+#' @param simplitol xxxx
+#' @param disp xxxx
 #'
-#' @return a new zoning where current zone has been removed
+#' @return a ?
 #'
 #' @export
+#'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' plotZ(Z)
-#' plotZ(remove1FromZ(Z,2,K$zoneN))
 #' # not run
-remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
-########################################################
+remove1FromZ = function(Z,iC,zoneN,simplitol,disp=0)
+###################################################
 {
   # remove zone iC from zoning
   # first find neighbor zone for merging zone iC
@@ -338,7 +314,7 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 	  iN = iNP[kk[1]]
 	}
   newId= Z[[iN]]@polygons[[1]]@ID
-  Z=zoneFusion4(Z,iC,iN,simplitol,disp)
+  Z=zoneFusion4(Z,iC,iN,map,simplitol,disp)
 
 	return(Z)
 }
@@ -348,42 +324,30 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 #' removeFromZ
 #'
 #' @details description, a paragraph
-#' @param Z zoning geometry (list of SpatialPolygons)
-#' @param zoneN zone neighborhood Logical matrix
-#' @param ptN indices of data pts neighbours
-#' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
-#' @param spdata spatial data
-#' @param simplitol tolerance for spatial polygons geometry simplification
-#' @param n minimal number of points below which a zone is removed from zoning
+#' @param Z xxxx
+#' @param zoneN xxxx
+#' @param ptN xxxx
+#' @param listZonePoint xxxx
+#' @param data xxxx
+#' @param simplitol xxxx
+#' @param n xxxx
 #'
-#' @return a list with components
-#'\describe{
-#' \item{Z}{new zoning geometry (list of SpatialPolygons)} where zones with less than n points were removed
-#' \item{zoneN}{new zone neighborhood Logical matrix}
-#' \item{listZonePoint}{new list of indices of data points within zones}
-#' }
+#' @return a ?
+#'
 #' @export
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' plotZ(Z)
-#' # remove from Z all zones with less than 10 data points
-#' Z2=removeFromZ(Z,K$zoneN,K$krigN,K$listZonePoint,mapTest$krigData,n=10)
-#' printZid(Z2$Z)
 #' # not run
-removeFromZ = function(Z,zoneN,ptN,listZonePoint,spdata,simplitol=1e-3,n=1)
+removeFromZ = function(Z,zoneN,ptN,listZonePoint,data,simplitol,n=1)
 ##########################################################################
 {
-# remove from Z all zones with npts<=n
- 
+# remove from Z all zones with npts<=n or area<minSizeNG
+
   mask1 = sapply(listZonePoint,function(x){return(length(x)<=n)})
-  #mask2 = sapply(Z,function(x){return(gArea(x)<minSizeNG)})
+  mask2 = sapply(Z,function(x){return(gArea(x)<minSizeNG)})
   nbZ=length(Z)
   ind = 1:nbZ
-  #ind = ind[mask1 | mask2]
-  ind = ind[mask1]
+  ind = ind[mask1 | mask2]
   ids=c()
   if (!is.null(ind))
      ids = getIds(Z,ind)
@@ -394,7 +358,7 @@ removeFromZ = function(Z,zoneN,ptN,listZonePoint,spdata,simplitol=1e-3,n=1)
       nbZ=length(Z)
       zoneN=matrix(logical(nbZ^2),nbZ,nbZ)
       #update zone assignment
-      listZonePoint=zoneAssign(spdata,Z)
+      listZonePoint=zoneAssign(data,Z)
       #recreate zone neighbors
       vZ=calZoneN(ptN,zoneN,listZonePoint)
       zoneN = vZ$zoneN

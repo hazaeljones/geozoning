@@ -7,20 +7,17 @@
 maxDistSP(sp)
 }
 \arguments{
-\item{sp}{SpatialPolygons}
+\item{sp}{xxxx}
 }
 \value{
-the maximum distance within sp
+a numeric?
 }
 \description{
 maxDistSP
 }
 \details{
-maximum distance within kth polygon of current zone
+description, a paragraph
 }
 \examples{
-ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-Z=ZK$resZ$zonePolygone
-maxDistSP(Z[[5]])
 # not run
 }

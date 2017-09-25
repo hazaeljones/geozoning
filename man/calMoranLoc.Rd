@@ -4,14 +4,14 @@
 \alias{calMoranLoc}
 \title{calMoranLoc}
 \usage{
-calMoranLoc(matN, vectMean, meanTot, vectSurface)
+calMoranLoc(matVoisin, vectMoy, moyTot, vectSurface)
 }
 \arguments{
-\item{matN}{xxxx}
+\item{matVoisin}{xxxx}
 
-\item{vectMean}{xxxx}
+\item{vectMoy}{xxxx}
 
-\item{meanTot}{xxxx}
+\item{moyTot}{xxxx}
 
 \item{vectSurface}{xxxx}
 }

@@ -7,31 +7,21 @@
 testInterSpe(Z, i1, i2)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{i1}{first zone number}
+\item{i1}{xxxx}
 
-\item{i2}{second zone number}
+\item{i2}{xxxx}
 }
 \value{
-a Logical value, TRUE if there is an intersection, FALSE if not.
+a ?
 }
 \description{
 testInterSpe
 }
 \details{
-checks if 2 zones in a zoning share somme common part (using gOverlaps)
+description, a paragraph
 }
 \examples{
-data(mapTest)
-qProb=c(0.2,0.5)
-ZK = initialZoning(qProb, mapTest)
-K=ZK$resZ
-Z=K$zonePolygone
-plotZ(Z)
-Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
-Z[[length(Z)+1]]=Z58 # add new zone to zoning
-plotZ(Z)
-testInterSpe(Z,6,length(Z))
 # not run
 }

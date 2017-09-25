@@ -1,36 +1,34 @@
 #################################################################################
 #' generate empty grid
 #'
-#' @details generate rectangular empty grid corresponding to x and y values in matrix
-#' @param mat matrix with x and y coordinates in the first two columns, data in third column
+#' @details description, a paragraph
+#' @param mat xxxx
 #'
-#' @return a grid 
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(dataReg)
-#' gridXY(dataReg)
 #' # not run
 #################################################################################
 # generate empty grid
 gridXY=function(mat)
 {
-  # x in col 1, y in col 2, z in col3
+  # x en col 1, y en col 2, z en col3
   #
-      xempty= unique(mat[,1])
-      yempty= unique(mat[,2])
-      tempty = matrix(NA,nrow=length(xempty),ncol=length(yempty))
-      colnames(tempty)= round(yempty,3)
-      rownames(tempty)= round(xempty,3)
+      xvide= unique(mat[,1])
+      yvide= unique(mat[,2])
+      tvide = matrix(NA,nrow=length(xvide),ncol=length(yvide))
+      colnames(tvide)= round(yvide,3)
+      rownames(tvide)= round(xvide,3)
       # fill matrix with data values
-      for (ii in 1:length(xempty))
+      for (ii in 1:length(xvide))
       {
-	      maskx=(mat[,1]==xempty[ii])
-      	      mati=mat[maskx,]
-      	      # complete mati to have a measure for each y value
-      	      masky=pmatch(mati[,2],yempty)
-      	      tempty[ii,masky]=mati[,3]
+	      maskx=(mat[,1]==xvide[ii])
+      	mati=mat[maskx,]
+      	# complete mati to have a measure for each y value
+      	masky=pmatch(mati[,2],yvide)
+      	tvide[ii,masky]=mati[,3]
       }
-  return(tempty)
+  return(tvide)
 }

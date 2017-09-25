@@ -7,25 +7,19 @@
 calCrit2bis(matDistance, zoneNModif)
 }
 \arguments{
-\item{matDistance}{zone distance matrix resulting from a call to calDistance}
+\item{matDistance}{xxxx}
 
-\item{zoneNModif}{matrix of zone neigbors with FALSE on the diagonal}
+\item{zoneNModif}{xxxx}
 }
 \value{
-a numerical value
+a ?
 }
 \description{
 calCrit2bis
 }
 \details{
-computes a quality criterion equal to  min(min(dij/(dii^2+dij^2)))
+description, a paragraph
 }
 \examples{
-data(mapTest)
-data(resZTest)
-K=resZTest
-resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
-       mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-calCrit2(resD$matDistanceCorr,K$zoneNModif)
 # not run
 }

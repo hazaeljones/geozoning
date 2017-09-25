@@ -3,7 +3,7 @@
 \docType{data}
 \name{yield}
 \alias{yield}
-\title{A data frame with real data used for zoning}
+\title{une carte décrire}
 \format{a data frame with 6415 rows and 3 variables:
 \describe{
   \item{x}{x coordinate}
@@ -14,6 +14,6 @@
 yield
 }
 \description{
-A data frame with real data used for zoning
+A XXXXXX
 }
 \keyword{datasets}

@@ -3,12 +3,12 @@
 \docType{data}
 \name{shape1}
 \alias{shape1}
-\title{An external zoning read from a shape file}
+\title{une carte décrire}
 \format{a SpatialPolygons object:}
 \usage{
 shape1
 }
 \description{
-An external zoning read from a shape file
+A XXXXXX
 }
 \keyword{datasets}

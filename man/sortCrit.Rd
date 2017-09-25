@@ -2,59 +2,41 @@
 % Please edit documentation in R/sortCrit.R
 \name{sortCrit}
 \alias{sortCrit}
-\title{sortCrit called by correctionTree}
+\title{sortCrit}
 \usage{
-sortCrit(qProb, crit, cost, costL, nz, mdist, listOfZ, map, disp = 0,
+sortCrit(qProb, crit, cost, costL, nz, mdist, listOfZ, map, disp,
   SAVE = FALSE)
 }
 \arguments{
-\item{qProb}{probability vector used to generate quantile values}
+\item{qProb}{xxxx}
 
-\item{crit}{list of criteria}
+\item{crit}{xxxx}
 
-\item{cost}{list of costs}
+\item{cost}{xxxx}
 
-\item{costL}{list of per label costs}
+\item{costL}{xxxx}
 
-\item{nz}{list of number of zones}
+\item{nz}{xxxx}
 
-\item{mdist}{list of distance matrices}
+\item{mdist}{xxxx}
 
-\item{listOfZ}{list of zoning objects}
+\item{listOfZ}{xxxx}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{xxxx}
 
-\item{disp}{0: no info, 1: plot best corrected zoning}
+\item{disp}{xxxx}
 
-\item{SAVE}{logical value, if TRUE function returns more elements}
+\item{SAVE}{xxxx}
 }
 \value{
-a list with components
-\describe{
-\item{bestcrit}{best criterion value at last level}
-\item{critList}{criterion values at last level}
-\item{costList}{cost values at last level}
-\item{costLList}{cost per label  values at last level}
-\item{nzList}{vector of number of zones at last level}
-\item{qProb}{vector of probabilities values used for quantiles}
-\item{zk}{(SAVE=TRUE) list of zoning objects (such as returned by calNei function), first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects}
-\item{mdist}{(SAVE=TRUE) list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
-\item{crit}{(SAVE=TRUE) list of initial criterion and all (last if ALL=FALSE) level criteria }
-\item{cost}{(SAVE=TRUE) list of initial cost and all (last if ALL=FALSE) level costs  }
-\item{costL}{(SAVE=TRUE) list of initial cost per label and all (last if ALL=FALSE) level costs per label}
-\item{nz}{(SAVE=TRUE) list of initial number of zones and all (last if ALL=FALSE) level number of zones}
-}
+a ?
 }
 \description{
-sortCrit called by correctionTree
+sortCrit
 }
 \details{
-sort last level criteria from list of zonings, return criteria and list of zonings if SAVE=TRUE, otherwise only return last level criteria
+description, a paragraph
 }
 \examples{
-data(mapTest)
-qProb=c(0.4,0.7)
-criti=correctionTree(qProb,mapTest)
-sortCrit(qProb,criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist,criti$zk,mapTest) 
 # not run
 }

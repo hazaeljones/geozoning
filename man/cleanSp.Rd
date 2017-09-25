@@ -4,21 +4,19 @@
 \alias{cleanSp}
 \title{cleanSp}
 \usage{
-cleanSp(sp, tol = 1e-05)
+cleanSp(sp)
 }
 \arguments{
-\item{sp}{SpatialPolygons}
-
-\item{tol}{minimum area for removal}
+\item{sp}{xxxx}
 }
 \value{
-a SpatialPolygons
+a ?
 }
 \description{
 cleanSp
 }
 \details{
-removes from sp polygons that are too small (artefacts of gDifference)
+description, a paragraph
 }
 \examples{
 # not run

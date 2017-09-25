@@ -7,22 +7,17 @@
 lineToSp(lin)
 }
 \arguments{
-\item{lin}{list with x and y line coordinates}
+\item{lin}{xxxx}
 }
 \value{
-a SpatialPolygons
+a numeric?
 }
 \description{
 lineToSp
 }
 \details{
-transform closed line into SpatialPolygons
+description, a paragraph
 }
 \examples{
-data(mapTest)
-cL=list()
-cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
-sp=lineToSp(lin)
 # not run
 }

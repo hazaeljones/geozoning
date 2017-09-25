@@ -2,69 +2,49 @@
 % Please edit documentation in R/saveZK.R
 \name{saveZK}
 \alias{saveZK}
-\title{saveZK function called by correctionTree}
+\title{saveZK}
 \usage{
-saveZK(map, K1, Z2, qProb, listOfZ, indCur, crit, cost, costL, nz, mdist,
-  pErr = 0.9, optiCrit = 2, simplitol = 0.001)
+saveZK(map, K1, Z2, qProb, listOfZ, counter, crit, cost, costL, nz, mdist, pErr,
+  optiCrit, simplitol)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{xxxx}
 
-\item{K1}{previous zoning}
+\item{K1}{xxxx}
 
-\item{Z2}{current zoning geometry (list of SpatialPolygons)}
+\item{Z2}{xxxx}
 
-\item{qProb}{probability vector used to generate quantile values}
+\item{qProb}{xxxx}
 
-\item{listOfZ}{list of zoning objects}
+\item{listOfZ}{xxxx}
 
-\item{indCur}{index of new list element}
+\item{counter}{xxxx}
 
-\item{crit}{list of criteria}
+\item{crit}{xxxx}
 
-\item{cost}{list of costs}
+\item{cost}{xxxx}
 
-\item{costL}{list of per label costs}
+\item{costL}{xxxx}
 
-\item{nz}{list of number of zones}
+\item{nz}{xxxx}
 
-\item{mdist}{list of distance matrices}
+\item{mdist}{xxxx}
 
-\item{pErr}{equality tolerance for distance calculations}
+\item{pErr}{xxxx}
 
-\item{optiCrit}{criterion choice}
+\item{optiCrit}{xxxx}
 
-\item{simplitol}{tolerance for spatial polygons geometry simplification}
+\item{simplitol}{xxxx}
 }
 \value{
-a  list with components
-\describe{
-\item{listOfZ}{updated list of zoning objects, first element corresponds to initial zoning, each other element is a list with each (last if ALL=FALSE) level zoning objects}
-\item{mdist}{list of initial distance matrix and all (last if ALL=FALSE) level distance matrices}
-\item{crit}{list of initial criterion and all (last if ALL=FALSE) level criteria }
-\item{cost}{list of initial cost and all (last if ALL=FALSE) level costs }
-\item{costL}{list of initial cost per label and all (last if ALL=FALSE) level costs per label}
-\item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones}
-}
+a ?
 }
 \description{
-saveZK function called by correctionTree
+saveZK
 }
 \details{
-Given a map object, a list of zonings, a current and a previous zoning, adds the current zoning to the list of zonings if it has at least 2 zones,after recalculating zone neighborhood and transferring zone labels.
+description, a paragraph
 }
 \examples{
-data(mapTest)
-criti=correctionTree(c(0.4,0.7),mapTest,LASTPASS=FALSE,SAVE=TRUE) 
-K1=criti$zk[[1]][[1]]#initial zoning
-Z1=K1$zonePolygone 
-printZsurf(Z1) # 8 zones with 2 small zones (7 and 8)
-Z2 = remove1FromZ(Z1,7,K1$zoneN)
-printZsurf(Z2) #7 zones
-indCur=2
-newRes=saveZK(mapTest,K1,Z2,c(0.4,0.7),criti$zk,indCur,
-        criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist)
-newZ=newRes$listOfZ[[2]][[1]]$zonePolygone
-printZsurf(newZ) #6 zones
 # not run
 }

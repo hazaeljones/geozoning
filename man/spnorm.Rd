@@ -4,34 +4,22 @@
 \alias{spnorm}
 \title{spnorm}
 \usage{
-spnorm(sp, boundary)
+spnorm(p, boundary)
 }
 \arguments{
-\item{sp}{object of class Polygons}
+\item{p}{xxxx}
 
-\item{boundary}{list with x and y components, used to normalize sp}
+\item{boundary}{xxxx}
 }
 \value{
-a list with components
-\describe{
-\item{pn}{normalized Polygon}
-\item{boundaryn}{normalized boundary}
-}
+a list
 }
 \description{
 spnorm
 }
 \details{
-normalize Polygon according to border limits
+description, a paragraph
 }
 \examples{
-z=geozoning::shape1
-bb=list(x=z@bbox[1,],y=z@bbox[2,])
-p=z@polygons
-p1=p[[1]]
-P1=p1@Polygons[[1]]
-NP1=spnorm(P1,bb)$pn
-Nbb=spnorm(P1,bb)$boundaryn
-plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
 # not run
 }

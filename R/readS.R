@@ -1,39 +1,40 @@
 ###############################################################
 #' readS returns coords, ranges for x and y of a shapefile
 #'
-#' @details reads a polygon shp file in a directory and extracts coordinates and x and y ranges.
+#' @details description, a paragraph
 #' @param file file name
-#' @param dir directory
+#' @param rep directory
 #'
-#' @return a list with components
-#' SpatialPolygonsDataFrame, ranges for x and y
+#' @return a ?
 #' @importFrom raster shapefile
 #'
 #' @export
+#'
 #' @examples
-#  readS was used to create the shape1 object in geozoning package
-#' #z=readS("Field_8_zones.shp",dir="../data/")
-#' #plot(z$sp)
 #' # not run
 ###############################################################
-readS = function(file, dir)
+readS = function(file, rep)
 {
   #read shp file
-  name = paste(dir,file, sep = "")
+  nom = paste(rep,file, sep = "")
 
-  if(file.exists(name))
+  if(file.exists(nom))
   {
-    #shape1 <- readOGR(dsn = dir, layer = file)
-    #shape1 <-readOGR(dsn=path.expand(name), layer=file)
+    #shape1 <- readOGR(dsn = rep, layer = file)
+    #shape1 <-readOGR(dsn=path.expand(nom), layer=file)
 
     # to avoid bugs with readOGR...
-    shape1 <- shapefile(name)
+    shape1 <- shapefile(nom)
 
     #obtention of coords
-    xlim=shape1@bbox[1,]
-    ylim=shape1@bbox[2,]
-    # return list with coords, ranges for x and y
-    return(list(sp=shape1,xlim = xlim, ylim = ylim))
+    p = shape1@polygons[[1]]
+    p1 = p@Polygons[[1]]
+    p2 = p1@coords
+
+    xlim=range(p2[,1])
+    ylim=range(p2[,2])
+    # return list with coord, ranges for x and y
+    return(list(p=p2, xlim = xlim, ylim = ylim,sp=shape1))
   }
   else
   {

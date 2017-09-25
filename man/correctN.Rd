@@ -4,17 +4,15 @@
 \alias{correctN}
 \title{correctN}
 \usage{
-correctN(Z, zoneN, dN = 0.001)
+correctN(Z, zoneN)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{zoneN}{zone neighborhood Logical matrix}
-
-\item{dN}{maximum distance beyond which 2 zones cannot be considered as neighbors}
+\item{zoneN}{xxxx}
 }
 \value{
-a new zone neighborhood Logical matrix
+a ?
 }
 \description{
 correctN
@@ -23,8 +21,5 @@ correctN
 description, a paragraph
 }
 \examples{
-data(resZTest)
-Z=resZTest$zonePolygone
-H=correctN(Z,resZTest$zoneN,1e-8)
 # not run
 }

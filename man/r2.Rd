@@ -7,10 +7,10 @@
 r2(reslm)
 }
 \arguments{
-\item{reslm}{result of a call to lm}
+\item{reslm}{an lm object}
 }
 \value{
-the adjusted r-square of the lm model
+a numeric
 }
 \description{
 r2

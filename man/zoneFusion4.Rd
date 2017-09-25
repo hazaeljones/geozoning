@@ -4,32 +4,30 @@
 \alias{zoneFusion4}
 \title{zoneFusion4}
 \usage{
-zoneFusion4(Z, iSmall, iBig, simplitol = 0.001, disp = 0)
+zoneFusion4(Z, iSmall, iBig, map, simplitol, disp = 0)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{iSmall}{index of zone to remove by merging it into other zone}
+\item{iSmall}{xxxx}
 
-\item{iBig}{index of zone to merge into}
+\item{iBig}{xxxx}
 
-\item{simplitol}{tolerance for spatial polygons geometry simplification}
+\item{map}{xxxx}
 
-\item{disp}{0: no info, 1: some info}
+\item{simplitol}{xxxx}
+
+\item{disp}{xxxx}
 }
 \value{
-a new zoning geometry
+a ?
 }
 \description{
 zoneFusion4
 }
 \details{
-merge 2 zones from given zoning
+description, a paragraph
 }
 \examples{
-data(resZTest)
-K=resZTest
-Z=K$zonePolygone
-zoneFusion4(Z,5,4,disp=2)
 # not run
 }

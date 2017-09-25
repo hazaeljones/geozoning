@@ -2,31 +2,28 @@
 % Please edit documentation in R/funcCalIndices.R
 \name{calGearyLoc}
 \alias{calGearyLoc}
-\title{local Geary criteria}
+\title{vecteur d'indices de Geary locaux}
 \usage{
-calGearyLoc(matN, vectMean, meanTot, vectSurface)
+calGearyLoc(matVoisin, vectMoy, moyTot, vectSurface)
 }
 \arguments{
-\item{matN}{neighborhood (zone or point) matrix}
+\item{matVoisin}{xxxx}
 
-\item{vectMean}{vector of mean zone values}
+\item{vectMoy}{xxxx}
 
-\item{meanTot}{global mean}
+\item{moyTot}{xxxx}
 
-\item{vectSurface}{vector of zone areas}
+\item{vectSurface}{xxxx}
 }
 \value{
-a vector of local Geary criteria
+a ?
 }
 \description{
-local Geary criteria
+vecteur d'indices de Geary locaux
 }
 \details{
-computes local Geary indices
+description, a paragraph
 }
 \examples{
-K=resZTest
-zoneA=sapply(K$zonePolygone,rgeos::gArea)
-calGearyLoc(K$zoneNModif,K$meanZone,K$meanTot,zoneA)
 # not run
 }

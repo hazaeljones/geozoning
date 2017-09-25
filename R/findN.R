@@ -1,61 +1,70 @@
 ###############################################
 #' findN
 #'
-#' @details Find the neighbor zone into which to merge the current zone.
-#' It must be a neighbor in the sense of Voronoi polygons. In case of ties, choose the smallest zone for merging into
-#' @param K zoning object, as returned by the calNei function
-#' @param listN list of neighbor zones
-#' @param iZ index of current zone in zoning
-#' @param minSize minimum admissible zone size
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param K xxxx
+#' @param listN xxxx
+#' @param iC xxxx
+#' @param minSize xxxx
 #'
-#' @return the index of the zone into which to merge the current zone
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' K=resZTest
-#' Ns=getNs(K$zoneNModif,4) # neighbors of zone 4
-#' listN =  grep( TRUE , Ns) # zones 2 and 5
-#' findN(K,listN,4) # zone 4 will be merged into zone 5
 #' # not run
-findN=function(K,listN,iZ,minSize=0.012)
+findN=function(Z,K,listN,iC,minSize=0.012)
 ###############################################
   {
-       #Find the neighbor zone with which to merge the current zone
-       #It must be a neighbor in the sense of Voronoi polygons
-       
-  if (length(listN) == 0) return(0)
+       #On détermine la zone qui va absorber notre petite zone
+       #elles doivent se toucher (voisines par Voronoi)
+       # si plusieurs choix, fusionner avec la plus petite si sa surface < surface minimum
+       # sinon fusionner avec la zone qui a la moyenne la plus proche
 
-  if (length(listN) == 1) return(listN[1])
+          if (length(listN) == 0) return(0)
 
-   Z=K$zonePolygone
-   iZN=0
-   #Check all neighbor zones
-   potN = numeric()
-   for (i in listN)
+          if (length(listN) == 1)
+          {
+            indZV = listN[1]
+          }
+          else
+          {
+	    indZV=0
+            #On parcourt tous les voisins de notre zone
+	    # modif bch october 2016
+	    potN = numeric()
+            for (i in listN)
             {
-              iZNp = i
-              tempo = gDistance(Z[[iZNp]],Z[[iZ]])
+              indZVp = i
+              tempo = gDistance(Z[[indZVp]],Z[[iC]])
 
-              #potN useful when current zone is between 2 zones
+	      # modif bch october 2016
+              #potN = numeric()
+              #potN est utile lorsque notre petite zone est entre 2 zones
               if (tempo < 0.001)
               {
                 potN = append(potN,i)
               }
              } #end for i
 
-    mina=1
-    for (v in potN)
-        {
-	 area=getSurf(Z,v)
-  	 if (area<= mina) # choose the close zone with the smallest area
+                mina=1
+                for (v in potN)
+                {
+	          area=getSurf(Z,v)
+                  if (area<= mina)
                   {
                     mina = area
-                    iZN= v
+                    indZV= v
                   }
-         } #end for v
-  
-  return(iZN)
+                } #end for v
+		if (mina >=minSize)
+		   {
+		   diffmu=abs(K$meanZone[potN]-K$meanZone[iC])
+		   iVP=which(diffmu==min(diffmu))
+		   indZV=potN[iVP]
+		   }
+    } #end else
+
+  return(indZV)
 }

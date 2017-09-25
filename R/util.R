@@ -1,19 +1,150 @@
 ###################################################################
+#' getPtsZone
+#'
+#' @details description, a paragraph
+#' @param ptsp xxxx
+#' @param zone xxxx,
+#'
+#' @return a map in a list
+#' \describe{
+#' \item{pts}{ptsub}
+#' \item{mask}{mask}
+#' }
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+getPtsZone=function(ptsp,zone)
+##################################################################
+{
+# ptsp=map$krigData
+#
+	# pts in zone
+	IN=numeric()
+	poly=getPolySp(zone,1)
+	IN=point.in.polygon(ptsp$x,ptsp$y,poly@coords[,1],poly@coords[,2])
+	# remove pts in holes
+	if(nPolySp(zone)>1)
+		{
+      		for(k in 2:nPolySp(zone))
+      		      {
+		      poly=getPolySp(zone,k)
+        	      IN=IN-point.in.polygon(ptsp$x,ptsp$y,poly@coords[,1],poly@coords[,2])
+     		      }
+  		 }
+	IN=as.logical(IN)
+	ptsx=ptsp$x[IN]
+	ptsy=ptsp$y[IN]
+	ptsd=ptsp[[1]][IN]
+	ptsub=SpatialPointsDataFrame(coords=cbind(ptsx,ptsy),data=data.frame(z=ptsd))
+	return(list(pts=ptsub,mask=IN))
+}
+
+
+#####################################################################
+#' MeanVarWPts
+#'
+#' @details description, a paragraph
+#' @param map xxxx
+#' @param zone xxxx,
+#' @param w default NULL
+#'
+#' @return a in a list
+#' \describe{
+#' \item{mean}{mean}
+#' \item{var}{var}
+#' }
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+MeanVarWPts=function(map,zone,w=NULL)
+#####################################################################
+{
+  ptsp=map$krigData
+
+  m=numeric()
+  v=numeric()
+  res=getPtsZone(ptsp,zone)
+  mask=res$mask
+
+  if (is.null(w))
+     w=map$krigSurfVoronoi
+  else
+     w=rep(1,length(mask))
+
+  m=sum(ptsp[[1]][mask]*w[mask]) /sum(w[mask])
+  d=ptsp[[1]][mask]-m
+  v=sum(d*d*w[mask]) /sum(w[mask])
+  #plot(zone)
+  #points(ptsp$x[mask],ptsp$y[mask])
+
+  return(list(mean=m,var=v))
+}
+####################
+#' r2
+#'
+#' @details adjusted R2
+#' @param reslm an lm object
+#'
+#' @return a numeric
+#'
+#' @export
+#' @importFrom stats anova dist lm quantile sd
+#'
+#' @examples
+#' # not run
+r2=function(reslm)
+####################
+{
+  s2T <- sum(anova(reslm)[[2]]) / sum(anova(reslm)[[1]])
+  MSE <- anova(reslm)[[3]][2]
+  adj.R2 <- (s2T - MSE) / s2T
+  return(adj.R2)
+}
+
+######################
+#' modlm
+#'
+#' @details description, a paragraph
+#' @param ptsp xxxx
+#' @param Z a zone?
+#'
+#' @return a lm object
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+modlm=function(ptsp,Z)
+######################
+{
+  # ptssp SpatialPointsDataframe
+  # Z zoning (list of SpatialPolygons)
+  # ptsp=map$krigData
+
+  numz=getNumZone(ptsp,Z)
+  # add numz to SpatialPointsDataframe
+  ptsp[[2]]=numz
+  colnames(ptsp@data)=c("z","numz")
+  reslm=lm(z~numz,data=ptsp@data)
+  return(reslm)
+}
+
+###################################################################
 #' getCoords
 #'
-#' @details get SpatialPolygons coordinates
-#' @param sp SpatialPolygons
-#' @param k polygon number
+#' @details description, a paragraph
+#' @param sp xxxx
+#' @param k xxxxxx
 #'
 #' @return some coordinates
 #'
 #' @export
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' getCoords(Z[[1]])
 #' # not run
 getCoords=function(sp,k=1)
 ##################################################################
@@ -25,19 +156,15 @@ getCoords=function(sp,k=1)
 ##################################################################
 #' spToSL
 #'
-#' @details tranform SpatialPolygons into SpatialLines
-#' @param sp SpatialPolygons
+#' @details description, a paragraph
+#' @param sp xxxx
 #'
-#' @return a SpatialLines
+#' @return a list
 #'
 #' @export
 #' @importFrom sp SpatialLines Lines
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' spToSL(Z[[5]])
 #' # not run
 spToSL=function(sp)
 ##################################################################
@@ -49,27 +176,90 @@ spToSL=function(sp)
 }
 
 ##################################################################
+#' getClosePt
+#'
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param indiceCourant xxxx
+#' @param indiceZP xxxx
+#' @param disp xxxx
+#'
+#' @return a numeric?
+#'
+#' @export
+#' @importFrom sp SpatialPoints SpatialPointsDataFrame
+#'
+#' @examples
+#' # not run
+getClosePt=function(Z,indiceCourant,indiceZP,disp=FALSE)
+##################################################################
+{
+#coordonnées des points de la petite zone et la  zoneProche
+
+  a=SpatialPoints(Z[[indiceCourant]]@polygons[[1]]@Polygons[[1]]@coords)
+  b=SpatialPoints(Z[[indiceZP]]@polygons[[1]]@Polygons[[1]]@coords)
+
+  #on recupere les distances entre chaque paire de points
+  #on pourra peut etre utiliser un gSimplify si cela prend trop de temps
+  Fdist= list()
+  for (i in 1:length(a))
+  {
+    Fdist[[i]]<-gDistance(a[i,],b,byid=TRUE)
+  }
+
+  #on recupere le point de la zoneProche le plus proche de la petite zone
+  min.dist <- unlist(lapply(Fdist, FUN=function(x) which(x == min(x))[1]))
+  PolyDist <- unlist(lapply(Fdist, FUN=function(x) min(x)[1]))
+
+  pProche = min.dist[which.min(PolyDist)]
+  if (disp)
+  {
+  print(b[pProche])
+  }
+  return (b[pProche])
+}
+
+##################################################################
+#' cadArea
+#'
+#' @details description, a paragraph
+#' @param cad xxxx
+#'
+#' @return a numeric?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+cadArea = function(cad)
+##################################################################
+  {
+	rn=as.numeric(rownames(cad))
+	cn=as.numeric(colnames(cad))
+	xrn=range(rn)
+	yrn=range(cn)
+	cadSurf=(max(xrn)-min(xrn))*(max(yrn)-min(yrn))
+	return(cadSurf)
+  }
+
+##################################################################
 #' contourArea
 #'
-#' @details area corresponding to closed contour line
-#' @param co contour line
+#' @details description, a paragraph
+#' @param contour1 xxxx
 #'
-#' @return the area within the contour line
+#' @return a numeric?
 #'
 #' @export
 #' @importFrom sp SpatialPolygons SpatialPointsDataFrame Polygons Polygon
 #' @importFrom maptools ContourLines2SLDF
 #'
 #' @examples
-#' data(mapTest)
-#' cL=list()
-#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' contourArea(cL[[8]])
 #' # not run
-contourArea=function(co)
+contourArea=function(contour1)
 ##################################################################
 {
-	contour = ContourLines2SLDF(list(co))
+	contour = ContourLines2SLDF(list(contour1))
       	coords = contour@lines[[1]]@Lines[[1]]@coords
       	poly=Polygon(coords)
 	polys=Polygons(list(poly),"id")
@@ -82,53 +272,46 @@ contourArea=function(co)
 ##################################################################
 #' listContourArea
 #'
-#' @details area of all contour lines in list
-#' @param cL list of contour lines
+#' @details description, a paragraph
+#' @param listContour xxxx
 #'
-#' @return a list of areas
+#' @return a numeric?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' cL=list()
-#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' listContourArea(cL)
 #' # not run
-listContourArea=function(cL)
+listContourArea=function(listContour)
 ##################################################################
 {
-	return(sapply(cL,contourArea))
+	le=length(listeContour)
+	if (le ==0) return(NA)
+	surface=list()
+	for (k in 1:length(listeContour))
+	{
+		surface[[k]] = contourArea(listeContour[[k]])
+	}
+	return(surface)
 }
 
 ##################################################################
 #' contourToSpp
 #'
-#' @details transform contour line into SpatialPolygons
-#' @param co contour line (list with contour level and x,y coordinates
-#' @param step grid resolution
+#' @details description, a paragraph
+#' @param contour1 xxxx
+#' @param step xxxx
 #'
-#' @return a list with components
-#'\describe{
-#'\item{sp}{SpatialPolygons corresponding to contour line}
-#'\item{contour}{SpatialLines corresponding to contour line}
-#'\item{polyBuff}{SpatialPolygons corresponding to buffer around contour line}
-#'\item{surface}{SpatialPolygons area}
-#'}
+#' @return a numeric?
 #'
 #' @export
 #' @importFrom rgeos gBuffer gArea gCentroid gContains gConvexHull gDifference gDistance gIntersects gWithin
 #'
 #' @examples
-#' data(mapTest)
-#' cL=list()
-#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' contourToSpp(cL[[8]],0.1)
 #' # not run
-contourToSpp=function(co,step)
+contourToSpp=function(contour1,step)
 ##################################################################
 {
-	contour = ContourLines2SLDF(list(co))
+	contour = ContourLines2SLDF(list(contour1))
       	coords = contour@lines[[1]]@Lines[[1]]@coords
 	# attention gBuffer renvoie 2 polygones
       	polyBuff = gBuffer(contour,width=0.0001*(1/step))
@@ -140,18 +323,35 @@ contourToSpp=function(co,step)
 }
 
 ##################################################################
-#' nPolySp
-#' @details number of polygons in SpatialPolygons
-#' @param sp SpatialPolygons
-#' @return the number of polygons within the current zone
+#' nPolyZone
+#'
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param ind xxxx
+#'
+#' @return a numeric?
 #'
 #' @export
 #'
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' print(paste(nPolySp(Z[[2]]),"polygons"))
-#' @details 
+#' # not run
+nPolyZone=function(Z,ind)
+##################################################################
+{
+	return(length(Z[[ind]]@polygons[[1]]@Polygons))
+}
+
+##################################################################
+#' nPolySp
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#'
+#' @return a numeric?
+#'
+#' @export
+#'
+#' @examples
 #' # not run
 nPolySp =function(sp)
 ##################################################################
@@ -162,17 +362,14 @@ nPolySp =function(sp)
 ##################################################################
 #' holeSp
 #'
-#' @details number of holes in SpatialPolygons
-#' @param sp SpatialPolygons
+#' @details description, a paragraph
+#' @param sp xxxx
 #'
-#' @return the number of holes within sp
+#' @return a numeric?
 #'
 #' @export
 #'
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' holeSp(Z[[5]]) #zone 5 has 1 hole
 #' # not run
 holeSp = function(sp)
 ##################################################################
@@ -191,17 +388,37 @@ holeSp = function(sp)
 
 
 ##################################################################
-#' maxDistSP
+#' maxDistZone
 #'
-#' @details maximum distance within kth polygon of current zone 
-#' @param sp SpatialPolygons
-#' @return the maximum distance within sp
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param iZ xxxx
+#' @param k xxxx
+#'
+#' @return a numeric?
 #'
 #' @export
+#'
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' maxDistSP(Z[[5]])
+#' # not run
+maxDistZone=function(Z,iZ,k)
+##################################################################
+{
+	return(max(dist(Z[[iZ]]@polygons[[1]]@Polygons[[k]]@coords)))
+	#return(gArea(Z[[iZ]]))
+}
+
+##################################################################
+#' maxDistSP
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#'
+#' @return a numeric?
+#'
+#' @export
+#'
+#' @examples
 #' # not run
 maxDistSP=function(sp)
 ##################################################################
@@ -210,24 +427,40 @@ maxDistSP=function(sp)
 }
 
 ##################################################################
-#' getPolySp
+#' getPoly
 #'
-#' @details get the kth polygon of the current SpatialPolygons
-#' @param sp SpatialPolygons object
-#' @param k polygon number
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param iZ xxxx
+#' @param k xxxx
 #'
-#' @return a polygon (object of class Polygon)
+#' @return a numeric?
 #'
 #' @export
 #'
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' sp=Z[[5]]
-#' P1=getPolySp(sp,1)
-#' P2=getPolySp(sp,2) # second polygon is a hole
-#' plot(P1@coords,type="l")
-#' lines(P2@coords,type="l",col="blue")
+#' # not run
+getPoly = function(Z,iZ,k)
+##################################################################
+{
+	if (k == 0) return(Z[[iZ]])
+	# k can be <0 or >0
+	p=Z[[iZ]]@polygons[[1]]@Polygons[[k]]
+	return(p)
+}
+
+##################################################################
+#' getPolySp
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#' @param k xxxx
+#'
+#' @return a numeric?
+#'
+#' @export
+#'
+#' @examples
 #' # not run
 getPolySp = function(sp,k=1)
 ##################################################################
@@ -238,23 +471,41 @@ getPolySp = function(sp,k=1)
 
 
 ##################################################################
-#' polyToSp2
+#' polyToSp
 #'
-#' @details transforms polygon into SpatialPolygons
-#' @param p polygon 
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param iZ xxxx
+#' @param k xxxx
 #'
-#' @return a SpatialPolygons
+#' @return a numeric?
 #'
 #' @export
 #'
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' sp=Z[[5]]
-#' P1=getPolySp(sp,1)
-#' sph=polyToSp2(P1)
-#' plotZ(Z)
-#' sp::plot(sph,col="blue",lwd=2,add=TRUE)
+#' # not run
+polyToSp=function(Z,iZ,k)
+##################################################################
+{
+	if (k == 0) return(Z[[iZ]])
+	# k can be <0 or >0
+	p=Z[[iZ]]@polygons[[1]]@Polygons[[k]]
+	sp=SpatialPolygons(list(Polygons(list(p),1:1)))
+
+	return(sp)
+}
+
+##################################################################
+#' polyToSp
+#'
+#' @details description, a paragraph
+#' @param p xxxx
+#'
+#' @return a numeric?
+#'
+#' @export
+#'
+#' @examples
 #' # not run
 polyToSp2=function(p)
 ##################################################################
@@ -266,19 +517,14 @@ polyToSp2=function(p)
 ##################################################################
 #' lineToSp
 #'
-#' @details transform closed line into SpatialPolygons
-#' @param lin list with x and y line coordinates
+#' @details description, a paragraph
+#' @param lin xxxx
 #'
-#' @return a SpatialPolygons
+#' @return a numeric?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' cL=list()
-#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
-#' sp=lineToSp(lin)
 #' # not run
 lineToSp=function(lin)
 ##################################################################
@@ -288,32 +534,57 @@ lineToSp=function(lin)
 }
 
 ##################################################################
-#' spnorm
+#' normZcoords
 #'
-#' @details normalize Polygon according to border limits
-#' @param sp object of class Polygons
-#' @param boundary list with x and y components, used to normalize sp
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param boundary xxxx
 #'
-#' @return a list with components
-#' \describe{
-#' \item{pn}{normalized Polygon}
-#' \item{boundaryn}{normalized boundary}
-#' }
+#' @return a list
 #'
 #' @export
 #'
 #' @examples
-#  shape1: result of call to readS on shapefile
-#' z=geozoning::shape1
-#' bb=list(x=z@bbox[1,],y=z@bbox[2,])
-#' p=z@polygons
-#' p1=p[[1]]
-#' P1=p1@Polygons[[1]]
-#' NP1=spnorm(P1,bb)$pn
-#' Nbb=spnorm(P1,bb)$boundaryn
-#' plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
 #' # not run
-spnorm = function(sp, boundary)
+normZcoords=function(Z,boundary)
+##################################################################
+{
+	NZ=length(Z)
+	Z1=list()
+	for (iZ in 1:NZ)
+	{
+	np=nPolyZone(Z,iZ)
+	pnl=list()
+	for (k in 1:np)
+	{
+		pk = getPoly(Z,iZ,k)
+		resn = spnorm(pk,boundary)
+		if (is.null(resn)) return(NULL)
+		pnl[[k]] = resn$pn
+		boundaryn = resn$boundaryn
+	}
+
+		Z1[[iZ]] = SpatialPolygons(list(Polygons(pnl,1:1)))
+
+	}
+
+	return(list(Zn=Z1,boundaryn=boundaryn))
+}
+
+##################################################################
+#' spnorm
+#'
+#' @details description, a paragraph
+#' @param p xxxx
+#' @param boundary xxxx
+#'
+#' @return a list
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+spnorm = function(p, boundary)
 ##################################################################
 {
 	xmin=min(boundary$x)
@@ -323,8 +594,8 @@ spnorm = function(sp, boundary)
 	if (abs(xmax-xmin) < 1e-6) return(NULL)
 	if (abs(ymax-ymin) < 1e-6) return(NULL)
 
-	x= sp@coords[,1]
-	y = sp@coords[,2]
+	x= p@coords[,1]
+	y = p@coords[,2]
 	x = (x-xmin)/(xmax-xmin)
 	y = (y-ymin)/(ymax-ymin)
 	pn = Polygon(cbind(x,y))
@@ -338,33 +609,17 @@ spnorm = function(sp, boundary)
 }
 
 ##################################################################
-#' normalize data coordinates and border
+#' normalize data coords and border
 #'
-#' @details normalize boundary between 0 and 1 and data coordinates accordingly
-#' @param data data frame with x and y components
-#' @param bd boundary (list with x and y components)
+#' @details description, a paragraph
+#' @param data xxxx
+#' @param bd xxxx
 #'
-#' @return a list with components
-#'\describe{
-#' \item{dataN}{normalized data}
-#' \item{boundaryN}{normalized boundary}
-#' \item{xmin}{minimum vaue of x within boundary}
-#' \item{xmax}{maximum vaue of x within boundary}
-#' \item{ymin}{minimum vaue of y within boundary}
-#' \item{ymax}{maximum vaue of y within boundary}
-#' }
-#'
+#' @return a list
 #'
 #' @export
 #'
 #' @examples
-#' x=runif(100, min=0, max=1)
-#' y=runif(100, min=0.2, max=1.7)
-#' range(x) # not [0,1]
-#' tabData=data.frame(x=x,y=y)
-#' bd=list(x=c(0,0,1,1,0), y=c(0.2,1.7,1.7,0.2,0.2))
-#' res=datanorm(tabData,bd) 
-#' apply(res$dataN,2,range)# 
 #' # not run
 datanorm = function(data, bd)
 ##################################################################
@@ -383,7 +638,7 @@ datanorm = function(data, bd)
   data$x = x
   data$y = y
 
-  #normalize border
+  #normalize bder
   bx=bd$x
   by=bd$y
   bx = (bx-xmin)/(xmax-xmin)
@@ -395,20 +650,14 @@ datanorm = function(data, bd)
 ##################################################################
 #' normalize data coords
 #'
-#' @details normalize data coordinates between 0 and 1 with different ratios for x and y
-#' @param data frame with x and y components
+#' @details description, a paragraph
+#' @param data xxxx
 #'
-#' @return a normalized data frame
+#' @return a list
 #'
 #' @export
 #'
 #' @examples
-#' nPoints=500
-#' x=runif(nPoints, min=0, max=1)
-#' y=runif(nPoints, min=0, max=1)
-#' range(x) # not [0,1]
-#' tabData=data.frame(x=x,y=y)
-#' tabData=datanormXY(tabData) # x,y ranges are now [0,1]
 #' # not run
 datanormXY = function(data)
 ##################################################################
@@ -432,122 +681,247 @@ datanormXY = function(data)
 }
 
 ##################################################################
-#' normalize data coords with same ratio (for non square field)
+#' normalize polygons in zoning
 #'
-#' @details normalize x between 0 and 1, y and boundary with same ratio
-#' @param data frame with x and y components
-#' @param bd list with x and y components
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param xmin xxxx
+#' @param xmax xxxx
+#' @param ymin xxxx
+#' @param ymax xxxx
 #'
-#' @return a list with components
-#'\describe{
-#' \item{dataN}{normalized data}
-#' \item{boundaryN}{normalized boundary}
-#' \item{ratio}{normalizing ratio}
-#' \item{xmin}{minimum value of x within boundary}
-#' \item{xmax}{maximum value of x within boundary}
-#' \item{ymin}{minimum value of y within boundary}
-#' \item{ymax}{maximum value of y within boundary}
-#' }
+#' @return a dataframe?
 #'
 #' @export
 #'
 #' @examples
-#' x=runif(100, min=0, max=1)
-#' y=runif(100, min=0.2, max=1.7)
-#' range(x) # not [0,1]
-#' tabData=data.frame(x=x,y=y)
-#' bd=list(x=c(0,0,1,1,0), y=c(0.2,1.7,1.7,0.2,0.2))
-#' res=datanormX(tabData,bd) 
-#' apply(res$dataN,2,range)# x range is now [0,1], not y range
-#' res$ratio # normalization ratio
 #' # not run
-datanormX = function(data,bd)
+ZnormXY = function(Z,xmin,xmax,ymin,ymax)
 ##################################################################
 {
+# normalize polygons in zoning
   xmin=min(data$x)
   xmax=max(data$x)
   ymin=min(data$y)
   ymax=max(data$y)
-  
   if (abs(xmax-xmin) < 1e-6) return(NULL)
-  
+  if (abs(ymax-ymin) < 1e-6) return(NULL)
+
   x = data$x
   y = data$y
-  ratio=xmax-xmin
-  x = (x-xmin)/ratio
-  y = (y-ymin)/ratio
+  x = (x-xmin)/(xmax-xmin)
+  y = (y-ymin)/(ymax-ymin)
   data$x = x
   data$y = y
-  #normalize boarder
-  bx=bd$x
-  by=bd$y
-  bx = (bx-xmin)/ratio
-  by = (by-ymin)/ratio
-  bdn = list(x=bx,y=by)
 
-  return(list(dataN=data, boundaryN=bdn,ratio=ratio,xmin=xmin,xmax=xmax,ymin=ymin,ymax=ymax))
+  return(data)
 }
 
 ##################################################################
-#' normSize
+#' calcDCrit
 #'
-#' @details normalize thresholds for small zone detection and no grow zone, considering mapo boundary
-#' @param boundaryN normalized map boundary
-#' @param minSize minimum size threshold
-#' @param minSizeNG no grow size threshold 
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param map xxxx
+#' @param optiCrit xxxx
+#' @param pErr xxxx, default 0.9
+#' @param simplitol xxxx, default 0.001
 #'
-#' @return a list with components
-#' \describe{
-#' \item{minSize}{normalized minimum size threshold}
-#' \item{minSizeNG}{normalized no grow size threshold}
-#' }
+#' @return a list
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' resT=normSize(mapTest$boundary,0.012,0.001)#normalize thresholds relatively to map boundary area
 #' # not run
-normSize=function(boundaryN,minSize,minSizeNG)
+calcDCrit=function(Z,map,optiCrit,pErr=0.9,simplitol=1e-3)
 ##################################################################
 {
-# normalize threshold for small zone detection
-#
-coords=boundaryN
-poly=Polygon(coords)
-polys=Polygons(list(poly),"id")
-boundarySp = SpatialPolygons(list(polys))
-boundaryArea=gArea(boundarySp)
-minSize=minSize/boundaryArea
-minSizeNG=minSizeNG/boundaryArea
-print(paste("after standardization minSize=",minSize,"minSizeNG=",minSizeNG))
+	resZ=calNei(Z,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol=simplitol)
+  le = length(resZ$zonePolygone)
+	if (le <2) return(list(resD=0,resCrit=0))
 
-return(list(minSize=minSize,minSizeNG=minSizeNG))
+  resDist=calDistance(typedist=1,map$krigData,resZ$listZonePoint,resZ$zoneN,map$krigSurfVoronoi,resZ$meanZone,pErr=pErr)
+  resCrit=calCrit(resDist$matDistanceCorr,resZ$zoneNModif,optiCrit)
+
+	return(list(resD=resDist,resCrit=resCrit))
+}
+
+# ##################################################################
+# ATTENTION, CETTE FONCTION EST EN DOUBLE!!! cf lignes 981
+# JE METS CELLE-CI EN COMMENTAIRES VU QUE DANS UN SOURCE C'4'EST LA 2e
+# FONCTION QUI EST STOCKEE...
+# #' linesSp
+# #'
+# #' @details description, a paragraph
+# #' @param contourSp xxxx
+# #' @param k xxxx
+# #'
+# #' @return a list
+# #'
+# #' @export
+# #'
+# #' @examples
+# #' # not run
+# linesSp=function(contourSp,k)
+# ##################################################################
+# {
+# 	co=contourSp[[k]]
+# 	lines(co@lines[[1]]@Lines[[1]]@coords,col="blue")
+# }
+
+##################################################################
+#' plotCad
+#'
+#' @details description, a paragraph
+#' @param cad xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+plotCad=function(cad)
+##################################################################
+{
+	rn=as.numeric(rownames(cad))
+	cn=as.numeric(colnames(cad))
+	xmin=min(rn)
+	xmax=max(rn)
+
+	ymin=min(cn)
+	ymax=max(cn)
+
+	x=c(xmin,xmin,xmax,xmax,xmin)
+	y=c(ymin,ymax,ymax,ymin,ymin)
+
+	lines(x,y,col="blue")
+}
+
+##################################################################
+#' calcCad
+#'
+#' @details description, a paragraph
+#' @param cad xxxx
+#'
+#' @return a SpatialPolygons object
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+calcCad=function(cad)
+##################################################################
+{
+	rn=as.numeric(rownames(cad))
+	cn=as.numeric(colnames(cad))
+	xmin=min(rn)
+	xmax=max(rn)
+
+	ymin=min(cn)
+	ymax=max(cn)
+
+	x=c(xmin,xmin,xmax,xmax,xmin)
+	y=c(ymin,ymax,ymax,ymin,ymin)
+	polys=Polygon(cbind(x,y))
+	lpolys=Polygons(list(polys),"id")
+	return(SpatialPolygons(list(lpolys)))
+}
+
+##################################################################
+#' plotListeC
+#'
+#' @details description, a paragraph
+#' @param listeC xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+plotListeC = function(listeC)
+##################################################################
+{
+	le=length(listeC)
+	if (le >0)
+	   for (i in 1:le)
+	   {
+		ci=listeC[[i]]
+		lines(ci,col="red")
+	   }
+
+}
+
+
+##################################################################
+#' genQseq0
+#'
+#' @details description, a paragraph
+#' @param qProb xxxx
+#' @param K xxxx
+#' @param map xxxx
+#' @param i1 xxxx
+#' @param i2 xxxx
+#' @param leq xxxx
+#' @param disp xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+genQseq0 = function(qProb,K,map,i1,i2,leq,disp=0)
+##################################################################
+{
+  labs = c(K$lab[i1],K$lab[i2])
+  #labs = unlist(labs)
+
+  ind = unique(labs)
+  le = length(qProb)
+  if (le==1) ind=1
+  Qseq=c()
+
+  for (ii in 1:length(ind))
+  {
+    	#
+	k = min(length(qProb),ind[ii])
+	prob1 = qProb[k]
+  	q1= quantile(map$krigGrid,na.rm=TRUE,prob=prob1)
+    	q2 = quantile(map$krigGrid,na.rm=TRUE,prob= min(prob1 + 0.1, 0.99))
+  	Qseq = c(Qseq,(seq(q1,q2,length.out=leq)))
+  	q3 = quantile(map$krigGrid,na.rm=TRUE,prob= max(prob1 - 0.1, 0.01))
+	Qseq = c(Qseq,(seq(q1,q3,length.out=leq)))
+
+    }
+  Qseq=sort(unique(Qseq))
+  if (disp>0)
+     {
+	print("Qseq=")
+  	print(Qseq)
+	}
+  return(Qseq)
 }
 
 ##################################################################
 #' genQseq
 #'
 #' @details description, a paragraph
-#' @param qProb probability vector used to generate quantile values
-#' @param K zoning object, as returned by the calNei function
-#' @param map object returned by function genMap
+#' @param qProb xxxx
+#' @param K xxxx
+#' @param map xxxx
 #' @param i1 current zone index
 #' @param i2 englobing zone index
-#' @param LEQ length of quantile sequence 
-#' @param MAXP maximum shift from center for quantile sequence 
-#' @param disp 0: no info, 1: some info
+#' @param LEQ xxxx
+#' @param MAXP xxxx
+#' @param disp xxxx
 #'
 #' @return a plot
 #'
 #' @export
-#' data(mapTest)
+#'
 #' @examples
-#' qProb=c(0.4,0.7)
-#' ZK=initialZoning(qProb,mapTest)
-#' K=ZK$resZ
-#' print(K$lab)
-#' genQseq(qProb,K,mapTest,1,2) # from label 3 to label 2
 #' # not run
 genQseq = function(qProb,K,map,i1,i2,LEQ=5,MAXP=0.1,disp=0)
 ##################################################################
@@ -594,36 +968,218 @@ genQseq = function(qProb,K,map,i1,i2,LEQ=5,MAXP=0.1,disp=0)
 }
 
 ##################################################################
-#' checkContour
+#' pointsSp
 #'
-#' @details check admissibility for contour line: surface >minSizeNG and refPoint close enough
-#' @param contourSp SpatialPolygons corresponding to closed contour line
-#' @param step grid resolution
-#' @param refPoint referene point
-#' @param minSizeNG zone area threshold under which a zone is not admissible
+#' @details description, a paragraph
+#' @param sp xxxx
+#' @param k xxxx
 #'
-#' @return Null if contour is not admissible or a list with components
-#' \describe{
-#' \item{contourSp}{SpatialPolygons corresponding to admissible contour}
-#' \item{}{polyBuff}{SpatialPolygons corresponding to gBuffer around admissible contour}
-#' }
-#' @importFrom sp Polygon
-#' @importFrom rgeos plot
-#' @importFrom rgeos gCentroid
+#' @return a plot
+#'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
-#'    mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
-#' rgeos::plot(pG)
-#' sp8 = contourToSpp(cL[[8]],0.1)$sp
-#' refPoint = rgeos::gCentroid(sp8)
-#' resp=checkContour(sp8,mapTest$step,refPoint)
-#' rgeos::plot(resp$contourSp,col="red",add=TRUE)
 #' # not run
-checkContour = function(contourSp,step,refPoint,minSizeNG=1e-3)
+pointsSp = function(sp,k=1)
+##################################################################
+{
+	p = sp@polygons[[1]]@Polygons[[k]]
+	points(p@coords,col="red")
+}
+
+##################################################################
+#' linesSp
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#' @param k xxxx
+#' @param lty xxxx
+#' @param col xxxx
+#' @param lwd xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+linesSp = function(sp,k=1,lty=1,col="red",lwd=1)
+##################################################################
+{
+	p = sp@polygons[[1]]@Polygons[[k]]
+	lines(p@coords,lty=lty,col=col)
+}
+
+##################################################################
+#' plotSp
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#' @param k xxxx
+#' @param xlim xxxx
+#' @param ylim xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+plotSp = function(sp,k=1,xlim,ylim)
+##################################################################
+{
+
+	p = sp@polygons[[1]]@Polygons[[k]]
+	cp=p@coords
+	if (missing(xlim)) xlim=range(cp[,"x"])
+	if (missing(ylim)) ylim=range(cp[,"y"])
+	plot(cp,type="b",col="blue",xlim=xlim,ylim=ylim)
+}
+
+##################################################################
+#' plotSp
+#'
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param map xxxx
+#' @param id xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+plotZ = function(Z,map=NULL,id=FALSE)
+##################################################################
+{
+	# IS 16/05/2017: comments for x11 device
+  #x11()
+	if (!is.null(map))
+   	   dispZ(map$step,matVal=map$krigGrid,zonePolygone=Z,boundary=map$boundary,nbLvl=0)
+	else
+  {
+	  dispZ(map$step,matVal=NULL, nbLvl=0, zonePolygone=Z,id=id)
+	}
+}
+
+##################################################################
+#' plotzf
+#'
+#' @details description, a paragraph Attention, voir la sortie de cette fonction en package!!!
+#' @param qProb xxxx
+#' @param map xxxx
+#' @param pdf1 xxxx
+#' @param FULL xxxx
+#' @param i xxxx
+#' @param vecj xxxx
+#' @param data xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#' @importFrom grDevices dev.off pdf x11
+#' @importFrom graphics lines title
+#'
+#' @examples
+#' # not run
+plotzf = function(qProb,map,pdf1=NULL,FULL=F,i,vecj,data=NULL)
+##################################################################
+{
+  # following funcCritereCNO
+  valRef=quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
+  if (missing(i) & missing(vecj))
+  {
+    best=searchNODcrit(qProb,length(zk),zk,critere,cost,costL,nz) #global variables
+    i=length(zf)
+    lq=length(qProb)
+    lev=paste("q",lq,sep="")
+    vecj=best[["ind"]][[lev]]
+    vecj=vecj[1]
+  }
+
+  if(!is.null(pdf1)) pdf("fig.pdf")
+  # IS 19/05/2017: add comment for x11
+  #else x11()
+
+  for (j in vecj)
+  {
+    if(length(zf[[i]][[j]])>9) FULL=TRUE
+    dispZ(map$step,map$krigGrid,zonePolygone=zf[[i]][[j]],K=zk[[i]][[j]],boundary=map$boundary,nbLvl=0,id=FALSE)
+    title(paste(data, " valRef=[",toString(round(valRef,2)),"]   critere=",round(critere[[i]][[j]],2),sep=""))
+  }
+
+  if(!is.null(pdf1))
+  {
+	  dev.off() #close fig.pdf file
+	  system("cp MOD.matDistance1.tex mdist.tex")
+	  if(!FULL) write("\\begin{minipage}[l]{0.5\\linewidth}",file="mdist.tex",append=TRUE)
+    #insertion du graphique à partir d'un pdf,fin de la minipage
+  	write(paste("\\includegraphics[width=\\linewidth]{","fig.pdf}",sep=""),file="mdist.tex",append=TRUE)
+	  if(!FULL)
+		{
+		  write("\\end{minipage}\\hfill",file="mdist.tex",append=TRUE)
+      #nouvelle minipage avec la matrice des distances 1 à coté du graphique
+  	  write("\\begin{minipage}[r]{0.5\\linewidth}",file="mdist.tex",append=TRUE)
+	    write("\\tiny",file="mdist.tex",append=TRUE)
+		}
+	  write(print(xtable(mdist[[i]][[j]]),table.placement=NULL,latex.environment="",floating.environment="center"),
+	        file="mdist.tex",append=TRUE)
+
+  	if(!FULL) write("\\end{minipage}",file="mdist.tex",append=TRUE)
+  	write("\\end{document}",file="mdist.tex",append=TRUE)
+
+	  system("pdflatex mdist")
+	  system(paste("mv mdist.pdf",pdf1))
+  }
+  return(c(i,j))
+}
+
+##################################################################
+#' calczf
+#'
+#' @details description, a paragraph
+#' @param qProb xxxx
+#' @param map xxxx
+#' @param optiCrit xxxx
+#' @param minSize xxxx
+#' @param minSizeNG xxxx
+#' @param disp xxxx
+#' @param pdf1 xxxx
+#' @param FULL xxxx
+#' @param data xxxx
+#'
+#' @return a list
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+calczf = function(qProb,map,optiCrit,minSize,minSizeNG,disp=0,pdf1=NULL,FULL=FALSE,data=NULL)
+##################################################################
+{
+  crit2=correctionTree(qProb,map,pErr=0.9,optiCrit=2,minSize=minSize,minSizeNG=minSizeNg,distIsoZ=distIsoZ,
+                       simplitol=simplitol,LEQ=5,MAXP=0.1,LASTPASS=TRUE,disp=0,SAVE=TRUE,ONE=FALSE)
+  ij=plotzf(qProb,map,pdf1=pdf1,FULL=FULL,data=data)
+  return(list(crit=crit2,ij=ij))
+}
+
+##################################################################
+#' checkContour
+#'
+#' @details description, a paragraph
+#' @param contourSp xxxx
+#' @param step xxxx
+#' @param refPoint xxxx
+#' @param minSizeNG xxxx
+#'
+#' @return a plot
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+checkContour = function(contourSp,step,refPoint,minSizeNG)
 ##################################################################
 {
 	#  contourSp  spatial object
@@ -639,18 +1195,174 @@ checkContour = function(contourSp,step,refPoint,minSizeNG=1e-3)
 }
 
 ##################################################################
-#' cleanSp
+#' printInterZ
 #'
-#' @details removes from sp polygons that are too small (artefacts of gDifference)
-#' @param sp SpatialPolygons
-#' @param tol minimum area for removal
-#' @return a SpatialPolygons
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param sp xxxx
+#'
+#' @return a message?
 #'
 #' @export
 #'
 #' @examples
 #' # not run
-cleanSp = function(sp,tol=1e-5)
+printInterZ = function(Z,sp)
+##################################################################
+{
+	le=length(Z)
+	if (le == 0) return()
+	for (i in (1:le))
+	{
+		print(paste("i=",i,"intersec=",gIntersects(Z[[i]],sp)))
+	}
+}
+
+##################################################################
+#' normD
+#'
+#' @details description, a paragraph
+#' @param DataObj xxxx
+#' @param boundary xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+normD = function(DataObj,boundary)
+##################################################################
+{
+
+	xmin=min(boundary$x)
+	xmax=max(boundary$x)
+	ymin=min(boundary$y)
+	ymax=max(boundary$y)
+	if (abs(xmax-xmin) < 1e-6) return(NULL)
+	if (abs(ymax-ymin) < 1e-6) return(NULL)
+
+	x=DataObj[,1]
+	y=DataObj[,2]
+	x = (x-xmin)/(xmax-xmin)
+	y = (y-ymin)/(ymax-ymin)
+	DataObj[,1]=x
+	DataObj[,2]=y
+
+	return(DataObj)
+
+}
+
+##################################################################
+#' denormD
+#'
+#' @details description, a paragraph
+#' @param DataObj xxxx
+#' @param boundary xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+denormD = function(DataObj,boundary)
+##################################################################
+{
+	xmin=min(boundary$x)
+	xmax=max(boundary$x)
+	ymin=min(boundary$y)
+	ymax=max(boundary$y)
+	x=DataObj[,1]
+	y=DataObj[,2]
+	x=(x*(xmax-xmin))+xmin
+	y=(y*(ymax-ymin))+ymin
+	DataObj[,1]=x
+	DataObj[,2]=y
+
+	return(DataObj)
+}
+
+##################################################################
+#' createHoles
+#'
+#' @details description, a paragraph
+#' @param Z xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+createHoles = function(Z)
+##################################################################
+{
+	NZ = length(Z)
+	hole = matrix(NA,nrow=NZ,ncol=NZ)
+	Z1 = Z
+	for (iZ in 1:NZ)
+	{
+		for (kZ in 1:NZ)
+		{
+			if (iZ == kZ) next
+			h=gContains(Z[[iZ]],Z[[kZ]])
+			hole[iZ,kZ]=h
+			if(h)
+			{
+				#kz is within iz, create corresp. hole in iz
+				Z1[[iZ]]=gDifference(Z[[iZ]],Z[[kZ]])
+			}
+		} #end for kZ
+	}
+	#end for iZ
+	print(hole)
+	return(Z1)
+}
+
+##################################################################
+#' moveHoles
+#'
+#' @details description, a paragraph
+#' @param zonePrinc xxxx
+#' @param zoneSuppr xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+moveHoles = function(zonePrinc,zoneSuppr)
+##################################################################
+{
+	Zone1=zonePrinc
+
+	le=nPolySp(zoneSuppr)
+	for ( i in 1:le)
+	{
+		poly=zoneSuppr@polygons[[1]]@Polygons[[i]]
+		polys=Polygons(list(poly),"id")
+		polySp = SpatialPolygons(list(polys))
+		if(poly@hole) Zone1=gDifference(Zone1,polySp)
+	}
+
+	return(Zone1)
+}
+
+##################################################################
+#' cleanSp
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+cleanSp = function(sp)
 ##################################################################
 {
   # number of polygons
@@ -663,7 +1375,7 @@ cleanSp = function(sp,tol=1e-5)
   {
 	  poly=sp@polygons[[1]]@Polygons[[i]]
 	  area=poly@area
-	  if (area >= tol)
+	  if (area >= 1e-5)
 	   {
 	   k=k+1
 	   polyl[[k]]=poly
@@ -678,23 +1390,108 @@ cleanSp = function(sp,tol=1e-5)
 }
 
 ##################################################################
-#' ptInSp
+#' interContourZ
 #'
-#' @details finds data points in sp
-#' @param sp SpatialPolygons
-#' @param pts data points
-#' @param hole if TRUE also consider points in holes
+#' @details description, a paragraph
+#' @param Z xxxx
+#' @param contour xxxx
 #'
-#' @return a data frame with data points within sp
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' Z=resZTest$zonePolygone
-#' ptsInSp(Z[[5]],mapTest$krigData) # 5 data points within zone 5
+#' # not run
+interContourZ=function(Z,contour)
+##################################################################
+{
+# contour vient de contourAuto (fonction contourLines)
+# le transformer en spatialLines
+        contourSp=ContourLines2SLDF(list(contour))
+	listePolygoneTemp=list()
+	polyBuff=gBuffer(contourSp,width=1e-3)
+	listId=list()
+	for (j in (1:length(Z)))
+      {
+
+          #On tente d'intersecter la ligne de niveau avec ce polygone
+          # Si l'intersection existe bien, on renvoie les deux polygones qui en résultent
+        if(gIntersects(Z[[j]],contourSp))
+          {
+            polyDiff=gDifference(Z[[j]],polyBuff)
+
+            # - Fonction qui récupère dans une structure le premier polygone non trou,avec tous ses voisins,puis le deuxième,puis le troisième,etc.
+            recupPoly=separationPoly(polyDiff)
+
+            listePolygoneTemp[[2*(j)-1]]=recupPoly[[1]]
+            #continuer execution mais générer un warning si jamais il y a plus de 3 polygones non trou
+
+            if (length(recupPoly) > 1){
+              listePolygoneTemp[[2*(j)]]=recupPoly[[2]]
+            }
+
+            #if(length(recupPoly)>2)
+            #{
+             # warning("un isocontour définit 3 zones ou plus: incohérent (dans foncMapAlea-zoneGeneration)")
+            #}
+          }
+          else #Sinon on renvoie original et un NULL
+          {
+            listePolygoneTemp[[2*(j)-1]]=Z[[j]]
+            listePolygoneTemp[[2*(j)]]=NULL
+          }
+      } # fin boucle sur polygones
+
+      # On ne garde que les éléments non nuls
+      iNonNuls=grep(FALSE,lapply(listePolygoneTemp,is.null))
+      if (length(iNonNuls)==0) return(NULL)
+      Z=listePolygoneTemp[iNonNuls]
+}
+
+##################################################################
+#' ptInZone
 #'
+#' @details description, a paragraph
+#' @param zone xxxx
+#' @param pts xxxx
+#' @param numpt xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#' @importFrom sp point.in.polygon
+#'
+#' @examples
+#' # not run
+ptInZone=function(zone,pts,numpt)
+##################################################################
+{
+	PointsSpatiaux=SpatialPoints(pts)
+	logicalPoly=point.in.polygon(PointsSpatiaux$x,PointsSpatiaux$y,zone@polygons[[1]]@Polygons[[1]]@coords[,1],zone@polygons[[1]]@Polygons[[1]]@coords[,2])
+    if(length(zone@polygons[[1]]@Polygons)>1)
+    {
+      #on prend en compte les points qui sont dans les trous
+      for(k in 2:length(zone@polygons[[1]]@Polygons))
+      {
+        logicalPoly=logicalPoly-point.in.polygon(PointsSpatiaux$x,PointsSpatiaux$y,zone@polygons[[1]]@Polygons[[k]]@coords[,1],zone@polygons[[1]]@Polygons[[k]]@coords[,2])
+      }
+    }
+    return(logicalPoly[numpt])
+}
+
+##################################################################
+#' ptInZone
+#'
+#' @details description, a paragraph
+#' @param sp xxxx
+#' @param pts xxxx
+#' @param hole xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
 #' # not run
 ptsInSp=function(sp,pts,hole=FALSE)
 ##################################################################
@@ -703,7 +1500,7 @@ ptsInSp=function(sp,pts,hole=FALSE)
 	logicalPoly=point.in.polygon(PointsSpatiaux$x,PointsSpatiaux$y,sp@polygons[[1]]@Polygons[[1]]@coords[,1],sp@polygons[[1]]@Polygons[[1]]@coords[,2])
     if(hole && (length(sp@polygons[[1]]@Polygons)>1))
     {
-      #pts in holes
+      #on prend en compte les points qui sont dans les trous
       for(k in 2:length(sp@polygons[[1]]@Polygons))
       {
         logicalPoly=logicalPoly-point.in.polygon(PointsSpatiaux$x,PointsSpatiaux$y,sp@polygons[[1]]@Polygons[[k]]@coords[,1],sp@polygons[[1]]@Polygons[[k]]@coords[,2])
@@ -714,40 +1511,61 @@ ptsInSp=function(sp,pts,hole=FALSE)
 }
 
 ##################################################################
-#' searchNODcrit
+#' normSize
 #'
 #' @details description, a paragraph
-#' @param qProb probability vector used to generate quantile values
-#' @param le level index
-#' @param zk list of zonings
-#' @param criterion list of criteria
-#' @param cost list of costs
-#' @param costL list of per label costs 
-#' @param nz list of numbers of zones
+#' @param boundaryN xxxx
+#' @param minSize xxxx
+#' @param minSizeNG xxxx
 #'
-#' @return a list with components
-#'\describe{
-#' \item{ind}{index of last level zoning that has the higher criterion value}
-#' \item{critList}{criterion value corresponding to best last level zoning}
-#' \item{costlist}{cost value corresponding to best last level zoning}
-#' \item{costLlist}{cost per label value corresponding to best last level zoning}
-#' \item{nzList}{number of zones of best last level zoning}
-#' \item{nq}{lenght of quantile vector}
-#' }
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#'qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
-#'res=searchNODcrit1(qProb,criti)
 #' # not run
-searchNODcrit=function(qProb,le,zk,criterion,cost,costL,nz)
+normSize=function(boundaryN,minSize,minSizeNG)
+##################################################################
+{
+# normalize threshold for small zone detection
+#
+coords=boundaryN
+poly=Polygon(coords)
+polys=Polygons(list(poly),"id")
+boundarySp = SpatialPolygons(list(polys))
+boundaryArea=gArea(boundarySp)
+minSize=minSize/boundaryArea
+minSizeNG=minSizeNG/boundaryArea
+print(paste("after standardization minSize=",minSize,"minSizeNG=",minSizeNG))
+
+return(list(minSize=minSize,minSizeNG=minSizeNG))
+}
+
+##################################################################
+#' searchNODcrit
+#'
+#' @details description, a paragraph
+#' @param qProb xxxx
+#' @param le xxxx
+#' @param zk xxxx
+#' @param critere xxxx
+#' @param cost xxxx
+#' @param costL xxxx
+#' @param nz xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+searchNODcrit=function(qProb,le,zk,critere,cost,costL,nz)
 ##################################################################
 {
 # zk: list of zonings
 # le: list index
 # crit: list of criteria
-   critf=unlist(criterion[[le]])
+   critf=unlist(critere[[le]])
    costf=unlist(cost[[le]])
    costfL=unlist(costL[[le]])
    nzf=unlist(nz[[le]])
@@ -801,118 +1619,47 @@ searchNODcrit=function(qProb,le,zk,criterion,cost,costL,nz)
     }#end while
   return(list(ind=ind,critList=bestcrit,costList=bestcost,costLList=bestcostL,nzList=bestnz,nq=nq))
 }
+
 ##################################################################
-searchNODcrit1=function(qProb,crit)
-#' searchNODcrit1
+#' printLabZ
 #'
 #' @details description, a paragraph
-#' @param qProb probability vector used to generate quantile values
-#' @param crit result of call to correctionTree (with SAVE=TRUE)
+#' @param zkl xxxx
 #'
-#' @return a list with components
-#'\describe{
-#' \item{ind}{index of last level zoning that has the higher criterion value}
-#' \item{critList}{criterion value corresponding to best last level zoning}
-#' \item{costlist}{cost value corresponding to best last level zoning}
-#' \item{costLlist}{cost per label value corresponding to best last level zoning}
-#' \item{nzList}{number of zones of best last level zoning}
-#' }
+#' @return a ?
+#'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.1,0.2,0.4);criti=correctionTree(qProb,mapTest) # 2 zonings at last level
-#' res=searchNODcrit1(qProb,criti)# best one is frist element of last level
 #' # not run
+printLabZ=function(zkl)
 ##################################################################
 {
-# zk: list of zonings
-# le: list index
-
-zk=crit$zk
-cr=crit$criterion
-cost=crit$cost
-costL=crit$costL
-nz=crit$nz
-le=length(zk)
-
-# crit: list of criteria
-   critf=unlist(cr[[le]])
-   costf=unlist(cost[[le]])
-   costfL=unlist(costL[[le]])
-   nzf=unlist(nz[[le]])
-#
- # check for degenerated zonings
-  # number of zone labels < number of quantiles+1
-  # if labels start at 1
-    nq0=length(qProb)+1
-  # compute number of labs for each solution
-    nqf=c()
-    ind=list()
-    bestcrit=list()
-    bestcost=list()
-    bestcostL=list()
-    bestnz=list()
-    nq=list()
-
-    lk=length(zk[[le]])
-    kk=1:lk
-    
-    for (ilab in 1:lk)
-    {
-	u=unique(zk[[le]][[ilab]]$lab)
-	lu=length(u)
-	nqf=c(nqf,lu)
-    }
-  
-    while (nq0>1)
-    {
-    maskNOD=(nqf==nq0)
-    critq=critf[maskNOD]
-    
-    if(!is.na(critq) && (length(critq)>0))
+#zkl is a list of several Ks
+	lk=length(zkl)
+	labZ=list()
+	for (k in 1:lk)
 	{
-	ii=which(critq == max(critq)) #search from the best non degenerated ones
-	critmax=critq[ii]
-	# find original index in critf vector
-	k0=kk[maskNOD]
-	jj=k0[ii]
-	labq=paste("q",nq0-1,sep="")
-    	ind[[labq]]=jj
-	bestcrit[[labq]]=critf[jj]
-	bestcost[[labq]]=costf[jj]
-	bestcostL[[labq]]=costfL[jj]
-	bestnz[[labq]]=nzf[jj]
-	nq[[labq]]=nq0-1
-    
- 	}
-     nq0=nq0-1
-    	
-    }#end while
- 
-     return(list(ind=ind,critList=bestcrit,costList=bestcost,costLList=bestcostL,nzList=bestnz,nq=nq))
+		labk=unlist(zkl[[k]]$lab)
+		labq=paste(length(unique(labk))-1,"q",sep="")
+		labZ[[k]]=labk
+		print(paste(labq,"zone labels=",labZ[k]))
+	}
+	return(labZ)
 }
 
 ##################################################################
 #' normDistMat
 #'
-#' @details normalize distance matrix so that diagonal is equal to 1
-#' @param matDistanceCorr corrected distance matrix using pErr, result of calDistance
-#' @param optiCrit criterion choice
+#' @details description, a paragraph
+#' @param matDistanceCorr xxxx
+#' @param optiCrit xxxx
 #'
-#' @return a normalized distance matrix
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' # load test map with simulated data
-#' data(mapTest)
-#' # load zoning results from test file
-#' data(resZTest)
-#' K=resZTest
-#' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
-#'         mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-#' normDistMat(resD$matDistanceCorr,2)
 #' # not run
 normDistMat=function(matDistanceCorr,optiCrit)
 ##################################################################
@@ -929,29 +1676,210 @@ return(normMD)
 }
 
 ##################################################################
-#' linesC
+#' trLabZone
 #'
-#' @details add contour Lines to plot
-#' @param listContour list of contour lines
-#' @param col line color
+#' @details description, a paragraph
+#' @param K1 xxxx
+#' @param K2 xxxx
+#' @param Z1 xxxx
+#' @param Z2 xxxx
+#' @param map xxxx
+#' @param qProb xxxx
+#' @param disp xxxx
 #'
-#' @return an empty value
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' cL=list()
-#' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' plot(mapTest$boundary)
-#' linesC(cL,col="black")
 #' # not run
-linesC = function(listContour,col="blue")
+trLabZone=function(K1,K2,Z1,Z2,map,qProb,disp=0)
+##################################################################
+#transfer zone labels from K1 to K2
+# ids of zones in Z1 and Z2 used to guide transfer
+
+{
+# only K2$lab is modified
+# by taking labels from K1
+lab2=rep(1,length(Z2))
+
+lab1=K1$lab
+id1s=getIds(Z1)
+q1 = quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
+
+for (iZ in 1:length(Z2))
+{
+	id2=getId(Z2,iZ)
+	numid1=which(id1s==id2)
+	if (length(numid1) >1)
+	{
+		print(id1s)
+		print(id2)
+	}
+	if (length(numid1)!=0)
+	   lab2[iZ]=lab1[numid1]
+	else #new zone id was created - find its label
+	{
+		for (j in 1:length(q1))
+    		{
+      		if (K2$meanZone[iZ]>(q1[j]+0.1))
+      		   {
+		   lab2[iZ]=j+1
+      		   }
+
+		}
+	}
+
+}
+K2$lab=lab2
+
+if(disp)
+	{
+	printZid(Z1)
+	print(K1$lab)
+	print(K2$lab)
+	}
+return(K2)
+}
+
+##################################################################
+#' getClosestZone
+#'
+#' @details description, a paragraph
+#' @param iC xxxx
+#' @param Z xxxx
+#' @param K xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+getClosestZone=function(iC,Z,K)
 ##################################################################
 {
-for (i in 1:length(listContour))
+	imin=0
+	ni=1:length(Z)
+	# exclude current zone
+	ni=ni[ni != iC]
+
+	# exclude neighbor zones
+	Ns=getNs(K,iC)
+  	listeV=grep(TRUE, Ns)
+	for (i in listeV) ni=ni[ni != i]
+
+	# exclude englobing zone
+	iE = detZoneEng(iC,Z,K)
+	#
+	if(iE != 0) ni = ni[ni !=iE]
+
+	# exclude included zones
+	ir=NULL
+	for (i in ni)
+          {
+	  gb = gBuffer(gConvexHull(Z[[iC]]),byid=TRUE,width=1e-3)
+	  if(gContains(gb,Z[[i]])) ir=c(ir,i)
+	  }
+	for (i in ir) ni =ni[ni != i]
+
+	# compute distances to remaining zones
+	d0 = 1
+	for (i in ni)
+          {
+		d=gDistance(Z[[iC]],Z[[i]])
+		if (d<=d0)
+		   {
+		   imin=i
+		   d0=d
+		   }
+	}
+
+return(imin)
+
+}
+
+##################################################################
+#' find contour for a given vRef quantile value
+#'
+#' @details description, a paragraph
+#' @param iC xxxx
+#' @param Z xxxx
+#' @param K xxxx
+#' @param map xxxx
+#' @param vRef xxxx
+#' @param envel xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+findCinZ = function(iC,Z,K,map,vRef,envel)
+##################################################################
 {
-	lines(listContour[[i]],col=col)
+  # find contour for a given vRef quantile value
+  # contour contains Z[[ic]]
+  # contour included in envel (spatial Polygon)
+  # init
+  area=0
+  #
+  listeContour=list()
+  listeContour = contourAuto(listeContour,map$step,map$krigGrid,vRef,map$boundary)
+
+  # intersect contour with boundary
+  # and transform contours into sps
+  sp=list()
+  k=0
+  for (cont in listeContour)
+  {
+     k=k+1
+     ps = interCB(cont,map$step,envel=envel)
+     # returns NULL is contour is degenerate (single point)
+     if(!is.null(ps)) sp[[k]]=ps else k=k-1
+  }
+
+  # check which one contains current zone
+  spb = sapply(sp,gBuffer,width=1e-3)
+  gc = sapply(spb,gContains,Z[[iC]])
+  # test if contour is included in envel
+  gci = sapply(spb, gWithin, envel)
+
+  numc=1:length(sp) # number of non degenerated contours
+  ga = sapply(sp,gArea)
+  ind = numc[gc & gci]
+  # ind may be empty - otherwise take the biggest contour area
+  if(length(ind)==0) return(NULL)
+
+  imax = which(ga[ind]==max(ga[ind]))
+  imax = imax[1]
+  im = numc[ind[imax]]
+  area = max(ga[ind])
+  contourSp = sp[[im]]
+
+  return(list(area=area,contourSp=contourSp))
+}
+
+##################################################################
+#' linesC
+#'
+#' @details description, a paragraph
+#' @param listeContour xxxx
+#' @param col xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+linesC = function(listeContour,col="blue")
+##################################################################
+{
+for (i in 1:length(listeContour))
+{
+	lines(listeContour[[i]],col=col)
 	}
 return()
 }
@@ -959,40 +1887,32 @@ return()
 ##################################################################
 #' interCB
 #'
-#' @details generates SpatialPolygons object corresponding to intersection of contour with boundary, must be within SpatialPolygons given in envel argument
-#' @param co contour line
-#' @param step map grid resolution
-#' @param bd map boundary
-#' @param envel envelope
-#' @param disp info level (0-no info, 1- add lines to plot)
-#' @importFrom sp Polygon
-#' @importFrom sp plot
-#' @return a SpatialPolygons
+#' @details description, a paragraph
+#' @param contour1 xxxx
+#' @param step xxxx
+#' @param bd xxxx
+#' @param envel xxxx
+#' @param disp xxxx
+#'
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
-#' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
-#'    mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' ps = interCB(cL[[8]],mapTest$step,mapTest$boundary,pG)#envelope is the whole map
-#' sp::plot(pG)
-#' sp::plot(ps,col="red",add=TRUE)
 #' # not run
-interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
-##############################################################################
+interCB = function(contour1,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
+##################################################################
 {
   #returns spatial polygon corresponding to intersection of contour with boundary
   #
 	polygoneGlobal=SpatialPolygons(list(Polygons(list(Polygon(bd, hole = FALSE)), "1")))
-	contourL = ContourLines2SLDF(list(co))
-	polyBuff=gBuffer(contourL,width=0.0001*step)
+	contourL = ContourLines2SLDF(list(contour1))
+	polyBuff=gBuffer(contourL,width=0.0001*(1/step))
 	polyDiff=gDifference(polygoneGlobal,polyBuff)
-  	recupPoly=separationPoly(polyDiff)
+  recupPoly=separationPoly(polyDiff)
 
 	ler=length(recupPoly)
-	if(ler<2) return(NULL) # intersection=boundary -> degenerate contour
+	if(ler<2) return(NULL) # intersection=cadre -> degenerate contour
 
 	sp1=recupPoly[[1]] #
 	sp2=recupPoly[[2]] #
@@ -1010,19 +1930,14 @@ interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 ##################################################################
 #' getNq
 #'
-#' @details determine size of quantile  in result from correctionTree
-#' @param critList component critList of result from correctionTree
+#' @details description, a paragraph
+#' @param critList xxxx
 #'
-#' @return a vector with the size of quantile vectors for each zoning corresponding to critList
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving only best last level results
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE) 
-#' getNq(criti$critList)
 #' # not run
 getNq=function(critList)
 ##################################################################
@@ -1040,34 +1955,35 @@ getNq=function(critList)
 ##################################################################
 #' addContour
 #'
-#' @details add contour lines to plot
-#' @param map object returned by function genMap
-#' @param val quantile value vector
-#' @param col color parameter
-#' @param super if TRUE add to existing plot lines coresponding to contour, if FALSE plot boundary and add lines
+#' @details description, a paragraph
+#' @param map xxxx
+#' @param val xxxx
+#' @param col xxxx
+#' @param super xxxx
 #'
-#' @return void
-#' 
+#' @return a ?
+#'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' addContour(mapTest,c(5,7),super=FALSE)
 #' # not run
-addContour=function(map,val,col="blue",super=TRUE)
+addContour=function(map,val,col="blue",super=T)
 ##################################################################
 {
+# IS 19/05/2017 change boundary by map$boundary!
 for ( v in val)
   {
-    cL=list()
-    cL = contourAuto(cL,map$step,map$xsize,map$ysize,map$krigGrid,v,map$boundary)
-    lc = length(cL)
+    listeContour=list()
+    listeContour = contourAuto(listeContour,map$step,map$krigGrid,v,map$boundary)
+    lc = length(listeContour)
+    # intersect contour with boundary
+    # and transform contours into sps
     if (lc >0)
     {
 	    sp=list()
 	    if (!super) plot(map$boundary,type="l") # new plot
     	for (k in 1:lc)
-    	   lines(cL[[k]],col=col) # add contour to existing plot
+    	   lines(listeContour[[k]],col=col) # add contour to existing plot
   	}
   }
   return()
@@ -1076,27 +1992,29 @@ for ( v in val)
 ##########################################################################
 #' extractionPoly
 #'
-#' @details extract all elements from SpatialPolygons, holes and full polygons are handled equally 
-#' @param polyTot SpatialPolygons
+#' @details description, a paragraph
+#' @param polyTot xxxx
 #'
-#' @return a list of SpatialPolygons
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' ZK=initialZoning(qProb=c(0.2,0.4,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
 #' # not run
 extractionPoly=function(polyTot)
 ###########################################################################
 {
-  inPoly=polyTot@polygons[[1]]@Polygons
-  listPolyExtract=list()
-  for(i in (1:length(inPoly)))
+#fonction permettant d'extraire chaque sous-élément d'un spatial polygone dans un Spatial Polygone qui lui est propre
+#(gestion identique des trous et des polygones pleins)
+#entrée:SpatialPolygons
+#sortie:liste de SpatialPolygons contenant les sous-éléments du précédent
+
+  contenuPoly=polyTot@polygons[[1]]@Polygons
+  listePolyExtract=list()
+  for(i in (1:length(contenuPoly)))
   {
-    listPolyExtract[[i]]=SpatialPolygons(list(Polygons(list(inPoly[[i]]), "1")))
+    listePolyExtract[[i]]=SpatialPolygons(list(Polygons( contenuPoly[[i]] , "1")))
+
   }
 
 
@@ -1106,18 +2024,16 @@ extractionPoly=function(polyTot)
 ###################################
 #' plotVario
 #'
-#' @details plot empirical variogram for model and data in map (raw data plus kriged data)
-#' @param map object returned by function genMap
-#' @param ylim range of y axis 
+#' @details description, a paragraph
+#' @param map xxxx
+#' @param ylim xxxx
 #'
-#' @return a plot
+#' @return a ?
 #'
 #' @export
 #' @importFrom RandomFields RFempiricalvariogram
 #'
 #' @examples
-#' data(mapTest)
-#' plotVario(mapTest)
 #' # not run
 plotVario=function(map,ylim=NULL)
 ###################################
@@ -1132,6 +2048,8 @@ plotVario=function(map,ylim=NULL)
 	{
 	  plot(empvario,model=modelGen,ylim=ylim)
 	  #kriged variogram
+    # IS 19/05/2017: add comment for x11
+    #x11()
 	  plot(empvarioK,model=modelGen,ylim=ylim,col="blue")
 	}
   else	plot(empvario)
@@ -1141,20 +2059,14 @@ plotVario=function(map,ylim=NULL)
 #' costLab
 #'
 #' @details description, a paragraph
-#' @param K zoning object, as returned by the calNei function
-#' @param map object returned by genMap function
+#' @param K xxxx
+#' @param map xxxx
 #'
-#' @return the sum of per label costs
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
-#' K=criti$zk[[1]][[1]] # initial zoning
-#' costLab(K,mapTest) #identical to criti$costL[[1]][[1]]
 #' # not run
 costLab=function(K,map)
 #########################
@@ -1182,32 +2094,17 @@ costLab=function(K,map)
 ################################################################
 #' SigmaL2
 #'
-#' @details compute overall mean and variance of all zones for each label plus sum of them for all labels
-#' @param zlab  list with zone numbers for each zone label
-#' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
-#' @param tabVal SpatialPointsDataFrame containing data values
-#' @param surfVoronoi Surfaces of the Voronoi polygons corresponding to data pts
+#' @details description, a paragraph
+#' @param zlab xxxx
+#' @param listZonePoint xxxx
+#' @param tabVal xxxx
+#' @param surfVoronoi xxxx
 #'
-#' @return a list with components
-#' \describe{
-#' \item{cL}{weighted (with Voronoi surfaces) average of per label variances}
-#' \item{SigmaL2}{vector of per label variances}
-#' \item{SL}{vector of per label Voronoi surfaces}
-#' \item{mL}{vector of weighted (with Voronoi surfaces) per label average values}
-#' \item{voroLab}{vector of per label data}
-#' }
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
-# save initial zoning and last level zonings
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
-#' K=criti$zk[[2]][[1]]
-#' uni=unique(K$lab)
-#' zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
-#' sig=SigmaL2(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
 #' # not run
 SigmaL2=function(zlab,listZonePoint,tabVal,surfVoronoi)
 ################################################################
@@ -1254,29 +2151,17 @@ SigmaL2=function(zlab,listZonePoint,tabVal,surfVoronoi)
 ################################################################
 #' meanL
 #'
-#' @details compute overall mean of all zones for each label 
-#' @param zlab  list with zone numbers for each zone label
-#' @param listZonePoint list of indices of data points within zones, result of call to \code{\link{calNei}}
-#' @param tabVal SpatialPointsDataFrame containing data values
-#' @param surfVoronoi Surfaces of the Voronoi polygons corresponding to data pts
+#' @details description, a paragraph
+#' @param zlab xxxx
+#' @param listZonePoint xxxx
+#' @param tabVal xxxx
+#' @param surfVoronoi xxxx
 #'
-#' @return a list with components
-#' \describe{
-#' \item{mL}{vector of weighted (with Voronoi surfaces) per label average values}
-#' \item{SL}{vector of per label Voronoi surfaces}
-#' }
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
-#' K=criti$zk[[2]][[1]]
-#' uni=unique(K$lab)
-#' zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
-#' resL=meanL(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
 #' # not run
 meanL=function(zlab,listZonePoint,tabVal,surfVoronoi)
 ################################################################
@@ -1303,31 +2188,266 @@ meanL=function(zlab,listZonePoint,tabVal,surfVoronoi)
       return(list(mL=mL,SL=SL))
 }
 
-######################################
-#' meansdSimu
+######################################################################
+#' listSeeds
 #'
-#' @details computes mean and standard deviation of a set of map simulations
-#' @param vseed list of simulation seeds
-#' @param krig type of kriging (1-variogram model-based, 2-inverse distance-based)
+#' @details description, a paragraph
 #'
-#' @return a matrix with as many rows as simulations, and 4 columns, the first two columns give mean and standard deviation of generated raw data, the last two columns give mean and standard deviation of kriged data
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' meansdSimu(c(1,2))
 #' # not run
-meansdSimu=function(vseed=NULL,krig=2)
+listSeeds=function()
+#######################################################################
+{
+a = system("ls res-simuseed*-4q*.csv",intern=TRUE)
+vseed=c()
+for (f in a)
+{
+	f1=strsplit(f,split="res-simuseed")[[1]][2]
+	f2=as.numeric(strsplit(f1,split="-")[[1]][1])
+	vseed=c(vseed,f2)
+}
+return(vseed)
+}
+
+###########################
+#' plotmdist
+#'
+#' @details description, a paragraph
+#' @param md xxxx
+#' @param pdf xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+plotmdist=function(md,pdf)
+###########################
+{
+	system("cp MOD.matDistance1.tex mdist.tex")
+	 write("\\tiny",file="mdist.tex",append=TRUE)
+ 	write(print(xtable(md,table.placement=NULL,latex.environment="",floating.environment="center")),file="mdist.tex",append=TRUE)
+	write("\\end{document}",file="mdist.tex",append=TRUE)
+	system("pdflatex mdist")
+	system(paste("mv mdist.pdf",pdf))
+	return()
+}
+
+###########################
+#' plotmat
+#'
+#' @details description, a paragraph
+#' @param m xxxx
+#' @param pdf xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#' @importFrom xtable xtable
+#'
+#' @examples
+#' # not run
+plotmat=function(m,pdf)
+###########################
+{
+	system("cp MOD.mat.tex mdist.tex")
+	 write("\\tiny",file="mdist.tex",append=TRUE)
+ 	write(print(xtable(m,table.placement=NULL,latex.environment="",floating.environment="center")),file="mdist.tex",append=TRUE)
+	write("\\end{document}",file="mdist.tex",append=TRUE)
+	system("pdflatex mdist")
+	system(paste("mv mdist.pdf",pdf))
+	return()
+}
+
+###########################
+#' plotOpt
+#'
+#' @details description, a paragraph
+#' @param seed xxxx
+#' @param pdf xxxx
+#' @param k xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+plotOpt=function(seed,pdf,k=5)
+###########################
+{
+	system("cp MOD.matDistance1.tex mdist.tex")
+	 write("\\tiny",file="mdist.tex",append=TRUE)
+	 file0=paste("opt-seed",seed,"crit-cost.pdf",sep="")
+	 system(paste("pdfcrop",file0,"toto.pdf"))
+	 system(paste("mv toto.pdf",file0))
+	 file1=paste("opt-seed",seed,"-critA.pdf",sep="")
+	 system(paste("pdfcrop",file1,"toto.pdf"))
+	 system(paste("mv toto.pdf",file1))
+	 file2=paste("opt-seed",seed,"-costA.pdf",sep="")
+	 system(paste("pdfcrop",file2,"toto.pdf"))
+	 system(paste("mv toto.pdf",file2))
+	 file3=paste("opt-seed",seed,"-m.pdf",sep="")
+	 system(paste("pdfcrop",file3,"toto.pdf"))
+	 system(paste("mv toto.pdf",file3))
+	 # adj plots
+	 gr0=paste("\\includegraphics[width=\\linewidth]{",file0,"}\\\\",sep="")
+	 write(gr0,file="mdist.tex",append=TRUE)
+	 # adj tables
+	gr2=paste("\\begin{tabular}{cc}\\includegraphics[width=0.5\\linewidth]{",file1,"}&\\includegraphics[width=0.5\\linewidth]{",file2,"}\\end{tabular}",sep="")
+ 	write(gr2,file="mdist.tex",append=TRUE)
+	gr3=paste("\\vspace{-5cm}\\includegraphics[scale=0.9]{",file3,"}\\\\",sep="")
+ 	write(gr3,file="mdist.tex",append=TRUE)
+	write("\\end{document}",file="mdist.tex",append=TRUE)
+	#
+	system("pdflatex mdist")
+	system(paste("mv mdist.pdf",pdf))
+
+	return()
+}
+
+#####################################
+#' getBestMloop
+#'
+#' @details description, a paragraph
+#' @param seed xxxx
+#' @param thr xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#' @importFrom utils read.table
+#'
+#' @examples
+#' # not run
+getBestMloop=function(seed,thr=0.5)
+#####################################
+{
+
+if(is.null(m1)) m1=read.table(paste("res-simuseed",seed,"-1q-pE0.3.csv",sep=""))
+if(is.null(m2)) m2=read.table(paste("res-simuseed",seed,"-2q-pE0.3.csv",sep=""))
+if(is.null(m3)) m3=read.table(paste("res-simuseed",seed,"-3q-pE0.3.csv",sep=""))
+if(is.null(m4)) m4=read.table(paste("res-simuseed",seed,"-4q-pE0.3.csv",sep=""))
+if(is.null(m5)) m5=read.table(paste("res-simuseed",seed,"-5q-pE0.3.csv",sep=""))
+# remove degenerate quantiles
+mask2=m2[,"nq"]==2
+mb2=m2[mask2,]
+mask3=m3[,"nq"]==3
+mb3=m3[mask3,]
+mask4=m4[,"nq"]==4
+mb4=m4[mask4,]
+mask5=m5[,"nq"]==5
+mb5=m5[mask5,]
+crit1=m1[1,"crit"]
+crit2=mb2[1,"crit"]
+crit3=mb3[1,"crit"]
+crit4=mb4[1,"crit"]
+crit5=mb5[1,"crit"]
+
+mask1=(-m1[,"crit"]+crit1)<=thr
+mask2=(-m2[,"crit"]+crit2)<=thr
+mask3=(-m3[,"crit"]+crit3)<=thr
+mask4=(-m4[,"crit"]+crit4)<=thr
+mask5=(-m5[,"crit"]+crit5)<=thr
+
+return(list(mb1=m1[mask1,],mb2=m2[mask2,],mb3=m3[mask3,],mb4=m4[mask4,],mb5=m5[mask5,]))
+}
+
+#####################################
+#' getKMloop
+#'
+#' @details description, a paragraph
+#' @param seed xxxx
+#' @param m1 xxxx
+#' @param m2 xxxx
+#' @param m3 xxxx
+#' @param m4 xxxx
+#' @param m5 xxxx
+#' @param k xxxx
+#' @param pE xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+getKMloop=function(seed,m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,k=5,pE=0.9)
+#####################################
+{
+
+if(is.null(m1)) m1=read.table(paste("res-simuseed",seed,"-1q-pE",pE,".csv",sep=""))
+if(is.null(m2)) m2=read.table(paste("res-simuseed",seed,"-2q-pE",pE,".csv",sep=""))
+if(is.null(m3)) m3=read.table(paste("res-simuseed",seed,"-3q-pE",pE,".csv",sep=""))
+if(is.null(m4)) m4=read.table(paste("res-simuseed",seed,"-4q-pE",pE,".csv",sep=""))
+if(is.null(m5)) m5=read.table(paste("res-simuseed",seed,"-5q-pE",pE,".csv",sep=""))
+# remove degenerate quantiles
+mask2=m2[,"nq"]==2
+mb2=m2[mask2,]
+mask3=m3[,"nq"]==3
+mb3=m3[mask3,]
+mask4=m4[,"nq"]==4
+mb4=m4[mask4,]
+mask5=m5[,"nq"]==5
+mb5=m5[mask5,]
+
+mb1=m1[1:k,]
+mb1=cbind(mb1[,-ncol(mb1)],matrix(NA,ncol=4,nrow=k),mb1[,ncol(mb1),])
+rownames(mb1)=paste("m1-",1:k,sep="")
+colnames(mb1)=c("crit","cost","costL","nz",paste("q",1:5,sep=""),"nq")
+mb2=m2[1:k,]
+mb2=cbind(mb2[,-ncol(mb2)],matrix(NA,ncol=3,nrow=k),mb2[,ncol(mb2),])
+rownames(mb2)=paste("m2-",1:k,sep="")
+colnames(mb2)=c("crit","cost","costL","nz",paste("q",1:5,sep=""),"nq")
+mb3=m3[1:k,]
+mb3=cbind(mb3[,-ncol(mb3)],matrix(NA,ncol=2,nrow=k),mb3[,ncol(mb3),])
+rownames(mb3)=paste("m3-",1:k,sep="")
+colnames(mb3)=c("crit","cost","costL","nz",paste("q",1:5,sep=""),"nq")
+mb4=m4[1:k,]
+mb4=cbind(mb4[,-ncol(mb4)],matrix(NA,ncol=1,nrow=k),mb4[,ncol(mb4),])
+rownames(mb4)=paste("m4-",1:k,sep="")
+colnames(mb4)=c("crit","cost","costL","nz",paste("q",1:5,sep=""),"nq")
+mb5=m5[1:k,]
+rownames(mb5)=paste("m5-",1:k,sep="")
+colnames(mb5)=c("crit","cost","costL","nz",paste("q",1:5,sep=""),"nq")
+
+return(rbind(mb1,mb2,mb3,mb4,mb5))
+}
+
+######################################
+#' meansdSimu
+#'
+#' @details description, a paragraph
+#' @param vseed xxxx
+#' @param krig xxxx
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+meansdSimu=function(vseed=NULL,krig=1)
 ######################################
 {
 
+if (is.null(vseed))
+{
+	vseed=listSeeds()
+}
 m=c()
 km=m
 sdd=m
 sdkd=m
 for (seed in vseed)
 {
-    map=genMap(DataObj=NULL,seed=seed,krig=krig,disp=0)
+
+    map=genMap(DataObj=NULL,seed=seed,disp=0,krig=krig)
     v=map$rawData
     v=v@data[,1]
     kv=map$krigData
@@ -1338,176 +2458,89 @@ for (seed in vseed)
     sdkd=c(sdkd,sd(kv))
     }
 mat=cbind(m,km,sdd,sdkd)
-rownames(mat)=paste(vseed)
 return(mat)
 }
 
 ######################################
-#' meanVarsimu
+#' calSurf
 #'
-#' @details computes mean and standard deviation of a set of map simulations
-#' @param map object generated by genMap
+#' @details description, a paragraph
+#' @param polyL xxxx
 #'
-#' @return a vector with  4 elements, the first two  give mean and standard deviation of generated raw data, the last two  give mean and standard deviation of kriged data
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' meansdSimu(c(1,2))
 #' # not run
-meanvarSimu=function(map)
+calSurf=function(polyL)
 ######################################
 {
-    v=map$rawData
-    v=v@data[,1]
-    kv=map$krigData
-    kv=kv@data[,1]
-    m=mean(v)
-    km=mean(kv)
-    sdd=sd(v)
-    sdkd=sd(kv)
-    vec=c(m,km,sdd,sdkd)
-    names(vec)=c("raw mean","kriged mean","raw sd","kriged sd")
-    return(vec)
-}
+  listeSurf=0
 
-###################
-valZ=function(map,K)
-#' valZ
-#'
-#' @details sorts zones according to attribute mean value
-#' @param map map object returned by genMap function
-#' @param K zoning object (such as returned by calNei function)
-#'
-#' @importFrom sp coordinates
-#' @importMethodsFrom sp coordinates
-#'
-#' @return a list with components
-#' \describe{
-#' \item{val}{list with vector of data values for each zone, zones are sorted by increasing mean values}
-#' \item{ord}{order of zones sorted by increasing mean values}
-#' }
-#'
-#' @export
-#'
-#' @examples
-#' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
-#' K=criti$zk[[2]][[1]]
-#' valZ(mapTest,K)
-#' # not run
-###################
-{
-tab=map$krigData
-pt=K$listZonePoint
-mu=K$meanZone
-ord=order(mu)
-val=list()
-k=0
-    for(ii in ord)
-    {
-      k=k+1
-      val[[k]]=tab[[1]][pt[[ii]]]
-    
-  }
-    
-  return(list(val=val,ord=ord))
-}
-
-###################
-#' orderZ
-#'
-#' @details sorts zones according to ord vector
-#' @param Z zoning geometry
-#' @param ord sorting order
-#'
-#' @importFrom sp coordinates
-#' @importMethodsFrom sp coordinates
-#'
-#' @return a zoning geometry (list of SpatialPolygons)
-#'
-#' @export
-#'
-#' @examples
-#' map=genMap(DataObj=NULL,seed=40,disp=FALSE,krig=1,Vnugget=1.2)
-#' qProb=c(0.275,0.8)
-#' criti=correctionTree(qProb,map,LASTPASS=FALSE)
-#' res=searchNODcrit1(qProb,criti)
-#' b=res$ind[[1]][1]
-#' K=criti$zk[[2]][[b]]
-#' Z=K$zonePolygone
-#' plotZ(Z)
-#' ord=valZ(map,K)$ord
-#' Z=orderZ(Z,ord)
-#' plotZ(Z)
-#' # not run
-###################
-orderZ=function(Z,ord)
-{
-k=0
-for (iZ in ord)
-{
-k=k+1
-Z=setId(Z,iZ,k)
-}
-return(Z)
-}
-
-
-#############################
-#' superLines
-#'
-#' @details converts boundary (list of x and y pts) into Spatial Lines
-#' @param boundary list, contains x and y coordinates of map boundaries
-#' @importFrom sp coordinates
-#' @importMethodsFrom sp coordinates
-#'
-#' @return a SpatialLines object
-#'
-#' @export
-#'
-#' @examples
-#' data(mapTest)
-#' superL=superLines(mapTest$boundary)
-#' sp::plot(superL)
-#' # not run
-superLines=function(boundary)
-#############################
-{
-  #transform boundary into SpatialLines
-  boundary = data.frame(boundary)
-  sp::coordinates(boundary)=~x+y
-  bl=Line(coordinates(boundary))
-  bspl=SpatialLines(list(Lines(list(bl),'1')))
-  bdLines = bspl@lines[[1]]@Lines[[1]]
-  listBdLines=list(Lines(list(Line(bdLines@coords[1:2,])),'1'))
-  for (i in 2:(length(bdLines@coords)/2-1))
+  #list of polys
+  for (i in 1:length(polyL))
   {
-    listBdLines[[i]] = Lines(list(Line(bdLines@coords[i:(i+1),])),paste(i))
+    #création d'une variable de type 'Polygons' à partir des sommets définissant les polygones
+    tmpPoly=Polygons(list(Polygon(data.frame(polyL[[i]]$x,polyL[[i]]$y))),paste("Pol",i,sep=""))
+    #then use gArea
+    listSurf[i]=gArea(SpatialPolygons(list(tmpPoly)))
   }
-  SuperLines = SpatialLines(listBdLines)
-  return(SuperLines)
+
+  return(listSurf)
 }
-####################
-#' r2
+
+##########################################################
+#' calRapPolygone
 #'
-#' @details adjusted R2
-#' @param reslm result of a call to lm 
+#' @details description, a paragraph
+#' @param Surf xxxx
+#' @param polyL xxxx
 #'
-#' @return the adjusted r-square of the lm model
+#' @return a ?
 #'
 #' @export
-#' @importFrom stats anova dist lm quantile sd
 #'
 #' @examples
 #' # not run
-r2=function(reslm)
-####################
+calRapPolygone=function(Surf,polyL)
+##########################################################
 {
-  s2T <- sum(anova(reslm)[[2]]) / sum(anova(reslm)[[1]])
-  MSE <- anova(reslm)[[3]][2]
-  adj.R2 <- (s2T - MSE) / s2T
-  return(adj.R2)
+	perim=0
+  #compute polygon perimeter
+	for (ib in 1:(length(polyL[[1]])-1))
+	{
+		perim=perim+as.numeric(dist(matrix( c(polyL[ib],polyL[ib+1],polyL[ib],polyL[ib+1]),2,2)))
+	}
+	return(Surf/(perim^2))
+}
+
+
+######################################
+#' transfoSpPoly
+#'
+#' @details description, a paragraph
+#' @param polyL xxxx
+#'
+#' @importFrom sp coordinates
+#' @importMethodsFrom sp coordinates
+#'
+#' @return a ?
+#'
+#' @export
+#'
+#' @examples
+#' # not run
+transfoSpPoly=function(polyL)
+######################################
+{
+	polyLSp=list(0)
+  #add to polyLSp a dataframe with polygon vertices
+  # make it a spatial object
+	for (i in 1:length(polyL))
+	{
+		polyLSp[[i]]=data.frame(x=polyL[[i]]$x,y=polyL[[i]]$y,col=0)
+		sp::coordinates(polyLSp[[i]])=~x+y
+	}
+	return(polyLSp)
 }

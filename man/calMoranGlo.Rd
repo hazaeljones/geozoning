@@ -2,16 +2,16 @@
 % Please edit documentation in R/funcCalIndices.R
 \name{calMoranGlo}
 \alias{calMoranGlo}
-\title{computes specific Moran criterion}
+\title{fonction calant un indice de Moran(adapté) entre les différentes zone,ou les différents points}
 \usage{
-calMoranGlo(matNZone, vectMean, meanTot, vectSurface)
+calMoranGlo(matVoisinZone, vectMoy, moyTot, vectSurface)
 }
 \arguments{
-\item{matNZone}{xxxx}
+\item{matVoisinZone}{xxxx}
 
-\item{vectMean}{xxxx}
+\item{vectMoy}{xxxx}
 
-\item{meanTot}{xxxx}
+\item{moyTot}{xxxx}
 
 \item{vectSurface}{xxxx}
 }
@@ -19,7 +19,7 @@ calMoranGlo(matNZone, vectMean, meanTot, vectSurface)
 a ?
 }
 \description{
-computes specific Moran criterion
+fonction calant un indice de Moran(adapté) entre les différentes zone,ou les différents points
 }
 \details{
 description, a paragraph

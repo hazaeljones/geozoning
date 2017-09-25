@@ -2,12 +2,12 @@
 % Please edit documentation in R/funcCalIndices.R
 \name{calMoranBTot}
 \alias{calMoranBTot}
-\title{computes Moran criterion on whole zoning}
+\title{fonction qui compute un critère de moran sur toute la carte}
 \usage{
-calMoranBTot(NZone, matDistanceMoranB, vectSurface)
+calMoranBTot(voisinZone, matDistanceMoranB, vectSurface)
 }
 \arguments{
-\item{NZone}{xxxx}
+\item{voisinZone}{xxxx}
 
 \item{matDistanceMoranB}{xxxx}
 
@@ -17,10 +17,10 @@ calMoranBTot(NZone, matDistanceMoranB, vectSurface)
 a ?
 }
 \description{
-computes Moran criterion on whole zoning
+fonction qui compute un critère de moran sur toute la carte
 }
 \details{
-computes Moran criterion on zoning
+description, a paragraph
 }
 \examples{
 # not run

@@ -7,29 +7,21 @@
 calZoneN(ptN, zoneN, listZonePoint)
 }
 \arguments{
-\item{ptN}{pt neighborhood Logical matrix}
+\item{ptN}{xxxx}
 
-\item{zoneN}{empty zone neighborhood Logical matrix}
+\item{zoneN}{xxxx}
 
-\item{listZonePoint}{list of indices of data points within zones}
+\item{listZonePoint}{xxxx}
 }
 \value{
-a list with component zoneN holding filled zone neighborhood Logical matrix
+a ?
 }
 \description{
 calZoneN
 }
 \details{
-calculate zone neighborhood
+description, a paragraph
 }
 \examples{
-data(mapTest)
-data(resZTest)
-K=resZTest
-ptN=mapTest$krigN
-nZ=length(K$zonePolygone)
-zoneN=matrix(logical(nZ*nZ),nZ,nZ)
-listZonePoint=K$listZonePoint
-calZoneN(ptN,zoneN,listZonePoint)
 # not run
 }

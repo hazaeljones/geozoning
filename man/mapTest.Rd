@@ -3,12 +3,12 @@
 \docType{data}
 \name{mapTest}
 \alias{mapTest}
-\title{a map}
-\format{a list of SpatialPolygons}
+\title{une carte décrire}
+\format{a list 9 SpatialPolygons}
 \usage{
 mapTest
 }
 \description{
-A map object for zoning, result from the genMap function
+A XXXXXX
 }
 \keyword{datasets}

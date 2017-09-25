@@ -7,23 +7,21 @@
 zoneGeneration(map, qProb = c(0.25, 0.75), GridData = FALSE)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{xxxx}
 
-\item{qProb}{probability vector used to generate quantile values}
+\item{qProb}{xxxx}
 
-\item{GridData}{logical value indicating if data are already on a regular grid (no kriging in that case)}
+\item{GridData}{xxxx}
 }
 \value{
-a list of zones, each zone is a SpatialPolygons
+a ?
 }
 \description{
 zoneGeneration
 }
 \details{
-Generates zones from map data using quantile values associated to given probabilities
+description, a paragraph
 }
 \examples{
-data(mapTest)
-Z=zoneGeneration(mapTest)
 # not run
 }

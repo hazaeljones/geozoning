@@ -7,21 +7,17 @@
 nPolySp(sp)
 }
 \arguments{
-\item{sp}{SpatialPolygons}
+\item{sp}{xxxx}
 }
 \value{
-the number of polygons within the current zone
+a numeric?
 }
 \description{
 nPolySp
 }
 \details{
-number of polygons in SpatialPolygons
-
-# not run
+description, a paragraph
 }
 \examples{
-ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-Z=ZK$resZ$zonePolygone
-print(paste(nPolySp(Z[[2]]),"polygons"))
+# not run
 }

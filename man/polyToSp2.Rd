@@ -2,29 +2,22 @@
 % Please edit documentation in R/util.R
 \name{polyToSp2}
 \alias{polyToSp2}
-\title{polyToSp2}
+\title{polyToSp}
 \usage{
 polyToSp2(p)
 }
 \arguments{
-\item{p}{polygon}
+\item{p}{xxxx}
 }
 \value{
-a SpatialPolygons
+a numeric?
 }
 \description{
-polyToSp2
+polyToSp
 }
 \details{
-transforms polygon into SpatialPolygons
+description, a paragraph
 }
 \examples{
-ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-Z=ZK$resZ$zonePolygone
-sp=Z[[5]]
-P1=getPolySp(sp,1)
-sph=polyToSp2(P1)
-plotZ(Z)
-sp::plot(sph,col="blue",lwd=2,add=TRUE)
 # not run
 }

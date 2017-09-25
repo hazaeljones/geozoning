@@ -4,19 +4,19 @@
 \alias{calFrame}
 \title{calFrame}
 \usage{
-calFrame(iZ, Z, zoneNModif, distIsoZ = 0.075)
+calFrame(iC, Z, K, distIsoZ = 0.075)
 }
 \arguments{
-\item{iZ}{index of zone for which the envelope is searched}
+\item{iC}{xxxx}
 
-\item{Z}{zoning}
+\item{Z}{xxxx}
 
-\item{zoneNModif}{modified zone neighborhood matrix (FALSE values on diagonal}
+\item{K}{xxxx}
 
-\item{distIsoZ}{threshold distance above which a zone is considered as isolated}
+\item{distIsoZ}{xxxx}
 }
 \value{
-a apatial polygon corresponding to the frame within which grown zone must be contained
+a ?
 }
 \description{
 calFrame
@@ -25,10 +25,5 @@ calFrame
 description, a paragraph
 }
 \examples{
-data(resZTest)
-Z=resZTest$zonePolygone
-zN=resZTest$zoneNModif
-f=calFrame(6,Z,zN)
-plotZ(Z)
-rgeos::plot(f,add=TRUE,col="red")
+# not run
 }

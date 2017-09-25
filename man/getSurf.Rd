@@ -7,12 +7,12 @@
 getSurf(Z, iZ)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{iZ}{zone number}
+\item{iZ}{xxxx}
 }
 \value{
-zone area
+a ?
 }
 \description{
 getSurf
@@ -21,9 +21,5 @@ getSurf
 description, a paragraph
 }
 \examples{
-data(resZTest)
-K=resZTest
-Z=K$zonePolygone
-getSurf(Z,1)
 # not run
 }

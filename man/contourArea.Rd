@@ -4,24 +4,20 @@
 \alias{contourArea}
 \title{contourArea}
 \usage{
-contourArea(co)
+contourArea(contour1)
 }
 \arguments{
-\item{co}{contour line}
+\item{contour1}{xxxx}
 }
 \value{
-the area within the contour line
+a numeric?
 }
 \description{
 contourArea
 }
 \details{
-area corresponding to closed contour line
+description, a paragraph
 }
 \examples{
-data(mapTest)
-cL=list()
-cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-contourArea(cL[[8]])
 # not run
 }

@@ -1,17 +1,16 @@
 ###############################
 #' transform VGM model into model usable by RandomFields
 #'
-#' @param vgmodel model provided by a call to vgm
+#' @param vgmodel à remplir
 #'
-#' @return model suitable for RandomFields simulation
+#' @return anisotropy matrix
 #'
 #' @export
+#' @seealso http://www.techmat.vgtu.lt/~art/proc/file/BudrLi.pdf
 #' @importFrom RandomFields RMgauss RMspheric
-#' @importFrom gstat vgm
+#'
 #' @examples
-#' modv=gstat::vgm(model="Gau",range=100,psill=10,mean=7)
-#' RMmodel=calRMmodel(modv)
-
+#' # not run
 calRMmodel=function(vgmodel)
 ###############################
 {

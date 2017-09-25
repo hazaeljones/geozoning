@@ -7,26 +7,19 @@
 getPolySp(sp, k = 1)
 }
 \arguments{
-\item{sp}{SpatialPolygons object}
+\item{sp}{xxxx}
 
-\item{k}{polygon number}
+\item{k}{xxxx}
 }
 \value{
-a polygon (object of class Polygon)
+a numeric?
 }
 \description{
 getPolySp
 }
 \details{
-get the kth polygon of the current SpatialPolygons
+description, a paragraph
 }
 \examples{
-ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-Z=ZK$resZ$zonePolygone
-sp=Z[[5]]
-P1=getPolySp(sp,1)
-P2=getPolySp(sp,2) # second polygon is a hole
-plot(P1@coords,type="l")
-lines(P2@coords,type="l",col="blue")
 # not run
 }

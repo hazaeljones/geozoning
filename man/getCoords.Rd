@@ -7,9 +7,9 @@
 getCoords(sp, k = 1)
 }
 \arguments{
-\item{sp}{SpatialPolygons}
+\item{sp}{xxxx}
 
-\item{k}{polygon number}
+\item{k}{xxxxxx}
 }
 \value{
 some coordinates
@@ -18,12 +18,8 @@ some coordinates
 getCoords
 }
 \details{
-get SpatialPolygons coordinates
+description, a paragraph
 }
 \examples{
-data(resZTest)
-K=resZTest
-Z=K$zonePolygone
-getCoords(Z[[1]])
 # not run
 }

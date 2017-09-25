@@ -2,57 +2,34 @@
 % Please edit documentation in R/calNei.R
 \name{calNei}
 \alias{calNei}
-\title{calNei calculate zone neighborhood and assign data points to zones}
+\title{calNei}
 \usage{
-calNei(Z, spdata, surfVoronoi, ptN, simplitol = 0.001, remove = TRUE,
-  correct = FALSE, nmin = 2)
+calNei(Z, data, surfVoronoi, ptN, simplitol, remove = TRUE, correct = FALSE)
 }
 \arguments{
-\item{Z}{zoning geometry (list of SpatialPolygons)}
+\item{Z}{xxxx}
 
-\item{spdata}{SpatialPointsDataFrame containing the data pts and values}
+\item{data}{xxxx}
 
-\item{surfVoronoi}{Surfaces of the Voronoi polygons corresponding to data pts}
+\item{surfVoronoi}{xxxx}
 
-\item{ptN}{indices of data pts neighbours}
+\item{ptN}{xxxx}
 
-\item{simplitol}{tolerance for spatial polygons geometry simplification}
+\item{simplitol}{xxxx}
 
-\item{remove}{if TRUE remove zones with less than nmin data points}
+\item{remove}{xxxx}
 
-\item{correct}{if TRUE correct zone neighborhood}
-
-\item{nmin}{number of points below wich a zone is removed from the zoning (default is 2)}
+\item{correct}{xxxx}
 }
 \value{
-a list with components
-\describe{
-\item{zoneN}{matrix of zone neigbors}
-\item{zoneNModif}{modified matrix with FALSE on the diagonal}
-\item{listZonePoint}{ indices of pts within each zone}
-\item{meanTot}{zoning mean data value}
-\item{meanZone}{vector of zone data mean values}
-\item{listSurf}{vector of zone areas}
-\item{critSurf}{vector of filiform zone characteristics}
-\item{zonePolygone}{list of zones, each zone is a SpatialPolygons}
-}
+a ?
 }
 \description{
-calNei calculate zone neighborhood and assign data points to zones
+calNei
 }
 \details{
-calNei first removes from zoning Z all zones with less than a minimum number of points. Then it calculates zone neighborhood, assigns each data point to a zone, computes zone mean values and areas. It does not assign zone labels (this is done by labZone function for the initial zoning, and by trLabZone function to transfer labels to corrected zonings).
+description, a paragraph
 }
 \examples{
-data(mapTest)
-ptN=mapTest$krigN
-spdata=mapTest$krigData
-surfVoronoi=mapTest$surfVoronoi
-data(resZTest)
-Z=resZTest$zonePolygone
-K=calNei(Z,spdata,surfVoronoi,ptN)
-names(K)
-plotZ(K$zonePolygone)
-K=calNei(Z,spdata,surfVoronoi,ptN,nmin=20) #keep only zones with a minimum of 20 data points
-plotZ(K$zonePolygone)
+# not run
 }

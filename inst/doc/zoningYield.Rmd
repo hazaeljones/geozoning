@@ -1,12 +1,12 @@
 ---
-title: "Zoning real yield data"
+title: "zoning on yield data"
 author: "B. Charnomordic"
 date: "`r Sys.Date()`"
 output:
-    pdf_document:
+  html_document:
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{zoning field (yield) data}
+  %\VignetteIndexEntry{zoning on yield data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,20 +14,29 @@ vignette: >
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   library(geozoning)
   library(ggplot2)
+  library(sp)
+  library(fields)
+
+  minSize = 0.012 # valid zone surface threshold - initial step
+  minSizeNG= 1e-3 #threshold for both no grow and zone grow acceptance (checkContour)
 
 ```
-This vignette illustrates the zoning with correction procedure on real yield data. It uses the yield data available in the geozoning package, where coordinates are not normalized between 0 and 1. The field is rectangular.
-A boundary is manually defined around the field.
-Then the x coordinate is normalized between 0 and 1, and the y coordinate is normalized with the ratio used for x.
 
-Exploratory loops for size 1 to 4 probability vectors (producing 2 to 5 labels maps) are run to rank the zonings, for each number of labels independently, according to their quality criterion.
-Probability vectors corresponding to the best zonings for each number of labels are extracted from the loop results. Correction procedures are then run for each of these best zonings.
-For readability, zones are reordered by increasing average value. An example of plot is given for the best 4-label zoning, to view zones and the distribution of values within zones.
+RAJOUTER DU TEXTE DESCRIPTIF
 
+Cette vignette est la combinaison des programmes prep_real_data-Yield.R et critZCorentin-Yield.R de Brigitte.
 
+# ceci est un titre
+## ceci est un sous-titre
+### etc...
+
+On utilise les objets yield et shape1 inclus dans le package.
+
+# Importation de l'objet yield
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-# Import yield data
+  #read border
   data(yield)
+  plot(x=yield$x, y=yield$y)
 ```
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
@@ -47,86 +56,70 @@ For readability, zones are reordered by increasing average value. An example of 
   
   # plot data
   ggplot(data=yield,aes(x=x,y=y,colour=Yield)) + geom_point() #+
-    geom_line(data=boundary1, aes(x=x,y=y),col="red")
- 
+    #geom_line(data=boundary1, aes(x=x,y=y),col="red")
+  
+  plot(x=yield$x, y=yield$y)
+  lines(boundary0$x,boundary0$y,col="red")
 ```
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-  #  x and y coordinates are normalized in genMap with (xmax-xmin) ratio
+  # normalize data coordinates and border
+  resNorm = datanorm(yield, boundary0)
+  if (is.null(resNorm)) print("error in coordinates")
+  yieldN = resNorm$dataN 
+  boundaryN = resNorm$boundaryN
+  xmin=resNorm$xmin
+  xmax=resNorm$xmax
+  ymin=resNorm$ymin
+  ymax=resNorm$ymax
 
-  # build map data based on yield data
-  map=genMap(yield,seed=0,boundary=boundary0,disp=0,nPointsK=3000,krig=1)
-  boundaryN=map$boundary
-  dispZ(map$step,matVal=map$krigGrid,zonePolygone=NULL,boundary=map$boundary)
-  
+  #plot normalized data
+  plot(x=yieldN$x, y=yieldN$y)
+  lines(boundaryN$x,boundaryN$y,col="red")
 
+  #compute zoning on normalized data
+  # build  kriging data based on real data DataCsvN
+  map=genMapR(yieldN,seed=0,boundary=boundaryN,disp=0,nPointsK=7000)
+  boundary=map$boundary
+
+  # transform minSize as a percentage of frame
+  # compute frame area
+  resT=normSize(boundaryN,minSize,minSizeNG)
+  minSize=resT$minSize
+  minSizeNG=resT$minSizeNG
 ```
-```{r,echo=TRUE,message=FALSE, warning=FALSE}	
-# test zoning with one quantile (median value)
-qProb=0.5
-ZK = initialZoning(qProb,map)
-K=ZK$resZ
-Z=K$zonePolygone
-dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
-minSizeNG=0.001
-minSize=0.012
-#apply corrections and display detailed information at each step
-criti= correctionTree(qProb=c(0.5),map,minSize=minSize,minSizeNG=minSizeNG,disp=1)
-# search for best criterion at last level (once all corrections have been applied)
-res=searchNODcrit1(qProb,criti)
-b=res$ind[[1]][1]
-K=criti$zk[[2]][[b]]
-Z=K$zonePolygone
-dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0,id=FALSE)
-#
-#Run exploratory loops to find the best zonings for nL=2 to 5
-#Set reasonable values for minimum size of zones and size threshold for not trying to grow zones (just remove them)
-minSizeNG=1e-2
-minSize=2e-2
-#
-ro1=loopQ1(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
-ro2=loopQ2(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
-ro3=loopQ3(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
-ro4=loopQ4(map,disp=0,step=0.15,minSize=minSize,minSizeNG=minSizeNG)
-# study results, first plot criteria
-best=figCritN(m1=ro1,m2=ro2,m3=ro3,m4=ro4,NEW=TRUE,ONE=TRUE,title="Yield data",pdf=NULL)
-# best probability vectors for a number of labels between 2 and 5
-m1=best[1]
-m2=best[2:3]
-m3=best[4:6]
-m4=best[7:10]
-# build best zonings for a given number of labels (between 2 and 5), that implies calculating corrections for the best zonings determined in the exploration loop
-# assign corresponding objects Z1, Z2, Z3, Z4 and values val1, val2, val3, val4
-for (k in 1:4)
-    {
-	mk=get(paste("m",k,sep=""))
-	critk=correctionTree(mk,map,minSize=minSize,minSizeNG=minSizeNG,disp=0,SAVE=T)
-	res=searchNODcrit1(mk,critk)
-	jj=res$ind[[1]][1]
-	zk=critk$zk
-	K=zk[[length(zk)]][[jj]]
-	# order zones by increasing average zone value
-	valk=valZ(map,K)$val
-	ordk=valZ(map,K)$ord
-	Zk=K$zonePolygone
-	ii=0
-	for (iZ in ordk)
-    	    {
-		ii=ii+1
-    		Zk=setId(Zk,iZ,ii)
-    	     }
-	Zkname=paste("Z",k,sep="")
-	assign(Zkname,Zk)
-	valkname=paste("val",k,sep="")
-	assign(valkname,valk)
-    }
 
-# for 4 labels, display data, best zonings and distribution of values within zones (boxplot)
-   palCol=colorRampPalette(c("brown","yellow"))
-   dispZ(map$step,map$krigGrid,zonePolygone=Z3,id=TRUE,palCol=palCol(length(Z3)))
-   title("Best Zoning for nL=4")
-   boxplot(val3,col=palCol(length(val3)))
-    title("Distribution of values within zones")
+# Importation de l'objet shape1
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+  shape1<-geozoning::shape1
+  #obtention of coords
+  p = shape1@polygons
+  sp=list()
+  for (k in 1:length(p))
+  {
+  	sp[[k]] = (p[[k]]@Polygons)[[1]]
+  	co=coordinates(sp[[k]])
+	  co[,1]=(co[,1]-xmin)/(xmax-xmin)
+	  co[,2]=(co[,2]-ymin)/(ymax-ymin)
+	  sp[[k]]@coords=co
+	  sp[[k]] = polyToSp2(sp[[k]])
+	}
+  
+  NZ=length(sp)
+  for (iZ in 1:NZ)
+  {
+	  sp=setId(sp,iZ,iZ)
+  }
+
+  #calNei removes zones with n=0 or n=1 pt
+  K =calNei(sp,map$krigData,map$krigSurfVoronoi,map$krigN,simplitol=simplitol)
+  Z =K$zonePolygone
+  nZ=length(Z)
+
+  dispZ(map$step,map$krigGrid,zonePolygone=Z,K=K,boundary=map$boundary,nbLvl=0)
+  
+```
+
 
 # Session informations
 ```{r session,echo=FALSE,message=FALSE, warning=FALSE}

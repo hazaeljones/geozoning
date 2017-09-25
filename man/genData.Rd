@@ -5,41 +5,37 @@
 \title{generate data}
 \usage{
 genData(DataObj = NULL, seed = 0, nPoints = 450, typeMod = "Gau",
-  Vpsill = 5, Vrange = 0.2, Vmean = 8, Vnugget = 0, Vanis = 1,
-  boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
-  manualBoundary = FALSE)
+  Vpsill = 5, Vrange = 0.2, Vmean = 8, Vnugget = 0, boundary = list(x
+  = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)), manualBoundary = FALSE)
 }
 \arguments{
-\item{DataObj}{=NULL: simulated data with given seed or a data frame with real data}
+\item{DataObj}{=NULL: simulated data with seed or = a data frame with real data}
 
-\item{seed}{numeric value used to generate simulated data}
+\item{seed}{numeric,}
 
-\item{nPoints}{number of generated raw data points}
+\item{nPoints}{numeric,}
 
-\item{typeMod}{type of variogram model (see vgm)}
+\item{typeMod}{character}
 
-\item{Vpsill}{partial sill in variogram}
+\item{Vpsill}{numeric,}
 
-\item{Vrange}{variogram range}
+\item{Vrange}{numeric,}
 
-\item{Vmean}{average data value}
+\item{Vmean}{numeric,}
 
-\item{Vnugget}{nugget in variogram}
+\item{Vnugget}{numeric,}
 
-\item{Vanis}{anisotropy in variogram}
+\item{boundary}{list, contains x and y}
 
-\item{boundary}{list, contains x and y boundaries}
-
-\item{manualBoundary}{logical, if TRUE a manual boundary is drawn.}
+\item{manualBoundary}{logical,}
 }
 \value{
 a list
 \describe{
-\item{tabData}{data frame of generated or real data with x,y,z values. x is standardized between 0 and 1, y is standardized with the same ratio used for x }
-\item{boundary}{standardized boundary}
-\item{VGMmodel}{VGM variogram model}
-\item{modelGen}{RM transformed variogram model}
-\item{ratio}{ratio used to normalize x data}
+\item{tabData}{tabData}
+\item{boundary}{boundary}
+\item{modelGen}{modelGen}
+\item{modelVGM}{modelVGM}
 }
 }
 \description{
@@ -49,9 +45,6 @@ generate data
 description, a paragraph
 }
 \examples{
-resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) 
-plot(resGene$tabData)
-
 # not run
-
+# resGene=genData(DataObj,0,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE)
 }

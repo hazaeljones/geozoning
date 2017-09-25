@@ -7,19 +7,17 @@
 calcCritNarrow(zonePolygone)
 }
 \arguments{
-\item{zonePolygone}{zoning}
+\item{zonePolygone}{xxxx}
 }
 \value{
-a numerical value
+a ?
 }
 \description{
 detection of narrow zones (ratio area/perimeter^2)
 }
 \details{
-computes for each zone of a zoning the ratio area/squared perimeter
+description, a paragraph
 }
 \examples{
-data(resZTest)
-calcCritNarrow(resZTest$zonePolygone)
 # not run
 }

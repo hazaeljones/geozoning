@@ -1,16 +1,14 @@
 ####################################################################
 #' detection of narrow zones (ratio area/perimeter^2)
 #'
-#' @details computes for each zone of a zoning the ratio area/squared perimeter
-#' @param zonePolygone zoning
+#' @details description, a paragraph
+#' @param zonePolygone xxxx
 #'
-#' @return a numerical value
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(resZTest)
-#' calcCritNarrow(resZTest$zonePolygone)
 #' # not run
 calcCritNarrow=function(zonePolygone)
 ####################################################################
@@ -29,21 +27,17 @@ calcCritNarrow=function(zonePolygone)
 ####################################################################
 #' wMean
 #'
-#' @details computes weighted mean or squared mean of zone data
-#' @param type 1-squared mean, 2-mean
-#' @param listZonePoint list of data points belonging to zone
-#' @param surfVoronoi areas of Voronoi polygon corresponding to data points
-#' @param data SpatialPointsDataFrame
+#' @details description, a paragraph
+#' @param type xxxx
+#' @param listZonePoint xxxx
+#' @param surfVoronoi xxxx
+#' @param data xxxx
 #'
-#' @return a vector of mean zone values
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' K=resZTest
-#' wMean(1,K$listZonePoint,mapTest$krigSurfVoronoi,mapTest$krigData)
 #' # not run
 wMean=function(type,listZonePoint,surfVoronoi,data)
 ####################################################################
@@ -77,36 +71,21 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 ##########################################################
 #' voronoiPolygons
 #'
-#' @details determines the Voronoi neighborhood of data points
-#' @param spdata SpatialPointsDataFrame
-#' @param gridLim list of boundary coordinates 
-#' @param neighBool empty point neighborhood Logical matrix 
-#' @param PTJUNCTION logical value, if FALSE (default): pts are not neighbors if their Voronoi polygons only have a vertex in common
-#' @param FULL logical value, if FALSE (default): do not return Vornoi polygons
+#' @details description, a paragraph
+#' @param spdata xxxx
+#' @param neighBool xxxx
+#' @param PTJUNCTION xxxx
+#' @param FULL xxxx
 #'
-#' @return a list with components
-#' \describe{
-#' \item{surfVoronoi}{Voronoi polygons areas}
-#' \item{neighBool}{Voronoi point neighborhood Logical matrix}
-#' if FULL=TRUE (warning: uses a lot of memory space), also:
-#' \item{voronoi}{Voronoi polygons}
-#' }
+#' @return a ?
 #' @importFrom deldir deldir tile.list
 #'
 #' @seealso http://www.carsonfarmer.com/2009/09/voronoi-polygons-with-r/
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' rx=range(mapTest$krigData$x)
-#' ry=range(mapTest$krigData$y)
-#' nx=nrow(mapTest$krigGrid)
-#' ny=ncol(mapTest$krigGrid)
-#' nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
-#' vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
-#' length(vP$surfVoronoi) #as many as kriged data points
 #' # not run
-voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,FULL=FALSE)
+voronoiPolygons = function(spdata,neighBool,PTJUNCTION=FALSE,FULL=FALSE)
 ##########################################################
 {
 #source: http://www.carsonfarmer.com/2009/09/voronoi-polygons-with-r/
@@ -115,13 +94,13 @@ voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,
 # based on Delaunay tesselation
 # PTJUNCTION=FALSE (default): pts are not neighbors if their Voronoi polygons only have a vertex in common
 
-  #get coordinates
+  #récupération des coordonnées
   coord = spdata@coords
   #triangulation de delaunay,dans le cadre défini par rw=c(xmin xmax ymin ymax)
-  z = deldir(coord[,1], coord[,2],rw=gridLim)#
+  z = deldir(coord[,1], coord[,2],rw=c(0,1,0,1))
   #plot(z)
 
-  # Voronoi polygons
+  #polygones de voronoi
   w = tile.list(z)
   polysp = vector(mode='list', length=length(w))
   #for each polygon
@@ -173,24 +152,16 @@ voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,
 ################################################################################
 #' calZoneN
 #'
-#' @details calculate zone neighborhood
-#' @param ptN pt neighborhood Logical matrix
-#' @param zoneN empty zone neighborhood Logical matrix
-#' @param listZonePoint list of indices of data points within zones
+#' @details description, a paragraph
+#' @param ptN xxxx
+#' @param zoneN xxxx
+#' @param listZonePoint xxxx
 #'
-#' @return a list with component zoneN holding filled zone neighborhood Logical matrix
+#' @return a ?
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' K=resZTest
-#' ptN=mapTest$krigN
-#' nZ=length(K$zonePolygone)
-#' zoneN=matrix(logical(nZ*nZ),nZ,nZ)
-#' listZonePoint=K$listZonePoint
-#' calZoneN(ptN,zoneN,listZonePoint)
 #' # not run
 calZoneN=function(ptN,zoneN,listZonePoint)
 ################################################################################
