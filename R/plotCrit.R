@@ -1,5 +1,5 @@
 #########################################################
-#' figCritN
+#' plotCrit
 #'
 #' @details  reads loopQ1-5 results, filters results by keeping th best criteria ) and plots them together with corresponding costs.
 #' @param m1 dataset with loopQ1 results
@@ -21,7 +21,7 @@
 #' @examples
 #' # not run
 #' 
-figCritN=function(m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL)
+plotCrit=function(m1=NULL,m2=NULL,m3=NULL,m4=NULL,m5=NULL,NEW=FALSE,ONE=FALSE,title="Gaussian field simulation",pdf=NULL)
 #########################################################
 {
 
