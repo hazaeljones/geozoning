@@ -4,47 +4,58 @@
 \alias{dispZ}
 \title{dispZ}
 \usage{
-dispZ(step, matVal, nbLvl = 20, zonePolygone = NULL, K = NULL,
-  coulBreaks = 0, texMain = "", boundary = NULL, id = TRUE,
-  valeurQuant = NULL, palCoul = colorRampPalette(c("brown", "yellow")),
-  indiceArg = 0, mu = 1)
+dispZ(step, matVal, nbLvl = 0, zonePolygone = NULL, K = NULL,
+  colBreaks = 0, texMain = "", boundary = NULL, id = FALSE,
+  valQ = NULL, palCol = colorRampPalette(c("brown", "yellow")),
+  noXY = FALSE, iZ = 0, mu = 1, cex = 1, ptz = NULL)
 }
 \arguments{
-\item{step}{xxxx}
+\item{step}{grid resolution}
 
-\item{matVal}{xxxx}
+\item{matVal}{data frame of values}
 
-\item{nbLvl}{xxxx}
+\item{nbLvl}{number of contour lines to generate}
 
-\item{zonePolygone}{xxxx}
+\item{zonePolygone}{zoning geometry (list of SpatialPolygons)}
 
-\item{K}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{coulBreaks}{xxxx}
+\item{colBreaks}{if vector of length 1 number of color breaks, or else color breaks themselves}
 
-\item{texMain}{xxxx}
+\item{texMain}{main title}
 
-\item{boundary}{xxxx}
+\item{boundary}{map boundary (list with x and y values)}
 
-\item{id}{xxxx}
+\item{id}{logical value (if TRUE display zone ids on plot)}
 
-\item{valeurQuant}{xxxx}
+\item{valQ}{quantile values to use for contour lines}
 
-\item{palCoul}{xxxx}
+\item{palCol}{color palette}
 
-\item{indiceArg}{xxxx}
+\item{noXY}{if TRUE do not draw axes}
 
-\item{mu}{xxxx}
+\item{iZ}{index of zone to outline in red}
+
+\item{mu}{mu=1-only display zone number or id, mu=2-also display mean zone value}
+
+\item{cex}{text size}
+
+\item{ptz}{zone id location, if NULL automatically find the best locations}
 }
 \value{
-a ?
+an empty value
 }
 \description{
 dispZ
 }
 \details{
-description, a paragraph
+plots a color image representation of values and zones
 }
 \examples{
+data(mapTest)
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+dispZ(mapTest$step,mapTest$krigGrid)
 # not run
 }

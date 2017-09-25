@@ -4,32 +4,44 @@
 \alias{zoneQ}
 \title{zoneQ}
 \usage{
-zoneQ(contourSp, iC, iE, Z, K, map, simplitol)
+zoneQ(contourSp, iC, iE, Z, K, simplitol = 0.001)
 }
 \arguments{
-\item{contourSp}{xxxx}
+\item{contourSp}{contour line transformed into SpatialPolygons}
 
-\item{iC}{xxxx}
+\item{iC}{zone to grow}
 
-\item{iE}{xxxx}
+\item{iE}{englobing zone}
 
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 
-\item{K}{xxxx}
+\item{K}{zoning object (such as returned by calNei function)}
 
-\item{map}{xxxx}
-
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 }
 \value{
-a ?
+a zoning geometry updated with the grown zone(list of SpatialPolygons)
 }
 \description{
 zoneQ
 }
 \details{
-description, a paragraph
+called by optiGrow,replaces the current zone by a bigger one
 }
 \examples{
+data(mapTest)
+qProb=c(0.3,0.5)
+criti = correctionTree(qProb,mapTest)
+K = criti$zk[[2]][[1]]
+Z=K$zonePolygone
+plotZ(Z)
+iC=4
+iE=detZoneEng(iC,Z,K$zoneNModif)
+envel=calFrame(iC,Z,K$zoneNModif)
+sp::plot(envel,add=TRUE,col="blue")
+Qseq = genQseq(qProb,K,mapTest,iC,iE)
+resi = findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
+Zopti=zoneQ(resi$contourSp,iC,iE,Z,K)
+plotZ(Zopti)
 # not run
 }

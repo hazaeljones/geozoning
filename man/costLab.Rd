@@ -7,12 +7,12 @@
 costLab(K, map)
 }
 \arguments{
-\item{K}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{map}{xxxx}
+\item{map}{object returned by genMap function}
 }
 \value{
-a ?
+the sum of per label costs
 }
 \description{
 costLab
@@ -21,5 +21,9 @@ costLab
 description, a paragraph
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+K=criti$zk[[1]][[1]] # initial zoning
+costLab(K,mapTest) #identical to criti$costL[[1]][[1]]
 # not run
 }

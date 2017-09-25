@@ -7,21 +7,21 @@
 genQseq(qProb, K, map, i1, i2, LEQ = 5, MAXP = 0.1, disp = 0)
 }
 \arguments{
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values}
 
-\item{K}{xxxx}
+\item{K}{zoning object, as returned by the calNei function}
 
-\item{map}{xxxx}
+\item{map}{object returned by function genMap}
 
 \item{i1}{current zone index}
 
 \item{i2}{englobing zone index}
 
-\item{LEQ}{xxxx}
+\item{LEQ}{length of quantile sequence}
 
-\item{MAXP}{xxxx}
+\item{MAXP}{maximum shift from center for quantile sequence}
 
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: some info}
 }
 \value{
 a plot
@@ -33,5 +33,10 @@ genQseq
 description, a paragraph
 }
 \examples{
+qProb=c(0.4,0.7)
+ZK=initialZoning(qProb,mapTest)
+K=ZK$resZ
+print(K$lab)
+genQseq(qProb,K,mapTest,1,2) # from label 3 to label 2
 # not run
 }

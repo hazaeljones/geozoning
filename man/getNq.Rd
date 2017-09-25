@@ -7,17 +7,20 @@
 getNq(critList)
 }
 \arguments{
-\item{critList}{xxxx}
+\item{critList}{component critList of result from correctionTree}
 }
 \value{
-a ?
+a vector with the size of quantile vectors for each zoning corresponding to critList
 }
 \description{
 getNq
 }
 \details{
-description, a paragraph
+determine size of quantile  in result from correctionTree
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE) 
+getNq(criti$critList)
 # not run
 }
