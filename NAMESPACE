@@ -61,8 +61,13 @@ export(distanceNormalisationSqrt)
 export(distanceNormalisationSum)
 export(extensionLine)
 export(extractionPoly)
+<<<<<<< HEAD
 export(figCrit)
 export(figCritN)
+=======
+export(Extreme_Zone)
+export(plotCrit)
+>>>>>>> 547144b22b7046f3af55c37498c5dfcb7f4a01fd
 export(findCinZ)
 export(findN)
 export(findNptInZone)

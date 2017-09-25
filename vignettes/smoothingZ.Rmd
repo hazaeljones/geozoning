@@ -1,0 +1,110 @@
+---
+title: "Postprocessing zoning: smoothing zones"
+author: "B. Charnomordic"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Smoothing zones within a zoning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+  library(geozoning)
+  library(rgeos)
+```
+This vignette illustrates the zone and map smoothing process. It first shows why a step of zone boundary correction is required. Then the zone smoothing based on morphological erosion and dilatation is illustrated. Finally the map smothing resulting of all zone smoothing is illustrated.
+
+Step 1: Why is CorrectBoundaryMap required
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+seed=1
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+criti = correctionTree(qProb = c(0.5), map = map)
+Z = criti$zk[[1]][[1]]$zonePolygone
+lab = criti$zk[[1]][[1]]$lab
+plotM(map = map, Z = Z, lab = lab, byLab = FALSE)
+class(gIntersection(Z[[1]],Z[[2]])) [1]
+class(gIntersection(Z[[1]],Z[[5]])) [1]
+class(gIntersection(Z[[2]],Z[[3]])) [1]
+class(gIntersection(Z[[2]],Z[[4]])) [1]
+res = correctBoundaryMap(Zi = Z, map = map)
+Z = res$Z
+class(gIntersection(Z[[1]],Z[[2]])) [1]
+class(gIntersection(Z[[1]],Z[[5]])) [1]
+class(gIntersection(Z[[2]],Z[[3]])) [1]
+class(gIntersection(Z[[2]],Z[[4]])) [1]
+```
+
+Step 2: Smoothing a zone 
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+
+seed=1
+```
+Generate map with simulated data
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+```
+Generate zoning
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+criti = correctionTree(qProb = c(0.5), map = map)
+Z = criti$zk[[1]][[1]]$zonePolygone
+lab = criti$zk[[1]][[1]]$lab
+```
+Correct zone boundaries
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+res = correctBoundaryMap(Zi = Z, map = map)
+Z = res$Z
+# map boundary after correction
+boundary = Z[[1]]
+for(i in 2:length(Z)){
+  boundary = gUnion(boundary, Z[[i]])
+}
+#plot map
+plotM(map = map, Z = Z, lab = lab, byLab = FALSE)
+# smoothing
+zone = Z[[2]]
+plot(zone)
+newZone = smoothingZone(z = zone, width = 0.05, boundary = boundary)
+plot(newZone)
+```
+Compute maximum width for zone smoothing
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+widthMax = cal.max.width.Zone(z = Z[[3]], step = 0.001, widthMax = 0.05, boundary = boundary, erosion = TRUE)
+zone = zone.extended(z = Z[[3]], boundary = boundary)
+erosion1 = gBuffer(zone ,width = - (widthMax + 0.002) ,joinStyle="ROUND",capStyle = "ROUND")
+erosion2 = gBuffer(zone ,width = - (widthMax - 0.002) ,joinStyle="ROUND",capStyle = "ROUND")
+plot(erosion1)
+
+plot(erosion2)
+
+```
+Smoothing all zones in zoning
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+seed=1
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+criti = correctionTree(qProb = c(0.4,0.6), map = map)
+Z = criti$zk[[2]][[1]]$zonePolygone
+newZ = smoothingMap(Z = Z, width = 0.05, map = map, disp = TRUE)
+plotM(map = map, Z = Z, lab = 1:length(Z))
+plotM(map = map, Z = newZ, lab = 1:length(newZ))
+```
+#Example of smoothing zoning done on real data
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+#data(yieldMapZ)
+#plotM(map = map, Z = Z3, lab = 1:length(Z3))
+
+#res = correctBoundaryMap(Zi = Z3, map = map)
+#Z = res$Z
+#newZ = smoothingMap(Z = Z, width = 0.05, map = map, disp = TRUE)
+#plotM(map = map, Z = newZ, lab = 1:length(newZ))
+   
+```
+
+
+# Session informations
+```{r session,echo=FALSE,message=FALSE, warning=FALSE}
+  sessionInfo()
+```
+

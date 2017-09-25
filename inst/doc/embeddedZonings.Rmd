@@ -1,0 +1,64 @@
+---
+title: "Embedded zonings"
+author: "B. Charnomordic"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Embedded zonings}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+  library(geozoning)
+  library(rgeos)
+```
+This vignette illustrates the creation of zonings for nested quantiles.
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+data(mapTest)
+map = mapTest
+plotM(map)
+
+
+res2 = loopQ2(map,disp=0,step=0.075,QUIET=TRUE)
+res3 = loopQ3(map,disp=0,step=0.075,QUIET=TRUE)
+res4 = loopQ4(map,disp=0,step=0.075,QUIET=TRUE)
+
+
+epsilon = 1
+len = 11 # length(list_nested_quantile) , initialized to 6 to enter the loop
+while(len >= 7){
+  list_nested_quantile = list()
+  res2_best = res2[which( (res2[1,1] - res2[,1])<=epsilon ), ]
+  res3_best = res3[which( (res3[1,1] - res3[,1])<=epsilon ), ]
+  res4_best = res4[which( (res4[1,1] - res4[,1])<=epsilon ), ]
+  index = 0
+  for(i in 1: nrow(res2_best)){
+    q2 = as.matrix(res2_best[i,5:6])
+    for(j in 1:nrow(res3_best)){
+      q3 = as.matrix(res3_best[j, 5:7])
+      if(sum(q2%in%q3) == 2){
+        for(k in 1:nrow(res4_best)){
+          q4 = as.matrix(res4_best[k, 5:8])
+          if(sum(q3%in%q4) == 3){
+            index = index+1
+            list_nested_quantile[[index]] = list(q2,q3,q4)
+          }
+        }
+      }
+    }
+  }
+  epsilon = epsilon - 0.05
+  len = length(list_nested_quantile)
+}
+
+list_nested_quantile
+```
+
+# Session informations
+```{r session,echo=FALSE,message=FALSE, warning=FALSE}
+  sessionInfo()
+```
+
