@@ -7,17 +7,19 @@
 gridXY(mat)
 }
 \arguments{
-\item{mat}{xxxx}
+\item{mat}{matrix with x and y coordinates in the first two columns, data in third column}
 }
 \value{
-a ?
+a grid
 }
 \description{
 generate empty grid
 }
 \details{
-description, a paragraph
+generate rectangular empty grid corresponding to x and y values in matrix
 }
 \examples{
+data(dataReg)
+gridXY(dataReg)
 # not run
 }

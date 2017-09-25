@@ -7,19 +7,24 @@
 detectSmallZones(zonePolygone, minSize)
 }
 \arguments{
-\item{zonePolygone}{xxxx}
+\item{zonePolygone}{list of zones, each zone is a SpatialPolygons}
 
-\item{minSize}{xxxx}
+\item{minSize}{zone area threshold under which a zone is too small to be manageable}
 }
 \value{
-a ?
+a vector of small zones indices
 }
 \description{
 detectSmallZones
 }
 \details{
-description, a paragraph
+detect zones with area < minSize
 }
 \examples{
+data(mapTest)
+ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+Z=ZK$resZ$zonePolygone
+minSize=0.012
+iSmall=detectSmallZones(Z,minSize) # 2 small zones 
 # not run
 }

@@ -2,26 +2,30 @@
 % Please edit documentation in R/funcCleaning.R
 \name{zoneFusion2}
 \alias{zoneFusion2}
-\title{zoneFusion2}
+\title{zoneFusion2 basic function for merging 2 zones}
 \usage{
-zoneFusion2(zoneMain, zoneSuppr, simplitol)
+zoneFusion2(zoneMain, zoneSuppr, simplitol = 0.001)
 }
 \arguments{
-\item{zoneMain}{xxxx}
+\item{zoneMain}{zone to merge into}
 
-\item{zoneSuppr}{xxxx}
+\item{zoneSuppr}{zone to remove by merging it into main zone}
 
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 }
 \value{
-a ?
+a zone
 }
 \description{
-zoneFusion2
+zoneFusion2 basic function for merging 2 zones
 }
 \details{
-description, a paragraph
+merge 2 zones, called by zoneFusion3 and zoneFusion4
 }
 \examples{
+data(resZTest)
+Z=resZTest$zonePolygone
+plotZ(Z)
+sp::plot(zoneFusion2(Z[[6]],Z[[2]]),add=TRUE,col="blue")
 # not run
 }

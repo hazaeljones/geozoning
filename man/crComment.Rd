@@ -7,17 +7,21 @@
 crComment(Z)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 }
 \value{
-a ?
+a zoning
 }
 \description{
 crComment
 }
 \details{
-description, a paragraph
+create comment corresponding to holes in a zoning
 }
 \examples{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+Z1=crComment(Z)
 # not run
 }

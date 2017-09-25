@@ -2,35 +2,43 @@
 % Please edit documentation in R/initialZoning.R
 \name{initialZoning}
 \alias{initialZoning}
-\title{initialZoning}
+\title{initialZoning zoning with no correction}
 \usage{
 initialZoning(qProb, map, pErr = 0.9, simplitol = 0.001, optiCrit = 2,
   disp = 0, GridData = F)
 }
 \arguments{
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values}
 
-\item{map}{xxxx}
+\item{map}{object returned by function genMap or genMapR}
 
-\item{pErr}{xxxx}
+\item{pErr}{equality tolerance for distance calculations}
 
-\item{simplitol}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{optiCrit}{xxxx}
+\item{optiCrit}{criterion choice}
 
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: some info, 2: detailed info}
 
-\item{GridData}{xxxx}
+\item{GridData}{logical value indicating if data are already on a regular grid (no kriging in that case)}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{resCrit}{criterion value}
+\item{resDist}{list with components matDistance, matDistanceCorr and cost, such as returned by a call to calDistance}
+\item{resZ}{list with components zoneN, zoneNModif, listZonePoint, meanTot, meanZone,listSurf, critSurf, zonePolygone, such as the object returned by calNei}
+}
 }
 \description{
-initialZoning
+initialZoning zoning with no correction
 }
 \details{
-description, a paragraph
+calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary. The distance matrices intra and inter zones are calculated as well as the quality criterion.
 }
 \examples{
+data(mapTest)
+ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+plotZ(ZK$resZ$zonePolygone)
 # not run
 }

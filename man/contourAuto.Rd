@@ -4,30 +4,39 @@
 \alias{contourAuto}
 \title{contourAuto}
 \usage{
-contourAuto(cL, step, matVal, vRef, boundary, GridData = FALSE)
+contourAuto(cL, step, xsize, ysize, matVal, vRef, boundary, GridData = FALSE)
 }
 \arguments{
-\item{cL}{xxxx}
+\item{cL}{empty or existing list of contour lines}
 
-\item{step}{xxxx}
+\item{step}{grid step as returned by calStep}
 
-\item{matVal}{xxxx}
+\item{xsize}{size of map along x-axis}
 
-\item{vRef}{xxxx}
+\item{ysize}{size of map along y-axis}
 
-\item{boundary}{xxxx}
+\item{matVal}{dataframe with data values organized into a grid}
 
-\item{GridData}{xxxx}
+\item{vRef}{quantile vector}
+
+\item{boundary}{list, contains x and y dy on a regular grid}
+
+\item{GridData}{logical value indicating if data are already on a regular grid}
 }
 \value{
-a ?
+a list of contour lines
 }
 \description{
 contourAuto
 }
 \details{
-description, a paragraph
+builds contout Lines qith the quantile vector given in argument and closes them with the map border
 }
 \examples{
+data(mapTest)
+cL=list()
+cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
+plot(mapTest$boundary,type="l",col="red")
+linesC(cL)
 # not run
 }

@@ -4,40 +4,39 @@
 \alias{figCritN}
 \title{figCritN}
 \usage{
-figCritN(seed = 89, m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL,
-  m5 = NULL, NEW = FALSE, ONE = FALSE,
-  title = "Gaussian field simulation", pdf = NULL)
+figCritN(m1 = NULL, m2 = NULL, m3 = NULL, m4 = NULL, m5 = NULL,
+  NEW = FALSE, ONE = FALSE, title = "Gaussian field simulation",
+  pdf = NULL)
 }
 \arguments{
-\item{seed}{xxxx}
+\item{m1}{dataset with loopQ1 results}
 
-\item{m1}{xxxx}
+\item{m2}{dataset with loopQ2 results}
 
-\item{m2}{xxxx}
+\item{m3}{dataset with loopQ3 results}
 
-\item{m3}{xxxx}
+\item{m4}{dataset with loopQ4 results}
 
-\item{m4}{xxxx}
+\item{m5}{dataset with loopQ5 results}
 
-\item{m5}{xxxx}
+\item{NEW}{new plot}
 
-\item{NEW}{xxxx}
+\item{ONE}{single plot}
 
-\item{ONE}{xxxx}
+\item{title}{plot title}
 
-\item{title}{xxxx}
-
-\item{pdf}{xxxx}
+\item{pdf}{pdf file name}
 }
 \value{
-a plot
+a vector of probabilities corresponding to best results
 }
 \description{
 figCritN
 }
 \details{
-description, a paragraph
+reads loopQ1-5 results, filters results by keeping th best criteria ) and plots them together with corresponding costs.
 }
 \examples{
 # not run
+
 }

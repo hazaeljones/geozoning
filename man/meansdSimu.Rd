@@ -4,22 +4,23 @@
 \alias{meansdSimu}
 \title{meansdSimu}
 \usage{
-meansdSimu(vseed = NULL, krig = 1)
+meansdSimu(vseed = NULL, krig = 2)
 }
 \arguments{
-\item{vseed}{xxxx}
+\item{vseed}{list of simulation seeds}
 
-\item{krig}{xxxx}
+\item{krig}{type of kriging (1-variogram model-based, 2-inverse distance-based)}
 }
 \value{
-a ?
+a matrix with as many rows as simulations, and 4 columns, the first two columns give mean and standard deviation of generated raw data, the last two columns give mean and standard deviation of kriged data
 }
 \description{
 meansdSimu
 }
 \details{
-description, a paragraph
+computes mean and standard deviation of a set of map simulations
 }
 \examples{
+meansdSimu(c(1,2))
 # not run
 }

@@ -7,17 +7,21 @@
 extractionPoly(polyTot)
 }
 \arguments{
-\item{polyTot}{xxxx}
+\item{polyTot}{SpatialPolygons}
 }
 \value{
-a ?
+a list of SpatialPolygons
 }
 \description{
 extractionPoly
 }
 \details{
-description, a paragraph
+extract all elements from SpatialPolygons, holes and full polygons are handled equally
 }
 \examples{
+data(mapTest)
+ZK=initialZoning(qProb=c(0.2,0.4,0.7),mapTest)
+Z=ZK$resZ$zonePolygone
+extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
 # not run
 }

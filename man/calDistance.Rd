@@ -4,32 +4,46 @@
 \alias{calDistance}
 \title{calDistance}
 \usage{
-calDistance(typedist, tabVal, listZonePoint, zoneN, surfVoronoi, meanZone, pErr)
+calDistance(typedist = 1, tabVal = NULL, listZonePoint = NULL,
+  zoneN = NULL, surfVoronoi = NULL, meanZone = NULL, pErr = 0.9)
 }
 \arguments{
-\item{typedist}{xxxx}
+\item{typedist}{default value is 1, other values not implemented yet.}
 
-\item{tabVal}{xxxx}
+\item{tabVal}{SpatialPointsDataFrame, contains data points to be used for zoning (spatial coordinates plus attribute values)
+result of call to \code{\link{genMap}}}
 
-\item{listZonePoint}{xxxx}
+\item{listZonePoint}{list of indices of data points within zones, result of call to \code{\link{calNei}}}
 
-\item{zoneN}{xxxx}
+\item{zoneN}{zone neighborhood matrix (TRUE values on diagonal), result of call to \code{\link{calNei}}}
 
-\item{surfVoronoi}{xxxx}
+\item{surfVoronoi}{vector of Voronoi polygon surfaces corresponding to all data points,result of call to \code{\link{genMap}}}
 
-\item{meanZone}{xxxx}
+\item{meanZone}{vector of average attribute values for all zones}
 
-\item{pErr}{xxxx}
+\item{pErr}{error percentage for correcting distances}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{matDistance}{matrix of real values, corresponding to heterogeneities between neighbour zones. All other values are set to 0.}
+\item{matDistanceCorr}{corrected distance matrix using pErr}
+\item{cost}{sum or errors obtained by replacing all data values within a zone by the zone mean value}
+}
 }
 \description{
 calDistance
 }
 \details{
-description, a paragraph
+calculates matrix of heterogeneities between neighbour zones.
+max(sigmai2[i],(fxmean*pErr/100)^2) + max(sigmai2[j],(fymean*pErr/100)^2) + (fxmean-fymean)^2
 }
 \examples{
-# not run
+# load test map with simulated data
+data(mapTest)
+# load zoning results from test file
+data(resZTest)
+K=resZTest
+resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
+       mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 }

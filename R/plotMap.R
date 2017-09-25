@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @importFrom grDevices heat.colors
-#' @importFrom graphics contour image locator par plot points title
+#' @importFrom graphics contour image locator par plot points
 #'
 #' @examples
 #' m=genMap(seed=1,krig=2,disp=0)

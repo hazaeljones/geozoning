@@ -1,35 +1,37 @@
 ##################################################################
-#' initialZoning
+#' initialZoning zoning with no correction
 #'
-#' @details description, a paragraph
-#' @param qProb xxxx
-#' @param map xxxx
-#' @param pErr xxxx
-#' @param simplitol xxxx
-#' @param optiCrit xxxx
-#' @param disp xxxx
-#' @param GridData xxxx
+#' @details calculates a zoning on kriged map data, based on quantiles of data attribute values. These quantiles correspond the given probabilities. Contour lines define zones, they are projected on to the map boundary in order to close them if necessary. The distance matrices intra and inter zones are calculated as well as the quality criterion.
+#' @param qProb probability vector used to generate quantile values
+#' @param map object returned by function genMap or genMapR
+#' @param pErr equality tolerance for distance calculations
+#' @param simplitol tolerance for spatial polygons geometry simplification
+#' @param optiCrit criterion choice
+#' @param disp 0: no info, 1: some info, 2: detailed info
+#' @param GridData logical value indicating if data are already on a regular grid (no kriging in that case)
 #'
-#' @return a ?
+#' @return a list with components
+#' \describe{
+#' \item{resCrit}{criterion value}
+#' \item{resDist}{list with components matDistance, matDistanceCorr and cost, such as returned by a call to calDistance}
+#' \item{resZ}{list with components zoneN, zoneNModif, listZonePoint, meanTot, meanZone,listSurf, critSurf, zonePolygone, such as the object returned by calNei}
+#' }
 #'
 #' @export
 #'
 #' @examples
+#' data(mapTest)
+#' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+#' plotZ(ZK$resZ$zonePolygone)
 #' # not run
 initialZoning=function(qProb, map, pErr=0.9,simplitol=1e-3,optiCrit=2,disp=0,GridData=F)
 ##################################################################
   {
-    #arguments
-    #qProb=vecteur de quantiles
-    #map=donnees brutes et krigees
-    #choix=critere dans initParam
-    #calcule zonage et criteres pour 1 vecteur de quantiles
-    # attention zonage pas forcement admissible
-    #chercher les valeurs des quantiles
-    #simple generation de zones correspondant aux contours des quantiles
-    # genere zonage a partir des donnees de map$krigGrid
-    #
+
+  qProb=as.numeric(qProb)
   Z=zoneGeneration(map,qProb,GridData) #in funcZoning
+  if(is.null(Z)) return(NULL) # no zones
+  #
   # create comments (for holes)
   Z = crComment(Z)
   # add IDs to identify zones in zoning

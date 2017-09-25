@@ -4,27 +4,44 @@
 \alias{voronoiPolygons}
 \title{voronoiPolygons}
 \usage{
-voronoiPolygons(spdata, neighBool, PTJUNCTION = FALSE, FULL = FALSE)
+voronoiPolygons(spdata, gridLim = c(0, 1, 0, 1), neighBool,
+  PTJUNCTION = FALSE, FULL = FALSE)
 }
 \arguments{
-\item{spdata}{xxxx}
+\item{spdata}{SpatialPointsDataFrame}
 
-\item{neighBool}{xxxx}
+\item{gridLim}{list of boundary coordinates}
 
-\item{PTJUNCTION}{xxxx}
+\item{neighBool}{empty point neighborhood Logical matrix}
 
-\item{FULL}{xxxx}
+\item{PTJUNCTION}{logical value, if FALSE (default): pts are not neighbors if their Voronoi polygons only have a vertex in common}
+
+\item{FULL}{logical value, if FALSE (default): do not return Vornoi polygons}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{surfVoronoi}{Voronoi polygons areas}
+\item{neighBool}{Voronoi point neighborhood Logical matrix}
+if FULL=TRUE (warning: uses a lot of memory space), also:
+\item{voronoi}{Voronoi polygons}
+}
 }
 \description{
 voronoiPolygons
 }
 \details{
-description, a paragraph
+determines the Voronoi neighborhood of data points
 }
 \examples{
+data(mapTest)
+rx=range(mapTest$krigData$x)
+ry=range(mapTest$krigData$y)
+nx=nrow(mapTest$krigGrid)
+ny=ncol(mapTest$krigGrid)
+nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
+vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
+length(vP$surfVoronoi) #as many as kriged data points
 # not run
 }
 \seealso{

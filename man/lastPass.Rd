@@ -4,36 +4,46 @@
 \alias{lastPass}
 \title{lastPass}
 \usage{
-lastPass(carte, qProb, listOfZ, crit, cost, costL, nz, mdist, pErr, optiCrit,
-  simplitol, disp = F)
+lastPass(map, qProb, listOfZ, crit, cost, costL, nz, mdist, pErr = 0.9,
+  optiCrit = 2, minSize = 0.012, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{carte}{xxxx}
+\item{map}{object returned by function genMap or genMapR}
 
-\item{qProb}{xxxx}
+\item{qProb}{probability vector used to generate quantile values}
 
-\item{listOfZ}{xxxx}
+\item{listOfZ}{list of zoning objects (such as returned by calNei function)}
 
-\item{crit}{xxxx}
+\item{crit}{criterion value list}
 
-\item{cost}{xxxx}
+\item{cost}{cost value list}
 
-\item{costL}{xxxx}
+\item{costL}{cost per lable value list}
 
-\item{nz}{xxxx}
+\item{nz}{number of zones list}
 
-\item{mdist}{xxxx}
+\item{mdist}{distance matrix list}
 
-\item{pErr}{xxxx}
+\item{pErr}{equality tolerance for distance calculations}
 
-\item{optiCrit}{xxxx}
+\item{optiCrit}{criterion choice}
 
-\item{simplitol}{xxxx}
+\item{minSize}{zone area threshold under which a zone is too small to be manageable}
 
-\item{disp}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
+
+\item{disp}{0: no info, 1: detailed info}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{listZ}{list of zoning objects (such as returned by calNei function)}
+\item{crit}{criterion value list}
+\item{cost}{cost value list}
+\item{costL}{cost per label value list}
+\item{nz}{number of zones list}
+\item{mdist}{distance matrix list}
+}
 }
 \description{
 lastPass
@@ -42,5 +52,13 @@ lastPass
 description, a paragraph
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.7),mapTest,LASTPASS=FALSE)
+Z=criti$zk[[1]][[1]]$zonePolygone #initial zoning
+printZsurf(Z) # 8 zones with 2 small zones (7 and 8)
+newRes=lastPass(mapTest,c(0.4,0.7),criti$zk[1],criti$criterion[1],
+criti$cost[1],criti$costL[1],criti$nz[1],criti$mdist[1])
+newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
+printZsurf(newZ) # 6 zones, 2 small zones were removed
 # not run
 }

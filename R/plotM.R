@@ -17,8 +17,6 @@
 #' @return an empty value
 #'
 #' @importFrom rgeos readWKT
-#' @importFrom grDevices topo.colors
-#' @importFrom graphics title
 #' @importFrom sp plot
 #' @export
 #' @examples
@@ -29,7 +27,7 @@
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
 #'
-plotM = function(map, Z=NULL, lab=NULL, byLab = TRUE,
+plotM = function(map, Z=NULL, lab=NULL, byLab = TRUE, 
                  quantile = NULL, crit = NULL, cost = NULL, bestCrit = NULL, bestCost = NULL, newCost=NULL, line = 0, cex = 2)
 {
   step = map$step

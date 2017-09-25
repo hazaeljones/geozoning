@@ -7,17 +7,21 @@
 spToSL(sp)
 }
 \arguments{
-\item{sp}{xxxx}
+\item{sp}{SpatialPolygons}
 }
 \value{
-a list
+a SpatialLines
 }
 \description{
 spToSL
 }
 \details{
-description, a paragraph
+tranform SpatialPolygons into SpatialLines
 }
 \examples{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+spToSL(Z[[5]])
 # not run
 }

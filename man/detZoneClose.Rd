@@ -4,24 +4,36 @@
 \alias{detZoneClose}
 \title{detZoneClose}
 \usage{
-detZoneClose(iC, Z, K)
+detZoneClose(iZ, Z, zoneN, distIsoZ = 0.075)
 }
 \arguments{
-\item{iC}{xxxx}
+\item{iZ}{zone number}
 
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 
-\item{K}{xxxx}
+\item{zoneN}{modified zone neighborhood Logical matrix (FALSE values on diagonal)}
+
+\item{distIsoZ}{threshold distance above which a zone is considered as isolated}
 }
 \value{
-a ?
+a list with components
+\describe{
+\item{InterZoneSpace}{TRUE if zone is isolated, FALSE otherwise}
+\item{zoneClose}{indices of zones close to zone iZ, empty if zone is isolated}
+}
 }
 \description{
 detZoneClose
 }
 \details{
-description, a paragraph
+determines zones that are close to current zone, but not neighbors (common border). Therefore embedded or englobing zones are excluded.
 }
 \examples{
+data(resZTest)
+Z=resZTest$zonePolygone
+zoneN=resZTest$zoneNModif
+plotZ(Z)
+detZoneClose(4,Z,zoneN) # zone 4 is close to zone 3
+detZoneClose(6,Z,zoneN) # zone 6 is isolated (no zone at a distance smaller than 0.075).
 # not run
 }

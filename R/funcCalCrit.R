@@ -135,7 +135,7 @@ calCrit2=function(matDistance,zoneNModif)
 #' @param matDistance zone distance matrix resulting from a call to calDistance
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
-#' @return a numerical value
+#' @return a numerical value 
 #'
 #' @export
 #'
@@ -198,16 +198,12 @@ calCrit2bis=function(matDistance,zoneNModif)
 
 #############################################
 #' calCrit3
-<<<<<<< HEAD
 #' @details computes a quality criterion equal to min(mean(dij^2/sqrt(dii^2*dij^2))) 
 #' see also  \code{\link{calCrit1, calCrit2, calCrit4, calCrit5, calCritMinMean}} for other criteria
-=======
-#' @details computes a quality criterion equal to min(mean(dij^2/sqrt(dii^2*dij^2)))
->>>>>>> 107bd0b0387ef9c891d17356aec389af4c15b707
 #' @param matDistance zone distance matrix resulting from a call to calDistance
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
-#' @return a numerical value
+#' @return a numerical value 
 #'
 #' @export
 #'
@@ -269,7 +265,7 @@ calCrit3=function(matDistance,zoneNModif)
 #' @param matDistance zone distance matrix resulting from a call to calDistance
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
-#' @return a numerical value
+#' @return a numerical value 
 #'
 #' @export
 #'
@@ -327,16 +323,12 @@ nbPoly=length(diag(matDistance))
 ###############################################
 #' calCrit5
 #'
-<<<<<<< HEAD
 #' @details computes a quality criterion equal to min(median(dij/sqrt(dii*dij))) 
 #' see also  \code{\link{calCrit1, calCrit2, calCrit3, calCrit4, calCritMinMean}} for other criteria
-=======
-#' @details computes a quality criterion equal to min(median(dij/sqrt(dii*dij)))
->>>>>>> 107bd0b0387ef9c891d17356aec389af4c15b707
 #' @param matDistance zone distance matrix resulting from a call to calDistance
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
-#' @return a numerical value
+#' @return a numerical value 
 #'
 #' @export
 #'
@@ -381,8 +373,7 @@ nbPoly=length(diag(matDistance))
   a = numeric()
   for (i in 1:nbPoly )
   {
-    # IS: 21/09/2017: add stats:: for importFrom
-    a = append(a,stats::median(v[[i]]))
+    a = append(a,median(v[[i]]))
   }
   return(min(a))
 }
@@ -395,7 +386,7 @@ nbPoly=length(diag(matDistance))
 #' @param matDistance zone distance matrix resulting from a call to calDistance
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
-#' @return a numerical value
+#' @return a numerical value 
 #'
 #' @export
 #'
@@ -452,7 +443,7 @@ calCritMinMean=function(matDistance,zoneNModif)
 #' @param matDistance zone distance matrix resulting from a call to calDistance
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
-#' @return a numerical value
+#' @return a numerical value 
 #'
 #' @export
 #'

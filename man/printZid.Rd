@@ -7,17 +7,18 @@
 printZid(Z)
 }
 \arguments{
-\item{Z}{xxxx}
-}
-\value{
-a ?
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 }
 \description{
 printZid
 }
 \details{
-description, a paragraph
+print zone identifiers in a zoning
 }
 \examples{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+printZid(Z)
 # not run
 }

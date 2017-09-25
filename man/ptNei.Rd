@@ -2,7 +2,7 @@
 % Please edit documentation in R/funcRandKmap.R
 \name{ptNei}
 \alias{ptNei}
-\title{returns list of pt neigbors for each pt}
+\title{returns list of point neigbors for each point}
 \usage{
 ptNei(neighBool)
 }
@@ -13,8 +13,15 @@ ptNei(neighBool)
 a list of pt neigbors for each pt
 }
 \description{
-returns list of pt neigbors for each pt
+returns list of point neigbors for each point
 }
 \examples{
+data(mapTest) # simulated data
+grid=genEmptyGrid(calStep(2000,1,1),1,1)
+nbP= grid$nx*grid$ny
+neighBool=matrix(logical(nbP^2),nbP,nbP)
+resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
+neighBool=resVoronoi$neighBool
+listeNpt=ptNei(neighBool)
 # not run
 }

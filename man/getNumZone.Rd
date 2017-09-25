@@ -7,19 +7,24 @@
 getNumZone(ptsp, Z)
 }
 \arguments{
-\item{ptsp}{xxxx}
+\item{ptsp}{SpatialPointsDataFrame}
 
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 }
 \value{
-a ?
+the zone number
 }
 \description{
 getNumZone
 }
 \details{
-description, a paragraph
+get zone numbers to which each point in a SpatialPointsDataFrame belongs
 }
 \examples{
+data(mapTest)
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+getNumZone(mapTest$krigData,Z)
 # not run
 }

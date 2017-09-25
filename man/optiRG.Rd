@@ -2,34 +2,41 @@
 % Please edit documentation in R/optiRG.R
 \name{optiRG}
 \alias{optiRG}
-\title{optiRG}
+\title{optiRG join two zones close to each other}
 \usage{
-optiRG(Z, K, map, iC, iZC, simplitol, disp = 0)
+optiRG(K, map, iC, iZC, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{K}{zoning object (such as returned by calNei function)}
 
-\item{K}{xxxx}
+\item{map}{object returned by function genMap or genMapR}
 
-\item{map}{xxxx}
+\item{iC}{first zone}
 
-\item{iC}{xxxx}
+\item{iZC}{second zone}
 
-\item{iZC}{xxxx}
+\item{simplitol}{tolerance for spatial polygons geometry simplification}
 
-\item{simplitol}{xxxx}
-
-\item{disp}{xxxx}
+\item{disp}{0: no info, 1: detailed info}
 }
 \value{
-a ?
+a zoning object
 }
 \description{
-optiRG
+optiRG join two zones close to each other
 }
 \details{
-description, a paragraph
+Within a zoning, two zones close to each other are geometrically joined. The zoning is updated accordingly. If the zone resulting from the junction is not valid, i.e. if it crosses another zone, the function returns NULL.
 }
 \examples{
+data(mapTest)
+qProb=c(0.2,0.5)
+ZK = initialZoning(qProb, mapTest)
+K=ZK$resZ
+Z=K$zonePolygone
+plotZ(K$zonePolygone) # zoning
+kmi=optiRG(K,mapTest,6,7,disp=1)
+#zones 6 and 7 are joined into new zone 6
+sp::plot(kmi$zonePolygone[[6]],col="red",add=TRUE)
 # not run
 }

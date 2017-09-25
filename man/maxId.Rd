@@ -7,17 +7,21 @@
 maxId(Z)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 }
 \value{
-a ?
+a number
 }
 \description{
 maxId
 }
 \details{
-description, a paragraph
+get highest number corresponding to a zone identifier in a zoning
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+Z=criti$zk[[2]][[1]]$zonePolygon
+maxId(Z)
 # not run
 }

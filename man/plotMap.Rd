@@ -7,7 +7,7 @@
 plotMap(map)
 }
 \arguments{
-\item{map}{a map}
+\item{map}{a map object, such as returned by genMap}
 }
 \value{
 a plot
@@ -15,7 +15,12 @@ a plot
 \description{
 plot a map
 }
+\details{
+plot 3 different graphics of a map object
+}
 \examples{
+m=genMap(seed=1,krig=2,disp=0)
+plotMap(m)
 # not run
 
 }

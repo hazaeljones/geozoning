@@ -7,21 +7,25 @@
 setId(Z, iZ, id)
 }
 \arguments{
-\item{Z}{xxxx}
+\item{Z}{zoning geometry (list of SpatialPolygons)}
 
-\item{iZ}{xxxx}
+\item{iZ}{zone number}
 
-\item{id}{xxxx}
+\item{id}{zone identifier to assign}
 }
 \value{
-a ?
+a zoning geometry
 }
 \description{
 setId
 }
 \details{
-description, a paragraph
+assign zone identifier in a zoning
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+Z=criti$zk[[2]][[1]]$zonePolygon
+Z1=setId(Z,4,"4")
 # not run
 }

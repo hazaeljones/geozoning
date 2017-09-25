@@ -7,17 +7,21 @@
 getZoneId(zone)
 }
 \arguments{
-\item{zone}{xxxx}
+\item{zone}{SpatialPolygons}
 }
 \value{
-a ?
+the zone identifier ( a character vector of length 1)
 }
 \description{
 getZoneId
 }
 \details{
-description, a paragraph
+get the zone unique identifier
 }
 \examples{
+data(mapTest)
+criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+Z=criti$zk[[2]][[1]]$zonePolygon
+getZoneId(Z[[4]])
 # not run
 }

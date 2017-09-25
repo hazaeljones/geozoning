@@ -1,30 +1,41 @@
 #################################################################
 #' detZoneClose
 #'
-#' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
-#' @param K xxxx
+#' @details determines zones that are close to current zone, but not neighbors (common border). Therefore embedded or englobing zones are excluded. 
+#' @param iZ zone number
+#' @param Z zoning geometry (list of SpatialPolygons)
+#' @param zoneN modified zone neighborhood Logical matrix (FALSE values on diagonal)
+#' @param distIsoZ threshold distance above which a zone is considered as isolated
 #'
-#' @return a ?
+#' @return a list with components
+#' \describe{
+#' \item{InterZoneSpace}{TRUE if zone is isolated, FALSE otherwise}
+#' \item{zoneClose}{indices of zones close to zone iZ, empty if zone is isolated}
+#' }
 #'
 #' @export
 #'
 #' @examples
+#' data(resZTest)
+#' Z=resZTest$zonePolygone
+#' zoneN=resZTest$zoneNModif
+#' plotZ(Z)
+#' detZoneClose(4,Z,zoneN) # zone 4 is close to zone 3
+#' detZoneClose(6,Z,zoneN) # zone 6 is isolated (no zone at a distance smaller than 0.075).
 #' # not run
-detZoneClose=function(iC,Z,K)
+detZoneClose=function(iZ,Z,zoneN,distIsoZ=0.075)
 ##################################################################
   {
-    # iC=current zone
-    # Z=liste of zones
+    # iZ=current zone
+    # Z=list of zones
     # neighbor zone = shares some points
     # close zone = not neighbor and not too far
     # distIsoZ = maximum distance for isolated zone (has no close zones)
     # december 2016
 
-    Ns=getNs(K,iC)
+    Ns=getNs(zoneN,iZ)
     notN = grep( FALSE, Ns) # list of non neighbor zones
-    notN = notN[notN != iC] # remove current zone from that list
+    notN = notN[notN != iZ] # remove current zone from that list
 
     InterZoneSpace=TRUE # no close zone (except neighbor zones)
 
@@ -33,7 +44,7 @@ detZoneClose=function(iC,Z,K)
 
           for (zC in notN)
           {
-	    d=gDistance(Z[[iC]],Z[[zC]])
+	    d=gDistance(Z[[iZ]],Z[[zC]])
             if (d<distIsoZ)
             {
               InterZoneSpace=FALSE
@@ -45,14 +56,14 @@ detZoneClose=function(iC,Z,K)
   if (! InterZoneSpace) zoneClose=zoneClose[order(D)]
 # check  englobing zone is the same (no crossing)
   le = length(zoneClose)
-  indE=detZoneEng(iC,Z,K)
+  indE=detZoneEng(iZ,Z,zoneN)
 
  	if (le>0)
 	{
 		for (ip in le:1)
  		{
 		zip=zoneClose[[ip]]
-		indEP=detZoneEng(zip,Z,K)
+		indEP=detZoneEng(zip,Z,zoneN)
 		mask = (indE == 0 ) | (indEP != indE) | (indEP == 0)
 		if ( mask) zoneClose[[ip]]=NULL
 
@@ -63,163 +74,42 @@ detZoneClose=function(iC,Z,K)
  return(list(InterZoneSpace=InterZoneSpace,zoneClose=zoneClose))
   }
 
-##################################################################
-#' detZoneP0
-#'
-#' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
-#' @param K xxxx
-#'
-#' @return a ?
-#'
-#' @export
-#'
-#' @examples
-#' # not run
-detZoneP0=function(iC,Z,K)
-##################################################################
-  {
-    # iC=indice dans la liste de la zone à agrandir
-    # Z=liste of zones
-    # distIsoZ = dist max for isolated zone
-    # modif bch :
-
-    Ns=getNs(K,iC)
-
-    InterZoneSpace=TRUE
-
-     listeV=grep(TRUE, Ns)
-   # zone englobing current zone
-   indEG=detZoneEng(iC,Z,K)
-   zoneClose = list()
-   if (indEG ==0)
-      {
-	InterZoneSpace = FALSE
-	return(list(InterZoneSpace=InterZoneSpace,zoneClose=zoneClose))
-	}
-
-    #zone list except englobing zone
-    notN = grep( FALSE, Ns)
-    notN = notN[notN!=iC]
-      #
-
-	  D=numeric(0)
-
-          for (zC in notN)
-          {
-	    d=gDistance(Z[[iC]],Z[[zC]])
-            if (d<distIsoZ)
-            {
-              InterZoneSpace=FALSE
-              zoneClose =append(zoneClose,zC)
-	      D=append(D,d)
-            }
-          }
-# trier par distance croissante
-if (! InterZoneSpace)
- {
-	zoneClose=zoneClose[order(D)]
-
- }
-
-
- if (indEG == 0)
-    zoneClose=list()
- else
- {
-	#
- 	# check  englobing zone is the same (no crossing)
- 	if (length(zoneClose)>0)
-	{
-		for (ip in length(zoneClose):1)
- 		{
-		zip=zoneClose[[ip]]
-		indEGP=detZoneEng(zip,Z,K)
-		if (indEGP != indEG) zoneClose[[ip]]=NULL
-
- 		}
-	}
- #eliminate close zones included in current zone
- le=length(zoneClose)
- if (le > 0)
-    {
-    for (ip in le:1)
-     	{
-	zip=zoneClose[[ip]]
-	gc=gContains(gBuffer(gConvexHull(Z[[iC]]),byid=TRUE,width=1e-3),Z[[zip]])
-	if (gc) zoneClose[[zip]]=NULL
- 	}
-     }
-}
- return(list(InterZoneSpace=InterZoneSpace,zoneClose=zoneClose))
-}
-
-##################################################################
-#' detZoneEng0
-#'
-#' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
-#' @param K xxxx
-#'
-#' @return a ?
-#'
-#' @export
-#'
-#' @examples
-#' # not run
-detZoneEng0=function(iC,Z,K)
-##################################################################
-{
-    # iC=indice dans la liste de la zone à agrandir
-    # Z=liste des zones
-    #On recupere la zone la plus proche qui englobe notre petite zone
-    #
-
-  listeVois = grep( TRUE ,K$voisinZoneModif[iC,] )
-  indiceZe=0
-  for (iv in listeVois)
-  {
-	# enveloppe convexe pose pb parfois
-   	gc=gContains(gBuffer(gConvexHull(Z[[iv]]),byid=TRUE,width=1e-3),Z[[iC]])
-	if (gc) indiceZe=iv
-  }
-
-  return(indiceZe)
-}
 
 ##################################################################
 #' detZoneEng
 #'
 #' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
-#' @param K xxxx
+#' @param iZ index of zone for which englobing zone is searched
+#' @param Z zoning
+#' @param zoneN modified zone neighborhood matrix (FALSE values on diagonal)
 #'
-#' @return a ?
+#' @return an integer value (0 if no englobing zone was found, englobing zone index otherwise)
 #'
 #' @export
 #'
 #' @examples
-#' # not run
-detZoneEng=function(iC,Z,K)
+#' # load zoning results from test file
+#' data(resZTest)
+#' Z=resZTest$zonePolygone
+#' zoneN=resZTest$zoneNModif
+#' detZoneEng(3,Z,zoneN) # zone 2 englobes zone 3
+#' detZoneEng(2,Z,zoneN) # no englobing zone for zone 2 
+detZoneEng=function(iZ,Z,zoneN)
 ##################################################################
 {
-    # iC=indice dans la liste de la zone à agrandir
-    # Z=liste des zones
-    #On recupere la zone la plus petite qui englobe notre petite zone
-    #
+    # iZ=index of zone for which englobing zone is searched
+    # Z=zoning 
+    # result = closest englobing zone
 
-  listN = grep( TRUE ,K$zoneNModif[iC,] )
+  listN = grep( TRUE ,zoneN[iZ,] )
   indZe=NULL
   ar=NULL
   for (iN in listN)
   {
-	# convex envelope problematic sometimes
+	# convex envelope (problematic sometimes)
 	ge=gEnvelope(Z[[iN]])
 	arv=gArea(ge)
-   	gc=gContains(ge,Z[[iC]])
+   	gc=gContains(ge,Z[[iZ]])
 	if (gc)
 	   {
 		ar=c(ar,arv)
@@ -234,86 +124,3 @@ detZoneEng=function(iC,Z,K)
   iZe=iZe[1]
   return(iZe)
 }
-
-##################################################################
-#' detZoneEng2
-#'
-#' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
-#' @param K xxxx
-#'
-#' @return a ?
-#'
-#' @export
-#'
-#' @examples
-#' # not run
-detZoneEng2=function(iC,Z,K)
-##################################################################
-{
-    # iC=indice dans la liste de la zone à agrandir
-    # Z=liste des zones
-    #On recupere la zone la plus petite qui englobe notre petite zone
-    # version sans enveloppe convexe
-    #ne marche pas a cause des pbs de bordure...
-  listeN = grep( TRUE ,K$voisinZoneModif[iC,] ) # only consider neighbour zones
-  indiceZe=NULL
-
-  for (iv in listeN)
-  {
-	ge=polyToSp2(getPolySp(Z[[iv]],1)) #external polygon
-
-
-   	gc=gContains(ge,Z[[iC]])
-	if (gc)
-	   {
-
-		indiceZe = c(indiceZe,iv)
-		}
-
-  }
-
-  if(is.null(indiceZe)) return(0)
-
-  iZe=indiceZe[1]
-  return(iZe)
-}
-
-##################################################################
-#' detZonePIso
-#'
-#' @details description, a paragraph
-#' @param iC xxxx
-#' @param Z xxxx
-#' @param K xxxx
-#'
-#' @return a ?
-#'
-#' @export
-#'
-#' @examples
-#' # not run
-detZonePIso = function(iC,Z,K)
-##################################################################
-{
-# closest zone (excluding neighboring zones) to a given zone
-# used to generate quantile sequence to grow isolated zone
-  Ns=getNs(K,iC)
-  notN = grep( FALSE, Ns)
-  notN = notN[notN!=iC]
-  zP=c()
-  D=numeric(0)
-
-          for (zC in notN)
-          {
-	    d=gDistance(Z[[iC]],Z[[zC]])
-
-            zP=append(zP,zC)
-	    D=append(D,d)
-
-          }
-# sort
-	zP=zP[order(D)]
-	return(zP[1])
- }

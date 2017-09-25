@@ -2,19 +2,24 @@
 % Please edit documentation in R/funcRandKmap.R
 \name{calStep}
 \alias{calStep}
-\title{compute step for square grid}
+\title{compute step for non square grid}
 \usage{
-calStep(nPointsK)
+calStep(nPointsK, xsize, ysize)
 }
 \arguments{
-\item{nPointsK}{numeric}
+\item{nPointsK}{numeric value giving the number of points after kriging}
+
+\item{xsize}{numeric value giving the data range on the x axis}
+
+\item{ysize}{numeric value giving the data range on the y axis}
 }
 \value{
-a numeric
+a numerical step value
 }
 \description{
-compute step for square grid
+compute step for non square grid
 }
 \examples{
+calStep(1000,1,1)
 # not run
 }

@@ -4,26 +4,36 @@
 \alias{extensionLine}
 \title{extensionLine}
 \usage{
-extensionLine(contour = NULL, step = NULL, boundary, bspl)
+extensionLine(contourL = NULL, step = NULL, bdSP, superLines)
 }
 \arguments{
-\item{contour}{xxxx}
+\item{contourL}{contour line}
 
-\item{step}{xxxx}
+\item{step}{grid step as returned by calStep}
 
-\item{boundary}{xxxx}
+\item{bdSP}{list, contains x and y coordinates of map boundaries}
 
-\item{bspl}{xxxx}
+\item{superLines}{object returned by superLines(bdSP)}
 }
 \value{
-a ?
+a list
 }
 \description{
 extensionLine
 }
 \details{
-description, a paragraph
+closes contour lines by extending them to their interesection with the map border
 }
 \examples{
+data(mapTest)
+step=mapTest$step
+xsize=mapTest$xsize
+ysize=mapTest$ysize
+cL=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),
+               mapTest$krigGrid, levels = c(5,7))
+plot(mapTest$boundary,type="l",col="red")
+lines(cL[[1]])#contour line is not closed
+lines(extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
+     superLines(mapTest$boundary)),col="red") #contour line is closed
 # not run
 }
