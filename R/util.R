@@ -902,7 +902,7 @@ le=length(zk)
 #'
 #' @return a normalized distance matrix
 #'
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' # load test map with simulated data

@@ -111,7 +111,7 @@ Cost_By_Mean = function(map, Z, numZ)
 #' @keywords internal
 #' @examples
 #' map = mapTest
-#' Points_Near_Boundary(map = map)
+#' geozoning:::Points_Near_Boundary(map = map)
 
 Points_Near_Boundary = function(map){
   # this function is in the script "calCost.R"

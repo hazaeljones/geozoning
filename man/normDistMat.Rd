@@ -31,4 +31,3 @@ resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
 normDistMat(resD$matDistanceCorr,2)
 # not run
 }
-\keyword{internal}

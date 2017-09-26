@@ -17,6 +17,6 @@ function that returns a list of points in a zone that are near boundary of the m
 }
 \examples{
 map = mapTest
-Points_Near_Boundary(map = map)
+geozoning:::Points_Near_Boundary(map = map)
 }
 \keyword{internal}
