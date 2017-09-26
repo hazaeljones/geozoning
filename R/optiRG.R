@@ -3,7 +3,7 @@
 #'
 #' @details Within a zoning, two zones close to each other are geometrically joined. The zoning is updated accordingly. If the zone resulting from the junction is not valid, i.e. if it crosses another zone, the function returns NULL. 
 #' @param K zoning object (such as returned by calNei function)
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param iC first zone
 #' @param iZC second zone
 #' @param simplitol tolerance for spatial polygons geometry simplification

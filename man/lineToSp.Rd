@@ -26,3 +26,4 @@ lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
 sp=lineToSp(lin)
 # not run
 }
+\keyword{internal}

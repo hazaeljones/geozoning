@@ -47,3 +47,4 @@ resp=findCinZ(iC,Z,best,mapTest,vRef,envel)
 sp::plot(resp$contourSp,col="red",add=TRUE)
 # not run
 }
+\keyword{internal}

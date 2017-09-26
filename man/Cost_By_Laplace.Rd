@@ -7,7 +7,7 @@
 Cost_By_Laplace(map, Z, numZ, Estimation)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{Z}{: an example of zoning (a list of zones)}
 

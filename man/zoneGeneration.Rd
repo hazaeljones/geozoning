@@ -7,7 +7,7 @@
 zoneGeneration(map, qProb = c(0.25, 0.75), GridData = FALSE)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{qProb}{probability vector used to generate quantile values}
 

@@ -2,7 +2,7 @@
 #' updateZK called by lastPass
 #'
 #' @details Given a map object, a list of zonings, a current and a previous zoning, replaces a zoning in the list of zonings
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param qProb probability vector used to generate quantile values
 #' @param le index of current level in list
 #' @param kk index of current zoning in level list
@@ -18,9 +18,9 @@
 #' @param optiCrit xxxx
 #' @param simplitol xxxx
 #'
-#' @return a ?
+#' @return a list of zonings, criteria and costs
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

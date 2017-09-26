@@ -30,3 +30,4 @@ data=mapTest$krigData
 findZCenterpt(data,K)
 # not run
 }
+\keyword{internal}

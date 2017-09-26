@@ -31,3 +31,4 @@ data(mapTest)
 resT=normSize(mapTest$boundary,0.012,0.001)#normalize thresholds relatively to map boundary area
 # not run
 }
+\keyword{internal}

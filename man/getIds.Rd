@@ -27,3 +27,4 @@ Z=criti$zk[[2]][[1]]$zonePolygon
 getIds(Z)
 # not run
 }
+\keyword{internal}

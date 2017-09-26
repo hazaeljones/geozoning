@@ -2,7 +2,7 @@
 #' lastPass
 #'
 #' @details description, a paragraph
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param qProb probability vector used to generate quantile values
 #' @param listOfZ list of zoning objects (such as returned by calNei function)
 #' @param crit criterion value list

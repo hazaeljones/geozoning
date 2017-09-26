@@ -10,7 +10,7 @@
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @return a zoning geometry updated with the grown zone(list of SpatialPolygons)
 #' @importFrom rgeos createSPComment
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

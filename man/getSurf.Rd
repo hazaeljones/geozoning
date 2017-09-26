@@ -18,7 +18,7 @@ zone area
 getSurf
 }
 \details{
-description, a paragraph
+get surface area of a given zone within a zoning
 }
 \examples{
 data(resZTest)
@@ -27,3 +27,4 @@ Z=K$zonePolygone
 getSurf(Z,1)
 # not run
 }
+\keyword{internal}

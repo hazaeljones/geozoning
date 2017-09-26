@@ -33,3 +33,4 @@ plotZ(Z)
 points( getClosePt(Z,1,3),col="blue",pch=20)
 # not run
 }
+\keyword{internal}

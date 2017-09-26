@@ -13,7 +13,7 @@ zoneFusion3(K, iC, Ns, map, minSize = 0.01, simplitol = 0.001, disp = 0)
 
 \item{Ns}{zone neighborhood Boolean matrix}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{minSize}{minimum admissible zone size}
 

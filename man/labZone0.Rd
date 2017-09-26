@@ -32,3 +32,4 @@ p = K$qProb
 labZone(K,p,dataF)
 # not run
 }
+\keyword{internal}

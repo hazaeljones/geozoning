@@ -25,3 +25,4 @@ cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,
 listContourArea(cL)
 # not run
 }
+\keyword{internal}

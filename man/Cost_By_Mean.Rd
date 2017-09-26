@@ -7,7 +7,7 @@
 Cost_By_Mean(map, Z, numZ)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{Z}{: an example of zoning (a list of zones)}
 
@@ -20,7 +20,7 @@ the cost value as described
 Cost_By_Mean
 }
 \details{
-: function that returns the criterion COST by approximating the valeur in a point of the grid by
+: function that returns the criterion COST by approximating the value at a point of the grid by
            the mean value of the zone.
 }
 \examples{

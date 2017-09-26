@@ -23,3 +23,4 @@ data(dataReg)
 gridXY(dataReg)
 # not run
 }
+\keyword{internal}

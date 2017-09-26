@@ -7,7 +7,7 @@
 Transition_Zone_Far_Boundary(map, Z, numZ)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{Z}{list of zones.}
 

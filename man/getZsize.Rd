@@ -24,3 +24,4 @@ Z=resZTest$zonePolygone
 getZsize(Z)
 # not run
 }
+\keyword{internal}

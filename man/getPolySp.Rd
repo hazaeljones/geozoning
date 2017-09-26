@@ -30,3 +30,4 @@ plot(P1@coords,type="l")
 lines(P2@coords,type="l",col="blue")
 # not run
 }
+\keyword{internal}

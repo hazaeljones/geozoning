@@ -11,7 +11,7 @@ smoothingMap(Z, width = 0.01, map, disp = FALSE)
 
 \item{width}{smoothing parameter}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{disp}{logical, if TRUE display the successful step of the program, otherwise do not display}
 }

@@ -5,7 +5,7 @@
 #'            the linear interpolation (approximate solution of Laplace's equation. For more details see help of function
 #'            Transition_Zone_Near_Boundary, Transition_Zone_Far_Boundary or Extreme_Zone)
 
-#' @param map  object returned by function genMap or genMapR
+#' @param map  object returned by function genMap 
 #' @param Z : an example of zoning (a list of zones)
 #' @param numZ : number of the zone in which the cost will be computed
 #' @param Estimation : value of linear interpolation by solving Laplace's equation
@@ -56,10 +56,10 @@ Cost_By_Laplace = function (map, Z, numZ, Estimation)
 
 #' Cost_By_Mean
 
-#' @details : function that returns the criterion COST by approximating the valeur in a point of the grid by
+#' @details : function that returns the criterion COST by approximating the value at a point of the grid by
 #'            the mean value of the zone.
 
-#' @param map  object returned by function genMap or genMapR
+#' @param map  object returned by function genMap
 #' @param Z : an example of zoning (a list of zones)
 #' @param numZ : number of the zone in which the cost will be computed
 
@@ -107,8 +107,8 @@ Cost_By_Mean = function(map, Z, numZ)
 
 #' @details function that returns a list of points in a zone that are near boundary of the map
 
-#' @param map object returned by function genMap or genMapR
-#' @export
+#' @param map object returned by function genMap 
+#' @keywords internal
 #' @examples
 #' map = mapTest
 #' Points_Near_Boundary(map = map)
@@ -140,7 +140,7 @@ Points_Near_Boundary = function(map){
 #' @details Elementary function that create a new krigGrid by replacing the real values by the approximation of the function
 #' "Transition_Zone_Near_Boundary","Transition_Zone_Far_Boundary" or "Extreme_Zone" in order to have a look at the new iso contour
 
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap 
 #' @param Z list of zones.
 #' @param numZ number of the zone whose values will be approximated.
 #' @param solution the result of function "Transition_Zone_Near_Boundary" or "Transition_Zone_Far_Boundary" or "Extreme_Zone"
@@ -224,7 +224,7 @@ new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
 #' by the solution of the Laplace's equation. The numerical resolution of the Laplace's equation will be based on the discretisation
 #' of the data on the grid (map$krigGrid). The domaine of study is a transition zone which have a commun border with the map.
 
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param Z list of zones.
 #' @param numZ number of the zone whose values will be approximated.
 
@@ -432,7 +432,7 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
 #' by the solution of the Laplace's equation. The numerical resolution of the Laplace's equation will be based on the discretisation
 #' of the data on the grid (map$krigGrid).
 #' @usage Transition_Zone_Far_Boundary(map, Z, numZ)
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap 
 #' @param Z list of zones.
 #' @param numZ number of the zone whose values will be approximated.
 
@@ -552,7 +552,7 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
 #' by the solution of the Laplace's equation. The iso contours plotted on the approximate data will take the form of concentric circles as we
 #' supposed the extreme value of the zone is at the zone center (furthest point from the zone boundary.)
 
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param Z list of zones.
 #' @param numZ number of the zone whose values will be approximated.
 #' @param label.is.min boolean value that is TRUE if the label of the zone is minimum and FALSE if the label is maximum
@@ -740,7 +740,7 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 #' @param Z list of Zones
 #' @param lab vector labels of zones
 #' @return a vector containing zone numbers
-#' @export
+#' @keywords internal
 #' @examples
 #' seed=6
 #' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)

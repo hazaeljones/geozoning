@@ -30,3 +30,4 @@ plotZ(Z)
 testInterSpeZ(Z)
 # not run
 }
+\keyword{internal}

@@ -43,3 +43,4 @@ qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
 res=searchNODcrit1(qProb,criti)
 # not run
 }
+\keyword{internal}

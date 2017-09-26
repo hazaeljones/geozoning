@@ -7,7 +7,7 @@
 new_krigGrid_for_visualisation(map, Z, numZ, solution)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{Z}{list of zones.}
 

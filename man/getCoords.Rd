@@ -27,3 +27,4 @@ Z=K$zonePolygone
 getCoords(Z[[1]])
 # not run
 }
+\keyword{internal}

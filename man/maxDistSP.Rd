@@ -24,3 +24,4 @@ Z=ZK$resZ$zonePolygone
 maxDistSP(Z[[5]])
 # not run
 }
+\keyword{internal}

@@ -28,3 +28,4 @@ plot(mapTest$boundary)
 linesC(cL,col="black")
 # not run
 }
+\keyword{internal}

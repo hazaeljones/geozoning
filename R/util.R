@@ -7,7 +7,7 @@
 #'
 #' @return some coordinates
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(resZTest)
@@ -87,7 +87,7 @@ contourArea=function(co)
 #'
 #' @return a list of areas
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -145,7 +145,7 @@ contourToSpp=function(co,step)
 #' @param sp SpatialPolygons
 #' @return the number of polygons within the current zone
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
@@ -197,7 +197,7 @@ holeSp = function(sp)
 #' @param sp SpatialPolygons
 #' @return the maximum distance within sp
 #'
-#' @export
+#' @keywords internal
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
@@ -218,7 +218,7 @@ maxDistSP=function(sp)
 #'
 #' @return a polygon (object of class Polygon)
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
@@ -271,7 +271,7 @@ polyToSp2=function(p)
 #'
 #' @return a SpatialPolygons
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -300,7 +300,7 @@ lineToSp=function(lin)
 #' \item{boundaryn}{normalized boundary}
 #' }
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #  shape1: result of call to readS on shapefile
@@ -355,7 +355,7 @@ spnorm = function(sp, boundary)
 #' }
 #'
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' x=runif(100, min=0, max=1)
@@ -400,7 +400,7 @@ datanorm = function(data, bd)
 #'
 #' @return a normalized data frame
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' nPoints=500
@@ -502,7 +502,7 @@ datanormX = function(data,bd)
 #' \item{minSizeNG}{normalized no grow size threshold}
 #' }
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -735,7 +735,7 @@ ptsInSp=function(sp,pts,hole=FALSE)
 #' \item{nq}{lenght of quantile vector}
 #' }
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #'qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
@@ -902,7 +902,7 @@ le=length(zk)
 #'
 #' @return a normalized distance matrix
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' # load test map with simulated data
@@ -937,7 +937,7 @@ return(normMD)
 #'
 #' @return an empty value
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -969,7 +969,7 @@ return()
 #' @importFrom sp plot
 #' @return a SpatialPolygons
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -1015,7 +1015,7 @@ interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 #'
 #' @return a vector with the size of quantile vectors for each zoning corresponding to critList
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -1081,7 +1081,7 @@ for ( v in val)
 #'
 #' @return a list of SpatialPolygons
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

@@ -23,3 +23,4 @@ generate grid from raw data
 genEmptyGrid(calStep(1000,1,1),1,1)
 # not run
 }
+\keyword{internal}

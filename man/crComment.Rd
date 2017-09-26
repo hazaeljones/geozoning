@@ -25,3 +25,4 @@ Z=K$zonePolygone
 Z1=crComment(Z)
 # not run
 }
+\keyword{internal}

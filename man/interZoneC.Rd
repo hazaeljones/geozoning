@@ -41,3 +41,4 @@ res  = interZoneC(Z,6,8,closePt)
 points(res$spi,col="red")
 # not run
 }
+\keyword{internal}

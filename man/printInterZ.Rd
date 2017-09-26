@@ -26,3 +26,4 @@ plotZ(Z,mapTest)
 printInterZ(Z,Z[[1]])
 # not run
 }
+\keyword{internal}

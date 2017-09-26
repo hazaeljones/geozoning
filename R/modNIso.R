@@ -5,7 +5,7 @@
 #' @details modify non isolated zone (depends on distIsoZ parameter) so that it is joined to the closest neighbour zone with the same label.
 #' @param K zoning object (such as returned by calNei function)
 #' @param qProb probability vector used to generate quantile values
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param zoneClose indices of close zones
 #' @param iC current zone index
 #' @param simplitol tolerance for spatial polygons geometry simplification

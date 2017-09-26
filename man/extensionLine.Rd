@@ -37,3 +37,4 @@ lines(extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
      superLines(mapTest$boundary)),col="red") #contour line is closed
 # not run
 }
+\keyword{internal}

@@ -158,7 +158,7 @@ DIJ=function(i,j,sigmai2,meanZone,pErr)
 #'
 #' @return a normalized distance matrix
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' # load test map with simulated data
@@ -188,7 +188,7 @@ distanceNormalisationSqrt=function(matDistance)
 #'
 #' @return a normalized distance matrix
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' # load test map with simulated data

@@ -18,3 +18,4 @@ buffToValid
 \details{
 function that check if a zone has a valid geometry, if not , makes zone valid by using gBuffer(width = 0,...)
 }
+\keyword{internal}

@@ -9,7 +9,7 @@ plotM(map, Z = NULL, lab = NULL, byLab = TRUE, quantile = NULL,
   newCost = NULL, line = 0, cex = 2)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR.}
+\item{map}{object returned by function genMap}
 
 \item{Z}{list of zones, each zone is a SpatialPolygons.}
 

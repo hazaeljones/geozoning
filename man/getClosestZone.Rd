@@ -28,3 +28,4 @@ Z=resZTest$zonePolygone
 getClosestZone(4,Z,resZTest$zoneNModif)
 # not run
 }
+\keyword{internal}

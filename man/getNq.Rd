@@ -24,3 +24,4 @@ criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE)
 getNq(criti$critList)
 # not run
 }
+\keyword{internal}

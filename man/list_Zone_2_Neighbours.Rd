@@ -31,3 +31,4 @@ plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
 # zone 4 and 6 are transition zones and have exactly 2 neighbours with different labels.
 list_Zone_2_Neighbours(Z = Z, lab = lab)
 }
+\keyword{internal}

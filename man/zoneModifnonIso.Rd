@@ -11,7 +11,7 @@ zoneModifnonIso(K, qProb, map, zoneClose, iC, simplitol = 0.001, disp = 0)
 
 \item{qProb}{probability vector used to generate quantile values}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{zoneClose}{indices of close zones}
 

@@ -7,7 +7,7 @@
 Extreme_Zone(map, Z, numZ, label.is.min = TRUE)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{Z}{list of zones.}
 

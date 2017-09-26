@@ -30,3 +30,4 @@ plotZ(Z)
 sp::plot(sph,type="l",col="blue",add=TRUE)
 # not run
 }
+\keyword{internal}

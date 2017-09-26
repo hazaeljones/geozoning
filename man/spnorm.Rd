@@ -35,3 +35,4 @@ Nbb=spnorm(P1,bb)$boundaryn
 plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
 # not run
 }
+\keyword{internal}

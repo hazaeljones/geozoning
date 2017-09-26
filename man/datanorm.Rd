@@ -38,3 +38,4 @@ res=datanorm(tabData,bd)
 apply(res$dataN,2,range)# 
 # not run
 }
+\keyword{internal}

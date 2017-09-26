@@ -2,7 +2,7 @@
 #' saveZK function called by correctionTree
 #'
 #' @details Given a map object, a list of zonings, a current and a previous zoning, adds the current zoning to the list of zonings if it has at least 2 zones,after recalculating zone neighborhood and transferring zone labels.
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param K1 previous zoning
 #' @param Z2 current zoning geometry (list of SpatialPolygons)
 #' @param qProb probability vector used to generate quantile values
@@ -27,7 +27,7 @@
 #' \item{nz}{list of initial number of zones and all (last if ALL=FALSE) level number of zones}
 #' }
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

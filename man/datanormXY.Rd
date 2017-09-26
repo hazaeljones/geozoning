@@ -27,3 +27,4 @@ tabData=data.frame(x=x,y=y)
 tabData=datanormXY(tabData) # x,y ranges are now [0,1]
 # not run
 }
+\keyword{internal}

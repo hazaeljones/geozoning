@@ -6,7 +6,7 @@
 #'
 #' @return a grid 
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(dataReg)

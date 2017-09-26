@@ -8,7 +8,7 @@ updateZK(map, qProb, le, kk, listOfZ, crit, cost, costL, nz, mdist, K1, Z2,
   pErr = 0.9, optiCrit = 2, simplitol = 0.001)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{qProb}{probability vector used to generate quantile values}
 
@@ -39,7 +39,7 @@ updateZK(map, qProb, le, kk, listOfZ, crit, cost, costL, nz, mdist, K1, Z2,
 \item{simplitol}{xxxx}
 }
 \value{
-a ?
+a list of zonings, criteria and costs
 }
 \description{
 updateZK called by lastPass
@@ -61,3 +61,4 @@ newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
 printZsurf(newZ) #7 zones
 # not run
 }
+\keyword{internal}

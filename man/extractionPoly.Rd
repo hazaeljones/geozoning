@@ -25,3 +25,4 @@ Z=ZK$resZ$zonePolygone
 extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
 # not run
 }
+\keyword{internal}

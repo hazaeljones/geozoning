@@ -8,7 +8,7 @@ lastPass(map, qProb, listOfZ, crit, cost, costL, nz, mdist, pErr = 0.9,
   optiCrit = 2, minSize = 0.012, simplitol = 0.001, disp = 0)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{qProb}{probability vector used to generate quantile values}
 

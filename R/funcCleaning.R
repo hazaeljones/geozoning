@@ -83,7 +83,7 @@ zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 #' @param K zoning object, as returned by the calNei function
 #' @param iC index of current zone in zoning
 #' @param Ns zone neighborhood Boolean matrix  
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param minSize  minimum admissible zone size
 #' @param simplitol tolerance for spatial polygons geometry simplification
 #' @param disp information level (0-no info, 1-print info, 2-plot)
@@ -300,7 +300,7 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.07
 #'
 #' @return a new zoning where current zone has been removed
 #'
-#' @export
+#' @keywords internal
 #' @examples
 #' data(resZTest)
 #' K=resZTest

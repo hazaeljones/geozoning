@@ -9,7 +9,7 @@
 #' @param nz list of number of zones 
 #' @param mdist list of distance matrices
 #' @param listOfZ list of zoning objects
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param disp 0: no info, 1: plot best corrected zoning
 #' @param SAVE logical value, if TRUE function returns more elements
 #'
@@ -29,7 +29,7 @@
 #' \item{nz}{(SAVE=TRUE) list of initial number of zones and all (last if ALL=FALSE) level number of zones}
 #' }
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

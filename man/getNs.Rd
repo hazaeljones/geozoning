@@ -25,3 +25,4 @@ data(mapTest)
 K=resZTest
 Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
 }
+\keyword{internal}

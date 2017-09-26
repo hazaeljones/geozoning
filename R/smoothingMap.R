@@ -3,7 +3,7 @@
 
 #' @param Z list of zone
 #' @param width smoothing parameter
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param disp logical, if TRUE display the successful step of the program, otherwise do not display
 
 #' @return a new list of smoothed zones.

@@ -25,3 +25,4 @@ Z=criti$zk[[2]][[1]]$zonePolygon
 maxId(Z)
 # not run
 }
+\keyword{internal}

@@ -10,7 +10,7 @@ initialZoning(qProb, map, pErr = 0.9, simplitol = 0.001, optiCrit = 2,
 \arguments{
 \item{qProb}{probability vector used to generate quantile values}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{pErr}{equality tolerance for distance calculations}
 

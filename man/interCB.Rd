@@ -37,3 +37,4 @@ sp::plot(pG)
 sp::plot(ps,col="red",add=TRUE)
 # not run
 }
+\keyword{internal}

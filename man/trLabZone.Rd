@@ -36,3 +36,4 @@ K2=calNei(zf,mapTest$krigData,mapTest$krigSurfVoronoi,mapTest$krigN)
 K2=trLabZone(K,K2,mapTest,K$qProb)
 # not run
 }
+\keyword{internal}

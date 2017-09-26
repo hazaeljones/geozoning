@@ -29,3 +29,4 @@ ptsp=mapTest$krigData
 modlm(ptsp,Z)
 # not run
 }
+\keyword{internal}

@@ -7,7 +7,7 @@
 Points_Near_Boundary(map)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 }
 \description{
 Points_Near_Boundary
@@ -19,3 +19,4 @@ function that returns a list of points in a zone that are near boundary of the m
 map = mapTest
 Points_Near_Boundary(map = map)
 }
+\keyword{internal}

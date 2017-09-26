@@ -6,7 +6,7 @@
 #'
 #' @return the zone identifier ( a character vector of length 1)
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -84,7 +84,7 @@ getId=function(Z,iZ)
 #'
 #' @return a character vector giving the zone identifiers
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -167,7 +167,7 @@ setIds=function(Z)
 #'
 #' @return a number
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -216,13 +216,13 @@ printZid = function(Z)
 ##################################################################
 #' getSurf
 #'
-#' @details description, a paragraph
+#' @details get surface area of a given zone within a zoning
 #' @param Z zoning geometry (list of SpatialPolygons)
 #' @param iZ zone number
 #'
 #' @return zone area
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(resZTest)
@@ -372,7 +372,7 @@ return(numzone)
 #'
 #' @return a Logical vector of current zone neighbors
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -438,7 +438,7 @@ return(mat)
 #'
 #' @return a zoning
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(resZTest)
@@ -472,7 +472,7 @@ crComment = function(Z)
 #' @return a Logical value, TRUE if there is an intersection, FALSE if not.
 #' @importFrom rgeos gOverlaps
 
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -507,7 +507,7 @@ else
 #'
 #' @return a Logical value, TRUE if there is an intersection, FALSE if not.
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -544,7 +544,7 @@ testInterSpeZ1=function(Z,iZ)
 #'
 #' @return a Logical value, TRUE if there is any intersection, FALSE if not
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' qProb=c(0.2,0.5)
@@ -580,7 +580,7 @@ testInterSpeZ=function(Z)
 #'
 #' @return NULL
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -680,7 +680,7 @@ printLabZ=function(Klist)
 #'
 #' @return a zoning object
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -753,7 +753,7 @@ return(K2)
 #'
 #' @return the closest zone index
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(resZTest)
@@ -885,7 +885,7 @@ nPolyZone=function(Z,iC)
 #'
 #' @return the maximum distance within kth polygon of the current zone
 #'
-#' @export
+#' @keywords internal
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
@@ -936,7 +936,7 @@ getPoly = function(Z,iZ,k)
 #'
 #' @return a SpatialPolygons
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
@@ -1089,7 +1089,7 @@ createHoles = function(Z)
 #'
 #' @return a new SpatialPolygons object
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' # not run
@@ -1127,7 +1127,7 @@ moveHoles = function(zoneMain,zoneSuppr)
 #' \item{contourSp}{SpatialPolygons corresponding to contour}
 #' }
 #' @importFrom sp plot
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -1198,7 +1198,7 @@ findCinZ = function(iC,Z,K,map,vRef,envel)
 #'
 #' @return the result of a call to lm (anova model with zone number as factor)
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(resZTest)
@@ -1234,7 +1234,7 @@ modlm=function(ptsp,Z)
 #'
 #' @return a SpatialPoints of length 1
 #'
-#' @export
+#' @keywords internal
 #' @importFrom sp SpatialPoints SpatialPointsDataFrame
 #'
 #' @examples
@@ -1325,7 +1325,7 @@ return(ptz)
 #'
 #' @return a matrix of x and y coordinates for chosen points with as many rows as zones
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -1368,7 +1368,7 @@ getZsize=function(Z)
 #'
 #' @return a vector with x and y maximum values
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(resZTest)
@@ -1397,7 +1397,7 @@ return(vs)
 #' }
 #' @importFrom rgeos gBoundary gCrosses gEnvelope gIntersection gLength
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

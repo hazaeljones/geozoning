@@ -41,3 +41,4 @@ z = zone.extended(z = Z[[1]], boundary = boundary)
 sp::plot(z)
 sp::plot(Z[[1]],add=TRUE)
 }
+\keyword{internal}

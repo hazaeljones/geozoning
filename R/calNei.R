@@ -92,7 +92,7 @@ calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALS
 #'
 #' @return a zoning object with labelled zones in lab component
 #'
-#' @export
+#' @keywords internal
 #' @importFrom sp point.in.polygon
 #'
 #' @examples

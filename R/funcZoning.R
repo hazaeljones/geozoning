@@ -2,7 +2,7 @@
 #' zoneGeneration
 #'
 #' @details Generates zones from map data using quantile values associated to given probabilities
-#' @param map object returned by function genMap or genMapR
+#' @param map object returned by function genMap
 #' @param qProb probability vector used to generate quantile values
 #' @param GridData logical value indicating if data are already on a regular grid (no kriging in that case)
 #'
@@ -273,7 +273,7 @@ for (ind in noZ)
 #'
 #' @return a SpatialPolygons with holes in separate polygons
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)
@@ -331,7 +331,7 @@ separationPoly=function(polyTot)
 #'
 #' @return a list
 #' @importFrom sp SpatialPoints
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' data(mapTest)

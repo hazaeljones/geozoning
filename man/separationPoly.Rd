@@ -33,3 +33,4 @@ Z1=list(recupPoly[[1]],recupPoly[[2]])
 plotZ(Z1)
 # not run
 }
+\keyword{internal}

@@ -45,3 +45,4 @@ Zopti=zoneQ(resi$contourSp,iC,iE,Z,K)
 plotZ(Zopti)
 # not run
 }
+\keyword{internal}

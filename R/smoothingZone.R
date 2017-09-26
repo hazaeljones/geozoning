@@ -88,7 +88,7 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 #' @importFrom rgeos gOverlaps readWKT gNearestPoints
 #' @importFrom raster geom
 #' @importFrom sp plot
-#' @export
+#' @keywords internal
 #' @examples
 #' seed=1
 #' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
@@ -297,7 +297,7 @@ touch.border = function (z, boundary)
 #' @return a new valid zone
 #' @importFrom rgeos gIsValid
 #' @importFrom rgeos gBuffer
-#' @export
+#' @keywords internal
 
 
 buffToValid = function(zone){

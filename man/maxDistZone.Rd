@@ -28,3 +28,4 @@ Z=ZK$resZ$zonePolygone
 maxDistZone(Z,5,1)
 # not run
 }
+\keyword{internal}

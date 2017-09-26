@@ -34,3 +34,4 @@ plotZ(Z)
 plotZ(remove1FromZ(Z,2,K$zoneN))
 # not run
 }
+\keyword{internal}

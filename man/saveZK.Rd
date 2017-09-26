@@ -8,7 +8,7 @@ saveZK(map, K1, Z2, qProb, listOfZ, indCur, crit, cost, costL, nz, mdist,
   pErr = 0.9, optiCrit = 2, simplitol = 0.001)
 }
 \arguments{
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{K1}{previous zoning}
 
@@ -68,3 +68,4 @@ newZ=newRes$listOfZ[[2]][[1]]$zonePolygone
 printZsurf(newZ) #6 zones
 # not run
 }
+\keyword{internal}

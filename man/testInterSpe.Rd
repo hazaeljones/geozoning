@@ -35,3 +35,4 @@ plotZ(Z)
 testInterSpe(Z,6,length(Z))
 # not run
 }
+\keyword{internal}

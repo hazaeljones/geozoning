@@ -23,3 +23,4 @@ creates SpatialPolygons excluding holes
 \examples{
 # not run
 }
+\keyword{internal}

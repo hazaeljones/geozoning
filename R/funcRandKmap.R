@@ -161,7 +161,7 @@ calStep=function(nPointsK,xsize,ysize)
 #' @importFrom sp coordinates
 #'
 #' @return a list that contains x and y kriged positions based on original ones,#' plus nx and ny (number of x and y positions).
-#' @export
+#' @keywords internal
 #' @importFrom sp coordinates
 #' @importMethodsFrom sp coordinates
 #' @examples

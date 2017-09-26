@@ -2,7 +2,7 @@
 #'
 #' @details plot the map in color with zones and details.
 #'
-#' @param map object returned by function genMap or genMapR.
+#' @param map object returned by function genMap
 #' @param Z list of zones, each zone is a SpatialPolygons.
 #' @param lab label of each zones.
 #' @param byLab boolean, if TRUE display the label of each zone, else display the zone number.

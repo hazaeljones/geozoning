@@ -22,7 +22,7 @@ sortCrit(qProb, crit, cost, costL, nz, mdist, listOfZ, map, disp = 0,
 
 \item{listOfZ}{list of zoning objects}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{disp}{0: no info, 1: plot best corrected zoning}
 
@@ -58,3 +58,4 @@ criti=correctionTree(qProb,mapTest)
 sortCrit(qProb,criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist,criti$zk,mapTest) 
 # not run
 }
+\keyword{internal}

@@ -9,7 +9,7 @@ optiRG(K, map, iC, iZC, simplitol = 0.001, disp = 0)
 \arguments{
 \item{K}{zoning object (such as returned by calNei function)}
 
-\item{map}{object returned by function genMap or genMapR}
+\item{map}{object returned by function genMap}
 
 \item{iC}{first zone}
 
