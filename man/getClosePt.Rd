@@ -28,9 +28,9 @@ description, a paragraph
 data(resZTest)
 K=resZTest
 Z=K$zonePolygone
-getClosePt(Z,1,3)
+geozoning:::getClosePt(Z,1,3)
 plotZ(Z)
-points( getClosePt(Z,1,3),col="blue",pch=20)
+points( geozoning:::getClosePt(Z,1,3),col="blue",pch=20)
 # not run
 }
 \keyword{internal}

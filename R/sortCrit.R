@@ -36,7 +36,8 @@
 #' qProb=c(0.4,0.7)
 #' criti=correctionTree(qProb,mapTest)
 # displays best criterion, corresponding costs and number of zones
-#' sortCrit(qProb,criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist,criti$zk,mapTest) 
+#' geozoning:::sortCrit(qProb,criti$criterion,criti$cost,criti$costL,
+#'             criti$nz,criti$mdist,criti$zk,mapTest) 
 #' # not run
 sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp=0,SAVE=FALSE)
 ###############################################################################

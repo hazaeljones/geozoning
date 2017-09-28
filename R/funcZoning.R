@@ -114,7 +114,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #' cL=list()
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 #' plot(mapTest$boundary,type="l",col="red")
-#' linesC(cL)
+#' geozoning:::linesC(cL)
 #' # not run
 contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 ##############################################################################
@@ -285,7 +285,7 @@ for (ind in noZ)
 #' cLSp=maptools::ContourLines2SLDF(list(cL[[8]])) # transform contour line into SpatialLines objects
 #' polyBuff=rgeos::gBuffer(cLSp,width=0.00001) # extend geometry
 #' polyDiff=rgeos::gDifference(pG,polyBuff)
-#' recupPoly=separationPoly(polyDiff)
+#' recupPoly=geozoning:::separationPoly(polyDiff)
 #' Z1=list(recupPoly[[1]],recupPoly[[2]])
 #' plotZ(Z1)
 #' # not run
@@ -342,8 +342,8 @@ separationPoly=function(polyTot)
 #'                mapTest$krigGrid, levels = c(5,7))
 #' plot(mapTest$boundary,type="l",col="red")
 #' lines(cL[[1]])#contour line is not closed
-#' lines(extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
-#'      superLines(mapTest$boundary)),col="red") #contour line is closed
+#' lines(geozoning:::extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
+#'      geozoning:::superLines(mapTest$boundary)),col="red") #contour line is closed
 #' # not run
 extensionLine=function(contourL=NULL,step=NULL,bdSP,superLines)
 ################################################################################

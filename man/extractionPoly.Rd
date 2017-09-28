@@ -22,7 +22,7 @@ extract all elements from SpatialPolygons, holes and full polygons are handled e
 data(mapTest)
 ZK=initialZoning(qProb=c(0.2,0.4,0.7),mapTest)
 Z=ZK$resZ$zonePolygone
-extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
+geozoning:::extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
 # not run
 }
 \keyword{internal}

@@ -101,7 +101,7 @@ calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALS
 #' data(resZTest)
 #' K=resZTest
 #' p = K$qProb
-#' labZone(K,p,dataF)
+#' geozoning:::labZone0(K,p,dataF)
 #' # not run
 labZone0=function(K,qProb,dataF)
 #########################################

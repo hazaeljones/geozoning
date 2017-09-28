@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' data(dataReg)
-#' gridXY(dataReg)
+#' geozoning:::gridXY(dataReg)
 #' # not run
 #################################################################################
 # generate empty grid

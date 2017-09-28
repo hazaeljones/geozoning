@@ -22,7 +22,7 @@ get highest number corresponding to a zone identifier in a zoning
 data(mapTest)
 criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
 Z=criti$zk[[2]][[1]]$zonePolygon
-maxId(Z)
+geozoning:::maxId(Z)
 # not run
 }
 \keyword{internal}

@@ -33,8 +33,8 @@ cL=contourLines(seq(step, xsize-step, by=step),seq(step, ysize-step, by=step),
                mapTest$krigGrid, levels = c(5,7))
 plot(mapTest$boundary,type="l",col="red")
 lines(cL[[1]])#contour line is not closed
-lines(extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
-     superLines(mapTest$boundary)),col="red") #contour line is closed
+lines(geozoning:::extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
+     geozoning:::superLines(mapTest$boundary)),col="red") #contour line is closed
 # not run
 }
 \keyword{internal}

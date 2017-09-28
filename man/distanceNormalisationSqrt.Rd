@@ -26,7 +26,7 @@ data(resZTest)
 K=resZTest
 resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-distanceNormalisationSqrt(resD$matDistanceCorr)
+geozoning:::distanceNormalisationSqrt(resD$matDistanceCorr)
 # not run
 }
 \keyword{internal}

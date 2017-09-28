@@ -55,7 +55,8 @@ sort last level criteria from list of zonings, return criteria and list of zonin
 data(mapTest)
 qProb=c(0.4,0.7)
 criti=correctionTree(qProb,mapTest)
-sortCrit(qProb,criti$criterion,criti$cost,criti$costL,criti$nz,criti$mdist,criti$zk,mapTest) 
+geozoning:::sortCrit(qProb,criti$criterion,criti$cost,criti$costL,
+            criti$nz,criti$mdist,criti$zk,mapTest) 
 # not run
 }
 \keyword{internal}

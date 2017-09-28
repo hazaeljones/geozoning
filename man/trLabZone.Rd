@@ -30,10 +30,10 @@ transfer zone labels from K1 to K2
 data(mapTest)
 data(resZTest)
 K=resZTest
-Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
+Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
 zf=zoneFusion3(K,5,Ns,mapTest,disp=0) # merge zone 5 with englobing one
 K2=calNei(zf,mapTest$krigData,mapTest$krigSurfVoronoi,mapTest$krigN)
-K2=trLabZone(K,K2,mapTest,K$qProb)
+K2=geozoning:::trLabZone(K,K2,mapTest,K$qProb)
 # not run
 }
 \keyword{internal}

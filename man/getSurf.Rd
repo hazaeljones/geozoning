@@ -24,7 +24,7 @@ get surface area of a given zone within a zoning
 data(resZTest)
 K=resZTest
 Z=K$zonePolygone
-getSurf(Z,1)
+geozoning:::getSurf(Z,1)
 # not run
 }
 \keyword{internal}

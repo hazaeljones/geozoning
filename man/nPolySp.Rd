@@ -23,6 +23,6 @@ number of polygons in SpatialPolygons
 \examples{
 ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 Z=ZK$resZ$zonePolygone
-print(paste(nPolySp(Z[[2]]),"polygons"))
+print(paste(geozoning:::nPolySp(Z[[2]]),"polygons"))
 }
 \keyword{internal}

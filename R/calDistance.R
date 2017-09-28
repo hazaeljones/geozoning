@@ -168,7 +168,7 @@ DIJ=function(i,j,sigmai2,meanZone,pErr)
 #' K=resZTest
 #' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
 #'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-#' distanceNormalisationSqrt(resD$matDistanceCorr)
+#' geozoning:::distanceNormalisationSqrt(resD$matDistanceCorr)
 #' # not run
 distanceNormalisationSqrt=function(matDistance)
 {
@@ -198,7 +198,7 @@ distanceNormalisationSqrt=function(matDistance)
 #' K=resZTest
 #' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
 #'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
-#' distanceNormalisationSqrt(resD$matDistanceCorr)
+#' geozoning:::distanceNormalisationSqrt(resD$matDistanceCorr)
 #' # not run
 distanceNormalisationSum=function(matDistance)
 {

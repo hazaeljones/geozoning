@@ -26,7 +26,7 @@ K=resZTest
 Z=K$zonePolygone
 data(mapTest)
 ptsp=mapTest$krigData
-modlm(ptsp,Z)
+geozoning:::modlm(ptsp,Z)
 # not run
 }
 \keyword{internal}

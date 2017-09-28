@@ -88,7 +88,7 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 #' @importFrom rgeos gOverlaps readWKT gNearestPoints
 #' @importFrom raster geom
 #' @importFrom sp plot
-#' @keywords internal
+#' @export
 #' @examples
 #' seed=1
 #' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
@@ -106,7 +106,7 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 #' # plot map
 #' plotM(map = map, Z = Z, lab = lab, byLab = FALSE)
 #' # extend zone
-#' z = zone.extended(z = Z[[1]], boundary = boundary)
+#' z = geozoning:::zone.extended(z = Z[[1]], boundary = boundary)
 #' sp::plot(z)
 #' sp::plot(Z[[1]],add=TRUE)
 

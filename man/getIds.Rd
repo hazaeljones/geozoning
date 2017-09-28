@@ -24,7 +24,7 @@ get zone identifiers in a zoning
 data(mapTest)
 criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
 Z=criti$zk[[2]][[1]]$zonePolygon
-getIds(Z)
+geozoning:::getIds(Z)
 # not run
 }
 \keyword{internal}

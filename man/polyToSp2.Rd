@@ -22,7 +22,7 @@ transforms polygon into SpatialPolygons
 ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 Z=ZK$resZ$zonePolygone
 sp=Z[[5]]
-P1=getPolySp(sp,1)
+P1=geozoning:::getPolySp(sp,1)
 sph=polyToSp2(P1)
 plotZ(Z)
 sp::plot(sph,col="blue",lwd=2,add=TRUE)

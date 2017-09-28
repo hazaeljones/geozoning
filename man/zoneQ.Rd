@@ -40,8 +40,8 @@ iE=detZoneEng(iC,Z,K$zoneNModif)
 envel=calFrame(iC,Z,K$zoneNModif)
 sp::plot(envel,add=TRUE,col="blue")
 Qseq = genQseq(qProb,K,mapTest,iC,iE)
-resi = findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
-Zopti=zoneQ(resi$contourSp,iC,iE,Z,K)
+resi = geozoning:::findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
+Zopti=geozoning:::zoneQ(resi$contourSp,iC,iE,Z,K)
 plotZ(Zopti)
 # not run
 }

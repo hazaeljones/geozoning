@@ -96,7 +96,7 @@ zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 #' data(mapTest)
 #' data(resZTest)
 #' K=resZTest
-#' Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
+#' Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
 #' zoneFusion3(K,5,Ns,mapTest,disp=2) # merge and plot result of merging
 zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 ######################################################################
@@ -306,7 +306,7 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.07
 #' K=resZTest
 #' Z=K$zonePolygone
 #' plotZ(Z)
-#' plotZ(remove1FromZ(Z,2,K$zoneN))
+#' plotZ(geozoning:::remove1FromZ(Z,2,K$zoneN))
 #' # not run
 remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 ########################################################

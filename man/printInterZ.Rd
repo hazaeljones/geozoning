@@ -23,7 +23,7 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 plotZ(Z,mapTest)
-printInterZ(Z,Z[[1]])
+geozoning:::printInterZ(Z,Z[[1]])
 # not run
 }
 \keyword{internal}

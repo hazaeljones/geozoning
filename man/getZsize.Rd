@@ -21,7 +21,7 @@ compute maximum x and y values of zoning Z
 \examples{
 data(resZTest)
 Z=resZTest$zonePolygone
-getZsize(Z)
+geozoning:::getZsize(Z)
 # not run
 }
 \keyword{internal}

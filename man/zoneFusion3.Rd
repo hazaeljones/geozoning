@@ -34,6 +34,6 @@ merge current zone #iC with neighbor zone in zoning. If there are several neighb
 data(mapTest)
 data(resZTest)
 K=resZTest
-Ns=getNs(K$zoneNModif,5) # find neighbors of zone 5
+Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
 zoneFusion3(K,5,Ns,mapTest,disp=2) # merge and plot result of merging
 }

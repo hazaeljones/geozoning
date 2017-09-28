@@ -22,7 +22,7 @@ create comment corresponding to holes in a zoning
 data(resZTest)
 K=resZTest
 Z=K$zonePolygone
-Z1=crComment(Z)
+Z1=geozoning:::crComment(Z)
 # not run
 }
 \keyword{internal}

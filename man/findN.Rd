@@ -29,7 +29,7 @@ It must be a neighbor in the sense of Voronoi polygons. In case of ties, choose 
 data(mapTest)
 data(resZTest)
 K=resZTest
-Ns=getNs(K$zoneNModif,4) # neighbors of zone 4
+Ns=geozoning:::getNs(K$zoneNModif,4) # neighbors of zone 4
 listN =  grep( TRUE , Ns) # zones 2 and 5
 findN(K,listN,4) # zone 4 will be merged into zone 5
 # not run

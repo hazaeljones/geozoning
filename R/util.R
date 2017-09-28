@@ -13,7 +13,7 @@
 #' data(resZTest)
 #' K=resZTest
 #' Z=K$zonePolygone
-#' getCoords(Z[[1]])
+#' geozoning:::getCoords(Z[[1]])
 #' # not run
 getCoords=function(sp,k=1)
 ##################################################################
@@ -93,7 +93,7 @@ contourArea=function(co)
 #' data(mapTest)
 #' cL=list()
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' listContourArea(cL)
+#' geozoning:::listContourArea(cL)
 #' # not run
 listContourArea=function(cL)
 ##################################################################
@@ -150,7 +150,7 @@ contourToSpp=function(co,step)
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
-#' print(paste(nPolySp(Z[[2]]),"polygons"))
+#' print(paste(geozoning:::nPolySp(Z[[2]]),"polygons"))
 #' @details 
 #' # not run
 nPolySp =function(sp)
@@ -201,7 +201,7 @@ holeSp = function(sp)
 #' @examples
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
-#' maxDistSP(Z[[5]])
+#' geozoning:::maxDistSP(Z[[5]])
 #' # not run
 maxDistSP=function(sp)
 ##################################################################
@@ -224,8 +224,8 @@ maxDistSP=function(sp)
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
 #' sp=Z[[5]]
-#' P1=getPolySp(sp,1)
-#' P2=getPolySp(sp,2) # second polygon is a hole
+#' P1=geozoning:::getPolySp(sp,1)
+#' P2=geozoning:::getPolySp(sp,2) # second polygon is a hole
 #' plot(P1@coords,type="l")
 #' lines(P2@coords,type="l",col="blue")
 #' # not run
@@ -251,7 +251,7 @@ getPolySp = function(sp,k=1)
 #' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
 #' sp=Z[[5]]
-#' P1=getPolySp(sp,1)
+#' P1=geozoning:::getPolySp(sp,1)
 #' sph=polyToSp2(P1)
 #' plotZ(Z)
 #' sp::plot(sph,col="blue",lwd=2,add=TRUE)
@@ -278,7 +278,7 @@ polyToSp2=function(p)
 #' cL=list()
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 #' lin=data.frame(x=cL[[8]]$x,y=cL[[8]]$y)
-#' sp=lineToSp(lin)
+#' sp=geozoning:::lineToSp(lin)
 #' # not run
 lineToSp=function(lin)
 ##################################################################
@@ -309,8 +309,8 @@ lineToSp=function(lin)
 #' p=z@polygons
 #' p1=p[[1]]
 #' P1=p1@Polygons[[1]]
-#' NP1=spnorm(P1,bb)$pn
-#' Nbb=spnorm(P1,bb)$boundaryn
+#' NP1=geozoning:::spnorm(P1,bb)$pn
+#' Nbb=geozoning:::spnorm(P1,bb)$boundaryn
 #' plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
 #' # not run
 spnorm = function(sp, boundary)
@@ -363,7 +363,7 @@ spnorm = function(sp, boundary)
 #' range(x) # not [0,1]
 #' tabData=data.frame(x=x,y=y)
 #' bd=list(x=c(0,0,1,1,0), y=c(0.2,1.7,1.7,0.2,0.2))
-#' res=datanorm(tabData,bd) 
+#' res=geozoning:::datanorm(tabData,bd) 
 #' apply(res$dataN,2,range)# 
 #' # not run
 datanorm = function(data, bd)
@@ -408,7 +408,7 @@ datanorm = function(data, bd)
 #' y=runif(nPoints, min=0, max=1)
 #' range(x) # not [0,1]
 #' tabData=data.frame(x=x,y=y)
-#' tabData=datanormXY(tabData) # x,y ranges are now [0,1]
+#' tabData=geozoning:::datanormXY(tabData) # x,y ranges are now [0,1]
 #' # not run
 datanormXY = function(data)
 ##################################################################
@@ -502,7 +502,7 @@ datanormX = function(data,bd)
 #' \item{minSizeNG}{normalized no grow size threshold}
 #' }
 #'
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' data(mapTest)
@@ -541,8 +541,8 @@ return(list(minSize=minSize,minSizeNG=minSizeNG))
 #' @return a plot
 #'
 #' @export
-#' data(mapTest)
 #' @examples
+#' data(mapTest)
 #' qProb=c(0.4,0.7)
 #' ZK=initialZoning(qProb,mapTest)
 #' K=ZK$resZ
@@ -738,8 +738,8 @@ ptsInSp=function(sp,pts,hole=FALSE)
 #' @keywords internal
 #'
 #' @examples
-#'qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
-#'res=searchNODcrit1(qProb,criti)
+#' qProb=c(0.1,0.2);criti=correctionTree(qProb,mapTest)
+#' res=geozoning:::searchNODcrit(qProb,2,criti$zk,criti$criterion,criti$cost,criti$costL,criti$nz)
 #' # not run
 searchNODcrit=function(qProb,le,zk,criterion,cost,costL,nz)
 ##################################################################
@@ -944,7 +944,7 @@ return(normMD)
 #' cL=list()
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 #' plot(mapTest$boundary)
-#' linesC(cL,col="black")
+#' geozoning:::linesC(cL,col="black")
 #' # not run
 linesC = function(listContour,col="blue")
 ##################################################################
@@ -976,7 +976,7 @@ return()
 #' pG=polyToSp2(sp::Polygon(mapTest$boundary)) #SpatialPolygons corresponding to map boundary
 #' cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
 #'    mapTest$krigGrid,c(5,7),mapTest$boundary)
-#' ps = interCB(cL[[8]],mapTest$step,mapTest$boundary,pG)#envelope is the whole map
+#' ps = geozoning:::interCB(cL[[8]],mapTest$step,mapTest$boundary,pG)#envelope is the whole map
 #' sp::plot(pG)
 #' sp::plot(ps,col="red",add=TRUE)
 #' # not run
@@ -1022,7 +1022,7 @@ interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
 # saving only best last level results
 #' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE) 
-#' getNq(criti$critList)
+#' geozoning:::getNq(criti$critList)
 #' # not run
 getNq=function(critList)
 ##################################################################
@@ -1087,7 +1087,7 @@ for ( v in val)
 #' data(mapTest)
 #' ZK=initialZoning(qProb=c(0.2,0.4,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
-#' extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
+#' geozoning:::extractionPoly(Z[[5]]) # returns 2 SpatialPolygons
 #' # not run
 extractionPoly=function(polyTot)
 ###########################################################################

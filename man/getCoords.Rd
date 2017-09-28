@@ -24,7 +24,7 @@ get SpatialPolygons coordinates
 data(resZTest)
 K=resZTest
 Z=K$zonePolygone
-getCoords(Z[[1]])
+geozoning:::getCoords(Z[[1]])
 # not run
 }
 \keyword{internal}

@@ -20,7 +20,7 @@ generate rectangular empty grid corresponding to x and y values in matrix
 }
 \examples{
 data(dataReg)
-gridXY(dataReg)
+geozoning:::gridXY(dataReg)
 # not run
 }
 \keyword{internal}

@@ -740,7 +740,7 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 #' @param Z list of Zones
 #' @param lab vector labels of zones
 #' @return a vector containing zone numbers
-#' @keywords internal
+#' @export
 #' @examples
 #' seed=6
 #' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)

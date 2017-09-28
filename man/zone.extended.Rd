@@ -37,8 +37,7 @@ for(i in 2:length(Z)){
 # plot map
 plotM(map = map, Z = Z, lab = lab, byLab = FALSE)
 # extend zone
-z = zone.extended(z = Z[[1]], boundary = boundary)
+z = geozoning:::zone.extended(z = Z[[1]], boundary = boundary)
 sp::plot(z)
 sp::plot(Z[[1]],add=TRUE)
 }
-\keyword{internal}

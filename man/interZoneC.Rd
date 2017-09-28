@@ -35,9 +35,9 @@ ZK = initialZoning(qProb, mapTest)
 K=ZK$resZ
 Z=K$zonePolygone
 plotZ(K$zonePolygone) # zoning
-closePt = getClosePt(Z,6,8)
+closePt = geozoning:::getClosePt(Z,6,8)
 points(closePt,col="red")
-res  = interZoneC(Z,6,8,closePt)
+res  = geozoning:::interZoneC(Z,6,8,closePt)
 points(res$spi,col="red")
 # not run
 }

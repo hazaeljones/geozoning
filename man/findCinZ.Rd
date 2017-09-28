@@ -43,7 +43,7 @@ iC=4
 envel=calFrame(iC,Z,best$zoneNModif)
 sp::plot(envel,col="blue",add=TRUE)
 vRef=quantile(mapTest$krigGrid,0.6)
-resp=findCinZ(iC,Z,best,mapTest,vRef,envel)
+resp=geozoning:::findCinZ(iC,Z,best,mapTest,vRef,envel)
 sp::plot(resp$contourSp,col="red",add=TRUE)
 # not run
 }

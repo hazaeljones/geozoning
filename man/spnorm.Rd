@@ -30,8 +30,8 @@ bb=list(x=z@bbox[1,],y=z@bbox[2,])
 p=z@polygons
 p1=p[[1]]
 P1=p1@Polygons[[1]]
-NP1=spnorm(P1,bb)$pn
-Nbb=spnorm(P1,bb)$boundaryn
+NP1=geozoning:::spnorm(P1,bb)$pn
+Nbb=geozoning:::spnorm(P1,bb)$boundaryn
 plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
 # not run
 }

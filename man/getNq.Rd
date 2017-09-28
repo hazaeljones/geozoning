@@ -21,7 +21,7 @@ determine size of quantile  in result from correctionTree
 \examples{
 data(mapTest)
 criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE) 
-getNq(criti$critList)
+geozoning:::getNq(criti$critList)
 # not run
 }
 \keyword{internal}

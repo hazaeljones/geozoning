@@ -29,7 +29,7 @@ dataF=mapTest$krigGrid
 data(resZTest)
 K=resZTest
 p = K$qProb
-labZone(K,p,dataF)
+geozoning:::labZone0(K,p,dataF)
 # not run
 }
 \keyword{internal}

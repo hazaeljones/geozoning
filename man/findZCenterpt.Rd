@@ -27,7 +27,7 @@ data(mapTest)
 criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
 K=criti$zk[[2]][[1]]
 data=mapTest$krigData
-findZCenterpt(data,K)
+geozoning:::findZCenterpt(data,K)
 # not run
 }
 \keyword{internal}

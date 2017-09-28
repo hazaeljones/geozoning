@@ -25,7 +25,7 @@ data(mapTest)
 cL=list()
 cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 plot(mapTest$boundary)
-linesC(cL,col="black")
+geozoning:::linesC(cL,col="black")
 # not run
 }
 \keyword{internal}

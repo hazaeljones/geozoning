@@ -32,7 +32,7 @@ plotZ(Z)
 Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
 Z[[length(Z)+1]]=Z58 # add new zone to zoning
 plotZ(Z)
-testInterSpe(Z,6,length(Z))
+geozoning:::testInterSpe(Z,6,length(Z))
 # not run
 }
 \keyword{internal}

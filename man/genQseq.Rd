@@ -33,6 +33,7 @@ genQseq
 description, a paragraph
 }
 \examples{
+data(mapTest)
 qProb=c(0.4,0.7)
 ZK=initialZoning(qProb,mapTest)
 K=ZK$resZ
