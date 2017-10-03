@@ -18,6 +18,8 @@
 #'
 #' @importFrom rgeos readWKT
 #' @importFrom sp plot
+#' @importFrom grDevices topo.colors
+#' @importFrom graphics title
 #' @export
 #' @examples
 #' seed=2

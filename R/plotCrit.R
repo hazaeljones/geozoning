@@ -11,9 +11,7 @@
 #' @param title plot title
 #'
 #' @return a vector of probabilities corresponding to best results
-#' @importFrom graphics plot
-#' @importFrom graphics points
-#' @importFrom graphics lines
+#' @importFrom graphics plot points lines axis
 #' @export
 #'
 #' @examples

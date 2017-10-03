@@ -147,8 +147,7 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain=
 #'
 #' @return an empty value
 #' @importFrom grDevices colorRampPalette
-#' @importFrom graphics text
-#' @importFrom graphics boxplot
+#' @importFrom graphics text boxplot title polygon
 #' @importFrom sp plot
 #' @importFrom fields image.plot
 #'
@@ -334,9 +333,9 @@ plotSp = function(sp,k=1,xlim,ylim)
 #' @param id logical value, if TRUE display zone ids, if FALSE display zone numbers
 #' @param noXY logical value, if TRUE do not display x and y axes
 #' @param palCol argument of colorRampPalette
-#'
+#' 
 #' @return an empty value
-#'
+#' @importFrom grDevices topo.colors
 #' @export
 #'
 #' @examples

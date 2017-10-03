@@ -329,7 +329,7 @@ nbPoly=length(diag(matDistance))
 #' @param zoneNModif matrix of zone neigbors with FALSE on the diagonal
 #'
 #' @return a numerical value 
-#'
+#' @importFrom stats median
 #' @export
 #'
 #' @examples
