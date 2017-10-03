@@ -1,0 +1,44 @@
+# with internal functions
+cd ~/BUILDgeozoning-28sept2017
+cd geozoning
+
+rm -rf vignettes/*
+cp ~/GEOZPKG/geozoning/vignettes/*Rmd vignettes/
+cp ~/GEOZPKG/geozoning/vignettes/*pdf vignettes/
+cp ~/GEOZPKG/geozoning/R/*R R
+rm R/.RData R/done R/help
+rm -rf man/*
+cp ~/GEOZPKG/geozoning/man/*Rd man
+cp ~/GEOZPKG/geozoning/DESCRIPTION .
+cp ~/GEOZPKG/geozoning/NAMESPACE .
+rm -rf data/*
+cp ~/GEOZPKG/geozoning/data/*rda data
+rm -rf inst
+cp -r ~/GEOZPKG/geozoning/inst .
+
+cd ..
+
+# R CMD check --as-cran geozoning >err
+# R CMD check --as-cran --no-vignettes geozoning >err
+R CMD build --no-build-vignettes geozoning >err
+# ou
+# R CMD build geozoning >err
+
+# install/update package
+R
+install.packages("geozoning_1.0.0.tar.gz")
+
+# sources package R
+cd $HOME/R/x86_64-pc-linux-gnu-library/3.4/geozoning
+
+
+
+# construire les man dans R
+library(devtools)
+document()
+# attention au NAMESPACE
+# recopier NAMESPACE-template sur NAMESPACE
+
+# construire les vignettes dans R
+library(rmarkdown)
+render("vignettes/zoningSimu.Rmd") # par exemple

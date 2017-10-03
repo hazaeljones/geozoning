@@ -20,7 +20,7 @@ This vignette illustrates the zone and map smoothing process. It first shows why
 Step 1: Why is CorrectBoundaryMap required
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=1
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,disp=0,krig=2)
 criti = correctionTree(qProb = c(0.5), map = map)
 Z = criti$zk[[1]][[1]]$zonePolygone
 lab = criti$zk[[1]][[1]]$lab
@@ -44,7 +44,7 @@ seed=1
 ```
 Generate map with simulated data
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,disp=0,krig=2)
 ```
 Generate zoning
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
@@ -83,7 +83,7 @@ plot(erosion2)
 Smoothing all zones in zoning
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=1
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,disp=0,krig=2)
 criti = correctionTree(qProb = c(0.4,0.6), map = map)
 Z = criti$zk[[2]][[1]]$zonePolygone
 newZ = smoothingMap(Z = Z, width = 0.05, map = map, disp = TRUE)

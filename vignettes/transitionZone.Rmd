@@ -19,7 +19,7 @@ This vignette shows how to find Transition zones: 2 treatments are done dependin
 First case: zone is near boundary
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=2
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2)
 ZK=initialZoning(qProb=c(0.45,0.85),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
@@ -38,7 +38,7 @@ print(cM$cost_Mean)
 Second case: zone is far from boundary
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=9
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2)
 ZK=initialZoning(qProb=c(0.65,0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
@@ -57,7 +57,7 @@ print(cM$cost_Mean)
 Example of extreme zone detection
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=6
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2)
 ZK=initialZoning(qProb=c(0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
@@ -76,7 +76,7 @@ print(cM$cost_Mean)
 Transition zones zith 2 neighbours each
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=6
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2)
 ZK=initialZoning(qProb=c(0.67,0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
@@ -88,7 +88,7 @@ list_Zone_2_Neighbours(Z = Z, lab = lab)
 View transition zone
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
 seed=2
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2)
 ZK=initialZoning(qProb=c(0.55,0.85),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones

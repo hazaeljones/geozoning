@@ -31,7 +31,7 @@ The map structure also contains the list of neighbours of each kriged data point
 The map object can be created by 2 functions: genMap or randKmap. 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
   seed=80
-  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,Vmean=15,krig=2)
+  map=genMap(DataObj=NULL,seed=seed,disp=0,Vmean=15,krig=2)
   # or
   map = randKmap(DataObj=NULL,nPointsK=500,Vmean=10,krig=1)
 ```  

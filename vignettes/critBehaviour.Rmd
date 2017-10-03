@@ -22,7 +22,7 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
   seed=10
-  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=1)
+  map=genMap(DataObj=NULL,seed=seed,disp=0,krig=1)
 ```  
 Step 2: Exploratory loop for a size 3 quantile vector (4-label map)
 ----------------------

@@ -16,7 +16,7 @@
 
 #' @examples
 #' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -41,6 +41,11 @@ Cost_By_Laplace = function (map, Z, numZ, Estimation)
   tab = map$krigData
   # reassign points to zones in Z
   listZpt = zoneAssign(tab, Z)
+   if (length(listZpt)<numZ)
+  {
+	print("error in assigning points to zones")
+	return(NULL)
+  }
 
   Value = tab@data$var1.pred[listZpt[[numZ]]]
   Surface = map$krigSurfVoronoi[listZpt[[numZ]]]
@@ -67,7 +72,7 @@ Cost_By_Laplace = function (map, Z, numZ, Estimation)
 #' @export
 #' @examples
 #' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -89,6 +94,11 @@ Cost_By_Mean = function(map, Z, numZ)
   tab = map$krigData
   # reassign points to zones in Z
   listZpt = zoneAssign(tab, Z)
+   if (length(listZpt)<numZ)
+  {
+	print("error in assigning points to zones")
+	return(NULL)
+  }
 
   Value = tab@data$var1.pred[listZpt[[numZ]]]
   Surface = map$krigSurfVoronoi[listZpt[[numZ]]]
@@ -150,7 +160,7 @@ Points_Near_Boundary = function(map){
 #' @export
 #' @examples
 #' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -182,6 +192,11 @@ new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
   # this function is in the script "calCost.R"
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
+   if (length(listZpt)<numZ)
+  {
+	print("error in assigning points to zones")
+	return(NULL)
+  }
 
   new_krigGrid = map$krigGrid
   new_data = map$krigData@data$var1.pred
@@ -232,7 +247,7 @@ new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
 #' @export
 #' @examples
 #' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -267,6 +282,11 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
   # reassign points to zones
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
+   if (length(listZpt)<numZ)
+      {
+	print("error in assigning points to zones")
+	return(NULL)
+  	}
 
   # find all points in zone "numZ" that are near boundary of the map
   pointNearBoundary = Points_Near_Boundary(map = map)
@@ -440,7 +460,7 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
 #' @export
 #' @examples
 #' seed=9
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.65,0.8),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -462,7 +482,11 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
   # reassign points to zones
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
-
+  if (length(listZpt)<numZ)
+  {
+	print("error in assigning points to zones")
+	return(NULL)
+  }
 
 
   # resolution of Laplace's equation : modeling the equation by using the grid of map, we obtain a linear form AX = B
@@ -490,10 +514,10 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
     # coordinates of the neighbour point in the West
     xw = x - step
     yw = y
-    # coordinates of the neighbour point in the Nord
+    # coordinates of the neighbour point in the North
     xn = x
     yn = y + step
-    # coordinates of the neighbour point in the Est
+    # coordinates of the neighbour point in the East
     xe = x + step
     ye = y
     # coordinates of the neighbour point in the South
@@ -501,7 +525,7 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
     ys = y - step
 
     # FIND INDEX OF POINT IN THE WEST
-    jw = intersect(which(abs(Y-yw)<10^-6),which(abs(X-xw)<10^-6)) # in stead of finding equality, we use a threshold to detect the point
+    jw = intersect(which(abs(Y-yw)<10^-6),which(abs(X-xw)<10^-6)) # instead of finding equality, we use a threshold to detect the point
     j = which(listZpt[[numZ]]==jw)
     if(length(j)!=0){ # if neighbour point is in zone "numZ"
       A[i,j] = 1
@@ -509,8 +533,8 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
       B[i] = B[i] + tab@data[jw,1]
     }
 
-    # FIND INDEX OF POINT IN THE NORD
-    jn = intersect(which(abs(Y-yn)<10^-6),which(abs(X-xn)<10^-6)) # in stead of finding equality, we use a threshold to detect the point
+    # FIND INDEX OF POINT IN THE NORTH
+    jn = intersect(which(abs(Y-yn)<10^-6),which(abs(X-xn)<10^-6)) # instead of finding equality, we use a threshold to detect the point
     j = which(listZpt[[numZ]]==jn)
     if(length(j)!=0){
       A[i,j] = 1
@@ -518,8 +542,8 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
       B[i] = B[i] + tab@data[jn,1]
     }
 
-    # FIND INDEX OF POINT IN THE EST
-    je = intersect(which(abs(Y-ye)<10^-6),which(abs(X-xe)<10^-6)) # in stead of finding equality, we use a threshold to detect the point
+    # FIND INDEX OF POINT IN THE EAST
+    je = intersect(which(abs(Y-ye)<10^-6),which(abs(X-xe)<10^-6)) # instead of finding equality, we use a threshold to detect the point
     j = which(listZpt[[numZ]]==je)
     if(length(j)!=0){
       A[i,j] = 1
@@ -528,7 +552,7 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
     }
 
     # FIND INDEX OF POINT IN THE SOUTH
-    js = intersect(which(abs(Y-ys)<10^-6),which(abs(X-xs)<10^-6)) # in stead of finding equality, we use a threshold to detect the point
+    js = intersect(which(abs(Y-ys)<10^-6),which(abs(X-xs)<10^-6)) # insstead of finding equality, we use a threshold to detect the point
     j = which(listZpt[[numZ]]==js)
     if(length(j)!=0){
       A[i,j] = 1
@@ -562,7 +586,7 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
 #' @export
 #' @examples
 #' seed=6
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.8),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -584,6 +608,11 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
   # reassign points to zones
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
+   if (length(listZpt)<numZ)
+  {
+	print("error in assigning points to zones")
+	return(NULL)
+  }
 
   # find the farthest point from the boundary of the zone "numZ", then we will interpolate its value by the extreme value of the zone
   boundaryZone = gBoundary(Z[[numZ]])
@@ -743,7 +772,7 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 #' @export
 #' @examples
 #' seed=6
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.67,0.8),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -804,7 +833,7 @@ list_Zone_2_Neighbours = function(Z, lab){
 #' @export
 #' @examples
 #' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,krig=2)
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones

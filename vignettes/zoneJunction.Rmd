@@ -24,7 +24,7 @@ A map object is simulated with a Gaussian field and a variogram model. 450 point
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
   seed=80
-  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+  map=genMap(DataObj=NULL,seed=seed,disp=0,krig=2)
 # Check the mean and standard deviation of generated data.
   meanvarSimu(map)
 ```
