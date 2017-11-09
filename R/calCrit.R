@@ -5,7 +5,7 @@
 #' according to optiCrit arg value
 #' @param matDistanceCorr corrected distance matrix between zones, result of call to \code{\link{calDistance}}
 #' @param zoneNModif modified zone neighborhood matrix (FALSE values on diagonal), result of call to \code{\link{calNei}}
-#' @param optiCrit criterion to be optimized. Possible values are
+#' @param optiCrit criterion to be optimized. Possible values are :
 #' * 1 for min(mean(dij^2/(dii^2+dij^2)))
 #' * 2 for min(2*min(dij/(dii+djj)))
 #' * 3 for min(2*min(dij/(dii+djj)))
