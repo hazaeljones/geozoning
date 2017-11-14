@@ -85,10 +85,10 @@ calNei=function(Z,spdata,surfVoronoi,ptN,simplitol=1e-3,remove=TRUE,correct=FALS
 #' labZone0
 #'
 #' @details assigns a class label (integer) to a zone depending on the zone mean value
-#' and on the quantile values. Default label is 1, corresponding to mean value samller #' or equal to first quantile. For k ordered quantile values, if mean value is greater #' than quantile k plus 10% of the data range, zone label is k. 
+#' and on the quantile values. Default label is 1, corresponding to mean value samller #' or equal to first quantile. For k ordered quantile values, if mean value is greater #' than quantile k plus 10% of the data range, zone label is k.
 #' @param K zoning object, as returned by the calNei function
 #' @param qProb probability vector used to generate quantile values for Z
-#' @param dataF data used to generate labels and zoning 
+#' @param dataF data used to generate labels and zoning
 #'
 #' @return a zoning object with labelled zones in lab component
 #'
@@ -128,15 +128,16 @@ labZone0=function(K,qProb,dataF)
 K$lab=lab
 K$qProb=qProb
 return(K)
-}
-#########################################
+  }
+
+#################################################################################################
 #' labZone
 #'
 #' @details assigns a class label (integer) to a zone depending on the zone mean value
 #' and on the quantile values (as in PA paper). Default label is 1, corresponding to a mean value smaller or equal to first quantile. For p ordered quantile values, if mean value is greater than quantile k and smaller or equal to quantile k+1, zone label is k+1. if mean value is greater than quantile p, zone label is p+1.
 #' @param K zoning object, as returned by the calNei function
 #' @param qProb probability vector used to generate quantile values for Z
-#' @param dataF data used to generate labels and zoning 
+#' @param dataF data used to generate labels and zoning
 #'
 #' @return a zoning object with labelled zones in lab component
 #'
@@ -150,7 +151,6 @@ return(K)
 #' K=resZTest
 #' p = K$qProb
 #' labZone(K,p,dataF)
-#' # not run
 labZone=function(K,qProb,dataF)
 #########################################
   {
@@ -167,7 +167,8 @@ labZone=function(K,qProb,dataF)
   K$lab=lab
   K$qProb=qProb
   return(K)
-}
+  }
+
 ######################################
 #' correctN
 #'
@@ -185,7 +186,6 @@ labZone=function(K,qProb,dataF)
 #' data(resZTest)
 #' Z=resZTest$zonePolygone
 #' H=correctN(Z,resZTest$zoneN,1e-8)
-#' # not run
 correctN = function(Z,zoneN,dN=1e-3)
 ######################################
 {

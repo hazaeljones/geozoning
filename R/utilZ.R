@@ -9,11 +9,11 @@
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' geozoning:::getZoneId(Z[[4]])
-#' # not run
+#' # not run, take a while...
+#' #data(mapTest)
+#' #criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#' #Z=criti$zk[[2]][[1]]$zonePolygon
+#' #getZoneId(Z[[4]])
 getZoneId=function(zone)
 ##################################################################
 {
@@ -27,25 +27,24 @@ getZoneId=function(zone)
 #' @details get the number of a zone with a given identifier in a zoning
 #' this is necessary because correction procedures may remove zones from initial#' zoning. Therefore zone numbers change, but identifiers are conserved.
 #' @param id zone identifier (character vector)
-#' @param Z zoning geometry (list of SpatialPolygons) 
+#' @param Z zoning geometry (list of SpatialPolygons)
 #'
 #' @return the zone number
 #'
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' Identify(6,Z)
-#' # not run
+#' # not run, take a while...
+#' #data(mapTest)
+#' #criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#' #Z=criti$zk[[2]][[1]]$zonePolygon
+#' #Identify(6,Z)
 Identify=function(id,Z)
 ###########################################################################
 {
-#returns the zone number corresponding to the id given in argument
-#returns 0 if no id
-  for (i in (1:length(Z)))
-  {
+  #returns the zone number corresponding to the id given in argument
+  #returns 0 if no id
+  for (i in (1:length(Z))){
     if (Z[[i]]@polygons[[1]]@ID == id) return(i)
   }
   return(0)
@@ -63,11 +62,11 @@ Identify=function(id,Z)
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' getId(Z,6)
-#' # not run
+#' # not run, take a while...
+#' #data(mapTest)
+#' #criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#' #Z=criti$zk[[2]][[1]]$zonePolygon
+#' #getId(Z,6)
 getId=function(Z,iZ)
 ##################################################################
 {
@@ -87,11 +86,11 @@ getId=function(Z,iZ)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' geozoning:::getIds(Z)
 #' # not run
+#' #data(mapTest)
+#' #criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#' #Z=criti$zk[[2]][[1]]$zonePolygon
+#' #geozoning:::getIds(Z)
 getIds=function(Z,nums=NULL)
 ##################################################################
 {
@@ -112,11 +111,11 @@ getIds=function(Z,nums=NULL)
 #' setId
 #'
 #' @details assign zone identifier in a zoning
-#' @param Z zoning geometry (list of SpatialPolygons) 
+#' @param Z zoning geometry (list of SpatialPolygons)
 #' @param iZ zone number
 #' @param id zone identifier to assign
 #'
-#' @return a zoning geometry 
+#' @return a zoning geometry
 #'
 #' @export
 #'
@@ -125,7 +124,6 @@ getIds=function(Z,nums=NULL)
 #' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
 #' Z=criti$zk[[2]][[1]]$zonePolygon
 #' Z1=setId(Z,4,"4")
-#' # not run
 setId=function(Z,iZ,id)
 ##################################################################
 {
@@ -137,9 +135,9 @@ setId=function(Z,iZ,id)
 #' setIds
 #'
 #' @details set all zone identifiers in a zoning by assigning zone number to each identifier.
-#' @param Z zoning geometry (list of SpatialPolygons) 
+#' @param Z zoning geometry (list of SpatialPolygons)
 #'
-#' @return a zoning geometry 
+#' @return a zoning geometry
 #'
 #' @export
 #'
@@ -148,12 +146,10 @@ setId=function(Z,iZ,id)
 #' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
 #' Z=criti$zk[[2]][[1]]$zonePolygon
 #' Z1=setIds(Z)
-#' # not run
 setIds=function(Z)
 ##################################################################
 {
-	for (iZ in 1:length(Z))
-	{
+	for (iZ in 1:length(Z)){
 		Z[[iZ]]@polygons[[1]]@ID = as.character(iZ)
 	}
 	return(Z)
@@ -163,25 +159,24 @@ setIds=function(Z)
 #' maxId
 #'
 #' @details get highest number corresponding to a zone identifier in a zoning
-#' @param Z zoning geometry (list of SpatialPolygons) 
+#' @param Z zoning geometry (list of SpatialPolygons)
 #'
 #' @return a number
 #'
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#' Z=criti$zk[[2]][[1]]$zonePolygon
-#' geozoning:::maxId(Z)
-#' # not run
+#' # not run, take a while...
+#' #data(mapTest)
+#' #criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#' #Z=criti$zk[[2]][[1]]$zonePolygon
+#' #geozoning:::maxId(Z)
 maxId=function(Z)
 ##################################################################
 {
 	m=as.numeric(getId(Z,1))
 	if (length(Z)<2) return(m)
-	for (iZ in 2:length(Z))
-	{
+	for (iZ in 2:length(Z)){
 		id=as.numeric(getId(Z,iZ))
 		if (id >m) m=id
 	}
@@ -203,7 +198,6 @@ maxId=function(Z)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' printZid(Z)
-#' # not run
 printZid = function(Z)
 ##################################################################
 {
@@ -225,11 +219,11 @@ printZid = function(Z)
 #' @keywords internal
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' geozoning:::getSurf(Z,1)
 #' # not run
+#' #data(resZTest)
+#' #K=resZTest
+#' #Z=K$zonePolygone
+#' #geozoning:::getSurf(Z,1)
 getSurf=function(Z,iZ)
 ##################################################################
 {
@@ -252,27 +246,24 @@ getSurf=function(Z,iZ)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' printZsurf(Z,0.03)
-#' # not run
 printZsurf=function(Z,minSize=0.012)
 ##################################################################
 {
 	smallZ=c()
 	gas=c()
-	for ( iZ in 1:length(Z))
-	{
-	ga=gArea(Z[[iZ]])
-	if(ga>=minSize)
-		print(paste("iZ=",iZ,"area=",round(gArea(Z[[iZ]]),5)))
-	else
-		{
-		print(paste("iZ=",iZ," area=",round(gArea(Z[[iZ]]),5)," < minSize(",minSize,")",sep=""))
-		smallZ=c(smallZ,iZ)
-		gas=c(gas,ga)
+	for ( iZ in 1:length(Z)){
+	  ga=gArea(Z[[iZ]])
+	  if(ga>=minSize)
+		  print(paste("iZ=",iZ,"area=",round(gArea(Z[[iZ]]),5)))
+	  else{
+		  print(paste("iZ=",iZ," area=",round(gArea(Z[[iZ]]),5)," < minSize(",minSize,")",sep=""))
+		  smallZ=c(smallZ,iZ)
+		  gas=c(gas,ga)
 		}
 	}
-if (!is.null(gas))
+  if (!is.null(gas))
    return(smallZ[order(gas)])
-   else
+  else
    return(NULL)
 }
 
@@ -300,25 +291,20 @@ if (!is.null(gas))
 #' res=getZonePts(ptsp,Z[[5]])
 #' plotZ(Z)
 #' points(res$pts,col="blue",pch=20)
-#' # not run
 getZonePts=function(ptsp,zone)
 ##################################################################
 {
-# ptsp=map$krigData
-#
 	# pts in zone
 	IN=numeric()
 	poly=getPolySp(zone,1)
 	IN=point.in.polygon(ptsp$x,ptsp$y,poly@coords[,1],poly@coords[,2])
 	# remove pts in holes
-	if(nPolySp(zone)>1)
-		{
-      		for(k in 2:nPolySp(zone))
-      		      {
-		      poly=getPolySp(zone,k)
-        	      IN=IN-point.in.polygon(ptsp$x,ptsp$y,poly@coords[,1],poly@coords[,2])
-     		      }
-  		 }
+	if(nPolySp(zone)>1){
+    for(k in 2:nPolySp(zone)){
+		  poly=getPolySp(zone,k)
+      IN=IN-point.in.polygon(ptsp$x,ptsp$y,poly@coords[,1],poly@coords[,2])
+    }
+  }
 	IN=as.logical(IN)
 	ptsx=ptsp$x[IN]
 	ptsy=ptsp$y[IN]
@@ -345,29 +331,27 @@ getZonePts=function(ptsp,zone)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' getNumZone(mapTest$krigData,Z)
-#' # not run
 getNumZone=function(ptsp,Z)
 ############################
 {
-# ptsp SpatialPointsDataframe
-# Z zoning (list of SpatialPolygons)
-# ptsp=map$krigData
-#
-numzone=rep(0,length(ptsp$x))
-for (k in 1:length(Z))
-    {
-	res=getZonePts(ptsp,Z[[k]])
-	mask=res$mask
-	numzone[mask]=k
-    }
-return(numzone)
+  # ptsp SpatialPointsDataframe
+  # Z zoning (list of SpatialPolygons)
+  # ptsp=map$krigData
+  #
+  numzone=rep(0,length(ptsp$x))
+  for (k in 1:length(Z)){
+	  res=getZonePts(ptsp,Z[[k]])
+	  mask=res$mask
+	  numzone[mask]=k
+  }
+  return(numzone)
 }
 
 ##################################################################
 #' getNs
 #'
 #' @details get zone numbers of neighbors of a given zone
-#' @param zoneN zone neighborhood Logical matrix  
+#' @param zoneN zone neighborhood Logical matrix
 #' @param iZ index of current zone in zoning
 #'
 #' @return a Logical vector of current zone neighbors
@@ -375,9 +359,10 @@ return(numzone)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' K=resZTest
-#' Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
+#' # Not run
+#' #data(mapTest)
+#' #K=resZTest
+#' #Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
 ##################################################################
 getNs=function(zoneN,iZ)
 {
@@ -400,34 +385,29 @@ getNs=function(zoneN,iZ)
 #' @export
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
 #' # not run
 findNptInZone=function(K,i1,i2,map)
 ##################################################################
 {
-ptZ1=K$listZonePoint[[i1]]
-ptZ2=K$listZonePoint[[i2]]
-ptN=map$krigN
-#
-# for each pt in Z1
-mat=c()
-for (ptnum in ptZ1)
-{
-# look for neighbor pt in Z2
-nei=map$krigN[[ptnum]]
-k=match(nei,ptZ2)
-n2=ptZ2[k[!is.na(k)]]
-if(length(n2)>0)
-	{
-	for (n2k in n2)
-	{
-	mat=rbind(mat,c(ptnum,n2k))
-	}
-	}
-}
-colnames(mat)=c("ptZ1","ptNZ2")
-return(mat)
+  ptZ1=K$listZonePoint[[i1]]
+  ptZ2=K$listZonePoint[[i2]]
+  ptN=map$krigN
+  #
+  # for each pt in Z1
+  mat=c()
+  for (ptnum in ptZ1){
+    # look for neighbor pt in Z2
+    nei=map$krigN[[ptnum]]
+    k=match(nei,ptZ2)
+    n2=ptZ2[k[!is.na(k)]]
+    if(length(n2)>0){
+	    for (n2k in n2){
+	      mat=rbind(mat,c(ptnum,n2k))
+	    }
+	  }
+  }
+  colnames(mat)=c("ptZ1","ptNZ2")
+  return(mat)
 }
 
 ##################################################################
@@ -441,24 +421,21 @@ return(mat)
 #' @keywords internal
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' Z1=geozoning:::crComment(Z)
 #' # not run
+#' #data(resZTest)
+#' #K=resZTest
+#' #Z=K$zonePolygone
+#' #Z1=geozoning:::crComment(Z)
 crComment = function(Z)
 ##################################################################
 {
-# create comments for holes
-      if (!is.null(Z) & length(Z) >0)
-      {
-	for (iZ in 1:length(Z))
-	    {
-		comment(Z[[iZ]]@polygons[[1]])=createPolygonsComment(Z[[iZ]]@polygons[[1]])
-	     }
-
-      }
-      return(Z)
+  # create comments for holes
+  if (!is.null(Z) & length(Z) >0){
+	  for (iZ in 1:length(Z)){
+		  comment(Z[[iZ]]@polygons[[1]])=createPolygonsComment(Z[[iZ]]@polygons[[1]])
+	  }
+  }
+  return(Z)
 }
 
 ##################################################################
@@ -475,17 +452,17 @@ crComment = function(Z)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.2,0.5)
-#' ZK = initialZoning(qProb, mapTest)
-#' K=ZK$resZ
-#' Z=K$zonePolygone
-#' plotZ(Z)
-#' Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
-#' Z[[length(Z)+1]]=Z58 # add new zone to zoning
-#' plotZ(Z)
-#' geozoning:::testInterSpe(Z,6,length(Z))
 #' # not run
+#' #data(mapTest)
+#' #qProb=c(0.2,0.5)
+#' #ZK = initialZoning(qProb, mapTest)
+#' #K=ZK$resZ
+#' #Z=K$zonePolygone
+#' #plotZ(Z)
+#' #Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
+#' #Z[[length(Z)+1]]=Z58 # add new zone to zoning
+#' #plotZ(Z)
+#' #geozoning:::testInterSpe(Z,6,length(Z))
 testInterSpe=function(Z,i1,i2)
 ##################################################################
 # returns TRUE if zones Z[[i1]] and Z[[i2]] share some common part
@@ -510,17 +487,17 @@ else
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.2,0.5)
-#' ZK = initialZoning(qProb, mapTest)
-#' K=ZK$resZ
-#' Z=K$zonePolygone
-#' plotZ(Z)
-#' Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
-#' Z[[length(Z)+1]]=Z58 # add new zone to zoning
-#' plotZ(Z)
-#' geozoning:::testInterSpe(Z,6,length(Z))
 #' # not run
+#' #data(mapTest)
+#' #qProb=c(0.2,0.5)
+#' #ZK = initialZoning(qProb, mapTest)
+#' #K=ZK$resZ
+#' #Z=K$zonePolygone
+#' #plotZ(Z)
+#' #Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
+#' #Z[[length(Z)+1]]=Z58 # add new zone to zoning
+#' #plotZ(Z)
+#' #geozoning:::testInterSpe(Z,6,length(Z))
 testInterSpeZ1=function(Z,iZ)
 ##################################################################
 #returns TRUE if zone Z[[iZ]] intersects with any other zone  not within it
@@ -547,16 +524,16 @@ testInterSpeZ1=function(Z,iZ)
 #' @keywords internal
 #'
 #' @examples
-#' qProb=c(0.2,0.5)
-#' ZK = initialZoning(qProb, mapTest)
-#' K=ZK$resZ
-#' Z=K$zonePolygone
-#' plotZ(Z)
-#' Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
-#' Z[[length(Z)+1]]=Z58 # add new zone to zoning
-#' plotZ(Z)
-#' geozoning:::testInterSpeZ(Z)
 #' # not run
+#' #qProb=c(0.2,0.5)
+#' #ZK = initialZoning(qProb, mapTest)
+#' #K=ZK$resZ
+#' #Z=K$zonePolygone
+#' #plotZ(Z)
+#' #Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
+#' #Z[[length(Z)+1]]=Z58 # add new zone to zoning
+#' #plotZ(Z)
+#' #geozoning:::testInterSpeZ(Z)
 testInterSpeZ=function(Z)
 ##################################################################
 #returns TRUE if any zone intersects with any other zone  not within it
@@ -583,13 +560,13 @@ testInterSpeZ=function(Z)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' plotZ(Z,mapTest)
-#' geozoning:::printInterZ(Z,Z[[1]])
 #' # not run
+#' #data(mapTest)
+#' #data(resZTest)
+#' #K=resZTest
+#' #Z=K$zonePolygone
+#' #plotZ(Z,mapTest)
+#' #geozoning:::printInterZ(Z,Z[[1]])
 printInterZ = function(Z,sp)
 ##################################################################
 {
@@ -599,7 +576,7 @@ printInterZ = function(Z,sp)
 	{
 		print(paste("i=",i,"intersec=",gIntersects(Z[[i]],sp)))
 	}
-	
+
 }
 
 ##################################################################
@@ -620,21 +597,18 @@ printInterZ = function(Z,sp)
 #' data(resZTest)
 #' Z=resZTest$zonePolygone
 #' ptInZone(Z[[1]],mapTest$krigData,c(5,500))
-#' # not run
 ptInZone=function(zone,pts,numpt)
 ##################################################################
 {
 	spp=SpatialPoints(pts)
 	logicalPoly=point.in.polygon(spp$x,spp$y,zone@polygons[[1]]@Polygons[[1]]@coords[,1],zone@polygons[[1]]@Polygons[[1]]@coords[,2])
-    if(length(zone@polygons[[1]]@Polygons)>1)
-    {
-      #consider pts may be inside holes
-      for(k in 2:length(zone@polygons[[1]]@Polygons))
-      {
-        logicalPoly=logicalPoly-point.in.polygon(spp$x,spp$y,zone@polygons[[1]]@Polygons[[k]]@coords[,1],zone@polygons[[1]]@Polygons[[k]]@coords[,2])
-      }
+  if(length(zone@polygons[[1]]@Polygons)>1) {
+    #consider pts may be inside holes
+    for(k in 2:length(zone@polygons[[1]]@Polygons)){
+      logicalPoly=logicalPoly-point.in.polygon(spp$x,spp$y,zone@polygons[[1]]@Polygons[[k]]@coords[,1],zone@polygons[[1]]@Polygons[[k]]@coords[,2])
     }
-    return(logicalPoly[numpt])
+  }
+  return(logicalPoly[numpt])
 }
 
 ##################################################################
@@ -651,7 +625,6 @@ ptInZone=function(zone,pts,numpt)
 #' data(mapTest)
 #' qProb=c(0.1,0.2,0.4);criti=correctionTree(qProb,mapTest) # 2 zonings at last level
 #' printLabZ(criti$zk[[2]])
-#' # not run
 printLabZ=function(Klist)
 ##################################################################
 {
@@ -683,14 +656,14 @@ printLabZ=function(Klist)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' data(resZTest)
-#' K=resZTest
-#' Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
-#' zf=zoneFusion3(K,5,Ns,mapTest,disp=0) # merge zone 5 with englobing one
-#' K2=calNei(zf,mapTest$krigData,mapTest$krigSurfVoronoi,mapTest$krigN)
-#' K2=geozoning:::trLabZone(K,K2,mapTest,K$qProb)
 #' # not run
+#' #data(mapTest)
+#' #data(resZTest)
+#' #K=resZTest
+#' #Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
+#' #zf=zoneFusion3(K,5,Ns,mapTest,disp=0) # merge zone 5 with englobing one
+#' #K2=calNei(zf,mapTest$krigData,mapTest$krigSurfVoronoi,mapTest$krigN)
+#' #K2=geozoning:::trLabZone(K,K2,mapTest,K$qProb)
 trLabZone=function(K1,K2,map,qProb,disp=0)
 ##################################################################
 # transfer zone labels from K1 to K2
@@ -756,10 +729,10 @@ return(K2)
 #' @keywords internal
 #'
 #' @examples
-#' data(resZTest)
-#' Z=resZTest$zonePolygone
-#' geozoning:::getClosestZone(4,Z,resZTest$zoneNModif)
 #' # not run
+#' #data(resZTest)
+#' #Z=resZTest$zonePolygone
+#' #geozoning:::getClosestZone(4,Z,resZTest$zoneNModif)
 getClosestZone=function(iZ,Z,zoneN)
 ##################################################################
 {
@@ -827,7 +800,6 @@ return(imin)
 #' MeanVarWPts(mapTest,Z[[1]])
 #' # Weights are areas of the Voronoi polygons corresponding to data points
 #' MeanVarWPts(mapTest,Z[[1]],mapTest$krigSurfVoronoi) #slightly different result
-#' # not run
 MeanVarWPts=function(map,zone,w=NULL)
 #####################################################################
 {
@@ -846,8 +818,6 @@ MeanVarWPts=function(map,zone,w=NULL)
   m=sum(ptsp[[1]][mask]*w[mask]) /sum(w[mask])
   d=ptsp[[1]][mask]-m
   v=sum(d*d*w[mask]) /sum(w[mask])
-  #plot(zone)
-  #points(ptsp$x[mask],ptsp$y[mask])
 
   return(list(mean=m,var=v))
 }
@@ -868,7 +838,6 @@ MeanVarWPts=function(map,zone,w=NULL)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' iC=1;print(paste(nPolyZone(Z,iC),"polygons in zone",iC))
-#' # not run
 nPolyZone=function(Z,iC)
 ##################################################################
 {
@@ -878,7 +847,7 @@ nPolyZone=function(Z,iC)
 ##################################################################
 #' maxDistZone
 #'
-#' @details maximum distance within kth polygon of current zone 
+#' @details maximum distance within kth polygon of current zone
 #' @param Z zoning geometry (list of SpatialPolygons)
 #' @param iZ current zone index
 #' @param k polygon number within current zone
@@ -887,10 +856,10 @@ nPolyZone=function(Z,iC)
 #'
 #' @keywords internal
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' geozoning:::maxDistZone(Z,5,1)
 #' # not run
+#' #ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' #Z=ZK$resZ$zonePolygone
+#' #geozoning:::maxDistZone(Z,5,1)
 maxDistZone=function(Z,iZ,k)
 ##################################################################
 {
@@ -916,7 +885,6 @@ maxDistZone=function(Z,iZ,k)
 #' P2=getPoly(Z,5,2) # second polygon is a hole
 #' plot(P1@coords,type="l")
 #' lines(P2@coords,type="l",col="blue")
-#' # not run
 getPoly = function(Z,iZ,k)
 ##################################################################
 {
@@ -939,12 +907,12 @@ getPoly = function(Z,iZ,k)
 #' @keywords internal
 #'
 #' @examples
-#' ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-#' Z=ZK$resZ$zonePolygone
-#' sph=geozoning:::polyToSp(Z,5,2)
-#' plotZ(Z)
-#' sp::plot(sph,type="l",col="blue",add=TRUE)
 #' # not run
+#' #ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#' #Z=ZK$resZ$zonePolygone
+#' #sph=geozoning:::polyToSp(Z,5,2)
+#' #plotZ(Z)
+#' #sp::plot(sph,type="l",col="blue",add=TRUE)
 polyToSp=function(Z,iZ,k)
 ##################################################################
 {
@@ -980,7 +948,6 @@ polyToSp=function(Z,iZ,k)
 #' Z=resZTest$zonePolygone
 #' Z1=zoneFusion4(Z,6,2)
 #' calcDCrit(Z1,mapTest)
-#' # not run
 calcDCrit=function(Z,map,optiCrit=2,pErr=0.9,simplitol=1e-3)
 ##################################################################
 {
@@ -1017,7 +984,6 @@ calcDCrit=function(Z,map,optiCrit=2,pErr=0.9,simplitol=1e-3)
 #' for (kk in 1:length(P)){Z1[[kk]]=P[kk]} # transform into list of SpatialPolygons
 #' bd=list(x=c(7723131,7723132,7723294,7723295,7723131),y=c(3576432,3576814,3576809,3576436,3576432))
 #  Z2=normZcoords(Z1,bd)
-#' # not run
 normZcoords=function(Z,boundary)
 ##################################################################
 {
@@ -1036,7 +1002,7 @@ normZcoords=function(Z,boundary)
 		boundaryn = resn$boundaryn
 	}
 
-		Z1[[iZ]] = SpatialPolygons(list(Polygons(pnl,1:1)))
+	Z1[[iZ]] = SpatialPolygons(list(Polygons(pnl,1:1)))
 
 	}
 
@@ -1085,7 +1051,7 @@ createHoles = function(Z)
 #'
 #' @details creates SpatialPolygons excluding holes
 #' @param zoneMain SpatialPolygons
-#' @param zoneSuppr SpatialPolygons  inside main 
+#' @param zoneSuppr SpatialPolygons  inside main
 #'
 #' @return a new SpatialPolygons object
 #'
@@ -1111,7 +1077,7 @@ moveHoles = function(zoneMain,zoneSuppr)
 }
 
 ##################################################################
-#' find contour for a given quantile value, within an envelope and englobing current zone 
+#' find contour for a given quantile value, within an envelope and englobing current zone
 #'
 #' @details withing a zoning, find contour for a given vRef quantile value, contour contains current zone and is included in envel (spatial Polygon)
 #' @param iC zone number
@@ -1130,19 +1096,19 @@ moveHoles = function(zoneMain,zoneSuppr)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.3,0.5)
-#' criti = correctionTree(qProb,mapTest)
-#' best = criti$zk[[2]][[1]]
-#' Z=best$zonePolygone
-#' plotZ(Z)
-#' iC=4
-#' envel=calFrame(iC,Z,best$zoneNModif)
-#' sp::plot(envel,col="blue",add=TRUE)
-#' vRef=quantile(mapTest$krigGrid,0.6)
-#' resp=geozoning:::findCinZ(iC,Z,best,mapTest,vRef,envel)
-#' sp::plot(resp$contourSp,col="red",add=TRUE)
 #' # not run
+#' #data(mapTest)
+#' #qProb=c(0.3,0.5)
+#' #criti = correctionTree(qProb,mapTest)
+#' #best = criti$zk[[2]][[1]]
+#' #Z=best$zonePolygone
+#' #plotZ(Z)
+#' #iC=4
+#' #envel=calFrame(iC,Z,best$zoneNModif)
+#' #sp::plot(envel,col="blue",add=TRUE)
+#' #vRef=quantile(mapTest$krigGrid,0.6)
+#' #resp=geozoning:::findCinZ(iC,Z,best,mapTest,vRef,envel)
+#' #sp::plot(resp$contourSp,col="red",add=TRUE)
 findCinZ = function(iC,Z,K,map,vRef,envel)
 ##################################################################
 {
@@ -1167,7 +1133,7 @@ findCinZ = function(iC,Z,K,map,vRef,envel)
      if(!is.null(ps)) sp[[k]]=ps else k=k-1
   }
   if (length(sp)==0) return(NULL)
-  
+
   # check which one contains current zone
   spb = sapply(sp,gBuffer,width=1e-3)
   gc = sapply(spb,gContains,Z[[iC]])
@@ -1201,13 +1167,13 @@ findCinZ = function(iC,Z,K,map,vRef,envel)
 #' @keywords internal
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' data(mapTest)
-#' ptsp=mapTest$krigData
-#' geozoning:::modlm(ptsp,Z)
 #' # not run
+#' #data(resZTest)
+#' #K=resZTest
+#' #Z=K$zonePolygone
+#' #data(mapTest)
+#' #ptsp=mapTest$krigData
+#' #geozoning:::modlm(ptsp,Z)
 modlm=function(ptsp,Z)
 ######################
 {
@@ -1238,13 +1204,13 @@ modlm=function(ptsp,Z)
 #' @importFrom sp SpatialPoints SpatialPointsDataFrame
 #'
 #' @examples
-#' data(resZTest)
-#' K=resZTest
-#' Z=K$zonePolygone
-#' geozoning:::getClosePt(Z,1,3)
-#' plotZ(Z)
-#' points( geozoning:::getClosePt(Z,1,3),col="blue",pch=20)
 #' # not run
+#' #data(resZTest)
+#' #K=resZTest
+#' #Z=K$zonePolygone
+#' #geozoning:::getClosePt(Z,1,3)
+#' #plotZ(Z)
+#' #points( geozoning:::getClosePt(Z,1,3),col="blue",pch=20)
 getClosePt=function(Z,iC,iZC,disp=FALSE)
 ##################################################################
 {
@@ -1287,31 +1253,30 @@ getClosePt=function(Z,iC,iZC,disp=FALSE)
 #'
 #' @examples
 #' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+#' # saving initial zoning and last level zonings
+#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 #' Z=criti$zk[[2]][[1]]$zonePolygone
 #' findZCenter(Z)
-#' # not run
 findZCenter=function(Z,num=NULL)
 ################################
 {
-if(is.null(num)) num=1:length(Z)
-ptz=NULL
-for (jj in num)
-{
-	erosion = Z[[jj]]
-    	width = 0
-    	while(gArea(erosion)>10^-3){
-      	width = width + 0.001
-      	erosion = gBuffer(Z[[jj]],width =-width)
-	}
-ptz=rbind(ptz,coordinates(erosion))
+  if(is.null(num)) num=1:length(Z)
+  ptz=NULL
+  for (jj in num){
+	  erosion = Z[[jj]]
+    width = 0
+    while(gArea(erosion)>10^-3){
+    	width = width + 0.001
+    	erosion = gBuffer(Z[[jj]],width =-width)
+	  }
+    ptz=rbind(ptz,coordinates(erosion))
+  }
+  rownames(ptz)=NULL
+  colnames(ptz)=c("x","y")
+  return(ptz)
 }
-rownames(ptz)=NULL
-colnames(ptz)=c("x","y")
-return(ptz)
-}
+
 ########################
 #' findZCenterpt
 #'
@@ -1328,36 +1293,35 @@ return(ptz)
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
-#' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
-#' K=criti$zk[[2]][[1]]
-#' data=mapTest$krigData
-#' geozoning:::findZCenterpt(data,K)
 #' # not run
+#' #data(mapTest)
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+#' # saving initial zoning and last level zonings
+#' #criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
+#' #K=criti$zk[[2]][[1]]
+#' #data=mapTest$krigData
+#' #geozoning:::findZCenterpt(data,K)
 findZCenterpt=function(data,K,num=NULL)
 #######################################
 {
-Z=K$zonePolygone
-if(is.null(num)) num=1:length(Z)
-ptz=NULL
-for (jj in num)
-{
-ipt=K$listZonePoint[[jj]] # indices of within zone pts
-ptc=data[ipt,]
-gd=rep(NA,length(ptc))
-for (k in 1:length(ptc)) {gd[k]=gDistance(ptc[k,],gBoundary(Z[[jj]]))} #smallest distance from each point to zone boundary
-ind=which(gd==max(gd)) # maximum distance to zone boundary
-ind=ind[1] # if ties
-ptz=rbind(ptz,coordinates(ptc[ind,]))
+  Z=K$zonePolygone
+  if(is.null(num)) num=1:length(Z)
+  ptz=NULL
+  for (jj in num){
+    ipt=K$listZonePoint[[jj]] # indices of within zone pts
+    ptc=data[ipt,]
+    gd=rep(NA,length(ptc))
+    for (k in 1:length(ptc)) {gd[k]=gDistance(ptc[k,],gBoundary(Z[[jj]]))} #smallest distance from each point to zone boundary
+    ind=which(gd==max(gd)) # maximum distance to zone boundary
+    ind=ind[1] # if ties
+    ptz=rbind(ptz,coordinates(ptc[ind,]))
+  }
+  rownames(ptz)=NULL
+  colnames(ptz)=c("x","y")
+  return(ptz)
 }
-rownames(ptz)=NULL
-colnames(ptz)=c("x","y")
-return(ptz)
-}
+
 ########################
-getZsize=function(Z)
 #' getZsize
 #'
 #' @details compute maximum x and y values of zoning Z
@@ -1371,15 +1335,16 @@ getZsize=function(Z)
 #' @keywords internal
 #'
 #' @examples
-#' data(resZTest)
-#' Z=resZTest$zonePolygone
-#' geozoning:::getZsize(Z)
 #' # not run
+#' #data(resZTest)
+#' #Z=resZTest$zonePolygone
+#' #geozoning:::getZsize(Z)
+getZsize=function(Z)
 ########################
 {
-ms=sapply(Z,function(x)return(x@bbox[,"max"]))
-vs=apply(ms,1,max)
-return(vs)
+  ms=sapply(Z,function(x)return(x@bbox[,"max"]))
+  vs=apply(ms,1,max)
+  return(vs)
 }
 ##################################################################
 #' interZoneC
@@ -1391,26 +1356,26 @@ return(vs)
 #' @param closePt SpatialPoints object in other zone used as circle center
 #'
 #' @return a list with components
-#'\describe{
-#' \item{spi}{Two SpatialPoints to be used for the junction of the two zones}
-#' \item{ord}{Order in which to use the points}
+#' \describe{
+#'   \item{spi}{Two SpatialPoints to be used for the junction of the two zones}
+#'   \item{ord}{Order in which to use the points}
 #' }
 #' @importFrom rgeos gBoundary gCrosses gEnvelope gIntersection gLength
 #'
 #' @keywords internal
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.2,0.5)
-#' ZK = initialZoning(qProb, mapTest)
-#' K=ZK$resZ
-#' Z=K$zonePolygone
-#' plotZ(K$zonePolygone) # zoning
-#' closePt = geozoning:::getClosePt(Z,6,8)
-#' points(closePt,col="red")
-#' res  = geozoning:::interZoneC(Z,6,8,closePt)
-#' points(res$spi,col="red")
 #' # not run
+#' #data(mapTest)
+#' #qProb=c(0.2,0.5)
+#' #ZK = initialZoning(qProb, mapTest)
+#' #K=ZK$resZ
+#' #Z=K$zonePolygone
+#' #plotZ(K$zonePolygone) # zoning
+#' #closePt = geozoning:::getClosePt(Z,6,8)
+#' #points(closePt,col="red")
+#' #res  = geozoning:::interZoneC(Z,6,8,closePt)
+#' #points(res$spi,col="red")
 interZoneC=function(Z,iC, iZC, closePt)
 ##################################################################
 {

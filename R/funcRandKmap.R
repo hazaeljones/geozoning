@@ -4,9 +4,9 @@
 #' @details description, a paragraph
 #' @param DataObj =NULL: simulated data with given seed or a data frame with real data
 #' @param seed numeric value used to generate simulated data
-#' @param nPoints number of generated raw data points 
+#' @param nPoints number of generated raw data points
 #' @param typeMod type of variogram model (see vgm)
-#' @param Vpsill partial sill in variogram 
+#' @param Vpsill partial sill in variogram
 #' @param Vrange variogram range
 #' @param Vmean average data value
 #' @param Vnugget nugget in variogram
@@ -31,20 +31,18 @@
 #' @importFrom RandomFields RMtrend RMnugget RFsimulate
 #'
 #' @examples
-# simulate data with Gaussian model
-#' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE) 
+#' # simulate data with Gaussian model
+#' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE)
 #' plot(resGene$tabData)
 #'
-#' # not run
 genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
-#'
 ##############################################################################
 {
   modelGen=NULL #variogram model
   VGMmodel1=NULL
   Vang=0# anistotropy angle
   ratio=1 # scale for real data
-  
+
   # real or simulated data
   if(!is.null(DataObj))
     print(paste("reading DataObj,nrow(DataObj)=",nrow(DataObj),",ncol(DataObj)=",ncol(DataObj),collapse=","))
@@ -71,7 +69,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     ratio=max(tabData$x)-min(tabData$x)
     resNorm=datanormX(tabData,boundary)
     if(is.null(resNorm)) return(NULL)
-    tabData = resNorm$dataN 
+    tabData = resNorm$dataN
     boundary = resNorm$boundaryN
     xmin=resNorm$xmin
     xmax=resNorm$xmax
@@ -88,7 +86,7 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
     boundary$y[boundary$y<0]=0
     boundary$x[boundary$x>xsize]=xsize
     boundary$y[boundary$y>ysize]=ysize
-    
+
 # fit experimental variogram to model
   tabDataSp=tabData
   sp::coordinates(tabDataSp)=~x+y
@@ -139,7 +137,6 @@ genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Gau",Vpsill=5,Vrange=0
 #'
 #' @examples
 #' calStep(1000,1,1)
-#' # not run
 calStep=function(nPointsK,xsize,ysize)
 #####################################################
 {
@@ -166,7 +163,6 @@ calStep=function(nPointsK,xsize,ysize)
 #' @importMethodsFrom sp coordinates
 #' @examples
 #' genEmptyGrid(calStep(1000,1,1),1,1)
-#' # not run
 genEmptyGrid=function(step,xsize,ysize)
 ################################################################
 {
@@ -179,8 +175,8 @@ genEmptyGrid=function(step,xsize,ysize)
   xempty=rep(xx,times=ny)
   yempty=rep(yy,each=nx)
   z=rep(NA,nx*ny)
-  
-  # turn into dataframe 
+
+  # turn into dataframe
   tabEmpty=data.frame(x=xempty,y=yempty,z=z)
   sp::coordinates(tabEmpty)=~x+y
   return(list(tabEmpty=tabEmpty,xx=xx,yy=yy,nx=nx,ny=ny))
@@ -196,14 +192,14 @@ genEmptyGrid=function(step,xsize,ysize)
 #' @export
 #'
 #' @examples
-#' data(mapTest) # simulated data
-#' grid=genEmptyGrid(calStep(2000,1,1),1,1)
-#' nbP= grid$nx*grid$ny
-#' neighBool=matrix(logical(nbP^2),nbP,nbP)
-#' resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
-#' neighBool=resVoronoi$neighBool
-#' listeNpt=ptNei(neighBool)
-#' # not run
+#' # not run, take a while...
+#' #data(mapTest) # simulated data
+#' #grid=genEmptyGrid(calStep(2000,1,1),1,1)
+#' #nbP= grid$nx*grid$ny
+#' #neighBool=matrix(logical(nbP^2),nbP,nbP)
+#' #resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
+#' #neighBool=resVoronoi$neighBool
+#' #listeNpt=ptNei(neighBool)
 ptNei=function(neighBool)
 ###################################################################
 {

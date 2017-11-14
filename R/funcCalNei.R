@@ -11,7 +11,6 @@
 #' @examples
 #' data(resZTest)
 #' calcCritNarrow(resZTest$zonePolygone)
-#' # not run
 calcCritNarrow=function(zonePolygone)
 ####################################################################
 {
@@ -44,7 +43,6 @@ calcCritNarrow=function(zonePolygone)
 #' data(resZTest)
 #' K=resZTest
 #' wMean(1,K$listZonePoint,mapTest$krigSurfVoronoi,mapTest$krigData)
-#' # not run
 wMean=function(type,listZonePoint,surfVoronoi,data)
 ####################################################################
 {
@@ -79,8 +77,8 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 #'
 #' @details determines the Voronoi neighborhood of data points
 #' @param spdata SpatialPointsDataFrame
-#' @param gridLim list of boundary coordinates 
-#' @param neighBool empty point neighborhood Logical matrix 
+#' @param gridLim list of boundary coordinates
+#' @param neighBool empty point neighborhood Logical matrix
 #' @param PTJUNCTION logical value, if FALSE (default): pts are not neighbors if their Voronoi polygons only have a vertex in common
 #' @param FULL logical value, if FALSE (default): do not return Vornoi polygons
 #'
@@ -97,15 +95,15 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' rx=range(mapTest$krigData$x)
-#' ry=range(mapTest$krigData$y)
-#' nx=nrow(mapTest$krigGrid)
-#' ny=ncol(mapTest$krigGrid)
-#' nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
-#' vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
-#' length(vP$surfVoronoi) #as many as kriged data points
-#' # not run
+#' # not run, take a while...
+#' # data(mapTest)
+#' # rx=range(mapTest$krigData$x)
+#' # ry=range(mapTest$krigData$y)
+#' # nx=nrow(mapTest$krigGrid)
+#' # ny=ncol(mapTest$krigGrid)
+#' # nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
+#' # vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
+#' # length(vP$surfVoronoi) #as many as kriged data points
 voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,FULL=FALSE)
 ##########################################################
 {
@@ -191,7 +189,6 @@ voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,
 #' zoneN=matrix(logical(nZ*nZ),nZ,nZ)
 #' listZonePoint=K$listZonePoint
 #' calZoneN(ptN,zoneN,listZonePoint)
-#' # not run
 calZoneN=function(ptN,zoneN,listZonePoint)
 ################################################################################
 {

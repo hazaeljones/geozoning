@@ -11,83 +11,150 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!---
+Program  : zoningObjects.Rmd
+Objective: 
+Author   : B. Charnomordic & updated by I.Sanchez (INRA MISTEA)
+Creation : 21/09/2017
+Update   : 09/11/2017
+-->
+
+-----
+
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   library(geozoning)
   library(sp)
   library(fields)
   library(gstat)
-  
 ```
-This vignette describes the main structures used by the geozoning package: map, zoning object and zoning geometry, how to create and use them.
 
-Structure 1: map 
---------------------
+This vignette describes the main structures used by the geozoning package: map, zoning object and zoning geometry, how to create and use them. We illustrate as well the criterion behaviour on 2 different zonings.
+
+#  Structure 1: map 
 A map structure contains the data and parameters necessary to perform a zoning. The structure is identical wether the data are simulated or not.
-The map structure contains raw data for traceability: rawData component (class SpatialPointsDataFrame) and kriged data in 2 useful forms: krigData component (class SpatialPointsDataFrame) used for zoning calculations and krigGrid component (class matrix), used for image plot displays. The resolution grid is given in the step component. Kriged data are normalized so that x-coordinates are between 0 and 1. y-coordinates are normalized with the same ratio used for x-coordinates. The ratio is recoreded in the ratio component.
+The map structure contains raw data for traceability: rawData component (class SpatialPointsDataFrame) and kriged data in 2 useful forms: krigData component (class SpatialPointsDataFrame) used for zoning calculations and krigGrid component (class matrix), used for image plot displays. The resolution grid is given in the step component. Kriged data are normalized so that x-coordinates are between 0 and 1. y-coordinates are normalized with the same ratio used for x-coordinates. The ratio is recorded in the ratio component.
 Kriging is either done with inverse distance interpolation, or with a variogram model fitted to data, which is recorded in 2 components: VGMmodel (variogramModel) and modelGen (class RMmodel).
 The boundary component is a list with x and y components, normalized with the same ratio used for data, corresponding to the map boundary. 
-The map structure also contains the list of neighbours of each kriged data point: krigN. For each kriged data point, the corresponding list element contains the sorted indexes of all its neighbors (sharing an edge in the kriged point Voronoi tesselation). The list of areas of kriged Voronoi polygons is given in the krigSurfVoronoi component. It is used to assign weights in calculations.
+The map structure also contains the list of neighbours of each kriged data point: krigN. For each kriged data point, the corresponding list element contains the sorted indexes of all its neighbours (sharing an edge in the kriged point Voronoi tesselation). The list of areas of kriged Voronoi polygons is given in the krigSurfVoronoi component. It is used to assign weights in calculations.
 
-The map object can be created by 2 functions: genMap or randKmap. 
-```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
+The map object can be created by 2 functions: *genMap* or *randKmap*. 
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
   seed=80
-  map=genMap(DataObj=NULL,seed=seed,disp=0,Vmean=15,krig=2)
-  # or
-  map = randKmap(DataObj=NULL,nPointsK=500,Vmean=10,krig=1)
+  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,Vmean=15,krig=2)
 ```  
+
+```{r,echo=TRUE,eval=FALSE,message=FALSE, warning=FALSE}
+  # or with the randKmap function:
+  map=randKmap(DataObj=NULL,nPointsK=500,Vmean=10,krig=1)
+```  
+
 Display map with kriged data
-```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
-dispZ(mapTest$step,matVal=mapTest$krigGrid)
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  dispZ(mapTest$step,matVal=mapTest$krigGrid)
 ```  
+
 Check the mean and standard deviation of generated data.
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   meanvarSimu(map)
 ```
-Structure 2: zoning geometry
------------------------------
+
+#  Structure 2: zoning object with different criterion behaviour
+
+This section illustrates the criterion behaviour on 2 different zonings in 3 steps, using the *loopQ3* and *correctionTree* functions. First an exploraty loop is run to rank the zonings for a size 3 quantile vector (4-label map). Then the correction procedure is run independently for the best and the worst zonings found in that exploratory loop. The criterion values are printed and explained.
+
+## Exploratory loop for a size 3 quantile vector (4-label map)
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  ro=loopQ3(map,step=0.1,disp=0,QUIET=T)
+```
+
+**ro** is a matrix sorted by reverse order of crit. It has 8 columns and 56 rows. Columns contain the following values calculated for each quantile vector:  criterion, cost, cost per label, number of zones, quantile associated probability values and number of non degenerated quantiles. Each row corresponds to the best zoning obtained for the corresponding quantile at the end of the correction procedure. To save time and memory, details are not saved.
+
+## Run *correctionTree* function for best zoning and save results
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  bqProb=ro[1,5:7]
+  criti=correctionTree(bqProb,map,SAVE=TRUE)
+  res=searchNODcrit1(bqProb,criti)
+  b=res$ind[[1]][1]
+  K=criti$zk[[2]][[b]]
+  bZ=K$zonePolygone
+  dispZ(map$step,map$krigGrid,zonePolygone=bZ)
+  # distance matrix has high values, criterion is the smallest one (6.417)
+  # distance between zones 5 and 7
+  bmd=criti$mdist[[2]][[b]]
+  bcrit=criti$criterion[[2]][[b]]
+  bcrit
+  bmd
+```
+
+## Run *correctionTree* function for worst zoning and save results
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  wqProb=ro[56,5:7]
+  criti=correctionTree(wqProb,map,SAVE=TRUE)
+  res=searchNODcrit1(wqProb,criti)
+  w=res$ind[[1]][1]
+  K=criti$zk[[2]][[w]]
+  wZ=K$zonePolygone
+  dispZ(map$step,map$krigGrid,zonePolygone=wZ)
+  # distance matrix has some low values, criterion is the smallest one (3.747)
+  # distance between zones 4 and 8
+  wmd=criti$mdist[[2]][[w]]
+  wcrit=criti$criterion[[2]][[w]]
+  wcrit
+  wmd
+```
+
+#  Structure 2: zoning geometry
+We use the **mapTest** internal object and the *initialZoning* function for the following examples:
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE}
+  data(mapTest)
+  ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
+```
+
 A zoning geometry Z contains the polygons corresponding to the boundaries of zones within a zoning. For size limiting considerations, it contains no other data (see zoning structure that contains data and zone geometry).
 Z is a list of SpatialPolygons. Some zones may have holes, in that case there is always an additional SpatialPolygons corresponding to the hole.
 
-Z can be created or updated by many functions: initialZoning, correctionTree, zoneFusion2, optiGrow, etc.
-```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
-data(mapTest)
-ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
-Z=ZK$resZ$zonePolygone
-class(Z)
-plotZ(Z)
-Zf=zoneFusion2(Z[[5]],Z[[6]])
-class(Zf)
-sp::plot(Zf,add=TRUE,col="blue")
+Z can be created or updated by many functions: *initialZoning*, *correctionTree*, *zoneFusion2*, *optiGrow*, etc.
 
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  Z=ZK$resZ$zonePolygone
+  class(Z)
+  plotZ(Z)
+  Zf=zoneFusion2(Z[[5]],Z[[6]])
+  class(Zf)
+  sp::plot(Zf,add=TRUE,col="blue")
 ```
 
-Structure 3: zoning structure 
------------------------------
+#  Structure 3: zoning structure 
 A zoning structure K contains all elements resulting from a zoning: zoning geometry (zonePolygone component - list of SpatialPolygons), zone neighborhood (zoneN or zoneNmodif with no self-neighborhood), data point zone assignment, zone areas and mean values.
 It is created by the calNei function, that is called by many functions, for instance from within initialZoning or correctedTree.
 
-```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
-data(mapTest)
-ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
-K=ZK$resZ
-names(K)
-Z=K$zonePolygone
-plotZ(Z)
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  K=ZK$resZ
+  names(K)
+  Z=K$zonePolygone
+  plotZ(Z)
 ```
-The labZone function may be called to assign zone labels depending on the zone mean value as follows. Default label is 1, corresponding to a mean value smaller or equal to first quantile. For p ordered quantile values, if mean value is greater than quantile k and smaller or equal to quantile k+1, zone label is k+1. if mean value is greater than quantile p, zone label is p+1.
-```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
-p = K$qProb
-K=labZone(K,p,mapTest$krigGrid)
-print(K$lab)
+
+The *labZone* function may be called to assign zone labels depending on the zone mean value as follows. Default label is 1, corresponding to a mean value smaller or equal to first quantile. For p ordered quantile values, if mean value is greater than quantile k and smaller or equal to quantile k+1, zone label is k+1. if mean value is greater than quantile p, zone label is p+1.
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  p = K$qProb
+  K=labZone(K,p,mapTest$krigGrid)
+  print(K$lab)
 ```
 
 To keep only zones with a minimum of 20 data points, remake zoning structure.
-```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=10}
-K=calNei(Z,mapTest$krigData,mapTest$krigSurfVoronoi,mapTest$krigN,nmin=20)
-Z=K$zonePolygone
-plotZ(Z)
-title("Zoning with zones with less than 20 kriged data points removed")
+
+```{r,echo=TRUE,message=FALSE, warning=FALSE,fig.height=7,fig.width=5}
+  K=calNei(Z,mapTest$krigData,mapTest$krigSurfVoronoi,mapTest$krigN,nmin=20)
+  Z=K$zonePolygone
+  plotZ(Z)
+  title("Zoning with zones with less than 20 kriged data points removed",cex.main = 0.5)
 ```
+
 # Session informations
 ```{r session,echo=FALSE,message=FALSE, warning=FALSE}
   sessionInfo()

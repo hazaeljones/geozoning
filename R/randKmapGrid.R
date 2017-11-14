@@ -27,10 +27,10 @@
 #' @export
 #'
 #' @examples
-#' data(dataReg) #regular data on a square grid between 0 and 1
-#' map = randKmapGrid(dataReg)
-#' plotMap(map)
-#' # not run
+#' # not run, take a while...
+#' #data(dataReg) #regular data on a square grid between 0 and 1
+#' #map = randKmapGrid(dataReg)
+#' #plotMap(map)
 randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE,disp=0,FULL=FALSE)
 ##########################################################
 {
@@ -39,7 +39,7 @@ randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1
     if(is.null(resGene)) return(NULL)
     rawDataRaw=resGene$tabData
     boundary=resGene$boundary
- 
+
     x=as.numeric(rawDataRaw[,1])
     xsize=max(x)-min(x)
     step=x[2]-x[1]
@@ -92,7 +92,7 @@ randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1
     #pt neighborhood matrix
     neigh=neighNa[maskIns,maskIns]
     # compute list of neighbor pts
-    krigN = ptNei(neigh) 
+    krigN = ptNei(neigh)
     #if required (argument FULL) compute voronoi on raw pts also
     if(FULL)
     {
