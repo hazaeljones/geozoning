@@ -29,5 +29,4 @@ data(mapTest)
 data(resZTest)
 K=resZTest
 wMean(1,K$listZonePoint,mapTest$krigSurfVoronoi,mapTest$krigData)
-# not run
 }

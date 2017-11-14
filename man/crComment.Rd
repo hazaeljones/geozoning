@@ -19,10 +19,10 @@ crComment
 create comment corresponding to holes in a zoning
 }
 \examples{
-data(resZTest)
-K=resZTest
-Z=K$zonePolygone
-Z1=geozoning:::crComment(Z)
 # not run
+#data(resZTest)
+#K=resZTest
+#Z=K$zonePolygone
+#Z1=geozoning:::crComment(Z)
 }
 \keyword{internal}

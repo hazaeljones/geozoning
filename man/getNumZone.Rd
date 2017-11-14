@@ -26,5 +26,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 getNumZone(mapTest$krigData,Z)
-# not run
 }

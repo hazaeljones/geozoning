@@ -21,6 +21,6 @@ meansdSimu
 computes mean and standard deviation of a set of map simulations
 }
 \examples{
-meansdSimu(c(1,2))
-# not run
+# not run, take a while...
+# meansdSimu(c(1,2))
 }

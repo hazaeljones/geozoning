@@ -30,5 +30,4 @@ data(resZTest)
 K=resZTest
 p = K$qProb
 labZone(K,p,dataF)
-# not run
 }

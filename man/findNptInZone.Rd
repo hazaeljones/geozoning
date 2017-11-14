@@ -25,7 +25,5 @@ findNptInZone
 find, in a given zone, neighbor points of points belonging to another zone
 }
 \examples{
-data(resZTest)
-K=resZTest
 # not run
 }

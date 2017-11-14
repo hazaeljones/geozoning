@@ -22,8 +22,7 @@ description, a paragraph
 }
 \examples{
 data(mapTest)
-criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 K=criti$zk[[1]][[1]] # initial zoning
 costLab(K,mapTest) #identical to criti$costL[[1]][[1]]
-# not run
 }

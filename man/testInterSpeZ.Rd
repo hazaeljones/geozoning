@@ -19,15 +19,15 @@ testInterSpeZ
 checks, within a zoning, if any zone intersects with any other zone  not within it and not englobing it
 }
 \examples{
-qProb=c(0.2,0.5)
-ZK = initialZoning(qProb, mapTest)
-K=ZK$resZ
-Z=K$zonePolygone
-plotZ(Z)
-Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
-Z[[length(Z)+1]]=Z58 # add new zone to zoning
-plotZ(Z)
-geozoning:::testInterSpeZ(Z)
 # not run
+#qProb=c(0.2,0.5)
+#ZK = initialZoning(qProb, mapTest)
+#K=ZK$resZ
+#Z=K$zonePolygone
+#plotZ(Z)
+#Z58=rgeos::gConvexHull(rgeos::gUnion(Z[[8]],Z[[5]]))
+#Z[[length(Z)+1]]=Z58 # add new zone to zoning
+#plotZ(Z)
+#geozoning:::testInterSpeZ(Z)
 }
 \keyword{internal}

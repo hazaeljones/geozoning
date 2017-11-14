@@ -21,12 +21,12 @@ modlm
 description, a paragraph
 }
 \examples{
-data(resZTest)
-K=resZTest
-Z=K$zonePolygone
-data(mapTest)
-ptsp=mapTest$krigData
-geozoning:::modlm(ptsp,Z)
 # not run
+#data(resZTest)
+#K=resZTest
+#Z=K$zonePolygone
+#data(mapTest)
+#ptsp=mapTest$krigData
+#geozoning:::modlm(ptsp,Z)
 }
 \keyword{internal}

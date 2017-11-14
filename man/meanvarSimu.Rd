@@ -2,7 +2,7 @@
 % Please edit documentation in R/util.R
 \name{meanvarSimu}
 \alias{meanvarSimu}
-\title{meanVarsimu}
+\title{meanvarsimu}
 \usage{
 meanvarSimu(map)
 }
@@ -13,12 +13,12 @@ meanvarSimu(map)
 a vector with  4 elements, the first two  give mean and standard deviation of generated raw data, the last two  give mean and standard deviation of kriged data
 }
 \description{
-meanVarsimu
+meanvarsimu
 }
 \details{
 computes mean and standard deviation of a set of map simulations
 }
 \examples{
-meansdSimu(c(1,2))
-# not run
+# not run, take a while...
+#meanvarSimu(mapTest)
 }

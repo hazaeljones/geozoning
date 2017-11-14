@@ -35,6 +35,5 @@ cL=contourAuto(list(),mapTest$step,mapTest$xsize,mapTest$ysize,
 ps = geozoning:::interCB(cL[[8]],mapTest$step,mapTest$boundary,pG)#envelope is the whole map
 sp::plot(pG)
 sp::plot(ps,col="red",add=TRUE)
-# not run
 }
 \keyword{internal}

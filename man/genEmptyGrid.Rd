@@ -21,5 +21,4 @@ generate grid from raw data
 }
 \examples{
 genEmptyGrid(calStep(1000,1,1),1,1)
-# not run
 }

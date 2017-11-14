@@ -25,6 +25,5 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 geozoning:::getCoords(Z[[1]])
-# not run
 }
 \keyword{internal}

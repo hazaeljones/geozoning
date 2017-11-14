@@ -34,15 +34,15 @@ voronoiPolygons
 determines the Voronoi neighborhood of data points
 }
 \examples{
-data(mapTest)
-rx=range(mapTest$krigData$x)
-ry=range(mapTest$krigData$y)
-nx=nrow(mapTest$krigGrid)
-ny=ncol(mapTest$krigGrid)
-nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
-vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
-length(vP$surfVoronoi) #as many as kriged data points
-# not run
+# not run, take a while...
+# data(mapTest)
+# rx=range(mapTest$krigData$x)
+# ry=range(mapTest$krigData$y)
+# nx=nrow(mapTest$krigGrid)
+# ny=ncol(mapTest$krigGrid)
+# nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
+# vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
+# length(vP$surfVoronoi) #as many as kriged data points
 }
 \seealso{
 http://www.carsonfarmer.com/2009/09/voronoi-polygons-with-r/

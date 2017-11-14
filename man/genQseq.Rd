@@ -39,5 +39,4 @@ ZK=initialZoning(qProb,mapTest)
 K=ZK$resZ
 print(K$lab)
 genQseq(qProb,K,mapTest,1,2) # from label 3 to label 2
-# not run
 }

@@ -23,9 +23,9 @@ maxDistZone
 maximum distance within kth polygon of current zone
 }
 \examples{
-ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
-Z=ZK$resZ$zonePolygone
-geozoning:::maxDistZone(Z,5,1)
 # not run
+#ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
+#Z=ZK$resZ$zonePolygone
+#geozoning:::maxDistZone(Z,5,1)
 }
 \keyword{internal}

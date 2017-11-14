@@ -21,5 +21,4 @@ computes for each zone of a zoning the ratio area/squared perimeter
 \examples{
 data(resZTest)
 calcCritNarrow(resZTest$zonePolygone)
-# not run
 }

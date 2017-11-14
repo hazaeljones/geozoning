@@ -33,10 +33,9 @@ compute overall mean and variance of all zones for each label plus sum of them f
 }
 \examples{
 data(mapTest)
-criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 K=criti$zk[[2]][[1]]
 uni=unique(K$lab)
 zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
 sig=SigmaL2(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
-# not run
 }

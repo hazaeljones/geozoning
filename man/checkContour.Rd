@@ -38,5 +38,4 @@ sp8 = contourToSpp(cL[[8]],0.1)$sp
 refPoint = rgeos::gCentroid(sp8)
 resp=checkContour(sp8,mapTest$step,refPoint)
 rgeos::plot(resp$contourSp,col="red",add=TRUE)
-# not run
 }

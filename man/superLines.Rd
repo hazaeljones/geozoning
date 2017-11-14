@@ -22,5 +22,4 @@ converts boundary (list of x and y pts) into Spatial Lines
 data(mapTest)
 superL=superLines(mapTest$boundary)
 sp::plot(superL)
-# not run
 }

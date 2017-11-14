@@ -26,5 +26,4 @@ description, a paragraph
 data(resZTest)
 Z=resZTest$zonePolygone
 H=correctN(Z,resZTest$zoneN,1e-8)
-# not run
 }

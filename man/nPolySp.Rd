@@ -17,8 +17,6 @@ nPolySp
 }
 \details{
 number of polygons in SpatialPolygons
-
-# not run
 }
 \examples{
 ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)

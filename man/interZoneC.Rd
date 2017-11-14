@@ -18,8 +18,8 @@ interZoneC(Z, iC, iZC, closePt)
 \value{
 a list with components
 \describe{
-\item{spi}{Two SpatialPoints to be used for the junction of the two zones}
-\item{ord}{Order in which to use the points}
+  \item{spi}{Two SpatialPoints to be used for the junction of the two zones}
+  \item{ord}{Order in which to use the points}
 }
 }
 \description{
@@ -29,16 +29,16 @@ interZoneC
 finds two intersection points of a circle with a zone. The circle radius is chosen so that it will intersect both zones given as arguments.
 }
 \examples{
-data(mapTest)
-qProb=c(0.2,0.5)
-ZK = initialZoning(qProb, mapTest)
-K=ZK$resZ
-Z=K$zonePolygone
-plotZ(K$zonePolygone) # zoning
-closePt = geozoning:::getClosePt(Z,6,8)
-points(closePt,col="red")
-res  = geozoning:::interZoneC(Z,6,8,closePt)
-points(res$spi,col="red")
 # not run
+#data(mapTest)
+#qProb=c(0.2,0.5)
+#ZK = initialZoning(qProb, mapTest)
+#K=ZK$resZ
+#Z=K$zonePolygone
+#plotZ(K$zonePolygone) # zoning
+#closePt = geozoning:::getClosePt(Z,6,8)
+#points(closePt,col="red")
+#res  = geozoning:::interZoneC(Z,6,8,closePt)
+#points(res$spi,col="red")
 }
 \keyword{internal}

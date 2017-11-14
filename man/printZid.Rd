@@ -20,5 +20,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 printZid(Z)
-# not run
 }

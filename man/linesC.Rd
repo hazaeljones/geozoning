@@ -26,6 +26,5 @@ cL=list()
 cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 plot(mapTest$boundary)
 geozoning:::linesC(cL,col="black")
-# not run
 }
 \keyword{internal}

@@ -30,10 +30,9 @@ compute overall mean of all zones for each label
 }
 \examples{
 data(mapTest)
-criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 K=criti$zk[[2]][[1]]
 uni=unique(K$lab)
 zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
 resL=meanL(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
-# not run
 }

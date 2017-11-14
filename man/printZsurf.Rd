@@ -25,5 +25,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 printZsurf(Z,0.03)
-# not run
 }

@@ -23,6 +23,5 @@ data(mapTest)
 cL=list()
 cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 geozoning:::listContourArea(cL)
-# not run
 }
 \keyword{internal}

@@ -19,9 +19,9 @@ getZoneId
 get the zone unique identifier
 }
 \examples{
-data(mapTest)
-criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-Z=criti$zk[[2]][[1]]$zonePolygon
-geozoning:::getZoneId(Z[[4]])
-# not run
+# not run, take a while...
+#data(mapTest)
+#criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#Z=criti$zk[[2]][[1]]$zonePolygon
+#getZoneId(Z[[4]])
 }

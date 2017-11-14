@@ -23,5 +23,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 spToSL(Z[[5]])
-# not run
 }

@@ -18,7 +18,7 @@ a numerical value
 calCrit5
 }
 \details{
-computes a quality criterion equal to min(median(dij/sqrt(dii*dij))) 
+computes a quality criterion equal to min(median(dij/sqrt(dii*dij)))
 see also  \code{\link{calCrit1}}, \code{\link{calCrit2}}, \code{\link{calCrit3}}, \code{\link{calCrit4}}, \code{\link{calCritMinMean}} for other criteria
 }
 \examples{
@@ -28,5 +28,4 @@ K=resZTest
 resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 calCrit5(resD$matDistanceCorr,K$zoneNModif)
-# not run
 }

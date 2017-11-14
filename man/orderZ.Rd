@@ -32,5 +32,4 @@ plotZ(Z)
 ord=valZ(map,K)$ord
 Z=orderZ(Z,ord)
 plotZ(Z)
-# not run
 }

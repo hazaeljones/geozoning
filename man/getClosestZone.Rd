@@ -23,9 +23,9 @@ getClosestZone
 get closest non neighbor zone (i.e. excluding neighbor zones and englobing zone)
 }
 \examples{
-data(resZTest)
-Z=resZTest$zonePolygone
-geozoning:::getClosestZone(4,Z,resZTest$zoneNModif)
 # not run
+#data(resZTest)
+#Z=resZTest$zonePolygone
+#geozoning:::getClosestZone(4,Z,resZTest$zoneNModif)
 }
 \keyword{internal}

@@ -22,5 +22,4 @@ print zoning labels for a list of zoning objects
 data(mapTest)
 qProb=c(0.1,0.2,0.4);criti=correctionTree(qProb,mapTest) # 2 zonings at last level
 printLabZ(criti$zk[[2]])
-# not run
 }

@@ -36,5 +36,4 @@ data(resZTest)
 Z=resZTest$zonePolygone
 Z1=zoneFusion4(Z,6,2)
 calcDCrit(Z1,mapTest)
-# not run
 }

@@ -31,5 +31,4 @@ nZ=length(K$zonePolygone)
 zoneN=matrix(logical(nZ*nZ),nZ,nZ)
 listZonePoint=K$listZonePoint
 calZoneN(ptN,zoneN,listZonePoint)
-# not run
 }

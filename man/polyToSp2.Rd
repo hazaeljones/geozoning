@@ -26,5 +26,4 @@ P1=geozoning:::getPolySp(sp,1)
 sph=polyToSp2(P1)
 plotZ(Z)
 sp::plot(sph,col="blue",lwd=2,add=TRUE)
-# not run
 }

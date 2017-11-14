@@ -27,5 +27,4 @@ add contour lines to plot
 \examples{
 data(mapTest)
 addContour(mapTest,c(5,7),super=FALSE)
-# not run
 }

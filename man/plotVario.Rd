@@ -23,5 +23,4 @@ plot empirical variogram for model and data in map (raw data plus kriged data)
 \examples{
 data(mapTest)
 plotVario(mapTest)
-# not run
 }

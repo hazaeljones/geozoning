@@ -21,5 +21,4 @@ compute step for non square grid
 }
 \examples{
 calStep(1000,1,1)
-# not run
 }

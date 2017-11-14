@@ -28,6 +28,5 @@ P1=geozoning:::getPolySp(sp,1)
 P2=geozoning:::getPolySp(sp,2) # second polygon is a hole
 plot(P1@coords,type="l")
 lines(P2@coords,type="l",col="blue")
-# not run
 }
 \keyword{internal}

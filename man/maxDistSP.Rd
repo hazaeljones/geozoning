@@ -22,6 +22,5 @@ maximum distance within kth polygon of current zone
 ZK=initialZoning(qProb=c(0.4,0.2,0.7),mapTest)
 Z=ZK$resZ$zonePolygone
 geozoning:::maxDistSP(Z[[5]])
-# not run
 }
 \keyword{internal}

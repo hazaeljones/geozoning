@@ -21,10 +21,10 @@ getIds
 get zone identifiers in a zoning
 }
 \examples{
-data(mapTest)
-criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-Z=criti$zk[[2]][[1]]$zonePolygon
-geozoning:::getIds(Z)
 # not run
+#data(mapTest)
+#criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+#Z=criti$zk[[2]][[1]]$zonePolygon
+#geozoning:::getIds(Z)
 }
 \keyword{internal}

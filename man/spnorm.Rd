@@ -33,6 +33,5 @@ P1=p1@Polygons[[1]]
 NP1=geozoning:::spnorm(P1,bb)$pn
 Nbb=geozoning:::spnorm(P1,bb)$boundaryn
 plot(NP1@coords,xlim=Nbb$x,ylim=Nbb$y)
-# not run
 }
 \keyword{internal}

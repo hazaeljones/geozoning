@@ -26,8 +26,7 @@ sorts zones according to attribute mean value
 }
 \examples{
 data(mapTest)
-criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE) 
+criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 K=criti$zk[[2]][[1]]
 valZ(mapTest,K)
-# not run
 }
