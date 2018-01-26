@@ -5,7 +5,7 @@
 \title{randKmap:  Generate data for zoning or prepare real data}
 \usage{
 randKmap(DataObj, seed = NULL, nPoints = 450, nPointsK = 2000,
-  nSimuCond = 0, typeMod = "Gau", Vpsill = 5, Vrange = 0.2, Vmean = 8,
+  nSimuCond = 0, typeMod = "Exp", Vpsill = 5, Vrange = 0.2, Vmean = 8,
   Vnugget = 0.2, boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0,
   0)), manualBoundary = FALSE, krig = 2, disp = 0, FULL = FALSE)
 }
@@ -20,7 +20,7 @@ randKmap(DataObj, seed = NULL, nPoints = 450, nPointsK = 2000,
 
 \item{nSimuCond}{number of conditional simulations, reserved for future implementation.}
 
-\item{typeMod}{character, model type}
+\item{typeMod}{type of variogram model (see vgm) "Gau", "Sph", "Exp"}
 
 \item{Vpsill}{numeric, default 5}
 

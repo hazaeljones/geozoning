@@ -27,7 +27,7 @@ doesn't work properly, please choose another value of the width parameter.
 }
 \examples{
 seed=1
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 criti = correctionTree(qProb = c(0.5), map = map)
 Z = criti$zk[[1]][[1]]$zonePolygone
 lab = criti$zk[[1]][[1]]$lab

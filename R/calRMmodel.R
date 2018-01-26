@@ -6,7 +6,7 @@
 #' @return model suitable for RandomFields simulation
 #'
 #' @export
-#' @importFrom RandomFields RMgauss RMspheric
+#' @importFrom RandomFields RMgauss RMspheric RMexp
 #' @importFrom gstat vgm
 #' @examples
 #' modv=gstat::vgm(model="Gau",range=100,psill=10,mean=7)
@@ -35,18 +35,23 @@ calRMmodel=function(vgmodel)
     matAniso=matrix(c(1,0,0,1),ncol=2,nrow=2)
   }
 
+  # IS update 25/01/2018: different models from Randomfields!!!!
   if(vgmodel$model=="Gau")
   {
-    if(vgmodel$anis1!=1)
-	modelVar=RMgauss(var=vgmodel$psill,scale=vgmodel$range,Aniso=matAniso)
-    else
-	modelVar=RMgauss(var=vgmodel$psill,scale=vgmodel$range)
+    if(vgmodel$anis1!=1) modelVar=RMgauss(var=vgmodel$psill,scale=vgmodel$range,Aniso=matAniso)
+    else modelVar=RMgauss(var=vgmodel$psill,scale=vgmodel$range)
   }
+
   if(vgmodel$model=="Sph")
   {
     modelVar=RMspheric(var=vgmodel$psill,scale=vgmodel$range,Aniso=matAniso)
-
   }
-  return(modelVar)
 
+  if(vgmodel$model=="Exp")
+  {
+    if(vgmodel$anis1!=1) modelVar=RMexp(var=vgmodel$psill,scale=vgmodel$range,Aniso=matAniso)
+    else modelVar=RMexp(var=vgmodel$psill,scale=vgmodel$range)
+  }
+
+  return(modelVar)
 }

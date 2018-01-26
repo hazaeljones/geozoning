@@ -8,7 +8,7 @@ Authors@R: c(
   person("Isabelle", "Sanchez", email = "isabelle.sanchez@inra.fr", role = c("ctr")),
   person("Ngoc-Phi", "Tran", email = "Ngoc-Phi.Tran@gmail.fr", role = c("ctr")))
 Author: Brigitte Charnomordic [aut, cre],
-  Hazaël Jones[aut],
+  Hazaël Jones [aut],
   Patrice Loisel [aut],
   Isabelle Sanchez [ctr],
   Ngoc-Phi Tran [ctr]

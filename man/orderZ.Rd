@@ -21,7 +21,7 @@ orderZ
 sorts zones according to ord vector
 }
 \examples{
-map=genMap(DataObj=NULL,seed=40,disp=FALSE,krig=1,Vnugget=1.2)
+map=genMap(DataObj=NULL,seed=40,disp=FALSE,krig=1,Vnugget=1.2,typeMod="Gau")
 qProb=c(0.275,0.8)
 criti=correctionTree(qProb,map,LASTPASS=FALSE)
 res=searchNODcrit1(qProb,criti)

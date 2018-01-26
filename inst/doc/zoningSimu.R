@@ -5,7 +5,7 @@
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE,fig.height=10----------------
   seed=80
-  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,Vmean=15)
+  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,Vmean=15,typeMod="Exp")
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE,fig.height=10,fig.width=10----
   plotMap(map)
@@ -31,16 +31,16 @@
    # Outline boundaries of zone 3 with different colors
    dispZ(map$step,map$krigGrid,zonePolygone=Z,iZ=3)
    # Outline all polygons of zone 3- It contains 4 polygons
-   linesSp(Z[[3]],col="blue") # first one in blue
-   linesSp(Z[[3]],k=2,col="red") # second one in red, and so on
+   linesSp(Z[[6]],col="blue") # first one in blue
+   linesSp(Z[[2]],k=2,col="red") # second one in red, and so on
    # A zone can have one or several holes
-   # and each hole is an independent zone.zone 3 has 3 holes (zones 9, 10, 11). 
+   # and each hole is an independent zone.zone 2 has 3 holes (zones 3,8,4). 
    # Due to its shape and to the common borders with the map boundary, 
-   # zone 12 is not a hole in zone 3.
-   holeSp(Z[[3]])
+   # zone 7 is not a hole in zone 2.
+   holeSp(Z[[2]])
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
-   kmi=optiRG(K,map,9,10,disp=1)
+   kmi=optiRG(K,map,12,13,disp=1)
    plotZ(kmi$zonePolygone)
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
@@ -63,7 +63,7 @@
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
   #save all branches resulting from correction steps
-  criti<-correctionTree(c(0.4,0.7),map,SAVE=TRUE,ALL=TRUE,LASTPASS=FALSE,distIsoZ=0.001)
+  criti<-correctionTree(c(0.4,0.7),map,SAVE=TRUE,ALL=TRUE,LASTPASS=FALSE,distIsoZ=0.01)
   zk=criti$zk
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------

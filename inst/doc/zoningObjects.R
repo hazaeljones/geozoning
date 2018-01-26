@@ -6,7 +6,7 @@
 
 ## ----echo=TRUE,message=FALSE, warning=FALSE------------------------------
   seed=80
-  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,Vmean=15,krig=2)
+  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,Vmean=15,krig=2,typeMod="Gau")
 
 ## ----echo=TRUE,eval=FALSE,message=FALSE, warning=FALSE-------------------
 #    # or with the randKmap function:

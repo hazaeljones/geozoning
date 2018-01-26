@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' seed=1
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 #' criti = correctionTree(qProb = c(0.5), map = map)
 #' Z = criti$zk[[1]][[1]]$zonePolygone
 #' lab = criti$zk[[1]][[1]]$lab
@@ -31,12 +31,8 @@
 #' newZone = smoothingZone(z = zone, width = 0.05, boundary = boundary)
 #' sp::plot(zone)
 #' sp::plot(newZone)
-
-
 smoothingZone = function (z, width, boundary, disp = TRUE)
 {
-  # this function is in the script smoothingZone.R
-
   zone = zone.extended(z = z, boundary = boundary)
   widthExt = cal.max.width.Zone(z = zone, step = 0.001, widthMax = width, boundary = boundary, erosion = FALSE)
   if(disp){print(paste("widthExt", widthExt))}
@@ -47,8 +43,6 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
   if(disp){print(paste("widthInt", widthInt))}
   erosion2 = gBuffer(erosion1,width = -widthInt,joinStyle="ROUND", capStyle = "ROUND")
   newZ = gBuffer(erosion2,width = widthInt, joinStyle="ROUND", capStyle = "ROUND")
-
-
 
   # search the intersection between the new smoothed zone and the map
   # 2 ways to do: (we have to check if the geometry is valid)
@@ -74,9 +68,7 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 }
 
 
-
 ############################################## zone.extended ################################################################################
-
 #' zone.extended
 #' @details for a zone that has commun border with the map, it will be extended at the side of commun border. We search the commun border which is
 #' a spatiaLines. This spatialLines is composed of several Lines containing only 2 points. For each Lines, we project the 2 points to the
@@ -91,7 +83,7 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 #' @export
 #' @examples
 #' seed=1
-#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 #' criti = correctionTree(qProb = c(0.5), map = map)
 #' Z = criti$zk[[1]][[1]]$zonePolygone
 #' lab = criti$zk[[1]][[1]]$lab
@@ -110,11 +102,8 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 #' sp::plot(z)
 #' sp::plot(Z[[1]],add=TRUE)
 
-
 zone.extended = function (z, boundary)
 {
-  # this function is in the script smoothingZone.R
-
   boundaryLineExtend = gBoundary(gConvexHull(gBuffer(boundary,width = 0.2)))
 
   if(touch.border(z, boundary)){
@@ -140,9 +129,6 @@ zone.extended = function (z, boundary)
 }
 
 
-
-
-
 ################################################## cal.max.width.Zone ############################################################
 #' cal.max.width.Zone
 #' @details function that return the maximal value of the parameter "width" in function gBuffer in order not to make zone disappear
@@ -159,7 +145,7 @@ zone.extended = function (z, boundary)
 #' @export
 #' @examples
 #' seed=1
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 #' criti = correctionTree(qProb = c(0.4,0.6), map = map)
 #' Z = criti$zk[[2]][[1]]$zonePolygone
 #' lab = criti$zk[[2]][[1]]$lab
@@ -180,10 +166,8 @@ zone.extended = function (z, boundary)
 #' erosion2 = rgeos::gBuffer(zone ,width = - (widthMax - 0.002) ,joinStyle="ROUND",capStyle = "ROUND")
 #' rgeos::plot(erosion1)
 #' rgeos::plot(erosion2)
-
 cal.max.width.Zone = function(z, step = 0.001, widthMax = 0.05, boundary, erosion = TRUE)
 {
-  # this function is in the script smoothingZone.R
   Width = 0.001
   Stop = FALSE
 
@@ -241,8 +225,6 @@ cal.max.width.Zone = function(z, step = 0.001, widthMax = 0.05, boundary, erosio
 }
 
 
-
-
 ################################################### touch.border ###################################################
 #' touch.border
 #' @details verify if a zone has a commun boundary with the map
@@ -254,7 +236,7 @@ cal.max.width.Zone = function(z, step = 0.001, widthMax = 0.05, boundary, erosio
 #' @export
 #' @examples
 #' seed=1
-#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 #' criti = correctionTree(qProb = c(0.5), map = map)
 #' Z = criti$zk[[1]][[1]]$zonePolygone
 #' lab = criti$zk[[1]][[1]]$lab
@@ -274,7 +256,6 @@ cal.max.width.Zone = function(z, step = 0.001, widthMax = 0.05, boundary, erosio
 #' }
 touch.border = function (z, boundary)
 {
-  # this function is in the script smoothingZone.R
   lineBoundary = gBoundary(boundary) # transform the polygon into a line
 
   if (gDistance(z, lineBoundary) > 10^-3) {
@@ -287,9 +268,6 @@ touch.border = function (z, boundary)
 }
 
 
-
-
-
 ############################################# buffToValid #########################################################
 #' buffToValid
 #' @details function that check if a zone has a valid geometry, if not , makes zone valid by using gBuffer(width = 0,...)
@@ -298,8 +276,6 @@ touch.border = function (z, boundary)
 #' @importFrom rgeos gIsValid
 #' @importFrom rgeos gBuffer
 #' @keywords internal
-
-
 buffToValid = function(zone){
   # this function is in the script smoothingZone.R
   while(gIsValid(zone) == FALSE){

@@ -28,7 +28,7 @@ supposed the extreme value of the zone is at the zone center (furthest point fro
 }
 \examples{
 seed=6
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
 ZK=initialZoning(qProb=c(0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones

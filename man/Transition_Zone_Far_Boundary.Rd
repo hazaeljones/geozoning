@@ -26,7 +26,7 @@ of the data on the grid (map$krigGrid).
 }
 \examples{
 seed=9
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
 ZK=initialZoning(qProb=c(0.65,0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones

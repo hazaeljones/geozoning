@@ -30,7 +30,7 @@ or not to split a zone into 2 differents zones
 }
 \examples{
 seed=1
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 criti = correctionTree(qProb = c(0.4,0.6), map = map)
 Z = criti$zk[[2]][[1]]$zonePolygone
 lab = criti$zk[[2]][[1]]$lab

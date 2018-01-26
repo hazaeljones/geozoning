@@ -16,7 +16,7 @@ Program  : zoningObjects.Rmd
 Objective: 
 Author   : B. Charnomordic & updated by I.Sanchez (INRA MISTEA)
 Creation : 21/09/2017
-Update   : 09/11/2017
+Update   : 26/01/2018
 -->
 
 -----
@@ -41,7 +41,7 @@ The map object can be created by 2 functions: *genMap* or *randKmap*.
 
 ```{r,echo=TRUE,message=FALSE, warning=FALSE}
   seed=80
-  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,Vmean=15,krig=2)
+  map=genMap(DataObj=NULL,seed=seed,disp=FALSE,Vmean=15,krig=2,typeMod="Gau")
 ```  
 
 ```{r,echo=TRUE,eval=FALSE,message=FALSE, warning=FALSE}

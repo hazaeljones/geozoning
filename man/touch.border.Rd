@@ -22,7 +22,7 @@ verify if a zone has a commun boundary with the map
 }
 \examples{
 seed=1
-map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
 criti = correctionTree(qProb = c(0.5), map = map)
 Z = criti$zk[[1]][[1]]$zonePolygone
 lab = criti$zk[[1]][[1]]$lab

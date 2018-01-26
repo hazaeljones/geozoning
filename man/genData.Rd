@@ -4,7 +4,7 @@
 \alias{genData}
 \title{generate data}
 \usage{
-genData(DataObj = NULL, seed = 0, nPoints = 450, typeMod = "Gau",
+genData(DataObj = NULL, seed = 0, nPoints = 450, typeMod = "Exp",
   Vpsill = 5, Vrange = 0.2, Vmean = 8, Vnugget = 0, Vanis = 1,
   boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)),
   manualBoundary = FALSE)
@@ -16,7 +16,7 @@ genData(DataObj = NULL, seed = 0, nPoints = 450, typeMod = "Gau",
 
 \item{nPoints}{number of generated raw data points}
 
-\item{typeMod}{type of variogram model (see vgm)}
+\item{typeMod}{type of variogram model (see vgm) "Gau", "Sph", "Exp"}
 
 \item{Vpsill}{partial sill in variogram}
 

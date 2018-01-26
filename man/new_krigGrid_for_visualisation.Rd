@@ -28,7 +28,7 @@ Elementary function that create a new krigGrid by replacing the real values by t
 }
 \examples{
 seed=2
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
 ZK=initialZoning(qProb=c(0.55,0.85),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones

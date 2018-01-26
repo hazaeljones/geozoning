@@ -5,8 +5,9 @@
 \title{Wrapper for randKmap, generate 2D map}
 \usage{
 genMap(DataObj = NULL, seed = 80, krig = 2, Vpsill = 5, Vrange = 0.2,
-  Vnugget = 0.2, Vmean = 8, nPointsK = 1000, boundary = list(x = c(0, 0,
-  1, 1, 0), y = c(0, 1, 1, 0, 0)), disp = 0, FULL = FALSE)
+  Vnugget = 0.2, Vmean = 8, typeMod = "Exp", nPointsK = 1000,
+  boundary = list(x = c(0, 0, 1, 1, 0), y = c(0, 1, 1, 0, 0)), disp = 0,
+  FULL = FALSE)
 }
 \arguments{
 \item{DataObj}{=NULL: simulated data with seed or a data frame with real data}
@@ -22,6 +23,8 @@ genMap(DataObj = NULL, seed = 80, krig = 2, Vpsill = 5, Vrange = 0.2,
 \item{Vnugget}{numeric parameter of the variogram model,}
 
 \item{Vmean}{numeric parameter of the variogram model,}
+
+\item{typeMod}{type of variogram model (see vgm) "Gau", "Sph", "Exp"}
 
 \item{nPointsK}{number of generated points after kriging}
 

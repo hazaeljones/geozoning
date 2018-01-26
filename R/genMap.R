@@ -9,9 +9,10 @@
 #' @param Vrange numeric parameter of the variogram model,
 #' @param Vnugget numeric parameter of the variogram model,
 #' @param Vmean numeric parameter of the variogram model,
+#' @param typeMod type of variogram model (see vgm) "Gau", "Sph", "Exp"
 #' @param nPointsK number of generated points after kriging
 #' @param boundary list, contains x and y coordinates of map boundaries
-#' @param disp numeric, 
+#' @param disp numeric,
 #' @param FULL logical, if TRUE the returned list is complete
 #'
 #' @return a map object as a list with components
@@ -33,12 +34,12 @@
 #' m=genMap(seed=1,krig=2,disp=1) #generates a map and plots data
 #' mean(m$krigGrid) # mean of generated kriged data
 #' # not run
-genMap=function(DataObj=NULL,seed=80,krig=2,Vpsill=5,Vrange=0.2,Vnugget=0.2,Vmean=8,
+genMap=function(DataObj=NULL,seed=80,krig=2,Vpsill=5,Vrange=0.2,Vnugget=0.2,Vmean=8,typeMod="Exp",
        nPointsK=1000,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),disp=0,FULL=FALSE)
 #######################################################################################################
 {
-  map=randKmap(DataObj,seed=seed,Vpsill=Vpsill,Vrange=Vrange,Vmean=Vmean,Vnugget=Vnugget,
-               boundary= boundary,krig=krig,nPoints=450,nPointsK=nPointsK,disp=disp,FULL=FULL)
+  map=randKmap(DataObj,seed=seed,Vpsill=Vpsill,Vrange=Vrange,Vmean=Vmean,Vnugget=Vnugget,typeMod=typeMod,
+               boundary=boundary,krig=krig,nPoints=450,nPointsK=nPointsK,disp=disp,FULL=FULL)
   # returns NULL if boundary pb
   #view raw data
   if(disp==1) plotMap(map)

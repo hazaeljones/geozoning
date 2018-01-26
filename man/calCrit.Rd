@@ -11,7 +11,7 @@ calCrit(matDistanceCorr, zoneNModif, optiCrit = 2)
 
 \item{zoneNModif}{modified zone neighborhood matrix (FALSE values on diagonal), result of call to \code{\link{calNei}}}
 
-\item{optiCrit}{criterion to be optimized. Possible values are
+\item{optiCrit}{criterion to be optimized. Possible values are :
 * 1 for min(mean(dij^2/(dii^2+dij^2)))
 * 2 for min(2*min(dij/(dii+djj)))
 * 3 for min(2*min(dij/(dii+djj)))
