@@ -2,15 +2,15 @@ Package: geozoning
 Title: a Zoning Method for Spatial Data
 Version: 1.0.0
 Authors@R: c(
-  person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut", "cre")),
-  person("Hazaël", "Jones", email = "hazael.jones@supagro.fr", role = c("aut")),
+  person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut")),
+  person("Hazaël", "Jones", email = "hazael.jones@supagro.fr", role = c("aut", "cre")),
   person("Patrice", "Loisel", email = "patrice.loisel@inra.fr", role = c("aut")),
-  person("Isabelle", "Sanchez", email = "isabelle.sanchez@inra.fr", role = c("ctr")),
+  person("Isabelle", "Sanchez", email = "isabelle.sanchez@inra.fr", role = c("ctb")),
   person("Ngoc-Phi", "Tran", email = "Ngoc-Phi.Tran@gmail.fr", role = c("ctr")))
-Author: Brigitte Charnomordic [aut, cre],
-  Hazaël Jones [aut],
+Author: Brigitte Charnomordic [aut],
+  Hazaël Jones [aut, cre],
   Patrice Loisel [aut],
-  Isabelle Sanchez [ctr],
+  Isabelle Sanchez [ctb],
   Ngoc-Phi Tran [ctr]
 Maintainer: Hazaël Jones <hazael.jones@supagro.fr>
 Description: A set of zoning method and criteria for spatial data.
