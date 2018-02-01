@@ -14,7 +14,7 @@ Author: Brigitte Charnomordic [aut],
   Ngoc-Phi Tran [ctr]
 Maintainer: Hazaël Jones <hazael.jones@supagro.fr>
 Description: A set of zoning method and criteria for spatial data.
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.3.0)
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
