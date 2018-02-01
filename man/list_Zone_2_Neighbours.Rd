@@ -22,12 +22,12 @@ Returns the numbers of zones that have exactly 2 neighbours with different label
 transitions zones
 }
 \examples{
-seed=6
-map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+seed=20
+map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp")
 ZK=initialZoning(qProb=c(0.67,0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
 plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-# zone 4 and 6 are transition zones and have exactly 2 neighbours with different labels.
+# zone 5 and 11 are transition zones and have exactly 2 neighbours with different labels.
 list_Zone_2_Neighbours(Z = Z, lab = lab)
 }

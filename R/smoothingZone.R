@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' seed=1
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
+#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Exp",nPointsK=500)
 #' criti = correctionTree(qProb = c(0.5), map = map)
 #' Z = criti$zk[[1]][[1]]$zonePolygone
 #' lab = criti$zk[[1]][[1]]$lab
@@ -83,7 +83,7 @@ smoothingZone = function (z, width, boundary, disp = TRUE)
 #' @export
 #' @examples
 #' seed=1
-#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
+#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Exp",nPointsK=500)
 #' criti = correctionTree(qProb = c(0.5), map = map)
 #' Z = criti$zk[[1]][[1]]$zonePolygone
 #' lab = criti$zk[[1]][[1]]$lab
@@ -235,8 +235,7 @@ cal.max.width.Zone = function(z, step = 0.001, widthMax = 0.05, boundary, erosio
 #' @importFrom rgeos gBoundary
 #' @export
 #' @examples
-#' seed=1
-#' map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
+#' map = geozoning::mapTest
 #' criti = correctionTree(qProb = c(0.5), map = map)
 #' Z = criti$zk[[1]][[1]]$zonePolygone
 #' lab = criti$zk[[1]][[1]]$lab

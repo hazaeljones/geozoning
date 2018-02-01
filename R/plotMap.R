@@ -11,8 +11,8 @@
 #' @importFrom graphics contour image locator par plot points title
 #'
 #' @examples
-#' m=genMap(seed=1,krig=2,disp=0)
-#' plotMap(m)
+#' data(mapTest)
+#' plotMap(mapTest)
 #' # not run
 #'
 plotMap=function(map)

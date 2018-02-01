@@ -27,8 +27,8 @@ by the solution of the Laplace's equation. The iso contours plotted on the appro
 supposed the extreme value of the zone is at the zone center (furthest point from the zone boundary.)
 }
 \examples{
-seed=6
-map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+seed=35
+map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=500)
 ZK=initialZoning(qProb=c(0.8),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones

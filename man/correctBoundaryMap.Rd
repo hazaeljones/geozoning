@@ -22,8 +22,7 @@ function for post treatment of zoning that fixes the problem linked to
  the border between two neighbour zones and between zones and the map boundary
 }
 \examples{
-seed=1
-map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+map=geozoning::mapTest
 criti = correctionTree(qProb = c(0.5), map = map)
 Z = criti$zk[[1]][[1]]$zonePolygone
 lab = criti$zk[[1]][[1]]$lab

@@ -25,19 +25,19 @@ by the solution of the Laplace's equation. The numerical resolution of the Lapla
 of the data on the grid (map$krigGrid). The domaine of study is a transition zone which have a commun border with the map.
 }
 \examples{
-seed=2
-map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+seed=21
+map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=800)
 ZK=initialZoning(qProb=c(0.55,0.85),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
 plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-# zone 6 is a transition zone that has commun boundary with the map
-numZ = 6
+# zone 3 is a transition zone that has commun boundary with the map
+numZ = 3
 Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
 # compute the cost
 cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
 cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
 print(cL$cost_Laplace)
 print(cM$cost_Mean)
-# zone 6 is a zone with gradient
+# zone 3 is a zone with gradient
 }

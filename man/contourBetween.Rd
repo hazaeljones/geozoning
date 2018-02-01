@@ -26,14 +26,12 @@ contourBetween
                the contourLines of the map following the 2 quantiles that defined at the beginning.
 }
 \examples{
-seed=2
-map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+map=geozoning::mapTest
 ZK=initialZoning(qProb=c(0.55,0.85),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
 plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-# zone 6 is a transition zone that has commun boundary with the map
-numZ = 6
+numZ = 7
 Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
 result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
 new_krigGrid = result$new_krigGrid

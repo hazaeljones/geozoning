@@ -15,25 +15,9 @@
 #' @export
 
 #' @examples
-#' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
-#' ZK=initialZoning(qProb=c(0.55,0.85),map)
-#' Z=ZK$resZ$zonePolygone # list of zones
-#' lab = ZK$resZ$lab # label of zones
-#' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 6 is a transition zone that has commun boundary with the map
-#' numZ = 6
-#' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
-#' # compute the cost
-#' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-#' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
-#' print(cL$cost_Laplace)
-#' print(cM$cost_Mean)
-#' # zone 6 is a zone with gradient
-
+#' # cf. Transition_Zone_Near_Boundary() help page
 
 Cost_By_Laplace = function (map, Z, numZ, Estimation)
-
 {
   # this function is in the script "calCost.R"
   # compute the contours (spatialLines) and their corresponding quantile value
@@ -55,8 +39,6 @@ Cost_By_Laplace = function (map, Z, numZ, Estimation)
   return(list(cost_Laplace = cost_Laplace, Surf = sum(Surface)))
 }
 
-
-
 ########################################## Cost_By_Mean ###########################################################################
 
 #' Cost_By_Mean
@@ -71,22 +53,7 @@ Cost_By_Laplace = function (map, Z, numZ, Estimation)
 #' @return the cost value as described
 #' @export
 #' @examples
-#' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
-#' ZK=initialZoning(qProb=c(0.55,0.85),map)
-#' Z=ZK$resZ$zonePolygone # list of zones
-#' lab = ZK$resZ$lab # label of zones
-#' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 6 is a transition zone that has commun boundary with the map
-#' numZ = 6
-#' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
-#' # compute the cost
-#' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-#' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
-#' print(cL$cost_Laplace)
-#' print(cM$cost_Mean)
-#' # zone 6 is a zone with gradient
-
+#' # cf. Transition_Zone_Near_Boundary() help page
 Cost_By_Mean = function(map, Z, numZ)
 {
   # this function is in the script "calCost.R"
@@ -165,7 +132,6 @@ Points_Near_Boundary = function(map){
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 6 is a transition zone that has commun boundary with the map
 #' numZ = 6
 #' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
 #' result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
@@ -185,8 +151,6 @@ Points_Near_Boundary = function(map){
 #' for (i in 1:length(listContours)){
 #'   sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
 #' }
-
-
 new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
 
   # this function is in the script "calCost.R"
@@ -246,22 +210,21 @@ new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
 #' @return approximated values of the zone (numZ) given as parameter.
 #' @export
 #' @examples
-#' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+#' seed=21
+#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=800)
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 6 is a transition zone that has commun boundary with the map
-#' numZ = 6
+#' # zone 3 is a transition zone that has commun boundary with the map
+#' numZ = 3
 #' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
 #' # compute the cost
 #' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
 #' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
 #' print(cL$cost_Laplace)
 #' print(cM$cost_Mean)
-#' # zone 6 is a zone with gradient
-
+#' # zone 3 is a zone with gradient
 Transition_Zone_Near_Boundary = function(map, Z, numZ){
 
   # this function is in the script "calCost.R"
@@ -443,8 +406,6 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
 
 }
 
-
-
 ############################################# Transition_Zone_Far_Boundary #######################################################
 
 #' Transition_Zone_Far_Boundary
@@ -459,21 +420,21 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
 #' @return approximated values of the zone (numZ) given as parameter.
 #' @export
 #' @examples
-#' seed=9
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+#' seed=35
+#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPoints=500)
 #' ZK=initialZoning(qProb=c(0.65,0.8),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 7 is a transition zone that is far from map boundary
-#' numZ = 7
+#' # zone 5 is a transition zone that is far from map boundary
+#' numZ = 5
 #' Estimation = Transition_Zone_Far_Boundary(map = map, Z = Z, numZ = numZ)
 #' # compute the cost
 #' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
 #' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
 #' print(cL$cost_Laplace)
 #' print(cM$cost_Mean)
-#' # zone 7 is a zone with gradient
+#' # zone 5 is a zone with gradient
 
 Transition_Zone_Far_Boundary = function(map, Z, numZ){
 
@@ -585,8 +546,8 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
 #' @importFrom rgeos readWKT
 #' @export
 #' @examples
-#' seed=6
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+#' seed=35
+#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=500)
 #' ZK=initialZoning(qProb=c(0.8),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
@@ -600,7 +561,6 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
 #' print(cL$cost_Laplace)
 #' print(cM$cost_Mean)
 #' # zone 2 is homogeneous
-
 Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 
   # this function is in the script "calCost.R"
@@ -771,13 +731,13 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 #' @return a vector containing zone numbers
 #' @export
 #' @examples
-#' seed=6
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+#' seed=20
+#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp")
 #' ZK=initialZoning(qProb=c(0.67,0.8),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 4 and 6 are transition zones and have exactly 2 neighbours with different labels.
+#' # zone 5 and 11 are transition zones and have exactly 2 neighbours with different labels.
 #' list_Zone_2_Neighbours(Z = Z, lab = lab)
 
 list_Zone_2_Neighbours = function(Z, lab){
@@ -809,15 +769,6 @@ list_Zone_2_Neighbours = function(Z, lab){
 }
 
 
-
-
-
-
-
-
-
-
-
 ############################################# contourBetween #############################################
 #' contourBetween
 #' @details  : For the given krigGrid, this funtion returns
@@ -832,14 +783,12 @@ list_Zone_2_Neighbours = function(Z, lab){
 #' @importFrom sp plot
 #' @export
 #' @examples
-#' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+#' map=geozoning::mapTest
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 6 is a transition zone that has commun boundary with the map
-#' numZ = 6
+#' numZ = 7
 #' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
 #' result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
 #' new_krigGrid = result$new_krigGrid
@@ -852,8 +801,6 @@ list_Zone_2_Neighbours = function(Z, lab){
 #' for (i in 1:length(listContours)){
 #'   sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
 #' }
-
-
 contourBetween = function(map,krigGrid, q1, q2, nbContourBetween = 5)
 {
   # this function is the script "calCost.R"

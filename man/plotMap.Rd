@@ -19,8 +19,8 @@ plot a map
 plot 3 different graphics of a map object
 }
 \examples{
-m=genMap(seed=1,krig=2,disp=0)
-plotMap(m)
+data(mapTest)
+plotMap(mapTest)
 # not run
 
 }

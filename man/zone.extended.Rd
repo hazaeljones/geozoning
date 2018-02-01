@@ -22,7 +22,7 @@ we will have a SpatialPolygone which is the extension part of the Line.
 }
 \examples{
 seed=1
-map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Gau")
+map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Exp",nPointsK=500)
 criti = correctionTree(qProb = c(0.5), map = map)
 Z = criti$zk[[1]][[1]]$zonePolygone
 lab = criti$zk[[1]][[1]]$lab

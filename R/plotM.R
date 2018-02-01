@@ -22,14 +22,13 @@
 #' @importFrom graphics title
 #' @export
 #' @examples
-#' seed=2
-#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2)
+#' map=geozoning::mapTest
 #' ZK=initialZoning(qProb=c(0.55,0.85),map)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
 #' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
 #'
-plotM = function(map, Z=NULL, lab=NULL, byLab = TRUE, 
+plotM = function(map, Z=NULL, lab=NULL, byLab = TRUE,
                  quantile = NULL, crit = NULL, cost = NULL, bestCrit = NULL, bestCost = NULL, newCost=NULL, line = 0, cex = 2)
 {
   step = map$step

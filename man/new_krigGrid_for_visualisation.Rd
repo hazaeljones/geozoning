@@ -33,7 +33,6 @@ ZK=initialZoning(qProb=c(0.55,0.85),map)
 Z=ZK$resZ$zonePolygone # list of zones
 lab = ZK$resZ$lab # label of zones
 plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-# zone 6 is a transition zone that has commun boundary with the map
 numZ = 6
 Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
 result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
