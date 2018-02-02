@@ -15,7 +15,7 @@
 #' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
 #' Z=ZK$resZ$zonePolygone
 #' minSize=0.012
-#' iSmall=detectSmallZones(Z,minSize) # 2 small zones 
+#' iSmall=detectSmallZones(Z,minSize) # 2 small zones
 #' # not run
 detectSmallZones=function(zonePolygone,minSize)
 ##############################################
@@ -79,10 +79,10 @@ zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 ######################################################################
 #' zoneFusion3
 #'
-#' @details merge current zone #iC with neighbor zone in zoning. If there are several neighbor zones, the selected one is the zone whose area is greater than the admissible size threshold that has the closest average value to the current one. 
+#' @details merge current zone #iC with neighbor zone in zoning. If there are several neighbor zones, the selected one is the zone whose area is greater than the admissible size threshold that has the closest average value to the current one.
 #' @param K zoning object, as returned by the calNei function
 #' @param iC index of current zone in zoning
-#' @param Ns zone neighborhood Boolean matrix  
+#' @param Ns zone neighborhood Boolean matrix
 #' @param map object returned by function genMap
 #' @param minSize  minimum admissible zone size
 #' @param simplitol tolerance for spatial polygons geometry simplification
@@ -116,7 +116,7 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
     #########################################
 	  if(disp>0) print(paste("merging zone",iC," with main zone",indZV))
 	  # case when merging  ZA with ZB and ZB is within ZA
-	  # ids must be swapped 
+	  # ids must be swapped
 	  # keep outer polygon ID
 	  IN=gContains(gEnvelope(Z[[iC]]),Z[[indZV]])
 	  if (IN)
@@ -205,24 +205,24 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 #' @export
 #'
 #' @examples
-#' data(mapTest)
-#' qProb=c(0.2,0.5)
-#' ZK = initialZoning(qProb, mapTest)
-#' K=ZK$resZ
-#' Z=K$zonePolygone
-#' plotZ(K$zonePolygone) # plot zoning
-#' kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
-#' linesSp(kmi[[7]])
-#' qProb=c(0.3,0.5)
-#' criti = correctionTree(qProb,mapTest)
-#' best = criti$zk[[2]][[1]]
-#' Z=best$zonePolygone
-#' plotZ(Z)
-#' refPoint = rgeos::gCentroid(Z[[4]])
-#' sp::plot(refPoint,add=TRUE,col="blue",pch=21)
-#' zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
-#' plotZ(zg)
-#' # not run
+#' # not run, take a while...
+#' #data(mapTest)
+#' #qProb=c(0.2,0.5)
+#' #ZK = initialZoning(qProb, mapTest)
+#' #K=ZK$resZ
+#' #Z=K$zonePolygone
+#' #plotZ(K$zonePolygone) # plot zoning
+#' #kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
+#' #linesSp(kmi[[7]])
+#' #qProb=c(0.3,0.5)
+#' #criti = correctionTree(qProb,mapTest)
+#' #best = criti$zk[[2]][[1]]
+#' #Z=best$zonePolygone
+#' #plotZ(Z)
+#' #refPoint = rgeos::gCentroid(Z[[4]])
+#' #sp::plot(refPoint,add=TRUE,col="blue",pch=21)
+#' #zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
+#' #plotZ(zg)
 zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0.1,simplitol=1e-3,disp=0)
 ############################################################################
 {
@@ -377,7 +377,7 @@ removeFromZ = function(Z,zoneN,ptN,listZonePoint,spdata,simplitol=1e-3,n=1)
 ##########################################################################
 {
 # remove from Z all zones with npts<=n
- 
+
   mask1 = sapply(listZonePoint,function(x){return(length(x)<=n)})
   #mask2 = sapply(Z,function(x){return(gArea(x)<minSizeNG)})
   nbZ=length(Z)
