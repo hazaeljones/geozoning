@@ -35,11 +35,9 @@
 #' @importFrom sp coordinates
 #' @importMethodsFrom sp coordinates
 #' @examples
-#' # not run
-#' map = randKmap(NULL,nPointsK=500,Vmean=15,krig=2)
+#' map = randKmap(NULL,nPointsK=200,Vmean=15,krig=2)
 #' mean(map$krigGrid) # mean of generated kriged data
 #' plotMap(map)
-#'
 randKmap=function(DataObj,seed=NULL,nPoints=450,nPointsK=2000, nSimuCond=0,typeMod="Exp",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0.2, boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE,krig=2,disp=0,FULL=FALSE)
 ###########################################################################
 {

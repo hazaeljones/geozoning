@@ -29,5 +29,4 @@ K=resZTest
 Z=K$zonePolygone
 plotZ(Z)
 linesSp(Z[[4]])
-# not run
 }

@@ -57,5 +57,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 dispZ(mapTest$step,mapTest$krigGrid)
-# not run
 }

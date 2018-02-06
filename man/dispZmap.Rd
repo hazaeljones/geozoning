@@ -48,5 +48,4 @@ Z=K$zonePolygone
 ord=order(K$meanZone)
   Z=orderZ(Z,ord)
   plotZ(Z,id=TRUE)
-# not run
 }

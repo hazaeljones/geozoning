@@ -21,6 +21,7 @@ convexHull of the "relaxation" of the map's boundary. We have then 4 points (2 c
 we will have a SpatialPolygone which is the extension part of the Line.
 }
 \examples{
+\donttest{
 seed=1
 map = genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Exp",nPointsK=500)
 criti = correctionTree(qProb = c(0.5), map = map)
@@ -40,4 +41,5 @@ plotM(map = map, Z = Z, lab = lab, byLab = FALSE)
 z = geozoning:::zone.extended(z = Z[[1]], boundary = boundary)
 sp::plot(z)
 sp::plot(Z[[1]],add=TRUE)
+}
 }

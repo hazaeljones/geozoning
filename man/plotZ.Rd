@@ -33,5 +33,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 plotZ(Z,mapTest)
-# not run
 }

@@ -37,5 +37,4 @@ si2[kk]=Sigmai2(kk,K$listZonePoint,mapTest$krigData,
         mapTest$krigSurfVoronoi,K$meanZone)$sigmai2
 }
 d12=DIJ(1,2,si2,K$meanzone,0.9)
-# not run
 }

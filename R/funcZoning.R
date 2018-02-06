@@ -13,7 +13,6 @@
 #' @examples
 #' data(mapTest)
 #' Z=zoneGeneration(mapTest)
-#' # not run
 zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 ################################################################################
 # data in map argument
@@ -24,7 +23,7 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
   step=map$step
    xsize=map$xsize
   ysize=map$ysize
-  
+
   # Define field boundaries
   if(!is.null(boundary))
   {
@@ -99,9 +98,9 @@ zoneGeneration=function(map,qProb=c(0.25,0.75),GridData=FALSE)
 #' @param xsize size of map along x-axis
 #' @param ysize size of map along y-axis
 #' @param matVal dataframe with data values organized into a grid
-#' @param vRef quantile vector 
+#' @param vRef quantile vector
 #' @param boundary list, contains x and y dy on a regular grid
-#' @param GridData logical value indicating if data are already on a regular grid 
+#' @param GridData logical value indicating if data are already on a regular grid
 #'
 #' @return a list of contour lines
 #' @importFrom grDevices contourLines
@@ -128,7 +127,7 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
   # merge with previous isocontours (other level)
   cL=c(cL,cLplus)
   if(length(cL)==0) return(NULL) # no contour
-  
+
   # transform boundary into spatial object
   bdSP =SpatialPoints(boundary)
   superL=superLines(boundary)
@@ -186,7 +185,6 @@ contourAuto=function(cL,step,xsize,ysize,matVal,vRef,boundary,GridData=FALSE)
 #' listZptsRaw=zoneAssign(mapTest$rawData,Z)
 #' plotZ(Z)
 #' points(mapTest$rawData[listZptsRaw[[1]],],col="blue") # add raw data for zone 1
-#' # not run
 zoneAssign=function(tab,Z)
 #########################################################################
 {
@@ -239,12 +237,12 @@ zoneAssign=function(tab,Z)
 	listZpt[[k]]=ind[zone==k]
       }
 
-#check that all pts belong to a zone
-v=1:nrow(pts)
-us=unlist(listZpt)
-noZ=v[!(v %in% us)]
-# correct by using distances to zones
-for (ind in noZ)
+  #check that all pts belong to a zone
+  v=1:nrow(pts)
+  us=unlist(listZpt)
+  noZ=v[!(v %in% us)]
+  # correct by using distances to zones
+  for (ind in noZ)
     {
     kk=1
     gdref=Inf
@@ -288,7 +286,6 @@ for (ind in noZ)
 #' recupPoly=geozoning:::separationPoly(polyDiff)
 #' Z1=list(recupPoly[[1]],recupPoly[[2]])
 #' plotZ(Z1)
-#' # not run
 separationPoly=function(polyTot)
 ################################################################################
 
@@ -344,7 +341,6 @@ separationPoly=function(polyTot)
 #' lines(cL[[1]])#contour line is not closed
 #' lines(geozoning:::extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
 #'      geozoning:::superLines(mapTest$boundary)),col="red") #contour line is closed
-#' # not run
 extensionLine=function(contourL=NULL,step=NULL,bdSP,superLines)
 ################################################################################
 

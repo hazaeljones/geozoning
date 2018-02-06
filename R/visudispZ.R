@@ -34,7 +34,6 @@
 #' K=resZTest
 #' Z=K$zonePolygone
 #' dispZ(mapTest$step,mapTest$krigGrid)
-#' # not run
 dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain="",boundary=NULL,id=FALSE,valQ=NULL,
                palCol=colorRampPalette(c("brown","yellow")),noXY=FALSE,iZ=0,mu=1,cex=1,ptz=NULL)
 ###############################################################################
@@ -145,81 +144,81 @@ dispZ=function(step,matVal,nbLvl=0,zonePolygone=NULL,K=NULL,colBreaks=0,texMain=
 #' ord=order(K$meanZone)
 #'   Z=orderZ(Z,ord)
 #'   plotZ(Z,id=TRUE)
-#' # not run
 dispZmap=function(map,Z=NULL,qProb=NULL,valbp=NULL,scale=NULL,lev=20,palCol=colorRampPalette(c("brown","yellow")),legend.width=1,parG=NULL,ptz=NULL)
 #########################################################
 {
-step=map$step
-xsize=map$xsize
-ysize=map$ysize
-matVal=map$krigGrid
-bd=map$boundary
-xlim=c(0,xsize);ylim=c(0,ysize)
-cn=as.numeric(colnames(matVal))
-rn=as.numeric(rownames(matVal))
+  step=map$step
+  xsize=map$xsize
+  ysize=map$ysize
+  matVal=map$krigGrid
+  bd=map$boundary
+  xlim=c(0,xsize);ylim=c(0,ysize)
+  cn=as.numeric(colnames(matVal))
+  rn=as.numeric(rownames(matVal))
 
-if(is.null(parG))
-{
-par(fig=c(0,1,0.3,1))#c(x1,x2,y1,y2) bottom=0,0 - top=1,1
-par(mar=c(0,0,5,0))#c(bottom, left, top, right))
-}
+  if(is.null(parG))
+  {
+    par(fig=c(0,1,0.3,1))#c(x1,x2,y1,y2) bottom=0,0 - top=1,1
+    par(mar=c(0,0,5,0))#c(bottom, left, top, right))
+  }
 
-image.plot(rn, cn,matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
-image.plot( zlim=range(matVal,na.rm=TRUE), nlevel=20,legend.only=TRUE, vertical=FALSE,col=palCol(20))
-if (!is.null(qProb)) title(paste("Best zoning for nL=",length(qProb)+1,"\nm=[",paste(qProb,collapse=","),"]",sep=""),cex.main=1.5)
-#
-dec=0.03
-decy=0.05
-xn=-0.2
-yn=1.8
-p1=polygon(list(x=c(xn,xn+dec,xn+dec,xn),y=c(yn,yn+decy,yn+2*decy,yn)))
-p2=polygon(list(x=c(xn+dec,xn+dec,xn+2*dec,xn+dec),y=c(yn+decy,yn+2*decy,yn,yn+decy)),density=100,angle=45,col="black")
-text(xn+dec,yn-decy,"N",font=2,cex=1)
-#
-# add scale
-if(!is.null(scale))
-{
-met=100/scale
-ys=0.78
-xs=0.8
-lines(c(xs,xs+met),c(ys,ys))
-tau=0.02
-lines(c(xs,xs),c(ys-tau,ys+tau))
-lines(c(xs+met,xs+met),c(ys-tau,ys+tau))
-text(xs,ys-3*tau,"0")
-text(xs+met,ys-3*tau,"100m")
-}
-# add zones
-par(fig=c(0,1,0.3,1))#c(x1,x2,y1,y2) bottom=0,0 - top=1,1
-par(mar=c(0,0,5,0))#c(bottom, left, top, right))
+  image.plot(rn, cn,matVal,col=palCol(lev),asp=1,xlim=xlim,ylim=ylim,xlab="",ylab="",xaxt="n",yaxt="n")
+  image.plot( zlim=range(matVal,na.rm=TRUE), nlevel=20,legend.only=TRUE, vertical=FALSE,col=palCol(20))
+  if (!is.null(qProb)) title(paste("Best zoning for nL=",length(qProb)+1,"\nm=[",paste(qProb,collapse=","),"]",sep=""),cex.main=1.5)
 
-if(!is.null(Z))
-{
-for (k in 1:length(Z))
-{
-lines(getCoords(Z[[k]]))
-if(is.null(ptz))
-#pointLabel=Z[[k]]@polygons[[1]]@Polygons[[1]]@labpt
-pointLabel=findZCenter(Z,k)
-else
-pointLabel=ptz[k,]
+  dec=0.03
+  decy=0.05
+  xn=-0.2
+  yn=1.8
+  p1=polygon(list(x=c(xn,xn+dec,xn+dec,xn),y=c(yn,yn+decy,yn+2*decy,yn)))
+  p2=polygon(list(x=c(xn+dec,xn+dec,xn+2*dec,xn+dec),y=c(yn+decy,yn+2*decy,yn,yn+decy)),density=100,angle=45,col="black")
+  text(xn+dec,yn-decy,"N",font=2,cex=1)
 
-jid=getZoneId(Z[[k]])
-text(pointLabel[1],pointLabel[2],jid,cex=1.5)
-}
-}
-#
-if(!is.null(valbp))
-{
-if(is.null(parG))
-{
-par(fig=c(0.2,0.9,0,0.3),new=TRUE)
-par(mar=c(2,0,3,0))#c(bottom, left, top, right)
-}
-boxplot(valbp,cex.axis=1,col=palCol(length(valbp)))
-title("Distribution of values within zones",cex.main=1)
-}
-return()
+  # add scale
+  if(!is.null(scale))
+  {
+    met=100/scale
+    ys=0.78
+    xs=0.8
+    lines(c(xs,xs+met),c(ys,ys))
+    tau=0.02
+    lines(c(xs,xs),c(ys-tau,ys+tau))
+    lines(c(xs+met,xs+met),c(ys-tau,ys+tau))
+    text(xs,ys-3*tau,"0")
+    text(xs+met,ys-3*tau,"100m")
+  }
+  # add zones
+  par(fig=c(0,1,0.3,1))#c(x1,x2,y1,y2) bottom=0,0 - top=1,1
+  par(mar=c(0,0,5,0))#c(bottom, left, top, right))
+
+  if(!is.null(Z))
+  {
+    for (k in 1:length(Z))
+    {
+      lines(getCoords(Z[[k]]))
+      if(is.null(ptz))
+      #pointLabel=Z[[k]]@polygons[[1]]@Polygons[[1]]@labpt
+      pointLabel=findZCenter(Z,k)
+      else
+      pointLabel=ptz[k,]
+
+      jid=getZoneId(Z[[k]])
+      text(pointLabel[1],pointLabel[2],jid,cex=1.5)
+    }
+  }
+
+  if(!is.null(valbp))
+  {
+    if(is.null(parG))
+    {
+      par(fig=c(0.2,0.9,0,0.3),new=TRUE)
+      par(mar=c(2,0,3,0))#c(bottom, left, top, right)
+    }
+    boxplot(valbp,cex.axis=1,col=palCol(length(valbp)))
+    title("Distribution of values within zones",cex.main=1)
+  }
+
+  return()
 }
 
 ##################################################################
@@ -240,7 +239,6 @@ return()
 #' Z=K$zonePolygone
 #' plotZ(Z)
 #' pointsSp(Z[[1]])
-#' # not run
 pointsSp = function(sp,k=1,col="red")
 ##################################################################
 {
@@ -268,7 +266,6 @@ pointsSp = function(sp,k=1,col="red")
 #' Z=K$zonePolygone
 #' plotZ(Z)
 #' linesSp(Z[[4]])
-#' # not run
 linesSp = function(sp,k=1,lty=1,col="red",lwd=1)
 ##################################################################
 {
@@ -294,7 +291,6 @@ linesSp = function(sp,k=1,lty=1,col="red",lwd=1)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' plotSp(Z[[1]],xlim=c(0,1),ylim=c(0,1))
-#' # not run
 plotSp = function(sp,k=1,xlim,ylim)
 ##################################################################
 {
@@ -326,7 +322,6 @@ plotSp = function(sp,k=1,xlim,ylim)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' plotZ(Z,mapTest)
-#' # not run
 plotZ = function(Z,map=NULL,id=FALSE,noXY=FALSE,palCol=colorRampPalette(topo.colors(20)))
 ##################################################################
 {
@@ -357,7 +352,6 @@ plotZ = function(Z,map=NULL,id=FALSE,noXY=FALSE,palCol=colorRampPalette(topo.col
 #' cL=contourAuto(cL,mapTest$step,mapTest$xsize,mapTest$ysize,mapTest$krigGrid,c(5,7),mapTest$boundary)
 #' plot(mapTest$boundary,type="l")
 #' plotListC(cL)
-#' # not run
 plotListC = function(cL,col="red")
 ##################################################################
 {
@@ -368,7 +362,6 @@ plotListC = function(cL,col="red")
 		ci=cL[[i]]
 		lines(ci,col=col)
 	   }
-
 }
 
 

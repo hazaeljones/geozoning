@@ -32,6 +32,5 @@ K=resZTest
 Z=K$zonePolygone
 plotZ(Z)
 plotZ(geozoning:::remove1FromZ(Z,2,K$zoneN))
-# not run
 }
 \keyword{internal}

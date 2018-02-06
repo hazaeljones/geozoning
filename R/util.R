@@ -291,7 +291,7 @@ lineToSp=function(lin)
 #' @keywords internal
 #'
 #' @examples
-#  shape1: result of call to readS on shapefile
+#' #  shape1: result of call to readS on shapefile
 #' z=geozoning::shape1
 #' bb=list(x=z@bbox[1,],y=z@bbox[2,])
 #' p=z@polygons
@@ -977,8 +977,8 @@ interCB = function(co,step,bd=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),envel,disp=0)
 #'
 #' @examples
 #' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving only best last level results
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+#' # saving only best last level results
 #' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE)
 #' geozoning:::getNq(criti$critList)
 getNq=function(critList)
@@ -1102,8 +1102,8 @@ plotVario=function(map,ylim=NULL)
 #'
 #' @examples
 #' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+#' # saving initial zoning and last level zonings
 #' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 #' K=criti$zk[[1]][[1]] # initial zoning
 #' costLab(K,mapTest) #identical to criti$costL[[1]][[1]]
@@ -1150,14 +1150,16 @@ costLab=function(K,map)
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
-# save initial zoning and last level zonings
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+#' # save initial zoning and last level zonings
 #' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 #' K=criti$zk[[2]][[1]]
 #' uni=unique(K$lab)
 #' zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
 #' sig=SigmaL2(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
+#' }
 SigmaL2=function(zlab,listZonePoint,tabVal,surfVoronoi)
 ################################################################
 {
@@ -1216,8 +1218,8 @@ SigmaL2=function(zlab,listZonePoint,tabVal,surfVoronoi)
 #'
 #' @examples
 #' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+#' # saving initial zoning and last level zonings
 #' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 #' K=criti$zk[[2]][[1]]
 #' uni=unique(K$lab)
@@ -1257,8 +1259,9 @@ meanL=function(zlab,listZonePoint,tabVal,surfVoronoi)
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' # meansdSimu(c(1,2))
+#' \donttest{
+#'  meansdSimu(c(1,2))
+#' }
 meansdSimu=function(vseed=NULL,krig=2)
 ######################################
 {
@@ -1293,8 +1296,9 @@ meansdSimu=function(vseed=NULL,krig=2)
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' #meanvarSimu(mapTest)
+#' \donttest{
+#' meanvarSimu(mapTest)
+#' }
 meanvarSimu=function(map)
 ######################################
 {
@@ -1331,8 +1335,8 @@ meanvarSimu=function(map)
 #'
 #' @examples
 #' data(mapTest)
-# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
-# saving initial zoning and last level zonings
+#' # run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+#' # saving initial zoning and last level zonings
 #' criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 #' K=criti$zk[[2]][[1]]
 #' valZ(mapTest,K)
@@ -1368,18 +1372,19 @@ valZ=function(map,K)
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' #map=genMap(DataObj=NULL,seed=40,disp=FALSE,krig=1,Vnugget=1.2,typeMod="Gau")
-#' #qProb=c(0.275,0.8)
-#' #criti=correctionTree(qProb,map,LASTPASS=FALSE)
-#' #res=searchNODcrit1(qProb,criti)
-#' #b=res$ind[[1]][1]
-#' #K=criti$zk[[2]][[b]]
-#' #Z=K$zonePolygone
-#' #plotZ(Z)
-#' #ord=valZ(map,K)$ord
-#' #Z=orderZ(Z,ord)
-#' #plotZ(Z)
+#' \donttest{
+#' map=genMap(DataObj=NULL,seed=40,disp=FALSE,krig=1,Vnugget=1.2,typeMod="Gau")
+#' qProb=c(0.275,0.8)
+#' criti=correctionTree(qProb,map,LASTPASS=FALSE)
+#' res=searchNODcrit1(qProb,criti)
+#' b=res$ind[[1]][1]
+#' K=criti$zk[[2]][[b]]
+#' Z=K$zonePolygone
+#' plotZ(Z)
+#' ord=valZ(map,K)$ord
+#' Z=orderZ(Z,ord)
+#' plotZ(Z)
+#' }
 ###################
 orderZ=function(Z,ord)
 {

@@ -25,6 +25,7 @@ spnorm
 normalize Polygon according to border limits
 }
 \examples{
+#  shape1: result of call to readS on shapefile
 z=geozoning::shape1
 bb=list(x=z@bbox[1,],y=z@bbox[2,])
 p=z@polygons

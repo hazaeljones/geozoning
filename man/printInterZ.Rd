@@ -18,12 +18,13 @@ printInterZ
 checks intersection of sp and each element of Z
 }
 \examples{
-# not run
-#data(mapTest)
-#data(resZTest)
-#K=resZTest
-#Z=K$zonePolygone
-#plotZ(Z,mapTest)
-#geozoning:::printInterZ(Z,Z[[1]])
+\donttest{
+data(mapTest)
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+plotZ(Z,mapTest)
+geozoning:::printInterZ(Z,Z[[1]])
+}
 }
 \keyword{internal}

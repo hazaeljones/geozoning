@@ -22,7 +22,9 @@ readS returns coords, ranges for x and y of a shapefile
 reads a polygon shp file in a directory and extracts coordinates and x and y ranges.
 }
 \examples{
-#z=readS("Field_8_zones.shp",dir="../data/")
-#plot(z$sp)
-# not run
+\donttest{
+#  readS was used to create the shape1 object in geozoning package
+z=readS("Field_8_zones.shp",dir="../data/")
+plot(z$sp)
+}
 }

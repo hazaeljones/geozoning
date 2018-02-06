@@ -100,7 +100,6 @@ calDistance=function(typedist=1,tabVal=NULL,listZonePoint=NULL,zoneN=NULL,surfVo
 #' data(resZTest)
 #' K=resZTest
 #' Sigmai2(5,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi,K$meanZone)
-#' # not run
 Sigmai2=function(index,listZonePoint,tabVal,surfaceVoronoi,meanZone)
 ################################################################
 {
@@ -121,7 +120,7 @@ Sigmai2=function(index,listZonePoint,tabVal,surfaceVoronoi,meanZone)
 #' @param i zone index
 #' @param j neighbor zone index
 #' @param sigmai2 vector of zone variances
-#' @param meanZone list of zone mean values 
+#' @param meanZone list of zone mean values
 #' @param pErr tolerance for distance correction
 #'
 #' @return a list with components d and dCorr
@@ -139,7 +138,6 @@ Sigmai2=function(index,listZonePoint,tabVal,surfaceVoronoi,meanZone)
 #'         mapTest$krigSurfVoronoi,K$meanZone)$sigmai2
 #' }
 #' d12=DIJ(1,2,si2,K$meanzone,0.9)
-#' # not run
 DIJ=function(i,j,sigmai2,meanZone,pErr)
 {
   fxmean = meanZone[[i]]
@@ -169,7 +167,6 @@ DIJ=function(i,j,sigmai2,meanZone,pErr)
 #' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
 #'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' geozoning:::distanceNormalisationSqrt(resD$matDistanceCorr)
-#' # not run
 distanceNormalisationSqrt=function(matDistance)
 {
   #matrice termeNormal[i,j]=1/sqrt(dii^2*djj^2)
@@ -180,6 +177,7 @@ distanceNormalisationSqrt=function(matDistance)
 
   return(matDistanceNorm)
 }
+
 #################################################################################
 #' distanceNormalisationSum
 #'
@@ -199,7 +197,6 @@ distanceNormalisationSqrt=function(matDistance)
 #' resD = calDistance(typedist=1,mapTest$krigData,K$listZonePoint,K$zoneN,
 #'        mapTest$krigSurfVoronoi,K$meanZone,pErr=0.9)
 #' geozoning:::distanceNormalisationSqrt(resD$matDistanceCorr)
-#' # not run
 distanceNormalisationSum=function(matDistance)
 {
   nbPoly=nrow(matDistance)

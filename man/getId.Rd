@@ -21,9 +21,10 @@ getId
 get zone identifier in a zoning
 }
 \examples{
-# not run, take a while...
-#data(mapTest)
-#criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#Z=criti$zk[[2]][[1]]$zonePolygon
-#getId(Z,6)
+\donttest{
+data(mapTest)
+criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+Z=criti$zk[[2]][[1]]$zonePolygon
+getId(Z,6)
+}
 }

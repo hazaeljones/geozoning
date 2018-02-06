@@ -41,8 +41,9 @@ randKmapGrid
 Prepare real data for zoning, data are already on a regular grid, hence no kriging is done.
 }
 \examples{
-# not run, take a while...
-#data(dataReg) #regular data on a square grid between 0 and 1
-#map = randKmapGrid(dataReg)
-#plotMap(map)
+\donttest{
+data(dataReg) #regular data on a square grid between 0 and 1
+map = randKmapGrid(dataReg)
+plotMap(map)
+}
 }

@@ -56,7 +56,6 @@ Wrapper for randKmap, generate 2D map
 Wrapper for randKmap, generates a 2D map with a Gaussian field, either by simulating data or by reading data in a data frame. Kriged data are normalized so that x-coordinates are between 0 and 1. y-coordinates are normalized with the same ratio used for x-coordinates. Kriging is either done with inverse distance interpolation, or with a variogram model. It creates a structure that contains the data and parameters necessary to perform a zoning. The structure is identical wether the data are simulated or not.
 }
 \examples{
-m=genMap(seed=1,krig=2,disp=1) #generates a map and plots data
+m=genMap(seed=1,krig=2,disp=1,nPointsK = 200) #generates a map and plots data
 mean(m$krigGrid) # mean of generated kriged data
-# not run
 }

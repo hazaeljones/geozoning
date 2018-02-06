@@ -27,10 +27,11 @@
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' #data(dataReg) #regular data on a square grid between 0 and 1
-#' #map = randKmapGrid(dataReg)
-#' #plotMap(map)
+#' \donttest{
+#' data(dataReg) #regular data on a square grid between 0 and 1
+#' map = randKmapGrid(dataReg)
+#' plotMap(map)
+#' }
 randKmapGrid=function(DataObj,nSimuCond=0,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE,disp=0,FULL=FALSE)
 ##########################################################
 {

@@ -1,5 +1,5 @@
 Package: geozoning
-Title: a Zoning Method for Spatial Data
+Title: Zoning Methods for Spatial Data
 Version: 1.0.0
 Authors@R: c(
   person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut")),
@@ -13,7 +13,13 @@ Author: Brigitte Charnomordic [aut],
   Isabelle Sanchez [ctb],
   Ngoc-Phi Tran [ctr]
 Maintainer: Hazaël Jones <hazael.jones@supagro.fr>
-Description: A set of zoning method and criteria for spatial data.
+Description: A zoning method and a numerical criterion for zoning quality are available in this package.
+   The zoning method is based on a numerical criterion that evaluates the zoning quality.
+   This criterion quantifies simultaneously how zones are heterogeneous on
+   the whole map and how neighbouring zones are similar. This approach allows comparison
+   between maps either with different zones or different labels, which is of importance
+   for zone delineation algorithms aiming at maximizing inter-zone variability. An optimisation
+   procedure provides the user with the best zonings thanks to contour delineation for a given map.
 Depends: R (>= 3.3.0)
 License: GPL-3
 Encoding: UTF-8

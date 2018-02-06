@@ -22,9 +22,10 @@ get the number of a zone with a given identifier in a zoning
 this is necessary because correction procedures may remove zones from initial#' zoning. Therefore zone numbers change, but identifiers are conserved.
 }
 \examples{
-# not run, take a while...
-#data(mapTest)
-#criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#Z=criti$zk[[2]][[1]]$zonePolygon
-#Identify(6,Z)
+\donttest{
+data(mapTest)
+criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+Z=criti$zk[[2]][[1]]$zonePolygon
+Identify(6,Z)
+}
 }

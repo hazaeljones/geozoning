@@ -23,7 +23,6 @@
 #' data(mapTest)
 #' ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
 #' plotZ(ZK$resZ$zonePolygone)
-#' # not run
 initialZoning=function(qProb, map, pErr=0.9,simplitol=1e-3,optiCrit=2,disp=0,GridData=F)
 ##################################################################
   {

@@ -27,5 +27,4 @@ data(resZTest)
 Z=resZTest$zonePolygone
 plotZ(Z)
 sp::plot(zoneFusion2(Z[[6]],Z[[2]]),add=TRUE,col="blue")
-# not run
 }

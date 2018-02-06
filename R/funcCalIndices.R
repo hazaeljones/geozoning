@@ -14,7 +14,6 @@
 #' K=resZTest
 #' zoneA=sapply(K$zonePolygone,rgeos::gArea)
 #' calGearyLoc(K$zoneNModif,K$meanZone,K$meanTot,zoneA)
-#' # not run
 calGearyLoc=function(matN,vectMean,meanTot,vectSurface)
 {
 #--------------------------------------------------------------------------------
@@ -56,7 +55,6 @@ calGearyLoc=function(matN,vectMean,meanTot,vectSurface)
 calMoranBTot=function(NZone,matDistanceMoranB,vectSurface)
 {
 #################################################################################
-#-------------------------------------------------------------------------------
 
   #nombre de zones
   n=length(diag(matDistanceMoranB))
@@ -121,7 +119,6 @@ calMoranBLocal=function(NZone,matDistanceMoranB,vectSurface)
 #' # not run
 calMoranGlo=function(matNZone,vectMean,meanTot,vectSurface)
 {
-#-------------------------------------------------------------------------------
 ################################################################################
 #nombre de zones ou de points
   nbZones=length(vectMean)
@@ -159,7 +156,7 @@ calMoranGlo=function(matNZone,vectMean,meanTot,vectSurface)
 #' # not run
 calMoranLoc=function(matN,vectMean,meanTot,vectSurface)
 {
-#--------------------------------------------------------------------------------#################################################################################
+##################################################################################
   #nombre de zones ou de points
   nbZones=length(vectMean)
   #transform logical meighborhood into integer
@@ -195,7 +192,7 @@ calMoranLoc=function(matN,vectMean,meanTot,vectSurface)
 #' # not run
 calGearyGlo=function(matN,vectMean,meanTot,vectSurface)
 {
-#--------------------------------------------------------------------------------#################################################################################
+##################################################################################
   #nombre de zones ou de points
   nbZones=length(vectMean)
 

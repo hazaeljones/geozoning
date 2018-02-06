@@ -31,5 +31,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 zoneFusion4(Z,5,4,disp=2)
-# not run
 }

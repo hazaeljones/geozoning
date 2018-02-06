@@ -5,8 +5,8 @@
 #' @param qProb probability vector used to generate quantile values
 #' @param crit list of criteria
 #' @param cost  list of costs
-#' @param costL list of per label costs 
-#' @param nz list of number of zones 
+#' @param costL list of per label costs
+#' @param nz list of number of zones
 #' @param mdist list of distance matrices
 #' @param listOfZ list of zoning objects
 #' @param map object returned by function genMap
@@ -35,10 +35,9 @@
 #' data(mapTest)
 #' qProb=c(0.4,0.7)
 #' criti=correctionTree(qProb,mapTest)
-# displays best criterion, corresponding costs and number of zones
+#' # displays best criterion, corresponding costs and number of zones
 #' geozoning:::sortCrit(qProb,criti$criterion,criti$cost,criti$costL,
-#'             criti$nz,criti$mdist,criti$zk,mapTest) 
-#' # not run
+#'             criti$nz,criti$mdist,criti$zk,mapTest)
 sortCrit=function(qProb,crit,cost,costL,nz,mdist,listOfZ,map,disp=0,SAVE=FALSE)
 ###############################################################################
 {

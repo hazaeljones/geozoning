@@ -16,7 +16,6 @@
 #' Z=ZK$resZ$zonePolygone
 #' minSize=0.012
 #' iSmall=detectSmallZones(Z,minSize) # 2 small zones
-#' # not run
 detectSmallZones=function(zonePolygone,minSize)
 ##############################################
 {
@@ -34,9 +33,8 @@ detectSmallZones=function(zonePolygone,minSize)
   }
 
   # sort by increasing size
-
- surf = vectSize[vectIndex]
- mask=order(surf)
+  surf = vectSize[vectIndex]
+  mask=order(surf)
 
  return(list(vectIndex=vectIndex[mask]))
 }
@@ -60,7 +58,6 @@ detectSmallZones=function(zonePolygone,minSize)
 #' Z=resZTest$zonePolygone
 #' plotZ(Z)
 #' sp::plot(zoneFusion2(Z[[6]],Z[[2]]),add=TRUE,col="blue")
-#' # not run
 zoneFusion2 = function(zoneMain,zoneSuppr,simplitol=1e-3)
 ##################################################################
 {
@@ -155,7 +152,6 @@ zoneFusion3=function(K,iC,Ns,map,minSize=1e-2,simplitol=1e-3,disp=0)
 #' K=resZTest
 #' Z=K$zonePolygone
 #' zoneFusion4(Z,5,4,disp=2)
-#' # not run
 zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 ######################################################################
 {
@@ -205,24 +201,25 @@ zoneFusion4=function(Z,iSmall,iBig,simplitol=1e-3,disp=0)
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' #data(mapTest)
-#' #qProb=c(0.2,0.5)
-#' #ZK = initialZoning(qProb, mapTest)
-#' #K=ZK$resZ
-#' #Z=K$zonePolygone
-#' #plotZ(K$zonePolygone) # plot zoning
-#' #kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
-#' #linesSp(kmi[[7]])
-#' #qProb=c(0.3,0.5)
-#' #criti = correctionTree(qProb,mapTest)
-#' #best = criti$zk[[2]][[1]]
-#' #Z=best$zonePolygone
-#' #plotZ(Z)
-#' #refPoint = rgeos::gCentroid(Z[[4]])
-#' #sp::plot(refPoint,add=TRUE,col="blue",pch=21)
-#' #zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
-#' #plotZ(zg)
+#' \donttest{
+#' data(mapTest)
+#' qProb=c(0.2,0.5)
+#' ZK = initialZoning(qProb, mapTest)
+#' K=ZK$resZ
+#' Z=K$zonePolygone
+#' plotZ(K$zonePolygone) # plot zoning
+#' kmi=zoneGrow(K,mapTest,6) # grow zone 6 by grouping it with its closest neighbor with same label
+#' linesSp(kmi[[7]])
+#' qProb=c(0.3,0.5)
+#' criti = correctionTree(qProb,mapTest)
+#' best = criti$zk[[2]][[1]]
+#' Z=best$zonePolygone
+#' plotZ(Z)
+#' refPoint = rgeos::gCentroid(Z[[4]])
+#' sp::plot(refPoint,add=TRUE,col="blue",pch=21)
+#' zg=zoneGrow(best,mapTest,4) #grow isolated zone 4 by searching for other quantile
+#' plotZ(zg)
+#' }
 zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.075,LEQ=5,MAXP=0.1,simplitol=1e-3,disp=0)
 ############################################################################
 {
@@ -307,7 +304,6 @@ zoneGrow=function(K,map,iC,optiCrit=2,minSize=0.012,minSizeNG=1e-3,distIsoZ=0.07
 #' Z=K$zonePolygone
 #' plotZ(Z)
 #' plotZ(geozoning:::remove1FromZ(Z,2,K$zoneN))
-#' # not run
 remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 ########################################################
 {
@@ -372,7 +368,6 @@ remove1FromZ = function(Z,iC,zoneN,simplitol=1e-3,disp=0)
 #' # remove from Z all zones with less than 10 data points
 #' Z2=removeFromZ(Z,K$zoneN,K$krigN,K$listZonePoint,mapTest$krigData,n=10)
 #' printZid(Z2$Z)
-#' # not run
 removeFromZ = function(Z,zoneN,ptN,listZonePoint,spdata,simplitol=1e-3,n=1)
 ##########################################################################
 {

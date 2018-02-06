@@ -95,15 +95,16 @@ wMean=function(type,listZonePoint,surfVoronoi,data)
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' # data(mapTest)
-#' # rx=range(mapTest$krigData$x)
-#' # ry=range(mapTest$krigData$y)
-#' # nx=nrow(mapTest$krigGrid)
-#' # ny=ncol(mapTest$krigGrid)
-#' # nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
-#' # vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
-#' # length(vP$surfVoronoi) #as many as kriged data points
+#' \donttest{
+#'  data(mapTest)
+#'  rx=range(mapTest$krigData$x)
+#'  ry=range(mapTest$krigData$y)
+#'  nx=nrow(mapTest$krigGrid)
+#'  ny=ncol(mapTest$krigGrid)
+#'  nB=matrix(logical((nx*ny)^2),nx*ny,nx*ny) # big matrix
+#'  vP=voronoiPolygons(mapTest$krigData,c(rx,ry),nB)
+#'  length(vP$surfVoronoi) #as many as kriged data points
+#' }
 voronoiPolygons = function(spdata,gridLim=c(0,1,0,1),neighBool,PTJUNCTION=FALSE,FULL=FALSE)
 ##########################################################
 {

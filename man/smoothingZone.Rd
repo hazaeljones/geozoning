@@ -26,6 +26,7 @@ function that returns a new smoothed zones. Attention: this function is just a t
 doesn't work properly, please choose another value of the width parameter.
 }
 \examples{
+\donttest{
 seed=1
 map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=2,typeMod="Exp",nPointsK=500)
 criti = correctionTree(qProb = c(0.5), map = map)
@@ -46,4 +47,5 @@ zone = Z[[2]]
 newZone = smoothingZone(z = zone, width = 0.05, boundary = boundary)
 sp::plot(zone)
 sp::plot(newZone)
+}
 }

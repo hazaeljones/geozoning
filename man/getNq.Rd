@@ -20,6 +20,8 @@ determine size of quantile  in result from correctionTree
 }
 \examples{
 data(mapTest)
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7,
+# saving only best last level results
 criti=correctionTree(c(0.4,0.7),mapTest,SAVE=FALSE)
 geozoning:::getNq(criti$critList)
 }

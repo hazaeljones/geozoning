@@ -29,5 +29,4 @@ listZpts=zoneAssign(mapTest$krigData,Z)
 listZptsRaw=zoneAssign(mapTest$rawData,Z)
 plotZ(Z)
 points(mapTest$rawData[listZptsRaw[[1]],],col="blue") # add raw data for zone 1
-# not run
 }

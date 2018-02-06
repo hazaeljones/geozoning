@@ -31,5 +31,4 @@ data(mapTest)
 data(resZTest)
 K=resZTest
 Sigmai2(5,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi,K$meanZone)
-# not run
 }

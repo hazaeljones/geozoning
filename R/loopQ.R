@@ -128,11 +128,12 @@ loopQ2=function(map,disp=1,step=0.075,minSize=0.012,minSizeNG=1e-3,QUIET=FALSE)
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # not run, take a while - >5s CPU
-#' #seed=10
-#' #map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=1)
-#' #loopQ3(map,step=0.1,disp=0,QUIET=TRUE)
-#'
+#' seed=10
+#' map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=1)
+#' loopQ3(map,step=0.1,disp=0,QUIET=TRUE)
+#' }
 loopQ3=function(map,disp=1,step=0.075,minSize=0.012,minSizeNG=1e-3,QUIET=F)
   #################################################################################
 {

@@ -11,10 +11,11 @@
 #'
 #' @export
 #' @examples
-#  readS was used to create the shape1 object in geozoning package
-#' #z=readS("Field_8_zones.shp",dir="../data/")
-#' #plot(z$sp)
-#' # not run
+#' \donttest{
+#' #  readS was used to create the shape1 object in geozoning package
+#' z=readS("Field_8_zones.shp",dir="../data/")
+#' plot(z$sp)
+#' }
 ###############################################################
 readS = function(file, dir)
 {

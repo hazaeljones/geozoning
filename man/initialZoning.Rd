@@ -40,5 +40,4 @@ calculates a zoning on kriged map data, based on quantiles of data attribute val
 data(mapTest)
 ZK=initialZoning(qProb=c(0.4,0.7),mapTest)
 plotZ(ZK$resZ$zonePolygone)
-# not run
 }

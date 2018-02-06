@@ -126,34 +126,34 @@ Points_Near_Boundary = function(map){
 #' importFrom sp plot
 #' @export
 #' @examples
-#' # not run, take a while...
-#' #seed=2
-#' #map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
-#' #ZK=initialZoning(qProb=c(0.55,0.85),map)
-#' #Z=ZK$resZ$zonePolygone # list of zones
-#' #lab = ZK$resZ$lab # label of zones
-#' #plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' #numZ = 6
-#' #Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
-#' #result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
-#' #new_krigGrid = result$new_krigGrid
-#' #new_data = result$new_data
-#' #quant1 = quantile(map$krigData@data$var1.pred,probs = 0.55)
-#' #quant2 = quantile(map$krigData@data$var1.pred,probs = 0.85)
-#' # plot initial isocontours
-#' #plotM(map = map,Z = Z,lab = lab, byLab = TRUE)
-#' #listContours = contourBetween(map = map, krigGrid = map$krigGrid, q1 = quant1, q2 = quant2)
-#' #for (i in 1:length(listContours)){
-#' #   sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
-#' #}
-#' # plot modified isocontours
-#' #plotM(map = map,Z = Z,lab = lab, byLab = TRUE)
-#' #listContours = contourBetween(map = map, krigGrid = new_krigGrid, q1 = quant1, q2 = quant2)
-#' #for (i in 1:length(listContours)){
-#' #   sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
-#' #}
+#' \donttest{
+#'  seed=2
+#'  map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Gau")
+#'  ZK=initialZoning(qProb=c(0.55,0.85),map)
+#'  Z=ZK$resZ$zonePolygone # list of zones
+#'  lab = ZK$resZ$lab # label of zones
+#'  plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
+#'  numZ = 6
+#'  Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
+#'  result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
+#'  new_krigGrid = result$new_krigGrid
+#'  new_data = result$new_data
+#'  quant1 = quantile(map$krigData@data$var1.pred,probs = 0.55)
+#'  quant2 = quantile(map$krigData@data$var1.pred,probs = 0.85)
+#'  # plot initial isocontours
+#'  plotM(map = map,Z = Z,lab = lab, byLab = TRUE)
+#'  listContours = contourBetween(map = map, krigGrid = map$krigGrid, q1 = quant1, q2 = quant2)
+#'  for (i in 1:length(listContours)){
+#'    sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
+#'  }
+#'  # plot modified isocontours
+#'  plotM(map = map,Z = Z,lab = lab, byLab = TRUE)
+#'  listContours = contourBetween(map = map, krigGrid = new_krigGrid, q1 = quant1, q2 = quant2)
+#'  for (i in 1:length(listContours)){
+#'    sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
+#'  }
+#' }
 new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
-
   # this function is in the script "calCost.R"
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
@@ -421,26 +421,24 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
 #' @return approximated values of the zone (numZ) given as parameter.
 #' @export
 #' @examples
-#' seed=35
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPoints=500)
-#' ZK=initialZoning(qProb=c(0.65,0.8),map)
-#' Z=ZK$resZ$zonePolygone # list of zones
-#' lab = ZK$resZ$lab # label of zones
-#' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 5 is a transition zone that is far from map boundary
-#' numZ = 5
-#' Estimation = Transition_Zone_Far_Boundary(map = map, Z = Z, numZ = numZ)
-#' # compute the cost
-#' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-#' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
-#' print(cL$cost_Laplace)
-#' print(cM$cost_Mean)
-#' # zone 5 is a zone with gradient
-
+#' \donttest{
+#'  seed=35
+#'  map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPoints=500)
+#'  ZK=initialZoning(qProb=c(0.65,0.8),map)
+#'  Z=ZK$resZ$zonePolygone # list of zones
+#'  lab = ZK$resZ$lab # label of zones
+#'  plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
+#'  # zone 5 is a transition zone that is far from map boundary
+#'  numZ = 5
+#'  Estimation = Transition_Zone_Far_Boundary(map = map, Z = Z, numZ = numZ)
+#'  # compute the cost
+#'  cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
+#'  cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
+#'  print(cL$cost_Laplace)
+#'  print(cM$cost_Mean)
+#'  # zone 5 is a zone with gradient
+#' }
 Transition_Zone_Far_Boundary = function(map, Z, numZ){
-
-  # this function is in the script "calCost.R"
-
   # reassign points to zones
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
@@ -450,9 +448,7 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
 	return(NULL)
   }
 
-
   # resolution of Laplace's equation : modeling the equation by using the grid of map, we obtain a linear form AX = B
-
   N = length(listZpt[[numZ]])
   A = matrix(rep(0,N*N), nrow = N)
   B = rep(0,N)
@@ -527,9 +523,7 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
   # resolution
   solution = -B%*% (solve(A))
   return(solution)
-
 }
-
 
 
 ############################################# Extreme_Zone ####################################################################
@@ -547,25 +541,24 @@ Transition_Zone_Far_Boundary = function(map, Z, numZ){
 #' @importFrom rgeos readWKT
 #' @export
 #' @examples
-#' seed=35
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=500)
-#' ZK=initialZoning(qProb=c(0.8),map)
-#' Z=ZK$resZ$zonePolygone # list of zones
-#' lab = ZK$resZ$lab # label of zones
-#' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 2 is a zone with maximum label
-#' numZ = 2
-#' Estimation = Extreme_Zone(map = map, Z = Z, numZ = numZ, label.is.min = FALSE)
-#' # compute the cost
-#' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-#' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
-#' print(cL$cost_Laplace)
-#' print(cM$cost_Mean)
-#' # zone 2 is homogeneous
+#' \donttest{
+#'  seed=35
+#'  map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=500)
+#'  ZK=initialZoning(qProb=c(0.8),map)
+#'  Z=ZK$resZ$zonePolygone # list of zones
+#'  lab = ZK$resZ$lab # label of zones
+#'  plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
+#'  # zone 2 is a zone with maximum label
+#'  numZ = 2
+#'  Estimation = Extreme_Zone(map = map, Z = Z, numZ = numZ, label.is.min = FALSE)
+#'  # compute the cost
+#'  cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
+#'  cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
+#'  print(cL$cost_Laplace)
+#'  print(cM$cost_Mean)
+#'  # zone 2 is homogeneous
+#' }
 Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
-
-  # this function is in the script "calCost.R"
-
   # reassign points to zones
   tab = map$krigData
   listZpt = zoneAssign(tab = tab, Z = Z)
@@ -627,7 +620,6 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 
   #step of discretisation
   step = map$step
-
 
   for(i in 1:length(listPt)){
     # coordinates of point i
@@ -717,9 +709,7 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
   solution = append(solution, Val, after = index-1)
 
   return(solution)
-
 }
-
 
 
 ############################################# list_Zone_2_Neighbours #################################################################
@@ -732,19 +722,17 @@ Extreme_Zone = function(map, Z, numZ, label.is.min = TRUE){
 #' @return a vector containing zone numbers
 #' @export
 #' @examples
-#' # not run, take a while...
-#' #seed=20
-#' #map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp")
-#' #ZK=initialZoning(qProb=c(0.67,0.8),map)
-#' #Z=ZK$resZ$zonePolygone # list of zones
-#' #lab = ZK$resZ$lab # label of zones
-#' #plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 5 and 11 are transition zones and have exactly 2 neighbours with different labels.
-#' #list_Zone_2_Neighbours(Z = Z, lab = lab)
-
+#' \donttest{
+#'  seed=20
+#'  map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp")
+#'  ZK=initialZoning(qProb=c(0.67,0.8),map)
+#'  Z=ZK$resZ$zonePolygone # list of zones
+#'  lab = ZK$resZ$lab # label of zones
+#'  plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
+#'  # zone 5 and 11 are transition zones and have exactly 2 neighbours with different labels.
+#'  list_Zone_2_Neighbours(Z = Z, lab = lab)
+#' }
 list_Zone_2_Neighbours = function(Z, lab){
-
-  # this function is in the script calCost.R()
   # find the neighbours of each zone
   listNei = list()
   for (i in 1:length(Z)){
@@ -773,39 +761,38 @@ list_Zone_2_Neighbours = function(Z, lab){
 
 ############################################# contourBetween #############################################
 #' contourBetween
-#' @details  : For the given krigGrid, this funtion returns
-#'                the contourLines of the map following the 2 quantiles that defined at the beginning.
-#'
+#' @details  : For the given krigGrid, this funtion returns the contourLines of the map following
+#'            the 2 quantiles that defined at the beginning.
 #' @param map : object map defined in package geozoning
 #' @param krigGrid : object that can
 #' @param q1,q2 : 2 quantiles that defined zone
 #' @param nbContourBetween : the number of discretisation between q1 and q2
-
 #' @return listContours : List of Spatial Lines and the value of quantile that represent the contours generated
 #' @importFrom sp plot
 #' @export
 #' @examples
-#' map=geozoning::mapTest
-#' ZK=initialZoning(qProb=c(0.55,0.85),map)
-#' Z=ZK$resZ$zonePolygone # list of zones
-#' lab = ZK$resZ$lab # label of zones
-#' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' numZ = 7
-#' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
-#' result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
-#' new_krigGrid = result$new_krigGrid
-#' new_data = result$new_data
-#' quant1 = quantile(map$krigData@data$var1.pred,probs = 0.55)
-#' quant2 = quantile(map$krigData@data$var1.pred,probs = 0.85)
-#' # plot modified isocontours
-#' plotM(map = map,Z = Z,lab = lab, byLab = TRUE)
-#' listContours = contourBetween(map = map, krigGrid = new_krigGrid, q1 = quant1, q2 = quant2)
-#' for (i in 1:length(listContours)){
-#'   sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
+#' \donttest{
+#'  map=geozoning::mapTest
+#'  ZK=initialZoning(qProb=c(0.55,0.85),map)
+#'  Z=ZK$resZ$zonePolygone # list of zones
+#'  lab = ZK$resZ$lab # label of zones
+#'  plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
+#'  numZ = 7
+#'  Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
+#'  result = new_krigGrid_for_visualisation(map = map, Z = Z, numZ = numZ, solution = Estimation)
+#'  new_krigGrid = result$new_krigGrid
+#'  new_data = result$new_data
+#'  quant1 = quantile(map$krigData@data$var1.pred,probs = 0.55)
+#'  quant2 = quantile(map$krigData@data$var1.pred,probs = 0.85)
+#'  # plot modified isocontours
+#'  plotM(map = map,Z = Z,lab = lab, byLab = TRUE)
+#'  listContours = contourBetween(map = map, krigGrid = new_krigGrid, q1 = quant1, q2 = quant2)
+#'  for (i in 1:length(listContours)){
+#'     sp::plot(listContours[[i]]$contour,add=TRUE,col = "red")
+#'  }
 #' }
 contourBetween = function(map,krigGrid, q1, q2, nbContourBetween = 5)
 {
-  # this function is the script "calCost.R"
   step = map$step
   xsize = map$xsize
   ysize = map$ysize

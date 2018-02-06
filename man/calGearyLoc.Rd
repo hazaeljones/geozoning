@@ -28,5 +28,4 @@ computes local Geary indices
 K=resZTest
 zoneA=sapply(K$zonePolygone,rgeos::gArea)
 calGearyLoc(K$zoneNModif,K$meanZone,K$meanTot,zoneA)
-# not run
 }

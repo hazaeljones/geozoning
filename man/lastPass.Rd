@@ -60,5 +60,4 @@ newRes=lastPass(mapTest,c(0.4,0.7),criti$zk[1],criti$criterion[1],
 criti$cost[1],criti$costL[1],criti$nz[1],criti$mdist[1])
 newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
 printZsurf(newZ) # 6 zones, 2 small zones were removed
-# not run
 }

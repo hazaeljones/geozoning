@@ -13,8 +13,6 @@
 #' @examples
 #' data(mapTest)
 #' plotMap(mapTest)
-#' # not run
-#'
 plotMap=function(map)
 ##########################
 {

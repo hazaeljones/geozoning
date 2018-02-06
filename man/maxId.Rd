@@ -19,10 +19,11 @@ maxId
 get highest number corresponding to a zone identifier in a zoning
 }
 \examples{
-# not run, take a while...
-#data(mapTest)
-#criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
-#Z=criti$zk[[2]][[1]]$zonePolygon
-#geozoning:::maxId(Z)
+\donttest{
+data(mapTest)
+criti=correctionTree(c(0.4,0.5),mapTest,SAVE=TRUE)
+Z=criti$zk[[2]][[1]]$zonePolygon
+geozoning:::maxId(Z)
+}
 }
 \keyword{internal}

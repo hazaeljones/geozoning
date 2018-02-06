@@ -32,10 +32,14 @@ SigmaL2
 compute overall mean and variance of all zones for each label plus sum of them for all labels
 }
 \examples{
+\donttest{
 data(mapTest)
+# run zoning with 2 quantiles corresponding to probability values 0.4 and 0.7
+# save initial zoning and last level zonings
 criti=correctionTree(c(0.4,0.7),mapTest,SAVE=TRUE)
 K=criti$zk[[2]][[1]]
 uni=unique(K$lab)
 zlab=sapply(uni,function(x){(1:length(K$lab))[K$lab==x]})
 sig=SigmaL2(zlab,K$listZonePoint,mapTest$krigData,mapTest$krigSurfVoronoi)
+}
 }

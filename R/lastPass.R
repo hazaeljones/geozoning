@@ -37,7 +37,6 @@
 #' criti$cost[1],criti$costL[1],criti$nz[1],criti$mdist[1])
 #' newZ=newRes$listOfZ[[1]][[1]]$zonePolygone
 #' printZsurf(newZ) # 6 zones, 2 small zones were removed
-#' # not run
 lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2,minSize=0.012,simplitol=1e-3,disp=0)
 ###########################################################################
 # simply remove zones of last level zonings that are too small and recalculate criteria
@@ -54,7 +53,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2
 	    K1 = listOfZ[[le]][[kk]]
 	    Z1 = K1$zonePolygone
 	    ZIF = detectSmallZones(Z1,minSize) #returns small zone numbers
-	    	   
+
 	    vNum = ZIF$vectIndex
 
 	    # get small zone ids
@@ -79,7 +78,7 @@ lastPass=function(map,qProb,listOfZ,crit,cost,costL,nz,mdist,pErr=0.9,optiCrit=2
 	     if(length(vNum)>0) # then update zoning kk
 	        {
 		ZK = updateZK(map,qProb,le,kk,listOfZ, crit,cost,costL,nz,mdist,K0,Z3,pErr,optiCrit,simplitol) # updates listOfZ, crit,mdist
-		
+
 		listOfZ= ZK$listOfZ
 		mdist= ZK$mdist
 		crit=ZK$crit

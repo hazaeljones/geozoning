@@ -21,10 +21,11 @@ getSurf
 get surface area of a given zone within a zoning
 }
 \examples{
-# not run
-#data(resZTest)
-#K=resZTest
-#Z=K$zonePolygone
-#geozoning:::getSurf(Z,1)
+\donttest{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+geozoning:::getSurf(Z,1)
+}
 }
 \keyword{internal}

@@ -21,9 +21,10 @@ getNs
 get zone numbers of neighbors of a given zone
 }
 \examples{
-# Not run
-#data(mapTest)
-#K=resZTest
-#Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
+\donttest{
+data(mapTest)
+K=resZTest
+Ns=geozoning:::getNs(K$zoneNModif,5) # find neighbors of zone 5
+}
 }
 \keyword{internal}

@@ -25,5 +25,4 @@ Generates zones from map data using quantile values associated to given probabil
 \examples{
 data(mapTest)
 Z=zoneGeneration(mapTest)
-# not run
 }

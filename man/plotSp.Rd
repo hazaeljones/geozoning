@@ -26,5 +26,4 @@ data(resZTest)
 K=resZTest
 Z=K$zonePolygone
 plotSp(Z[[1]],xlim=c(0,1),ylim=c(0,1))
-# not run
 }

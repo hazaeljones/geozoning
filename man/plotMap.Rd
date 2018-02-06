@@ -21,6 +21,4 @@ plot 3 different graphics of a map object
 \examples{
 data(mapTest)
 plotMap(mapTest)
-# not run
-
 }

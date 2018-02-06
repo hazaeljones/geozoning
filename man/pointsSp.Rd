@@ -25,5 +25,4 @@ K=resZTest
 Z=K$zonePolygone
 plotZ(Z)
 pointsSp(Z[[1]])
-# not run
 }

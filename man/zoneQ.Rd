@@ -43,6 +43,5 @@ Qseq = genQseq(qProb,K,mapTest,iC,iE)
 resi = geozoning:::findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
 Zopti=geozoning:::zoneQ(resi$contourSp,iC,iE,Z,K)
 plotZ(Zopti)
-# not run
 }
 \keyword{internal}

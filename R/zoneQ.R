@@ -2,7 +2,7 @@
 #' zoneQ
 #'
 #' @details called by optiGrow,replaces the current zone by a bigger one
-#' @param contourSp contour line transformed into SpatialPolygons 
+#' @param contourSp contour line transformed into SpatialPolygons
 #' @param iC zone to grow
 #' @param iE englobing zone
 #' @param Z zoning geometry (list of SpatialPolygons)
@@ -27,7 +27,6 @@
 #' resi = geozoning:::findCinZ(iC,Z,K,mapTest,Qseq[5],envel)
 #' Zopti=geozoning:::zoneQ(resi$contourSp,iC,iE,Z,K)
 #' plotZ(Zopti)
-#' # not run
 zoneQ = function (contourSp,iC,iE,Z,K,simplitol=1e-3)
 ##################################################################
 {

@@ -31,9 +31,10 @@ exploratory loop on probability values associated to quantiles. Performs map zon
 see also \code{\link{loopQ1}}, \code{\link{loopQ2}}, \code{\link{loopQ4}}, \code{\link{loopQ5}} for loops with a different number of labels
 }
 \examples{
+\donttest{
 # not run, take a while - >5s CPU
-#seed=10
-#map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=1)
-#loopQ3(map,step=0.1,disp=0,QUIET=TRUE)
-
+seed=10
+map=genMap(DataObj=NULL,seed=seed,disp=FALSE,krig=1)
+loopQ3(map,step=0.1,disp=0,QUIET=TRUE)
+}
 }

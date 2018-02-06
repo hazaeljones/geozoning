@@ -34,7 +34,6 @@
 #' # simulate data with Gaussian model
 #' resGene=genData(NULL,10,450,"Gau",5,0.2,8,0,list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),FALSE)
 #' plot(resGene$tabData)
-#'
 genData=function(DataObj=NULL,seed=0,nPoints=450,typeMod="Exp",Vpsill=5,Vrange=0.2,Vmean=8,Vnugget=0,Vanis=1,boundary=list(x=c(0,0,1,1,0),y=c(0,1,1,0,0)),manualBoundary=FALSE)
 ##############################################################################
 {
@@ -189,14 +188,15 @@ genEmptyGrid=function(step,xsize,ysize)
 #' @export
 #'
 #' @examples
-#' # not run, take a while...
-#' #data(mapTest) # simulated data
-#' #grid=genEmptyGrid(calStep(2000,1,1),1,1)
-#' #nbP= grid$nx*grid$ny
-#' #neighBool=matrix(logical(nbP^2),nbP,nbP)
-#' #resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
-#' #neighBool=resVoronoi$neighBool
-#' #listeNpt=ptNei(neighBool)
+#' \donttest{
+#' data(mapTest) # simulated data
+#' grid=genEmptyGrid(calStep(2000,1,1),1,1)
+#' nbP= grid$nx*grid$ny
+#' neighBool=matrix(logical(nbP^2),nbP,nbP)
+#' resVoronoi=voronoiPolygons(mapTest$krigData,c(0,1,0,1),neighBool)
+#' neighBool=resVoronoi$neighBool
+#' listeNpt=ptNei(neighBool)
+#' }
 ptNei=function(neighBool)
 ###################################################################
 {

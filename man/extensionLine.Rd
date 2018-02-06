@@ -35,6 +35,5 @@ plot(mapTest$boundary,type="l",col="red")
 lines(cL[[1]])#contour line is not closed
 lines(geozoning:::extensionLine(cL[[1]],step,sp::SpatialPoints(mapTest$boundary),
      geozoning:::superLines(mapTest$boundary)),col="red") #contour line is closed
-# not run
 }
 \keyword{internal}

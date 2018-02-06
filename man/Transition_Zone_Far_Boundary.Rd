@@ -25,19 +25,21 @@ by the solution of the Laplace's equation. The numerical resolution of the Lapla
 of the data on the grid (map$krigGrid).
 }
 \examples{
-seed=35
-map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPoints=500)
-ZK=initialZoning(qProb=c(0.65,0.8),map)
-Z=ZK$resZ$zonePolygone # list of zones
-lab = ZK$resZ$lab # label of zones
-plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-# zone 5 is a transition zone that is far from map boundary
-numZ = 5
-Estimation = Transition_Zone_Far_Boundary(map = map, Z = Z, numZ = numZ)
-# compute the cost
-cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
-print(cL$cost_Laplace)
-print(cM$cost_Mean)
-# zone 5 is a zone with gradient
+\donttest{
+ seed=35
+ map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPoints=500)
+ ZK=initialZoning(qProb=c(0.65,0.8),map)
+ Z=ZK$resZ$zonePolygone # list of zones
+ lab = ZK$resZ$lab # label of zones
+ plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
+ # zone 5 is a transition zone that is far from map boundary
+ numZ = 5
+ Estimation = Transition_Zone_Far_Boundary(map = map, Z = Z, numZ = numZ)
+ # compute the cost
+ cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
+ cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
+ print(cL$cost_Laplace)
+ print(cM$cost_Mean)
+ # zone 5 is a zone with gradient
+}
 }

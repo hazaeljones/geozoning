@@ -19,6 +19,7 @@ meanvarsimu
 computes mean and standard deviation of a set of map simulations
 }
 \examples{
-# not run, take a while...
-#meanvarSimu(mapTest)
+\donttest{
+meanvarSimu(mapTest)
+}
 }

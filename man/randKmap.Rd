@@ -62,9 +62,7 @@ randKmap:  Generate data for zoning or prepare real data
 Generates a map structure from simulated data or real data. Kriged data are normalized so that x-coordinates are between 0 and 1. y-coordinates are normalized with the same ratio used for x-coordinates. Kriging is either done with inverse distance interpolation, or with a variogram model.  It creates a structure that contains the data and parameters necessary to perform a zoning. The structure is identical wether the data are simulated or not.
 }
 \examples{
-# not run
-map = randKmap(NULL,nPointsK=500,Vmean=15,krig=2)
+map = randKmap(NULL,nPointsK=200,Vmean=15,krig=2)
 mean(map$krigGrid) # mean of generated kriged data
 plotMap(map)
-
 }

@@ -25,12 +25,13 @@ getClosePt
 description, a paragraph
 }
 \examples{
-# not run
-#data(resZTest)
-#K=resZTest
-#Z=K$zonePolygone
-#geozoning:::getClosePt(Z,1,3)
-#plotZ(Z)
-#points( geozoning:::getClosePt(Z,1,3),col="blue",pch=20)
+\donttest{
+data(resZTest)
+K=resZTest
+Z=K$zonePolygone
+geozoning:::getClosePt(Z,1,3)
+plotZ(Z)
+points( geozoning:::getClosePt(Z,1,3),col="blue",pch=20)
+}
 }
 \keyword{internal}

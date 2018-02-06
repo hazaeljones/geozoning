@@ -4,14 +4,13 @@
 #' @details generate rectangular empty grid corresponding to x and y values in matrix
 #' @param mat matrix with x and y coordinates in the first two columns, data in third column
 #'
-#' @return a grid 
+#' @return a grid
 #'
 #' @keywords internal
 #'
 #' @examples
 #' data(dataReg)
 #' geozoning:::gridXY(dataReg)
-#' # not run
 #################################################################################
 # generate empty grid
 gridXY=function(mat)
