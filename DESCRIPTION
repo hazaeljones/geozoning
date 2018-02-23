@@ -1,6 +1,6 @@
 Package: geozoning
 Title: Zoning Methods for Spatial Data
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
   person("Brigitte", "Charnomordic", email = "brigitte.charnomordic@inra.fr", role = c("aut")),
   person("Hazaël", "Jones", email = "hazael.jones@supagro.fr", role = c("aut", "cre")),

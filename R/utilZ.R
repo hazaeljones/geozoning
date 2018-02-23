@@ -685,52 +685,46 @@ trLabZone=function(K1,K2,map,qProb,disp=0)
 ##################################################################
 # transfer zone labels from K1 to K2
 # ids of zones in Z1 and Z2 used to guide transfer
-
 {
-Z1=K1$zonePolygone
-Z2=K2$zonePolygone
+  Z1=K1$zonePolygone
+  Z2=K2$zonePolygone
 
-# only K2$lab is modified
-# by taking labels from K1
-lab2=rep(1,length(Z2))
+  # only K2$lab is modified
+  # by taking labels from K1
+  lab2=rep(1,length(Z2))
 
-lab1=K1$lab
-id1s=getIds(Z1)
-q1 = quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
-rate= max(map$krigGrid)-min(map$krigGrid)
-for (iZ in 1:length(Z2))
-{
-	id2=getId(Z2,iZ)
-	numid1=which(id1s==id2)
-	if (length(numid1) >1)
-	{
-		print(id1s)
-		print(id2)
-	}
-	if (length(numid1)!=0)
-	   lab2[iZ]=lab1[numid1]
-	else #new zone id was created - find its label
-	{
-		for (j in 1:length(q1))
-    		{
-      		if (K2$meanZone[iZ]>(q1[j]+0.01*rate))
-      		   {
-		   lab2[iZ]=j+1
-      		   }
+  lab1=K1$lab
+  id1s=getIds(Z1)
+  q1 = quantile(map$krigGrid,na.rm=TRUE,prob=qProb)
+  # IS: 2018/02/23, add na.rm=TRUE in max and min functions - report bug!
+  rate=max(map$krigGrid,na.rm=TRUE) - min(map$krigGrid,na.rm=TRUE)
+  for (iZ in 1:length(Z2)){
+	  id2=getId(Z2,iZ)
+	  numid1=which(id1s==id2)
+	  if (length(numid1) >1){
+		  print(id1s)
+		  print(id2)
+	  }
+	  if (length(numid1)!=0)   lab2[iZ]=lab1[numid1]
+	  #new zone id was created - find its label
+	  else {
+		  for (j in 1:length(q1)){
+        if (K2$meanZone[iZ]>(q1[j]+0.01*rate)) {
+		      lab2[iZ]=j+1
+      	}
+		  }
+	  }
+  }
 
-		}
-	}
+  K2$lab=lab2
 
-}
-K2$lab=lab2
+  if(disp){
+	  printZid(Z1)
+	  print(K1$lab)
+	  print(K2$lab)
+  }
 
-if(disp)
-	{
-	printZid(Z1)
-	print(K1$lab)
-	print(K2$lab)
-	}
-return(K2)
+  return(K2)
 }
 
 ##################################################################
@@ -761,37 +755,33 @@ getClosestZone=function(iZ,Z,zoneN)
 
 	# exclude neighbor zones
 	Ns=getNs(zoneN,iZ)
-  	listeV=grep(TRUE, Ns)
+  listeV=grep(TRUE, Ns)
 	for (i in listeV) ni=ni[ni != i]
 
 	# exclude englobing zone
 	iE = detZoneEng(iZ,Z,zoneN)
-	#
+
 	if(iE != 0) ni = ni[ni !=iE]
 
 	# exclude included zones
 	ir=NULL
-	for (i in ni)
-          {
+	for (i in ni){
 	  gb = gBuffer(gConvexHull(Z[[iZ]]),byid=TRUE,width=1e-3)
 	  if(gContains(gb,Z[[i]])) ir=c(ir,i)
-	  }
+	}
 	for (i in ir) ni =ni[ni != i]
 
 	# compute distances to remaining zones
 	d0 = 1
-	for (i in ni)
-          {
+	for (i in ni){
 		d=gDistance(Z[[iZ]],Z[[i]])
-		if (d<=d0)
-		   {
+		if (d<=d0){
 		   imin=i
 		   d0=d
-		   }
+		}
 	}
 
-return(imin)
-
+  return(imin)
 }
 
 #####################################################################
@@ -833,7 +823,7 @@ MeanVarWPts=function(map,zone,w=NULL)
   else
      w=rep(1,length(mask))
 
-  m=sum(ptsp[[1]][mask]*w[mask]) /sum(w[mask])
+  m=sum(ptsp[[1]][mask]*w[mask]) / sum(w[mask])
   d=ptsp[[1]][mask]-m
   v=sum(d*d*w[mask]) /sum(w[mask])
 
@@ -1009,20 +999,18 @@ normZcoords=function(Z,boundary)
 {
 	NZ=length(Z)
 	Z1=list()
-	for (iZ in 1:NZ)
-	{
-	np=nPolyZone(Z,iZ)
-	pnl=list()
-	for (k in 1:np)
-	{
-		pk = getPoly(Z,iZ,k)
-		resn = spnorm(pk,boundary)
-		if (is.null(resn)) return(NULL)
-		pnl[[k]] = resn$pn
-		boundaryn = resn$boundaryn
-	}
+	for (iZ in 1:NZ){
+	  np=nPolyZone(Z,iZ)
+	  pnl=list()
+	  for (k in 1:np){
+		  pk = getPoly(Z,iZ,k)
+		  resn = spnorm(pk,boundary)
+		  if (is.null(resn)) return(NULL)
+		  pnl[[k]] = resn$pn
+		  boundaryn = resn$boundaryn
+	  }
 
-	Z1[[iZ]] = SpatialPolygons(list(Polygons(pnl,1:1)))
+	  Z1[[iZ]] = SpatialPolygons(list(Polygons(pnl,1:1)))
 	}
 
 	return(list(Zn=Z1,boundaryn=boundaryn))

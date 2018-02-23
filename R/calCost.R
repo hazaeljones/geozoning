@@ -211,21 +211,20 @@ new_krigGrid_for_visualisation = function(map, Z, numZ, solution){
 #' @return approximated values of the zone (numZ) given as parameter.
 #' @export
 #' @examples
-#' seed=21
-#' map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPointsK=800)
-#' ZK=initialZoning(qProb=c(0.55,0.85),map)
+#' data(mapTest)
+#' ZK=initialZoning(qProb=c(0.55,0.85),mapTest)
 #' Z=ZK$resZ$zonePolygone # list of zones
 #' lab = ZK$resZ$lab # label of zones
-#' plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#' # zone 3 is a transition zone that has commun boundary with the map
-#' numZ = 3
-#' Estimation = Transition_Zone_Near_Boundary(map = map, Z = Z, numZ = numZ)
+#' plotM(map = mapTest,Z = Z,lab = lab, byLab = FALSE)
+#' # zone 7 is a transition zone that has commun boundary with the map
+#' numZ = 7
+#' Estimation = Transition_Zone_Near_Boundary(map = mapTest, Z = Z, numZ = numZ)
 #' # compute the cost
-#' cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-#' cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
+#' cL = Cost_By_Laplace(map = mapTest, Z = Z, numZ = numZ, Estimation = Estimation)
+#' cM = Cost_By_Mean(map = mapTest, Z = Z, numZ = numZ)
 #' print(cL$cost_Laplace)
 #' print(cM$cost_Mean)
-#' # zone 3 is a zone with gradient
+#' # zone 7 is a zone with gradient
 Transition_Zone_Near_Boundary = function(map, Z, numZ){
 
   # this function is in the script "calCost.R"
@@ -422,21 +421,20 @@ Transition_Zone_Near_Boundary = function(map, Z, numZ){
 #' @export
 #' @examples
 #' \donttest{
-#'  seed=35
-#'  map=genMap(DataObj=NULL,seed=seed,krig=2,typeMod="Exp",nPoints=500)
-#'  ZK=initialZoning(qProb=c(0.65,0.8),map)
+#'  data(mapTest)
+#'  ZK=initialZoning(qProb=c(0.65,0.8),mapTest)
 #'  Z=ZK$resZ$zonePolygone # list of zones
 #'  lab = ZK$resZ$lab # label of zones
-#'  plotM(map = map,Z = Z,lab = lab, byLab = FALSE)
-#'  # zone 5 is a transition zone that is far from map boundary
-#'  numZ = 5
-#'  Estimation = Transition_Zone_Far_Boundary(map = map, Z = Z, numZ = numZ)
+#'  plotM(map = mapTest,Z = Z,lab = lab, byLab = FALSE)
+#'  # zone 6 is a transition zone that is far from map boundary
+#'  numZ = 6
+#'  Estimation = Transition_Zone_Far_Boundary(map = mapTest, Z = Z, numZ = numZ)
 #'  # compute the cost
-#'  cL = Cost_By_Laplace(map = map, Z = Z, numZ = numZ, Estimation = Estimation)
-#'  cM = Cost_By_Mean(map = map, Z = Z, numZ = numZ)
+#'  cL = Cost_By_Laplace(map = mapTest, Z = Z, numZ = numZ, Estimation = Estimation)
+#'  cM = Cost_By_Mean(map = mapTest, Z = Z, numZ = numZ)
 #'  print(cL$cost_Laplace)
 #'  print(cM$cost_Mean)
-#'  # zone 5 is a zone with gradient
+#'  # zone 6 is a zone with gradient
 #' }
 Transition_Zone_Far_Boundary = function(map, Z, numZ){
   # reassign points to zones
